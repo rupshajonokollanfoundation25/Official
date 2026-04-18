@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গ্যালারি - RJ Foundation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --accent: #00bfa5;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .gallery-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            background: linear-gradient(135deg, #004d40, #00796b);
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* ফিল্টার বাটন */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: var(--glass);
+            border: 1px solid rgba(0,121,107,0.2);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            color: var(--primary);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,121,107,0.3);
+        }
+
+        /* গ্যালারি গ্রিড (Masonry Look) */
+        .gallery-grid {
+            columns: 3 300px;
+            column-gap: 20px;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.4s ease-in-out;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: 0.5s;
+        }
+
+        /* হোভার ইফেক্ট */
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 121, 107, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: 0.4s;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay h4 { margin: 0; font-size: 18px; }
+        .gallery-overlay p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
+        .gallery-overlay i { font-size: 24px; margin-bottom: 10px; }
+
+        /* লাইটবক্স পপ-আপ (সিম্পল ভিউ) */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid { columns: 1; }
+            .gallery-header h1 { font-size: 24px; }
+        }
+
+        /* ভিডিও প্লেয়ার ডিজাইন */
+.video-container-main {
+    max-width: 1000px;
+    margin: -60px auto 40px; /* হেডার থেকে একটু ওপরে তুলে আনা হয়েছে */
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 রেশিও */
+    height: 0;
+    overflow: hidden;
+    border-radius: 25px;
+    background: #000;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border: 5px solid var(--glass);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+@media (max-width: 768px) {
+    .video-container-main {
+        margin: -30px auto 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="gallery-header">
+        <h1>আমাদের ফটো গ্যালারি</h1>
+        <p>মানবিক ও খেলাধুলার কিছু স্মরণীয় মুহূর্ত</p>
+    </header>
+
+
+    <div class="video-container-main">
+    <div class="video-wrapper">
+        <iframe 
+    src="https://www.youtube.com/embed/egD2biAoCNE?rel=0" 
+    title="রুপসা জনকল্যাণ ফাউন্ডেশন ইফতার মাহফিল"
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+</iframe>
+<p>রূপসা জনকল্যাণ ফাউন্ডেশন এর পক্ষ থেকে ইফতার মাহফিল</p>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="gallery-filter">
+            <button class="filter-btn active">সব ছবি</button>
+            <button class="filter-btn">খাদ্য বিতরণ</button>
+            <button class="filter-btn">শিক্ষা সহায়তা</button>
+            <button class="filter-btn">স্বাস্থ্য সেবা</button>
+        </div>
+
+        <div class="gallery-grid">
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/FbSy0KDW/IMG-20260320-163051.jpg" alt="অসুস্থ পশু পাখিকে সাহায্য">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>অসুস্থ পশু পাখিকে সাহায্য</h4>
+                    <p>রুপসা এলাকা, মার্চ ২০২৬</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/q3sgc4T0/IMG-20260320-234348.jpg" alt="ইফতার">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>রুপসা জনকল্যাণ ফাউন্ডেশন এর পক্ষ থেকে ইফতার মাহফিলের আয়োজন</h4>
+                    <p>রুপসা এলাকা,২০ মার্চ ২০২৬</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/QFdhY0Vs/1774703908564.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/SDcMby8T/FB-IMG-1759581201690.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/W42sj7DB/1774703841097.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/VYcdptkL/1774703848097.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/sJs56m5B/1774703854674.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/wtGWjCc/1774703867007.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/spw2RcFB/1774703869998.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/v4Bvs70v/1774703873979.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/fYr6Y7NR/1774703878305.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/cSTZ0Sp1/1774703885580.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/cRqMDK9/1774703894934.jpg" alt="খেলা">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রুপসা এলাকা</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        function openLightbox(element) {
+            const imgSrc = element.querySelector('img').src;
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+    </script>
+
+
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+
+    
+
+    
+</body>
+</html>
