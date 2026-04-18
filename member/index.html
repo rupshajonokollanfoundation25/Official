@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্থায়ী কমিটি ও সাধারণ সদস্য</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-wrapper">
+        
+        <div class="hero-banner">
+            <div class="banner-content">
+                <h2>রূপসা জনকল্যাণ ফাউন্ডেশন</h2>
+                <p>স্থায়ী কমিটি</p>
+            </div>
+            <div class="particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+        </div>
+        <div class="controls-container">
+            <input type="text" id="searchInput" class="search-bar" placeholder="" onkeyup="filterData()">
+            <select id="categoryFilter" class="category-filter" onchange="filterData()">
+                <option value="all">সবাই</option>
+                <option value="প্রতিষ্ঠাতা পরিচালক">প্রতিষ্ঠাতা পরিচালক</option>
+                <option value="সভাপতি">সভাপতি</option>
+                <option value="সিনিয়র সহ-সভাপতি">সিনিয়র সহ-সভাপতি</option>
+                <option value="সহ-সভাপতি">সহ-সভাপতি</option>
+                <option value="সাধারণ সম্পাদক">সাধারণ সম্পাদক</option>
+                <option value="যুগ্ম সাধারণ সম্পাদক">যুগ্ম সাধারণ সম্পাদক</option>
+                <option value="কোষাধ্যক্ষ">কোষাধ্যক্ষ</option>                 
+                <option value="প্রচার সম্পাদক">প্রচার সম্পাদক</option>
+                <option value="সাংগঠনিক সম্পাদক">সাংগঠনিক সম্পাদক</option>
+                <option value="দপ্তর সম্পাদক">দপ্তর সম্পাদক</option>
+                <option value="ক্রিয়া সম্পাদক">ক্রিয়া সম্পাদক</option>
+                <option value="কোষাধ্যক্ষ">কোষাধ্যক্ষ</option>
+                <option value="সংস্কৃতি বিষয়ক সম্পাদক">সংস্কৃতি বিষয়ক সম্পাদক</option>
+                <option value="সমাজসেবা বিষয়ক সম্পাদক">সমাজসেবা বিষয়ক সম্পাদক</option>
+                <option value="উপদেষ্টা">উপদেষ্টা</option>
+                <option value="সাধারণ সদস্য">সাধারণ সদস্য</option>
+            </select>
+        </div>
+
+        <div class="member-scroll-box" id="scroll-box">
+            <div class="scroll-wrapper" id="scroll-content">
+                </div>
+        </div>
+
+        <div class="scroll-controls">
+            <button class="scroll-btn" onmousedown="startManualScroll(-1)" onmouseup="stopManualScroll()" onmouseleave="stopManualScroll()" ontouchstart="startManualScroll(-1)" ontouchend="stopManualScroll()"><i class="fa-solid fa-chevron-up"></i></button>
+            <button class="scroll-btn" onmousedown="startManualScroll(1)" onmouseup="stopManualScroll()" onmouseleave="stopManualScroll()" ontouchstart="startManualScroll(1)" ontouchend="stopManualScroll()"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-close-icon" onclick="toggleModal()">&times;</div>
+            <img id="modal-img" src="" alt="Profile">
+            <h2 id="modal-name">নাম</h2>
+            <h4 id="modal-role">পদবী</h4>
+            <p id="modal-desc">বিবরণ</p>
+            
+            <div class="social-links" id="modal-social">
+                </div>
+
+            <button class="close-btn" onclick="toggleModal()">বন্ধ করুন</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
