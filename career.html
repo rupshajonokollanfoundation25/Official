@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ক্যারিয়ার - RJ Foundation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --secondary: #004d40;
+            --accent: #ffb300;
+            --glass: rgba(255, 255, 255, 0.85);
+            --border: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f7;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* হিরো সেকশন */
+        .career-hero {
+            background: linear-gradient(rgba(0, 77, 64, 0.9), rgba(0, 121, 107, 0.8)), 
+                        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200') no-repeat center/cover;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+        }
+
+        .career-hero h1 { font-size: 36px; margin-bottom: 10px; }
+        .career-hero p { font-size: 18px; max-width: 600px; opacity: 0.9; }
+
+        .container {
+            max-width: 1000px;
+            margin: -50px auto 80px;
+            padding: 0 20px;
+            box-sizing: border-box; /* এটি নিশ্চিত করবে কন্টেইনার যেন বাইরে না যায় */
+        }
+
+        /* জব কার্ড ডিজাইন - ফিক্সড ভার্সন */
+        .job-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-wrap: nowrap; /* বাটনকে পাশে রাখবে */
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-sizing: border-box; /* প্যাডিং যেন বক্সের বাইরে না ঠেলে */
+            overflow: hidden; /* বাড়তি কিছু থাকলে তা কেটে দিবে */
+        }
+
+        .job-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,121,107,0.15);
+            border-color: var(--primary);
+        }
+
+        .job-info {
+            flex: 1; /* টেক্সট যতটুকু সম্ভব জায়গা নিবে */
+            min-width: 0; /* টেক্সট বড় হলেও বক্স ফাটবে না */
+            margin-right: 20px;
+        }
+
+        .job-info h3 {
+            font-size: 22px;
+            color: var(--secondary);
+            margin: 0 0 10px 0;
+            white-space: normal; /* টাইটেল বড় হলে নিচে নামবে */
+        }
+
+        .job-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: bold;
+            background: rgba(0, 121, 107, 0.1);
+            color: var(--primary);
+        }
+
+        .job-meta {
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .job-meta span i { color: var(--primary); margin-right: 5px; }
+
+        /* অ্যাপ্লাই বাটন - ফিক্সড */
+        .apply-btn {
+            background: var(--primary);
+            color: white !important;
+            padding: 12px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,121,107,0.3);
+            flex-shrink: 0; /* বাটন যেন ছোট না হয় */
+            text-align: center;
+            display: inline-block;
+        }
+
+        .apply-btn:hover {
+            background: var(--secondary);
+            box-shadow: 0 8px 20px rgba(0,77,64,0.4);
+        }
+
+        @media (max-width: 768px) {
+            .job-card { 
+                flex-direction: column; 
+                align-items: stretch; 
+                text-align: center; 
+                padding: 20px;
+            }
+            .job-info { margin-right: 0; margin-bottom: 20px; }
+            .job-tags, .job-meta { justify-content: center; }
+            .apply-btn { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="career-hero">
+        <h1>আমাদের টিমে যোগ দিন</h1>
+        <p>সামাজিক পরিবর্তনে আপনার দক্ষতাকে কাজে লাগান। আমরা খুঁজছি একদল নিবেদিতপ্রাণ ভলান্টিয়ার ও কর্মী।</p>
+    </section>
+
+    <div class="container">
+        
+        <div class="job-card">
+            <div class="job-info">
+                <div class="job-tags">
+                    <span class="tag">ভলান্টিয়ার</span>
+                    <span class="tag">রিমোট/ফিল্ড</span>
+                </div>
+                <h3>প্রচার সম্পাদক</h3>
+                <div class="job-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> রুপসা, সিরাজগঞ্জ</span>
+                    <span><i class="fas fa-clock"></i> পার্ট-টাইম</span>
+                </div>
+            </div>
+            <a href="https://forms.gle/KmE9AguE9iJB3zw18" target="_blank" class="apply-btn">আবেদন করুন</a>
+        </div>
+
+        <div class="job-card">
+            <div class="job-info">
+                <div class="job-tags">
+                    <span class="tag">অনলাইন/অফলাইন</span>
+                    <span class="tag">রিমোট</span>
+                </div>
+                <h3>সভাপতি</h3>
+                <div class="job-meta">
+                    <span><i class="fas fa-map-marker-alt"></i>সব বিষয়েই</span>
+                    <span><i class="fas fa-briefcase"></i>ফাউন্ডেশন পরিচালনা</span>
+                </div>
+            </div>
+            <a href="https://forms.gle/PRZVpCuHb7dDRELw8" class="apply-btn">আবেদন করুন</a>
+        </div>
+
+        <div class="job-card">
+            <div class="job-info">
+                <div class="job-tags">
+                    <span class="tag">জরুরি</span>
+                    <span class="tag">অস্থায়ী</span>
+                </div>
+                <h3>ত্রাণ বিতরণ সমন্বয়কারী</h3>
+                <div class="job-meta">
+                    <span><i class="fas fa-map-marker-alt"></i> মাঠ পর্যায়</span>
+                    <span><i class="fas fa-calendar-day"></i> ইভেন্ট বেসড</span>
+                </div>
+            </div>
+            <a href="#" class="apply-btn">আবেদন করুন</a>
+        </div>
+
+    </div>
+
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+Tawk_API.customStyle = {
+    visibility : {
+        desktop : {
+            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
+        },
+        mobile : {
+            yOffset : 75 // মোবাইলের জন্য পজিশন
+        }
+    }
+};
+
+
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+    
+
+</body>
+</html>
