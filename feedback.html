@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - RJ Foundation</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .review-form { max-width: 550px; margin: 20px auto; padding: 25px; background: #fff; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .verify-box { text-align: center; padding: 10px; }
+        .input-group { position: relative; margin-top: 15px; }
+        .verify-input { 
+            width: 100%; padding: 12px 15px; border-radius: 10px; border: 2px solid #e0e0e0; 
+            outline: none; transition: 0.3s; box-sizing: border-box; font-size: 15px;
+        }
+        .verify-input:focus { border-color: #00796b; box-shadow: 0 0 8px rgba(0, 121, 107, 0.1); }
+        .verify-btn { 
+            width: 100%; background: linear-gradient(135deg, #00796b, #004d40); color: white; 
+            padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; 
+            margin-top: 15px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .verify-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 121, 107, 0.3); }
+        .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 10px; background: #e0f2f1; border-radius: 12px; }
+        .user-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #00796b; }
+        
+        /* নতুন স্টার রেটিং স্টাইল */
+        .star-rating { display: flex; gap: 5px; margin-bottom: 15px; cursor: pointer; font-size: 24px; }
+        .star-rating span { color: #ccc; transition: 0.2s; }
+        .star-rating span.active { color: #ffb300; }
+
+        textarea { width: 100%; height: 100px; padding: 12px; border-radius: 10px; border: 1px solid #ccc; resize: none; box-sizing: border-box; }
+        .submit-btn { width: 100%; margin-top: 15px; background: #00796b; color: white; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        
+        .review-item { background: #fafafa; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 5px solid #00796b; overflow: hidden; word-wrap: break-word; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 10px; }
+        .review-name { font-weight: bold; color: #333; overflow-wrap: anywhere; }
+        .review-stars { color: #ffb300; font-size: 14px; white-space: nowrap; flex-shrink: 0; }
+        .review-text { font-size: 14px; color: #555; line-height: 1.5; word-break: break-word; }
+        .review-date { font-size: 11px; color: #888; display: block; margin-top: 8px; font-style: italic; }
+        
+        .error-msg {
+    color: #d32f2f;
+    background: #ffebee;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    display: none; /* শুরুতে লুকানো থাকবে */
+    border: 1px solid #ffcdd2;
+    text-align: center;
+}
+    </style>
+</head>
+<body>
+
+<div class="review-form">
+    <h2 style="text-align: center; color: #00796b;">মতামত ও রিভিউ</h2>
+    
+    <div id="verifySection" class="verify-box">
+        <p style="color: #555;">রিভিউ দিতে আপনার নিবন্ধিত ইমেইলটি ভেরিফাই করুন</p>
+        <div class="input-group">
+            <input type="email" id="emailInput" class="verify-input" placeholder="আপনার ইমেইল দিন...">
+        </div>
+        <button onclick="verifyUser()" id="vBtn" class="verify-btn">
+            ভেরিফাই করুন <i class="fas fa-shield-alt"></i>
+        </button>
+        <p id="statusMsg" style="font-size: 13px; margin-top: 12px;"></p>
+    </div>
+
+    <div id="reviewContent" style="display:none;">
+        <div id="userInfo" class="user-info"></div>
+        
+        <div id="reviewInputArea">
+            <label>আপনার রেটিং দিন:</label>
+            <div class="star-rating" id="starRating">
+                <span onclick="setRating(1)">★</span>
+                <span onclick="setRating(2)">★</span>
+                <span onclick="setRating(3)">★</span>
+                <span onclick="setRating(4)">★</span>
+                <span onclick="setRating(5)">★</span>
+            </div>
+            
+            <textarea id="reviewText" placeholder="আমাদের সম্পর্কে আপনার মূল্যবান মতামত লিখুন..."></textarea>
+            <div id="reviewError" class="error-msg"></div>
+            <button onclick="submitReview()" class="submit-btn">রিভিউ জমা দিন</button>
+        </div>
+    </div>
+
+
+
+    <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+    <h4>সকলের মতামত সমূহ:</h4>
+    <div id="allReviews"></div>
+</div>
+
+<script>
+    const loginConfig = {
+        apiKey: "AIzaSyD80uA81X3bkwiousPwXpIv6OKkk1k2icA",
+        authDomain: "rjfoundation-25.firebaseapp.com",
+        projectId: "rjfoundation-25",
+        storageBucket: "rjfoundation-25.firebasestorage.app",
+        messagingSenderId: "469641336275",
+        appId: "1:469641336275:web:e79889fb0247f352f04b26"
+    };
+    const loginApp = firebase.initializeApp(loginConfig);
+    const auth = firebase.auth(loginApp);
+
+    const reviewConfig = {
+        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
+        authDomain: "rating-revieww.firebaseapp.com",
+        projectId: "rating-revieww",
+        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+    };
+    const reviewApp = firebase.initializeApp(reviewConfig, "ReviewProject");
+    const db = firebase.firestore(reviewApp);
+
+    let currentUserData = null;
+    let selectedRating = 5; // Default rating
+
+    function setRating(n) {
+        selectedRating = n;
+        const stars = document.querySelectorAll('.star-rating span');
+        stars.forEach((star, index) => {
+            if (index < n) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+    setRating(5);
+
+    function verifyUser() {
+        const email = document.getElementById('emailInput').value;
+        const btn = document.getElementById('vBtn');
+        const msg = document.getElementById('statusMsg');
+        msg.innerHTML = ""; 
+
+        if(!email) {
+            msg.innerHTML = "⚠️ দয়া করে একটি ইমেইল দিন!";
+            msg.style.color = "red";
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "চেক করা হচ্ছে...";
+
+        auth.fetchSignInMethodsForEmail(email).then(methods => {
+            if (methods.length > 0) {
+                msg.innerHTML = "✅ ভেরিফিকেশন সফল! ফর্ম লোড হচ্ছে...";
+                msg.style.color = "green";
+                
+                setTimeout(() => {
+                    document.getElementById('verifySection').style.display = 'none';
+                    document.getElementById('reviewContent').style.display = 'block';
+                    
+                    currentUserData = { 
+                        email: email, 
+                        name: email.split('@')[0].toUpperCase(),
+                        uid: "verified-user" 
+                    };
+
+                    document.getElementById('userInfo').innerHTML = `
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-img">
+                        <div>
+                            <strong class="review-name">${currentUserData.name}</strong><br>
+                            <span style="font-size: 12px; color: #2e7d32;">✅ ভেরিফাইড মেম্বার</span>
+                        </div>
+                    `;
+                }, 1000);
+            } else {
+                msg.innerHTML = `
+                    <div style="background: #ffebee; padding: 10px; border-radius: 10px; border: 1px solid #ffcdd2; margin-top: 10px;">
+                        <p style="color: #d32f2f; margin-bottom: 8px;">🚫 এই ইমেইলটি আমাদের সদস্য তালিকায় নেই।</p>
+                        <a href="registration.html" style="display: inline-block; background: #00796b; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px;">এখনই সাইন আপ করুন</a>
+                    </div>
+                `;
+                btn.disabled = false;
+                btn.innerText = " দুঃখিত ! অনুগ্রহ করে আবার চেষ্টা করুন";
+            }
+        }).catch(err => {
+            msg.innerText = "⚠️ আপনার ইমেইল টি সঠিক নয়!";
+            msg.style.color = "red";
+            btn.disabled = false;
+        });
+    }
+
+function submitReview() {
+    const text = document.getElementById('reviewText').value;
+    const errorDiv = document.getElementById('reviewError');
+
+    // আগে এরর মেসেজ থাকলে তা মুছে ফেলা
+    errorDiv.style.display = "none";
+    errorDiv.innerText = "";
+
+    if(!text) {
+        // alert এর বদলে এখানে বক্সটি দেখাবে
+        errorDiv.innerText = "⚠️ দয়া করে আপনার মূল্যবান মতামত লিখুন!";
+        errorDiv.style.display = "block";
+        return;
+    }
+
+    // বাকি সেভ করার কোড...
+    db.collection("reviews").add({
+        uid: currentUserData.uid,
+        userName: currentUserData.name,
+        userEmail: currentUserData.email,
+        rating: selectedRating,
+        comment: text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+        alert("ধন্যবাদ! আপনার রিভিউটি জমা হয়েছে।"); // সফল হলে এলার্ট দিতে পারেন বা পেজ রিলোড হবে
+        location.reload(); 
+    }).catch(err => {
+        alert("সেভ করতে সমস্যা হয়েছে!");
+    });
+}
+
+
+    function loadReviews() {
+        db.collection("reviews").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+            let html = "";
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const stars = "⭐".repeat(data.rating);
+                
+                // টাইমস্ট্যাম্প থেকে তারিখ ও সময় বের করা
+                let dateString = "Just now";
+                if(data.timestamp) {
+                    const date = data.timestamp.toDate();
+                    dateString = date.toLocaleDateString('bn-BD') + " | " + date.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+                }
+
+                html += `
+                    <div class="review-item">
+                        <div class="review-header">
+                            <span class="review-name">${data.userName}</span>
+                            <span class="review-stars">${stars}</span>
+                        </div>
+                        <p class="review-text">${data.comment}</p>
+                        <small class="review-date">তারিখ: ${dateString}</small>
+                    </div>
+                `;
+            });
+            document.getElementById('allReviews').innerHTML = html;
+        });
+    }
+    
+    loadReviews();
+</script>
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+
+
+    
+</body>
+</html>
