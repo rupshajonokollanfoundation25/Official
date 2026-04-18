@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের কার্যক্রম - RJ Foundation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --secondary: #004d40;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --gradient: linear-gradient(135deg, #00796b, #00bfa5);
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: #eef2f3;
+            background-image: radial-gradient(circle at top right, #e0f2f1, transparent), 
+                              radial-gradient(circle at bottom left, #b2dfdb, transparent);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* হেডার ডিজাইন */
+        .blog-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            background: var(--gradient);
+            color: white;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 50px;
+        }
+
+        .blog-header h1 {
+            font-size: 38px;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .blog-header p {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* কন্টেইনার */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        /* ফিল্টার বাটন (প্রিমিয়াম লুক) */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 25px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--secondary);
+            transition: 0.4s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .tab.active, .tab:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,121,107,0.3);
+        }
+
+        /* ব্লগ গ্রিড */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+        }
+
+        /* আল্ট্রা কার্ড ডিজাইন */
+        .post-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .post-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,121,107,0.2);
+        }
+
+        .image-wrapper {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.8s ease;
+        }
+
+        .post-card:hover .image-wrapper img {
+            transform: scale(1.15) rotate(2deg);
+        }
+
+        .badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            color: #fff;
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .post-content {
+            padding: 30px;
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .meta span i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        .post-content h3 {
+            font-size: 22px;
+            margin: 0 0 15px 0;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        .post-content p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* বাটন এনিমেশন */
+        .btn-read {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-read:hover {
+            box-shadow: 0 10px 20px rgba(0,121,107,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* লোড মোর বাটন */
+        .load-more-container {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .load-more {
+            padding: 15px 40px;
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .load-more:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* মডাল (বিস্তারিত দেখার পপ-আপ) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #fff;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow-y: auto;
+            position: relative;
+            animation: modalFade 0.4s ease-out;
+        }
+
+        @keyframes modalFade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-body { padding: 40px; }
+        .modal-img { width: 100%; border-radius: 15px; margin-bottom: 25px; }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .blog-header h1 { font-size: 28px; }
+            .blog-grid { grid-template-columns: 1fr; }
+            .modal-body { padding: 20px; }
+        }
+
+         /* ভিডিও প্লেয়ার ডিজাইন */
+.video-container-main {
+    max-width: 1000px;
+    margin: -60px auto 40px; /* হেডার থেকে একটু ওপরে তুলে আনা হয়েছে */
+    padding: 0 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 রেশিও */
+    height: 0;
+    overflow: hidden;
+    border-radius: 25px;
+    background: #000;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    border: 5px solid var(--glass);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px;
+}
+
+@media (max-width: 768px) {
+    .video-container-main {
+        margin: -30px auto 30px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header class="blog-header">
+        <h1>আমাদের কার্যক্রম ও সংবাদ</h1>
+        <p>রুপসা জনকল্যাণ ফাউন্ডেশনের প্রতিটি পদক্ষেপের বাস্তব চিত্র</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="filter-tabs">
+            <div class="tab active">সব কার্যক্রম</div>
+            <div class="tab">খাদ্য বিতরণ</div>
+            <div class="tab">স্বাস্থ্য সেবা</div>
+            <div class="tab">শিক্ষা সহায়তা</div>
+            <div class="tab">জরুরি ত্রাণ</div>
+        </div>
+
+        
+<div class="video-container-main">
+    <div class="video-wrapper">
+        <iframe 
+    src="https://www.youtube.com/embed/HVi9QtHG5Tk?rel=0" 
+    title="রুপসা জনকল্যাণ ফাউন্ডেশন ইফতার মাহফিল"
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+</iframe>
+<p>রূপসা জনকল্যাণ ফাউন্ডেশন এর পক্ষ থেকে ইফতার মাহফিল</p>
+    </div>
+</div>
+        <div class="blog-grid">
+            
+            <article class="post-card">
+                <div class="image-wrapper">
+                    <span class="badge">ইভেন্ট</span>
+                    <img src="https://plus.unsplash.com/premium_photo-1683140538884-07fb31428ca6?q=80&w=500" alt="Activity">
+                </div>
+                <div class="post-content">
+                    <div class="meta">
+                        <span><i class="far fa-calendar-alt"></i> ২৮ মার্চ, ২০২৬</span>
+                        <span><i class="far fa-user"></i> অ্যাডমিন</span>
+                    </div>
+                    <h3>পবিত্র রমজানে ১০০ পরিবারের মাঝে ইফতার সামগ্রী বিতরণ</h3>
+                    <p>আজ স্থানীয় রুপসা ইউনিয়নে ফাউন্ডেশনের পক্ষ থেকে আমরা অসহায় ও সুবিধাবঞ্চিত ১০০ পরিবারের মুখে হাসি ফোটাতে সক্ষম হয়েছি...</p>
+                    <button class="btn-read" onclick="openPost(0)">বিস্তারিত পড়ুন <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="image-wrapper">
+                    <span class="badge">শিক্ষা</span>
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=500" alt="Education">
+                </div>
+                <div class="post-content">
+                    <div class="meta">
+                        <span><i class="far fa-calendar-alt"></i> ২০ মার্চ, ২০২৬</span>
+                        <span><i class="far fa-user"></i> ইমরান</span>
+                    </div>
+                    <h3>'স্বপ্ন ডানা' প্রকল্পের অধীনে স্কুল ব্যাগ ও বই বিতরণ</h3>
+                    <p>শিশুদের শিক্ষার পথ সুগম করতে আমরা এ বছর ২০ জন মেধাবী শিক্ষার্থীর সারা বছরের শিক্ষা উপকরণের দায়িত্ব গ্রহণ করেছি।</p>
+                    <button class="btn-read" onclick="openPost(1)">বিস্তারিত পড়ুন <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </article>
+
+            <article class="post-card">
+                <div class="image-wrapper">
+                    <span class="badge">চিকিৎসা</span>
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=500" alt="Health">
+                </div>
+                <div class="post-content">
+                    <div class="meta">
+                        <span><i class="far fa-calendar-alt"></i> ১৫ মার্চ, ২০২৬</span>
+                        <span><i class="far fa-user"></i> ভলান্টিয়ার</span>
+                    </div>
+                    <h3>বিনামূল্যে চক্ষু চিকিৎসা ক্যাম্প ও ঔষধ বিতরণ কর্মসূচি</h3>
+                    <p>ফাউন্ডেশনের উদ্যোগে এবং অভিজ্ঞ চিকিৎসকদের তত্ত্বাবধানে প্রায় ৩০০ জন মানুষকে বিনামূল্যে চিকিৎসা সেবা প্রদান করা হয়েছে।</p>
+                    <button class="btn-read" onclick="openPost(2)">বিস্তারিত পড়ুন <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </article>
+
+        </div>
+
+        <div class="load-more-container">
+            <button class="load-more">পুরানো পোস্টগুলো দেখুন</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="postModal">
+        <div class="modal-content">
+            <div class="close-modal" onclick="closePost()"><i class="fas fa-times"></i></div>
+            <div class="modal-body" id="modalBody">
+                </div>
+        </div>
+    </div>
+
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+Tawk_API.customStyle = {
+    visibility : {
+        desktop : {
+            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
+        },
+        mobile : {
+            yOffset : 75 // মোবাইলের জন্য পজিশন
+        }
+    }
+};
+
+
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+    
+
+    <script>
+        // পোস্টের বিস্তারিত ডাটা
+        const postData = [
+            {
+                title: "পবিত্র রমজানে ১০০ পরিবারের মাঝে ইফতার সামগ্রী বিতরণ",
+                date: "২৮ মার্চ, ২০২৬",
+                author: "অ্যাডমিন",
+                image: "https://plus.unsplash.com/premium_photo-1683140538884-07fb31428ca6?q=80&w=1000",
+                desc: "আজ স্থানীয় রুপসা ইউনিয়নে ফাউন্ডেশনের পক্ষ থেকে আমরা অসহায় ও সুবিধাবঞ্চিত ১০০ পরিবারের মুখে হাসি ফোটাতে সক্ষম হয়েছি। আমাদের এই ক্ষুদ্র প্রয়াসে ছিল ছোলা, মুড়ি, খেজুর, তেল, চিনি ও বেসন সহ নিত্যপ্রয়োজনীয় ইফতার সামগ্রী। আমরা বিশ্বাস করি সামাজিক দায়বদ্ধতা থেকে আমাদের সবার উচিত অভাবী মানুষের পাশে দাঁড়ানো। আপনাদের সহযোগিতাই আমাদের শক্তি।"
+            },
+            {
+                title: "'স্বপ্ন ডানা' প্রকল্পের অধীনে স্কুল ব্যাগ ও বই বিতরণ",
+                date: "২০ মার্চ, ২০২৬",
+                author: "ইমরান",
+                image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1000",
+                desc: "শিশুদের শিক্ষার পথ সুগম করতে আমরা এ বছর ২০ জন মেধাবী শিক্ষার্থীর সারা বছরের শিক্ষা উপকরণের দায়িত্ব গ্রহণ করেছি। স্বপ্ন ডানা প্রকল্পের মাধ্যমে আমরা দরিদ্র পরিবারের শিশুদের হাতে নতুন বই, খাতা, কলম এবং স্কুল ব্যাগ তুলে দিয়েছি। শিক্ষার আলো প্রতিটি ঘরে পৌঁছে দেয়াই আমাদের মূল লক্ষ্য। এই কার্যক্রমে যারা আর্থিকভাবে সহযোগিতা করেছেন তাদের প্রতি অশেষ কৃতজ্ঞতা।"
+            },
+            {
+                title: "বিনামূল্যে চক্ষু চিকিৎসা ক্যাম্প ও ঔষধ বিতরণ কর্মসূচি",
+                date: "১৫ মার্চ, ২০২৬",
+                author: "ভলান্টিয়ার",
+                image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1000",
+                desc: "ফাউন্ডেশনের উদ্যোগে এবং অভিজ্ঞ চিকিৎসকদের তত্ত্বাবধানে প্রায় ৩০০ জন মানুষকে বিনামূল্যে চিকিৎসা সেবা প্রদান করা হয়েছে। দিনব্যাপী এই ক্যাম্পে চোখের পরীক্ষা, চশমা বিতরণ এবং প্রয়োজনীয় ঔষধ বিনামূল্যে প্রদান করা হয়। এছাড়া ৫০ জন বয়স্ক রোগীর বিনামূল্যে ছানি অপারেশনের প্রাথমিক তালিকা তৈরি করা হয়েছে। স্বাস্থ্যসেবা সাধারণ মানুষের দোরগোড়ায় পৌঁছে দিতে আমাদের এ কার্যক্রম অব্যাহত থাকবে।"
+            }
+        ];
+
+        function openPost(index) {
+            const post = postData[index];
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <img src="${post.image}" class="modal-img">
+                <div class="meta">
+                    <span><i class="far fa-calendar-alt"></i> ${post.date}</span>
+                    <span><i class="far fa-user"></i> ${post.author}</span>
+                </div>
+                <h2 style="color:var(--secondary); margin-top:10px;">${post.title}</h2>
+                <hr style="border:0; height:1px; background:#eee; margin:20px 0;">
+                <p style="font-size:17px; line-height:1.8; color:#444;">${post.desc}</p>
+            `;
+            
+            document.getElementById('postModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // স্ক্রল বন্ধ করা
+        }
+
+        function closePost() {
+            document.getElementById('postModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // স্ক্রল চালু করা
+        }
+
+        // বাইরের অংশে ক্লিক করলে মডাল বন্ধ হবে
+        window.onclick = function(event) {
+            const modal = document.getElementById('postModal');
+            if (event.target == modal) {
+                closePost();
+            }
+        }
+    </script>
+
+
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+    
+
+
+
+    
+</body>
+</html>
