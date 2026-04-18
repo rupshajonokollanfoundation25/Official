@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    
+    <title>নিরাপদ ভেরিফিকেশন | RJ Foundation</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+<div class="reset-container">
+    <div id="reset-ui" style="display: none;">
+        <div class="icon-box"><i class="fas fa-shield-alt"></i></div>
+        <h2 id="title-text">পাসওয়ার্ড রিসেট</h2>
+        <p id="sub-text">রূপসা জনকল্যাণ ফাউন্ডেশনে আপনার অ্যাকাউন্টের জন্য একটি নতুন এবং শক্তিশালী পাসওয়ার্ড সেট করুন।</p>
+        
+        <div class="input-group">
+            <input type="password" id="new-password" placeholder="নতুন পাসওয়ার্ড..." autocomplete="new-password">
+            <i class="fas fa-eye" id="togglePassword"></i>
+        </div>
+
+        <div class="strength-meter">
+            <div id="strength-bar" class="strength-bar"></div>
+        </div>
+
+        <div class="strength-rules">
+            <div id="rule-len" class="rule"><i class="fas fa-circle"></i> অন্তত ৮ ক্যারেক্টার</div>
+            <div id="rule-upper" class="rule"><i class="fas fa-circle"></i> একটি বড় হাতের অক্ষর</div>
+            <div id="rule-num" class="rule"><i class="fas fa-circle"></i> একটি সংখ্যা</div>
+            <div id="rule-special" class="rule"><i class="fas fa-circle"></i> একটি বিশেষ চিহ্ন (@#$%)</div>
+        </div>
+
+        <button id="submit-btn" disabled>পাসওয়ার্ড আপডেট করুন</button>
+    </div>
+
+    <div id="verify-ui" style="display: none;">
+        <div class="icon-box"><i class="fas fa-user-check"></i></div>
+        <h2>ইমেইল ভেরিফিকেশন</h2>
+        <p>আপনার অ্যাকাউন্টটি সক্রিয় করতে নিচের বাটনে ক্লিক করুন।</p>
+        <button id="verify-btn">অ্যাকাউন্ট ভেরিফাই করুন</button>
+    </div>
+
+    <div id="message"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="script.js"></script> </body>
+</html>
