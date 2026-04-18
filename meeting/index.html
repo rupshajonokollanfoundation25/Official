@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rupsha Public Welfare Foundation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="auth-screen">
+        <div class="auth-container">
+            <img src="https://i.ibb.co.com/ycsrjKp6/20251128-004458.jpg" alt="Logo" class="logo-img">
+            
+            <div id="login-form" style="display: block;">
+                <h2>Login</h2>
+                <p>আপনার যদি আগে ইমেইল/গুগল দিয়ে রেজিষ্টেশন না থাকে তবে অন্তত একবার রেজিষ্টেশন করে নিন </p>
+                <input type="email" id="login-email" class="auth-input" placeholder="Your email address">
+                <div class="pass-wrapper">
+                    <input type="password" id="login-pass" class="auth-input" placeholder="Your password">
+                    <i class="fas fa-eye toggle-icon" onclick="togglePassword('login-pass', this)"></i>
+                </div>
+                <button class="auth-btn btn-primary" id="loginSubmit">লগইন</button>
+                
+                <div class="divider"><span>অথবা</span></div>
+                
+                <button class="auth-btn btn-google" id="googleLoginBtn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    Google দিয়ে লগইন
+                </button>
+
+                <button class="btn-link" onclick="showForm('signup')">Register if you don't have an account.</button>
+                <button class="btn-link" onclick="showForm('reset')">Forget password?</button>
+            </div>
+
+            <div id="signup-form">
+                <h2>Registration</h2>
+                <input type="text" id="signup-name" class="auth-input" placeholder="Your name">
+                <input type="email" id="signup-email" class="auth-input" placeholder="Your email address">
+                <div class="pass-wrapper">
+                    <input type="password" id="signup-pass" class="auth-input" placeholder="Enter a password you can remember.">
+                    <i class="fas fa-eye toggle-icon" onclick="togglePassword('signup-pass', this)"></i>
+                </div>
+                <button class="auth-btn btn-primary" id="signupSubmit" style="background: #188038;">registration</button>
+                <button class="btn-link" onclick="showForm('login')">Login</button>
+            </div>
+
+            <div id="reset-form">
+                <h2>Forget Password</h2>
+                <input type="email" id="reset-email" class="auth-input" placeholder="Give your email address">
+                <button class="auth-btn btn-primary" id="resetSubmit">Send link</button>
+                <button class="btn-link" onclick="showForm('login')">Home</button>
+            </div>
+            <p id="auth-msg" style="font-size: 13px; margin-top: 10px; display: none; padding: 10px; border-radius: 8px; line-height: 1.4;"></p>
+        </div>
+    </div>
+
+    <button class="menu-toggle-btn" onclick="toggleSideMenu()">☰</button>
+
+    <div class="menu-overlay" id="overlay" onclick="toggleSideMenu()"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="donate.html"><i class="fas fa-hand-holding-heart"></i> Donation</a>
+        <a href="selection.html"><i class="fas fa-user-check"></i> Membership</a>
+        <a href="meeting.html"><i class="fas fa-video"></i> Meeting</a>
+        <a href="Https://imran-examiner.github.io/Exam/"><i class="fas fa-graduation-cap"></i> Student Portal</a>
+    </nav>
+
+    <div id="main-content">
+        <header>
+            <div class="top-controls">
+                <button class="control-btn" onclick="toggleDarkMode()" id="themeIcon"><i class="fas fa-moon"></i></button>
+                <button class="control-btn" onclick="logoutUser()" style="border-color:#ff4d4d; color:#ff4d4d;">Logout</button>
+            </div>
+            <img src="https://i.ibb.co.com/ycsrjKp6/20251128-004458.jpg" alt="Logo" class="logo-img">
+            <div class="user-welcome" id="userNameDisplay">Processing...</div>
+            <h1 style="color:white;">রুপসা জনকল্যাণ ফাউন্ডেশন লাইভ মিটিং সেকশন</h1>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="meet-card">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Active now <span id="userLiveBadge">...</span></span>
+                </div>
+
+                <div class="meet-icon-circle">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h2>Join live conference</h2>
+                <p>মিটিংয়ে অংশগ্রহণ করার জন্য আমাদের 2টা মাধ্যম আছে যখন মিটিং থাকবে তখন লিংক গুলা সক্রিয় থাকবে তাছাড়া লিংকগুলা অক্রিয় অবস্থায় থাকবে। join এ ক্লিক করে অংশগ্রহণ করুন। তবে এখন কোন মিটিং নেই তাই host উপস্থিত নেই। যখন মিটিং থাকবে তখন তারিখ এবং সময় উল্লেখ্য থাকবে। রুপসা জনকল্যাণ ফাউন্ডেশনের সাথে থাকার জন্য ধন্যবাদ।</p>
+                
+                <div class="btn-stack">
+                    <a class="join-btn google-meet" href="https://meet.google.com/ovr-zebh-xrc" target="_blank">
+                        <i class="fab fa-google"></i> JOIN GOOGLE MEET
+                    </a>
+                    <a class="join-btn zoom-meet" href="https://us05web.zoom.us/j/3364599214?pwd=rfznlEZujHOrQ1hg8subGX8TanM1xS.1&omn=87521248706" target="_blank">
+                        <i class="fas fa-video"></i> JOIN ZOOM APP
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2026 All rights reserved with RJ Foundation</p>
+        </footer>
+    </div>
+
+    <script type="module" src="script.js"></script>
+
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        Tawk_API.customStyle = {
+            visibility : {
+                desktop : { yOffset : 100 },
+                mobile : { yOffset : 75 }
+            }
+        };
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    </body>
+</html>
