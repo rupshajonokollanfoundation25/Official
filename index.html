@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rupsha Jonokollan Foundation | Help People in Bangladesh</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+
+
+
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "5239c92b-06c4-4426-81df-c1c7a2c33a36",
+    });
+  });
+</script>
+
+
+
+    
+</head>
+<body>
+
+
+
+<div id="rj-notification-wrapper">
+    <div id="rj-notif-bell" onclick="toggleRJNotif()">
+        <i class="fa-solid fa-bell"></i>
+        <span id="rj-notif-badge" class="rj-hidden">0</span>
+    </div>
+
+    <div id="rj-notif-inbox" class="rj-notif-closed">
+        <div class="rj-notif-header">
+            <span>নোটিফিকেশন সেন্টার</span>
+            <button onclick="clearAllRJNotifs()">সব মুছুন</button>
+        </div>
+        
+        <div id="rj-notif-content">
+            <div id="rj-empty-state">
+                <i class="fa-solid fa-envelope-open"></i>
+                <p>কোনো নতুন আপডেট নেই</p>
+            </div>
+        </div>
+        
+        <div class="rj-notif-footer">
+            <small>RJ Foundation Digital Support</small>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    
+
+    <header id="main-header">
+        <canvas id="fireworks-canvas"></canvas>
+        
+        <div class="lantern-box left"><i class="fas fa-fan"></i></div>
+        <div class="lantern-box right"><i class="fas fa-fan"></i></div>
+
+        <div class="top-nav">
+            <button class="glass-btn" onclick="toggleLanguage()" id="langBtn">English</button>
+            <button class="glass-btn" onclick="toggleDarkMode()" id="themeIcon">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
+        <div class="header-content">
+            <div class="logo-wrapper">
+                <img src="https://i.ibb.co.com/yDf9Lpq/20260405-215444.png" alt="RJF Logo" class="logo-img">
+            </div>
+            <h1 id="title">রূপসা জনকল্যাণ ফাউন্ডেশন</h1>
+        </div>
+        
+          <div class="menu-trigger" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</div>
+
+<nav class="sidebar" id="mySidebar">
+    <div class="sidebar-header">
+        <h3>মেনু</h3>
+        <i class="fas fa-times" onclick="toggleSidebar()"></i>
+    </div>
+    <ul class="sidebar-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> হোম</a></li>
+        <li><a href="gallery.html"><i class="fas fa-tasks"></i> কার্যক্রম</a></li>
+        <li><a href="/meeting/"><i class="fas fa-video"></i>মিটিং প্রযোজনা</a></li>
+        <li><a href="/from/"><i class="fas fa-users"></i>সদস্য নিবন্ধন ফরম</a></li>
+        <li><a href="donors.html"><i class="fas fa-users"></i> ভলান্টিয়ার</a></li>
+        <li class="divider"></li>
+        <li><a href="/donate/" class="side-donate"><i class="fas fa-heart"></i> দান করুন</a></li>
+        <li><a href="https://appsgeyser.io/19733639/RJfoundation" class="side-donate"><i class="fas fa-download"></i>আমাদের অ্যাপ</a></li>
+    </ul>
+</nav>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+        
+    </header>
+    <div class="notice-section">
+    <div class="notice-title">
+        <i class="fas fa-bullhorn"></i> সর্বশেষ নোটিশ
+    </div>
+    <div class="notice-container">
+        <div class="moving-text" id="noticeContent">
+            রূপসা জনকল্যাণ ফাউন্ডেশনের পক্ষ থেকে সকলকে জানাই আন্তরিক শুভেচ্ছা। আমাদের নতুন ভলান্টিয়ার নিয়োগ চলছে। বিস্তারিত জানতে যোগাযোগ করুন। অসহায় মানুষের সেবায় এগিয়ে আসুন।
+        </div>
+    </div>
+</div>
+
+
+<section class="newsletter-section" style="padding: 60px 20px;">
+    <style>
+        /* শুধু লোডিং স্পিনারের জন্য আলাদা CSS, যা অন্য কিছুকে পরিবর্তন করবে না */
+        .loader-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <div class="glass-box" style="
+        max-width: 700px; 
+        margin: 0 auto; 
+        background: rgba(220, 220, 220, 0.5);
+        backdrop-filter: blur(15px);
+        padding: 10px 25px; 
+        border-radius: 30px; 
+        border: 10px solid rgba(255,255,255,0.2);
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    ">
+        <h2 style="color: #00796b; margin-bottom: 10px;">সংযুক্ত থাকুন আমাদের সাথে</h2>
+        <p style="color: #555; margin-bottom: 30px;">সাবস্ক্রাইব করুন এবং আমাদের কার্যক্রমের আপডেট সরাসরি ইমেইলে পান।</p>
+
+        <form id="newsletter-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="hidden" name="action" value="subscribe">
+
+            <input type="email" name="email" id="userEmail" placeholder="আপনার সঠিক ইমেইলটি দিন..." required 
+                style="padding: 15px; border-radius: 12px; border: 1px solid #ddd; outline: none; font-size: 16px;">
+            
+            <button type="submit" id="submitBtn" style="
+                background: #00796b; 
+                color: white; 
+                padding: 15px; 
+                border-radius: 12px; 
+                border: none; 
+                font-weight: bold; 
+                cursor: pointer;
+                transition: 0.3s;
+            ">সাবস্ক্রাইব করুন</button>
+        </form>
+
+        <div id="responseMsg" style="margin-top: 20px; display: none; padding: 15px; border-radius: 10px;"></div>
+    </div>
+</section>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyRb61Evqy5O5J-D_M4L0fnt5R526d_iatJqT0TMm5Fw0dEXtMZugwoccXpm1o0HbVU/exec'; 
+    const form = document.getElementById('newsletter-form');
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('responseMsg');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        // এখানে স্পিনারটি যোগ করা হয়েছে
+        btn.innerHTML = '<span class="loader-spinner"></span> অপেক্ষা করুন...';
+        msg.style.display = "none";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => response.text()) 
+        .then(data => {
+            btn.disabled = false;
+            btn.innerHTML = "সাবস্ক্রাইব করুন";
+            
+            if (data === "Already Exists") {
+                msg.innerHTML = "এই ইমেইলটি দিয়ে ইতিমধ্যে সাবস্ক্রাইব করা হয়েছে! ⚠️";
+                msg.style.display = "block";
+                msg.style.background = "#fff3e0";
+                msg.style.color = "#e65100";
+            } else {
+                msg.innerHTML = "অভিনন্দন! সাবস্ক্রাইব সম্পূর্ণ হয়েছে বিভিন্ন ধরনের আপডেট পেতে আমাদের সাথেই থাকুন ধন্যবাদ";
+                msg.style.display = "block";
+                msg.style.background = "#e0f2f1";
+                msg.style.color = "#00796b";
+                form.reset();
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            btn.innerHTML = "আবার চেষ্টা করুন";
+            msg.innerHTML = "উফ! কোথাও একটা ভুল হয়েছে।";
+            msg.style.display = "block";
+            msg.style.background = "#ffebee";
+            msg.style.color = "#c62828";
+        });
+    });
+</script>
+
+
+
+
+<div class="button-container">
+    <a href="/member/" class="premium-btn">
+        <span class="btn-text">আমাদের স্থায়ী সদস্যদের দেখুন</span>
+        <div class="btn-glow"></div>
+    </a>
+</div>
+
+
+
+    
+<div class="quote-section">
+    <div class="quote-card">
+        <i class="fas fa-quote-left"></i>
+        <p id="quoteText">মানবিকতায় আমাদের পরিচয়...</p>
+        <span id="quoteAuthor">- মহাত্মা গান্ধী</span>
+    </div>
+</div>
+
+
+<section class="about-boxes">
+    <div class="section-title">
+        <h2>আমাদের সম্পর্কে</h2>
+        <div class="title-underline"></div>
+        <p>সেবা হোক প্রত্যয়, জনকল্যাণ হোক জয়</p>
+    </div>
+
+    <div class="box-container">
+        <div class="info-box">
+            <div class="box-icon-bg"><i class="fas fa-info-circle"></i></div>
+            <h3>ফাউন্ডেশন পরিচিতি</h3>
+            <p class="intro-text">রূপসা জনকল্যাণ ফাউন্ডেশন একটি মানবিক, অরাজনৈতিক ও সেবা মূলক সংগঠন।</p>
+        </div>
+
+        <div class="info-box">
+            <div class="box-icon-bg"><i class="fas fa-bullseye"></i></div>
+            <h3>আমাদের লক্ষ্য ও উদ্দেশ্য</h3>
+            <ul class="point-list">
+                <li><i class="fas fa-check-circle"></i> <span>অসহায় ও দরিদ্র মানুষের জীবন মান উন্নত করা।</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>সামাজিক সচেতনতা ও মানবিক সহায়তা প্রদান।</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>প্রাকৃতিক দূর্যোগে দরিদ্র পরিবারের পাশে দাঁড়ানো।</span></li>
+                <li><i class="fas fa-check-circle"></i> <span>খেলাধুলা ও সাংস্কৃতিক অনুষ্ঠানের আয়েজন করা।</span></li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <div class="box-icon-bg"><i class="fas fa-file-contract"></i></div>
+            <h3>শর্তাবলি</h3>
+            <ul class="point-list">
+                <li><i class="fas fa-arrow-alt-circle-right"></i> <span>নিজ ইচ্ছায় ফাউন্ডেশনের কাজে আগ্রহী হতে হবে।</span></li>
+                <li><i class="fas fa-arrow-alt-circle-right"></i> <span>সকল সদস্যের সাথে সহযোগিতামূলক সম্পর্ক রাখা।</span></li>
+                <li><i class="fas fa-arrow-alt-circle-right"></i> <span>১-১৫ তারিখের মধ্যে মাসিক অনুদান পরিশোধ করা।</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+
+
+<section class="location-section">
+    <div class="location-box">
+        <h3 class="location-title">
+            <i class="fas fa-map-marker-alt"></i> আমাদের অবস্থান
+        </h3>
+        
+        <div class="location-details">
+            <p><strong>ঠিকানা:</strong> রূপসা,সিরাজগঞ্জ,পশ্চিম পাড়া, বাংলাদেশ।</p>
+            <p><strong>মোবাইল:</strong>+8801957329211</p>
+            <p><strong>ইমেইল:</strong>info.rjfoundation25@gmail.com</p>
+        </div>
+
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3625.321305411649!2d89.76065507536412!3d24.5964839780996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd97007952270b%3A0x91ffc94b497563ee!2z4Kaw4KeB4Kaq4Ka44Ka-IOCmnOCmqOCmleCmsuCnjeCmr-CmvuCmoCDgpqvgpvuCmm-CmqOCmoeCnh-Cmt-CmqA!5e0!3m2!1sbn!2sbd!4v1711375000000!5m2!1sbn!2sbd" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        
+        <a href="https://maps.app.goo.gl/J4WFANqyHS6pHtxv6" target="_blank" class="map-btn">
+            <i class="fas fa-directions"></i> গুগল ম্যাপে দেখুন
+        </a>
+    </div>
+</section>
+
+
+
+<section class="impact-section">
+    <div class="section-title">
+        <h2>আমাদের পথচলা</h2>
+        <div class="title-underline"></div>
+        <p>মানবসেবায় আমাদের অর্জন ও সফলতার এক নজরে চিত্র</p>
+    </div>
+
+    <div class="counter-container">
+        <div class="counter-card">
+            <div class="counter-icon"><i class="fas fa-users"></i></div>
+            <div class="counter-number" data-target="500">28</div>
+            <p>নিবন্ধিত সদস্য</p>
+        </div>
+
+        <div class="counter-card">
+            <div class="counter-icon"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="counter-number" data-target="1200">5</div>
+            <p>সাহায্যপ্রাপ্ত মানুষ</p>
+        </div>
+
+        <div class="counter-card">
+            <div class="counter-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="counter-number" data-target="45">5</div>
+            <p>সফল ইভেন্ট</p>
+        </div>
+
+        <div class="counter-card">
+            <div class="counter-icon"><i class="fas fa-award"></i></div>
+            <div class="counter-number" data-target="12">0</div>
+            <p>অর্জিত সম্মাননা</p>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+    <div class="container">
+    <button class="btn" id="regBtn" onclick="startLoading()">
+        <span id="btn-text">ওয়েবসাইট ভেরিফাই করুন</span>
+        <span class="loader" id="spinner"></span>
+    </button>
+</div>
+
+
+
+
+
+    
+
+
+
+    
+
+<div class="rating-display-card">
+    <h3><i class="fas fa-star"></i> ইউজার রিভিউ ও রেটিং</h3>
+    <div class="average-rating">
+        <span id="avgRating"></span>
+        <div class="stars-outer">
+            <div class="stars-inner" id="avgStars"></div>
+        </div>
+        <p>(<span id="totalReviews"></span> রিভিউ দিন)</p>
+    </div>
+    
+    <a href="feedback.html" target="_blank" class="feedback-btn">
+        <i class="fas fa-comment-dots"></i> আপনার মতামত দিন
+    </a>
+</div>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+Tawk_API.customStyle = {
+    visibility : {
+        desktop : {
+            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
+        },
+        mobile : {
+            yOffset : 75 // মোবাইলের জন্য পজিশন
+        }
+    }
+};
+
+
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
+
+    .visitor-card-premium {
+        background: rgba(0, 230, 118, 0.3);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 25px;
+        padding: 10px;
+        text-align: center;
+        max-width: 400px;
+        margin: 40px auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        color: #00e676;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .stat-label {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #00e676;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    /* কাউন্টার বক্সের ডিজাইন */
+    .counter-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin: 6px 0;
+        flex-wrap: wrap;
+    }
+
+    .digit-box {
+        background: linear-gradient(145deg, black, black);
+        border: 1px solid rgba(0, 230, 118, 0.3);
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: 900;
+        color: #00e676;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        overflow: hidden; /* স্লাইডিং ইফেক্টের জন্য জরুরি */
+        position: relative;
+    }
+
+    /* স্লাইডিং অ্যানিমেশন */
+    .digit-anim {
+        display: inline-block;
+        animation: slideUpDigit 4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    @keyframes slideUpDigit {
+        0% { transform: translateY(100%); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .country-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 10px;
+        max-height: 100px;
+        overflow-y: auto;
+        padding: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .country-chip {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 6px 15px;
+        border-radius: 50px;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: 0.3s;
+        color: #eee;
+    }
+
+    .country-chip:hover {
+        background: rgba(0, 230, 118, 0.2);
+        border-color: #00e676;
+    }
+</style>
+
+<div class="visitor-card-premium">
+    <strong>আমাদের ওয়েবসাইটে ভিজিটর</strong>
+    <div id="counter-display" class="counter-wrapper">
+        <div class="digit-box">0</div>
+    </div>
+
+    <div class="country-container" id="display-countries">
+        <span style="opacity: 0.5; font-size: 12px;">এনালাইজিং ডাটা...</span>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+    const newProjectConfig = {
+        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
+        authDomain: "rating-revieww.firebaseapp.com",
+        databaseURL: "https://rating-revieww-default-rtdb.firebaseio.com",
+        projectId: "rating-revieww",
+        storageBucket: "rating-revieww.firebasestorage.app",
+        messagingSenderId: "936802340652",
+        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+    };
+
+    var analyticsApp;
+    try {
+        analyticsApp = firebase.initializeApp(newProjectConfig, "analyticsApp");
+    } catch (e) {
+        analyticsApp = firebase.app("analyticsApp");
+    }
+    const analyticsDb = analyticsApp.database();
+
+    let lastCount = -1;
+
+    // সংখ্যাকে আলাদা আলাদা বক্সে দেখানোর এবং এনিমেট করার ফাংশন
+    function updateCounter(number) {
+        if (number === lastCount) return;
+        
+        const display = document.getElementById('counter-display');
+        const digits = number.toString().split('');
+        const prevDigits = lastCount.toString().split('');
+        
+        display.innerHTML = '';
+        
+        digits.forEach((digit, i) => {
+            const box = document.createElement('div');
+            box.className = 'digit-box';
+            
+            const span = document.createElement('span');
+            span.innerText = digit;
+            
+            // যদি নতুন ভিজিটর হয় বা প্রথমবার লোড হয়, তবে অ্যানিমেশন ক্লাস যোগ হবে
+            if (lastCount === -1 || digit !== prevDigits[i]) {
+                span.className = 'digit-anim';
+            }
+            
+            box.appendChild(span);
+            display.appendChild(box);
+        });
+        
+        lastCount = number;
+    }
+
+    async function runAnalytics() {
+        const statsRef = analyticsDb.ref('web_stats');
+        
+        if (!sessionStorage.getItem('rjf_viewed')) {
+            statsRef.child('total_views').transaction(n => (n || 0) + 1);
+            sessionStorage.setItem('rjf_viewed', 'true');
+        }
+
+        try {
+            const res = await fetch('https://ipapi.co/json/');
+            const geo = await res.json();
+            const country = geo.country_name || "Unknown";
+            statsRef.child('locations/' + country.replace(/\./g, '_')).transaction(n => (n || 0) + 1);
+        } catch(e) { console.log("Location fetch failed."); }
+
+        statsRef.on('value', (snap) => {
+            const data = snap.val();
+            if(data) {
+                const total = data.total_views || 0;
+                
+                // প্রথম লোডের সময় ১ থেকে শুরু হয়ে বর্তমান সংখ্যা পর্যন্ত একটা ইফেক্ট দেওয়ার জন্য
+                if(lastCount === -1) {
+                    let start = 0;
+                    let step = Math.ceil(total / 20); // দ্রুত কাউন্ট হওয়ার জন্য
+                    let timer = setInterval(() => {
+                        start += step;
+                        if(start >= total) {
+                            clearInterval(timer);
+                            updateCounter(total);
+                        } else {
+                            updateCounter(start);
+                        }
+                    }, 50);
+                } else {
+                    updateCounter(total);
+                }
+
+                let html = "";
+                for(let loc in data.locations) {
+                    html += `<div class="country-chip">🌍 ${loc}: ${data.locations[loc]}</div>`;
+                }
+                document.getElementById('display-countries').innerHTML = html;
+            }
+        });
+    }
+
+    runAnalytics();
+</script>
+
+
+    
+    
+<footer class="main-footer">
+    <div class="footer-container">
+        
+        <div class="footer-brand">
+            <a href="#" class="footer-logo">রূপসা জনকল্যাণ ফাউন্ডেশন </a>
+            <p>“সেবা হোক প্রত্যয়, জনকল্যাণ হোক জয়”
+আমাদের প্রতিটি উদ্যোগ মানুষের কল্যাণের জন্য নিবেদিত। আমরা বিশ্বাস করি—একটি ছোট সহায়তাও একটি বড় পরিবর্তনের সূচনা করতে পারে। আসুন, আমরা সবাই মিলে একটি মানবিক ও সুন্দর সমাজ গড়ে তুলি।</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/rupshajonokollanfoundation"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://youtube.com/channel/UCempOBWhLCDczEKN2j859Iw?si=mc-aQTMrPPIqFsAe"><i class="fab fa-youtube"></i></a>
+                <a href="mailto:info.rjfoundation25@gmail.com">
+               <i class="fas fa-envelope"></i></a>
+                <a href="https://m.me/803315036207248"><i class="fab fa-facebook-messenger"></i></a>
+                <a href="https://wa.me/8801957329211?text=Assalamu%20Alaikum,%20ami%20apnader%20foundation%20niye%20jante%20chai%20?"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column">
+            <h3>মেনু</h3>
+            <ul class="footer-links">
+                <li><a href="about.html"><i class="fas fa-chevron-right"></i> আমাদের সম্পর্কে</a></li>
+                <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> কার্যক্রমসমূহ</a></li>
+                <li><a href="blog.html"><i class="fas fa-chevron-right"></i> ব্লগ</a></li>
+                <li><a href="gallery.html"><i class="fas fa-chevron-right"></i> গ্যালারি</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>যুক্ত হোন</h3>
+            <ul class="footer-links">
+                <li><a href="donors.html"><i class="fas fa-chevron-right"></i> নিয়মিত দাতা সদস্য</a></li>
+                <li><a href="selection.html"><i class="fas fa-chevron-right"></i> স্বেচ্ছাসেবক হিসেবে যুক্ত হতে</a></li>
+                <li><a href="career.html"><i class="fas fa-chevron-right"></i> ক্যারিয়ার</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h3>অন্যান্য</h3>
+            <ul class="footer-links">
+                <li><a href="mailto:info.rjfoundation25@gmail.com"><i class="fas fa-chevron-right"></i>support</a></li>
+                <li><a href="terms.html"><i class="fas fa-chevron-right"></i> শর্তাবলী</a></li>
+                <li><a href="privacy.html"><i class="fas fa-chevron-right"></i> গোপনীয়তা নীতি</a></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>স্বত্ব &copy; 2026 <span id="year"></span> রূপসা জনকল্যাণ ফাউন্ডেশন - সর্ব স্বত্ব সংরক্ষিত।</p>
+    </div>
+</footer>
+
+
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+
+
+
+
+<script>
+  // Service Worker Register
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW Registered'))
+        .catch(err => console.log('SW Failed', err));
+    });
+  }
+
+  // Install Prompt Logic
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // ডিফল্ট প্রম্পট থামিয়ে রাখা
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // আপনি চাইলে এখানে ১-২ সেকেন্ড দেরি করে পপআপ দেখাতে পারেন
+    setTimeout(() => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User installed the app');
+          }
+          deferredPrompt = null;
+        });
+      }
+    }, 3000); // ৩ সেকেন্ড পর অটো দেখাবে
+  });
+</script>
+
+    
+
+    
+    <script src="script.js"></script>
+</body>
+</html>
