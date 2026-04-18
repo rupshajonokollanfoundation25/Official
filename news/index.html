@@ -1,0 +1,44 @@
+<div class="admin-panel" style="max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <h2 style="color: #00796b; text-align: center;">নিউজ ব্রডকাস্ট প্যানেল</h2>
+    <p style="text-align: center; color: #666;">এখান থেকে সকল সাবস্ক্রাইবারকে এক ক্লিকে ইমেইল পাঠান।</p>
+    
+    <form id="broadcast-form">
+        <input type="hidden" name="action" value="broadcast">
+        
+        <label>নিউজের বিষয় (Subject):</label>
+        <input type="text" name="subject" placeholder="যেমন: নতুন ইভেন্ট আপডেট" required style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px;">
+        
+        <label>নিউজের বিস্তারিত (Message):</label>
+        <textarea name="message" rows="6" placeholder="আপনার নিউজটি এখানে লিখুন..." required style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px;"></textarea>
+        
+        <button type="submit" id="send-btn" style="width: 100%; background: #00796b; color: #fff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">সবাইকে পাঠান</button>
+    </form>
+    <p id="status" style="text-align: center; margin-top: 15px; font-weight: bold;"></p>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyRb61Evqy5O5J-D_M4L0fnt5R526d_iatJqT0TMm5Fw0dEXtMZugwoccXpm1o0HbVU/exec';
+    const form = document.getElementById('broadcast-form');
+    const btn = document.getElementById('send-btn');
+    const status = document.getElementById('status');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = "পাঠানো হচ্ছে...";
+        
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            btn.disabled = false;
+            btn.innerHTML = "সবাইকে পাঠান";
+            status.innerHTML = "✅ সফলভাবে সবার কাছে নিউজ পাঠানো হয়েছে!";
+            status.style.color = "green";
+            form.reset();
+        })
+        .catch(error => {
+            btn.disabled = false;
+            status.innerHTML = "❌ কোনো সমস্যা হয়েছে, আবার চেষ্টা করুন।";
+            status.style.color = "red";
+        });
+    });
+</script>
