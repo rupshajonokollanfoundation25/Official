@@ -1,0 +1,111 @@
+<section class="newsletter-section" style="padding: 60px 20px;">
+    <div class="glass-box" style="
+        max-width: 700px; 
+        margin: 0 auto; 
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(15px);
+        padding: 50px 30px; 
+        border-radius: 30px; 
+        border: 1px solid rgba(255,255,255,0.2);
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    ">
+        <h2 style="color: #00796b; margin-bottom: 10px;">সংযুক্ত থাকুন আমাদের সাথে</h2>
+        <p style="color: #555; margin-bottom: 30px;">সাবস্ক্রাইব করুন এবং আমাদের কার্যক্রমের আপডেট সরাসরি ইমেইলে পান।</p>
+
+        <form id="newsletter-form" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="hidden" name="action" value="subscribe">
+
+            <input type="email" name="email" id="userEmail" placeholder="আপনার সঠিক ইমেইলটি দিন..." required 
+                style="padding: 15px; border-radius: 12px; border: 1px solid #ddd; outline: none; font-size: 16px;">
+            
+            <button type="submit" id="submitBtn" style="
+                background: #00796b; 
+                color: white; 
+                padding: 15px; 
+                border-radius: 12px; 
+                border: none; 
+                font-weight: bold; 
+                cursor: pointer;
+                transition: 0.3s;
+            ">সাবস্ক্রাইব করুন</button>
+        </form>
+
+        <div id="responseMsg" style="margin-top: 20px; display: none; padding: 15px; border-radius: 10px;"></div>
+    </div>
+</section>
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+Tawk_API.customStyle = {
+    visibility : {
+        desktop : {
+            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
+        },
+        mobile : {
+            yOffset : 75 // মোবাইলের জন্য পজিশন
+        }
+    }
+};
+
+
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwMky8d4Dyq3d4yFWZWHUrDzQZhA5gvGK-66YVzvtxyvlL57NxuCwUmPIcRWB6XAKEG5w/exec'; 
+    const form = document.getElementById('newsletter-form');
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('responseMsg');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        btn.disabled = true;
+        btn.innerHTML = "অপেক্ষা করুন...";
+        msg.style.display = "none";
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => response.text()) // টেক্সট হিসেবে রেসপন্স পড়া
+        .then(data => {
+            btn.disabled = false;
+            btn.innerHTML = "সাবস্ক্রাইব করুন";
+            
+            if (data === "Already Exists") {
+                msg.innerHTML = "এই ইমেইলটি দিয়ে ইতিমধ্যে সাবস্ক্রাইব করা হয়েছে! ⚠️";
+                msg.style.display = "block";
+                msg.style.background = "#fff3e0";
+                msg.style.color = "#e65100";
+            } else {
+                msg.innerHTML = "অভিনন্দন! আপনার মেইলে একটি কনফার্মেশন পাঠানো হয়েছে। ❤️";
+                msg.style.display = "block";
+                msg.style.background = "#e0f2f1";
+                msg.style.color = "#00796b";
+                form.reset();
+            }
+        })
+        .catch(error => {
+            btn.disabled = false;
+            btn.innerHTML = "আবার চেষ্টা করুন";
+            msg.innerHTML = "উফ! কোথাও একটা ভুল হয়েছে।";
+            msg.style.display = "block";
+            msg.style.background = "#ffebee";
+            msg.style.color = "#c62828";
+        });
+    });
+</script>
