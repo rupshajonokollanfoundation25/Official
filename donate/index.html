@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rupsha Public Welfare Foundation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --text-color: #1c1e21;
+            --card-bg: #ffffff;
+            --header-bg: #0f1c2c;
+            --accent-color: #00ffaa;
+            --font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            --primary: #00ffcc;
+            --form-card: #121212;
+            --input-bg: #1a1a1a;
+            --error: #ff4d4d;
+            --notice-color: #ffff13;
+            --fb-blue: #1877F2;
+        }
+
+        .dark-theme {
+            --bg-color: #121212;
+            --text-color: #e4e6eb;
+            --card-bg: #242526;
+            --header-bg: #000000;
+        }
+
+        body { font-family: var(--font-family); background: var(--bg-color); color: var(--text-color); margin: 0; padding: 0; transition: all 0.4s ease; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        #main-content { display: flex; flex-direction: column; min-height: 100vh; background: var(--bg-color); }
+
+        header { background: var(--header-bg); padding: 30px 20px; color: white; position: relative; border-bottom: 4px solid var(--accent-color); text-align: center; }
+        .top-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
+        .control-btn { background: rgba(255,255,255,0.1); border: 1px solid var(--accent-color); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 12px; }
+        
+        .logo-img { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--accent-color); margin-bottom: 10px; object-fit: cover; }
+        header h1 { font-size: 22px; margin: 0; }
+
+        .dashboard-main { flex: 1; display: flex; justify-content: center; align-items: flex-start; padding: 30px 15px; }
+        .donation-card {
+            background: var(--form-card); width: 100%; max-width: 420px; 
+            padding: 80px 30px 30px 30px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #222;
+            position: relative; overflow: hidden; text-align: left;
+        }
+        #successOverlay {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--form-card); border-radius: 24px; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 100; text-align: center;
+        }
+        .badge-container { width: 80px; height: 80px; margin-bottom: 20px; position: relative; display: flex; justify-content: center; align-items: center; }
+        .outer-blue { width: 100%; height: 100%; position: absolute; animation: rotateBadge 8s linear infinite; }
+        .inner-tick { width: 40px; z-index: 5; }
+        @keyframes rotateBadge { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        .amount-options { display: flex; gap: 10px; margin-bottom: 15px; justify-content: space-between; }
+        .amt-btn { flex: 1; background: #222; border: 1px solid #444; color: var(--primary); padding: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px; }
+        .amt-btn:hover { background: var(--primary); color: #000; }
+
+        .trx-guide { position: absolute; right: 10px; top: 12px; color: var(--primary); cursor: pointer; font-size: 16px; }
+
+        .spinner { display: none; width: 18px; height: 18px; border: 3px solid rgba(0,0,0,0.3); border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; margin-left: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn-submit { display: flex; align-items: center; justify-content: center; }
+
+        .donation-card h2 { color: var(--primary); text-align: center; font-size: 22px; margin: 30px 0 10px 0; }
+        .special-notice { background: rgba(255, 204, 0, 0.1); border: 1px dashed var(--notice-color); padding: 10px; margin: 20px 0 30px 0; border-radius: 12px; text-align: center; }
+        .special-notice marquee { font-size: 13px; color: var(--notice-color); font-weight: 600; }
+        .subtitle { text-align: center; font-size: 13px; color: #999; margin-bottom: 25px; line-height: 1.5; }
+        .num-card { background: #1a1a1a; padding: 8px 15px; border-radius: 12px; text-align: center; border: 1px solid #333; margin-bottom: 20px; }
+        .number { font-size: 22px; font-weight: 700; color: #fff; display: block; margin: 5px 0; }
+        .copy-btn { background: var(--primary); color: #000; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 12px; }
+        .field-group { margin-bottom: 15px; position: relative; }
+        .field-group input, .field-group select { width: 100%; padding: 13px; background: var(--input-bg); border: 1.5px solid #333; border-radius: 12px; color: #fff; box-sizing: border-box; font-size: 14px; }
+        .invalid-signal { border-color: var(--error) !important; }
+        .error-hint { color: var(--error); font-size: 11px; margin-top: 5px; display: none; }
+        .invalid-signal + .error-hint { display: block; }
+        .btn-submit { width: 100%; padding: 16px; background: var(--primary); color: #000; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; margin-top: 10px; }
+        .footer-msg { text-align: center; font-size: 12px; color: #666; margin-top: 15px; }
+        #toast { visibility: hidden; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 8px 20px; border-radius: 20px; z-index: 1000; font-size: 12px; }
+        #toast.show { visibility: visible; }
+
+        footer { padding: 15px; background: var(--header-bg); color: #888; text-align: center; font-size: 13px; }
+
+        /* সাইড মেনু স্টাইল */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -250px; 
+            width: 250px;
+            height: 100%;
+            background: var(--card-bg);
+            z-index: 10001;
+            transition: 0.4s;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+            padding-top: 60px;
+            text-align: left;
+        }
+
+        .side-menu.active {
+            left: 0; 
+        }
+
+        .menu-toggle-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 10002;
+            background: var(--accent-color);
+            border: none;
+            color: #000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .side-menu a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .side-menu a:hover {
+            background: rgba(0, 255, 170, 0.1);
+            padding-left: 35px;
+        }
+
+        .side-menu a i {
+            width: 30px;
+            color: var(--accent-color);
+        }
+
+        .menu-overlay {
+            position: fixed;
+            display: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+
+<button class="menu-toggle-btn" onclick="toggleSideMenu()">☰</button>
+
+<div class="menu-overlay" id="overlay" onclick="toggleSideMenu()"></div>
+
+<nav class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fas fa-home"></i> Home</a>
+    <a href="donate.html"><i class="fas fa-hand-holding-heart"></i> Donate</a>
+    <a href="selection.html"><i class="fas fa-user-check"></i> Membership</a>
+    <a href="meeting.html"><i class="fas fa-video"></i> Meeting</a>
+    <a href="Https://imran-examiner.github.io/Exam/"><i class="fas fa-graduation-cap"></i> Student Portal</a>
+</nav>
+
+    
+    <div id="main-content">
+        <header>
+            <div class="top-controls">
+                <button class="control-btn" onclick="toggleDarkMode()" id="themeIcon"><i class="fas fa-moon"></i></button>
+            </div>
+            <img src="https://i.ibb.co.com/ycsrjKp6/20251128-004458.jpg" alt="Logo" class="logo-img">
+            <h1 style="color:white;">রূপসা জনকল্যাণ ফাউন্ডেশন Donation Method</h1>
+        </header>
+
+        <main class="dashboard-main">
+            <div class="donation-card">
+                <div id="successOverlay">
+                    <div class="badge-container">
+                        <svg class="outer-blue" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.5213 2.62368C11.3147 1.75255 12.6853 1.75255 13.4787 2.62368L14.4989 3.74391C14.8326 4.11029 15.3051 4.30335 15.7991 4.27563L17.312 4.19087C18.4889 4.12494 19.4944 5.13046 19.4285 6.30733L19.3437 7.82025C19.316 8.3142 19.5091 8.78676 19.8755 9.12045L20.9957 10.1406C21.8668 10.934 21.8668 12.3046 20.9957 13.098L19.8755 14.1182C19.5091 14.4519 19.316 14.9245 19.3437 15.4184L19.4285 16.9313C19.4944 18.1082 18.4889 19.1137 17.312 19.0478L15.7991 18.963C15.3051 18.9353 14.8326 19.1284 14.4989 19.4948L13.4787 20.615C12.6853 21.4861 11.3147 21.4861 10.5213 20.615L9.50113 19.4948C9.16744 19.1284 8.69488 18.9353 8.20093 18.963L6.68801 19.0478C5.51114 19.1137 4.50562 18.1082 4.57155 16.9313L4.65631 15.4184C4.68403 14.9245 4.49097 14.4519 4.12459 14.1182L3.0044 13.098C2.13327 12.3046 2.13327 10.934 3.0044 10.1406L4.12459 9.12045C4.49097 8.78676 4.68403 8.3142 4.65631 7.82025L4.57155 6.30733C4.50562 5.13046 5.51114 4.12494 6.68801 4.19087L8.20093 4.27563C8.69488 4.30335 9.16744 4.11029 9.50113 3.74391L10.5213 2.62368Z" fill="#1877F2"/>
+                        </svg>
+                        <svg class="inner-tick" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7 12.5L10.5 16L17.5 9" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 style="color: var(--fb-blue)">Congratulations, your donation has been completed!</h2>
+                    <p style="color: #bbb; padding: 0 30px; font-size: 14px;">ধন্যবাদ, আপনার তথ্যটি যাচাই করে ইমেইলের মাধ্যমে জানানো হবে। রূপসা জনকল্যাণ ফাউন্ডেশনের সাথেই থাকুন।</p>
+                    <button class="copy-btn" style="margin-top: 20px; background: var(--fb-blue); color: #fff;" onclick="resetForm()">Done</button>
+                </div>
+
+                <h2>আপনার একটি দান, একটি মানুষের প্রাণ বাঁচাতে পারে</h2>
+                <div class="special-notice">
+                    <marquee>• "আসুন সকলে মিলে একসাথে দারিদ্র্যমুক্ত বাংলাদেশ গড়ি।"</marquee>
+                </div>
+
+                <p class="subtitle">আপনার দান করার আগ্রহ দেখে আমরা খুবই আনন্দিত! আপনি দান করার জন্য নিম্নের নাম্বারে টাকা পাঠিয়ে নির্ভুল ভাবে ফর্মটি পূরণ করুন। আপনার ফরমটি ভবিষ্যতের জন্য রেকর্ড করা হবে।</p>
+                
+                <div class="num-card">
+                    <span style="font-size: 11px; color: var(--primary);">bKash/Nagad/Rocket (Personal)</span>
+                    <span class="number" id="targetNum">01521748116</span>
+                    <button class="copy-btn" id="copyBtn" onclick="copy()">নাম্বার কপি করুন</button>
+                </div>
+
+                <form id="donateForm" novalidate>
+                    <div class="field-group">
+                        <input type="text" id="n" placeholder="Name (English)" required>
+                        <div class="error-hint">⚠️ Give your correct name.</div>
+                    </div>
+                    <div class="field-group">
+                        <input type="email" id="e" placeholder="Email Address" required>
+                        <div class="error-hint">⚠️ Enter a valid email.</div>
+                    </div>
+                    
+                    <div class="amount-options">
+                        <button type="button" class="amt-btn" onclick="setAmount(100)">100৳</button>
+                        <button type="button" class="amt-btn" onclick="setAmount(500)">500৳</button>
+                        <button type="button" class="amt-btn" onclick="setAmount(1000)">1000৳</button>
+                    </div>
+
+                    <div class="field-group">
+                        <input type="number" id="a" placeholder="Amount(৳)" required>
+                        <div class="error-hint">⚠️ Minimum amount is 30 taka.</div>
+                    </div>
+                    <div class="field-group">
+                        <select id="m" required>
+                            <option value="" disabled selected>Payment Method</option>
+                            <option value="bKash">bKash</option>
+                            <option value="Nagad">Nagad</option>
+                        </select>
+                        <div class="error-hint">⚠️ Select a payment method.</div>
+                    </div>
+                    <div class="field-group">
+                        <input type="text" id="tx" placeholder="Transaction ID (TrxID)" required>
+                        <i class="fas fa-question-circle trx-guide" onclick="alert('আপনার পেমেন্ট সফল হওয়ার পর ফিরতি এসএমএস-এ ৮-১০ অক্ষরের একটি আইডি পাবেন। Example: CLD43KKDRG')"></i>
+                        <div class="error-hint">⚠️ পেমেন্ট SMS থেকে TrxID টি দিন।</div>
+                    </div>
+
+                    <div class="field-group" style="display: flex; justify-content: center; margin-top: 20px;">
+                        <div class="g-recaptcha" data-sitekey="6LdzbrgsAAAAAHJ8wO5cjvrIwA1QZNa9zDOuLa_W"></div>
+                    </div>
+                    <div id="recaptcha-error" class="error-hint" style="text-align: center; margin-bottom: 15px;">⚠️ দয়া করে রিক্যাপচা পূরণ করুন।</div>
+
+                    <button type="submit" class="btn-submit" id="sBtn">
+                        <span id="btnText">CONFIRM DONATION</span>
+                        <div class="spinner" id="btnSpinner"></div>
+                    </button>
+                    <p class="footer-msg">After you make your payment, the admin will confirm it to you via email.</p>
+                </form>
+            </div>
+        </main>
+
+        <div id="toast">নাম্বারটি কপি করা হয়েছে!</div>
+
+        <footer>
+            <p>© <span id="displayYear"></span> All rights reserved with RJfoundation</p>
+        </footer>
+
+        <script>
+            document.getElementById('displayYear').innerText = new Date().getFullYear();
+        </script>
+    </div>
+
+    <script>
+        window.toggleDarkMode = () => {
+            document.body.classList.toggle('dark-theme');
+            const icon = document.querySelector('#themeIcon i');
+            if(icon.classList.contains('fa-moon')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+        }
+
+        const nInp = document.getElementById('n');
+        const tInp = document.getElementById('tx');
+
+        nInp.addEventListener('input', function() { this.value = this.value.replace(/[^a-zA-Z\s.]/g, ''); });
+        tInp.addEventListener('input', function() { this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+
+        function setAmount(val) {
+            document.getElementById('a').value = val;
+        }
+
+        function copy() {
+            const num = document.getElementById('targetNum').innerText;
+            navigator.clipboard.writeText(num).then(() => {
+                const toast = document.getElementById("toast");
+                toast.classList.add("show");
+                setTimeout(() => toast.classList.remove("show"), 2000);
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('donateForm').reset();
+            document.getElementById('successOverlay').style.display = 'none';
+            const sBtn = document.getElementById("sBtn");
+            const spinner = document.getElementById("btnSpinner");
+            const btnText = document.getElementById("btnText");
+            sBtn.disabled = false;
+            btnText.innerText = "CONFIRM DONATION";
+            spinner.style.display = "none";
+            document.querySelectorAll('input, select').forEach(i => i.classList.remove('invalid-signal'));
+            
+            // রিক্যাপচা রিসেট করা হচ্ছে
+            if(typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
+        }
+
+        document.getElementById("donateForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            // রিক্যাপচা ভ্যালিডেশন চেক
+            const recaptchaResponse = grecaptcha.getResponse();
+            if(recaptchaResponse.length === 0) {
+                document.getElementById('recaptcha-error').style.display = 'block';
+                return;
+            } else {
+                document.getElementById('recaptcha-error').style.display = 'none';
+            }
+
+            const isN = /^[a-zA-Z\s.]{3,50}$/.test(nInp.value);
+            const isE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(document.getElementById('e').value);
+            const isA = document.getElementById('a').value >= 30;
+            const isM = document.getElementById('m').value !== "";
+            const isT = tInp.value.trim().length >= 8;
+
+            if (isN && isE && isA && isM && isT) {
+                const btn = document.getElementById("sBtn");
+                const spinner = document.getElementById("btnSpinner");
+                const btnText = document.getElementById("btnText");
+                
+                btnText.innerText = "Processing...";
+                spinner.style.display = "block";
+                btn.disabled = true;
+
+                fetch("https://script.google.com/macros/s/AKfycbz-9za8KZDEr690CordlOIHRhD_LAfdocfY5zgwADX8pVmwALJFn3XjvJYMikbYLnWy/exec", {
+                    method: 'POST', mode: 'no-cors',
+                    body: JSON.stringify({ name: nInp.value, email: document.getElementById('e').value, amount: document.getElementById('a').value, method: document.getElementById('m').value, trx: tInp.value.trim() })
+                }).then(() => {
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                    document.getElementById('successOverlay').style.display = 'flex';
+                });
+            } else {
+                if(!isN) nInp.classList.add('invalid-signal'); else nInp.classList.remove('invalid-signal');
+                if(!isE) document.getElementById('e').classList.add('invalid-signal');
+                if(!isA) document.getElementById('a').classList.add('invalid-signal');
+                if(!isM) document.getElementById('m').classList.add('invalid-signal');
+                if(!isT) tInp.classList.add('invalid-signal');
+            }
+        });
+
+        function toggleSideMenu() {
+            const menu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('overlay');
+            
+            menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                overlay.style.display = 'block';
+            } else {
+                overlay.style.display = 'none';
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+    Tawk_API.customStyle = {
+        visibility : {
+            desktop : {
+                yOffset : 100 
+            },
+            mobile : {
+                yOffset : 75 
+            }
+        }
+    };
+
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    </body>
+</html>
