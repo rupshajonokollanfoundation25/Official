@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের সম্পর্কে - RJ Foundation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --secondary: #004d40;
+            --glass: rgba(255, 255, 255, 0.85);
+            --border: rgba(255, 255, 255, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f0f4f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        /* পরিচিতি কার্ড */
+        .about-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .about-card h2 {
+            color: var(--secondary);
+            font-size: 28px;
+            margin-bottom: 20px;
+            display: inline-block;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 10px;
+        }
+
+        .about-card p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* লক্ষ্য ও উদ্দেশ্য গ্রিড */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .vision-item {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            transition: 0.4s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .vision-item:hover {
+            transform: translateY(-10px);
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,121,107,0.1);
+        }
+
+        .vision-item i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .vision-item h4 {
+            margin: 0 0 10px 0;
+            color: var(--secondary);
+            font-size: 20px;
+        }
+
+        .vision-item p {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .about-card { padding: 25px; }
+            .about-card p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="about-card">
+        <h2><i class="fas fa-info-circle"></i> ফাউন্ডেশন পরিচিতি</h2>
+        <p>রুপসা জনকল্যাণ ফাউন্ডেশন একটি মানবিক, অরাজনৈতিক ও সেবা মূলক সংগঠন। সমাজের পিছিয়ে পড়া মানুষের মুখে হাসি ফোটাতে আমরা কাজ করে যাচ্ছি নিরন্তর।</p>
+    </div>
+
+    <h2 style="text-align: center; color: var(--secondary); margin-bottom: 40px;">আমাদের লক্ষ্য ও উদ্দেশ্য</h2>
+    
+    <div class="vision-grid">
+        
+        <div class="vision-item">
+            <i class="fas fa-handshake"></i>
+            <h4>সম্পূর্ণ অরাজনৈতিক</h4>
+            <p>আমাদের ফাউন্ডেশন সম্পূর্ণ অরাজনৈতিক এবং দল-মতের ঊর্ধ্বে থেকে মানুষের সেবা করে।</p>
+        </div>
+
+        <div class="vision-item">
+            <i class="fas fa-chart-line"></i>
+            <h4>জীবন মান উন্নয়ন</h4>
+            <p>সমাজের অসহায় ও দরিদ্র মানুষের জীবন মান উন্নত করাই আমাদের প্রধান লক্ষ্য।</p>
+        </div>
+
+        <div class="vision-item">
+            <i class="fas fa-bullhorn"></i>
+            <h4>সচেতনতা বৃদ্ধি</h4>
+            <p>সামাজিক সচেতনতা বৃদ্ধি ও সকল প্রকার মানবিক সহায়তা প্রদান নিশ্চিত করা।</p>
+        </div>
+
+        <div class="vision-item">
+            <i class="fas fa-cloud-rain"></i>
+            <h4>দুর্যোগে সহায়তা</h4>
+            <p>প্রাকৃতিক দুর্যোগে দরিদ্র পরিবারের পাশে দাঁড়িয়ে তাদের কষ্ট লাঘব করা।</p>
+        </div>
+
+        <div class="vision-item">
+            <i class="fas fa-football-ball"></i>
+            <h4>সংস্কৃতি ও খেলাধুলা</h4>
+            <p>সুস্থ বিনোদনের জন্য খেলাধুলা ও সাংস্কৃতিক অনুষ্ঠানের আয়োজন করা।</p>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+
+
+    
+</body>
+</html>
