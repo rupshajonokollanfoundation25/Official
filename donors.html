@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমাদের দাতা সদস্যবৃন্দ - RJ Foundation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --gold: #ffb300;
+            --silver: #9e9e9e;
+            --primary: #00796b;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f4f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .donor-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #004d40, #00796b);
+            color: white;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .donor-header h1 { font-size: 32px; margin: 0; }
+        .donor-header p { opacity: 0.9; margin-top: 10px; }
+
+        .container {
+            max-width: 1100px;
+            margin: -40px auto 80px;
+            padding: 0 20px;
+        }
+
+        /* দাতা কার্ড গ্রিড */
+        .donor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* কার্ড ডিজাইন */
+        .donor-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,121,107,0.15);
+        }
+
+        /* মেডেল ব্যাজ */
+        .rank-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+        }
+
+        .gold { color: var(--gold); }
+        .silver { color: var(--silver); }
+
+        /* প্রোফাইল ইমেজ */
+        .donor-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .donor-name {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        .donor-title {
+            font-size: 13px;
+            color: #00796b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .contribution-info {
+            background: rgba(0, 121, 107, 0.05);
+            padding: 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .contribution-info strong { color: #004d40; }
+
+        /* দাতা হওয়ার বাটন */
+        .join-donor {
+            margin-top: 60px;
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        }
+
+        .join-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 35px;
+            background: var(--gold);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(255,179,0,0.4);
+        }
+
+        .join-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255,179,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="donor-header">
+        <h1>আমাদের গর্বিত দাতা সদস্যবৃন্দ</h1>
+        <p>যাঁদের নিঃস্বার্থ দানে এগিয়ে চলছে আমাদের মানবিক কার্যক্রম</p>
+    </header>
+
+    <div class="container">
+        <div class="donor-grid">
+            
+            <div class="donor-card">
+                <i class="fas fa-crown rank-badge gold"></i>
+                <img src=", 'https://i.ibb.co.com/GQPhP5RX/FB-IMG-1771418638416-1.jpg" class="donor-img">
+                <span class="donor-title">Advisor~rjfoundation</span>
+                <div class="donor-name">ইঞ্জিনিয়ার রফিকুল ইসলাম </div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>জীবন রক্ষাকারী সহায়তা</strong>
+                </div>
+            </div>
+
+            <div class="donor-card">
+                <i class="fas fa-medal rank-badge silver"></i>
+                <img src="https://i.ibb.co.com/PzfpYJm9/FB-IMG-1771418626588.jpg" class="donor-img">
+                <span class="donor-title">Advisor~rjfoundation</span>
+                <div class="donor-name">হারুনর রশিদ</div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>ফাউন্ডেশন কার্যক্রম</strong>
+                </div>
+            </div>
+
+            <div class="donor-card">
+                <i class="fas fa-heart rank-badge" style="color: #ff5252;"></i>
+                <img src="https://i.ibb.co.com/Txws7RjD/IMG-20260215-130820.jpg" class="donor-img">
+                <span class="donor-title">সাধারণ সদস্য (প্রচার সম্পাদক)</span>
+                <div class="donor-name">ইমরান আহমেদ</div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>ইফতার সামগ্রী বিতরণ</strong>
+                </div>
+            </div>
+            
+            
+            <div class="donor-card">
+                <i class="fas fa-heart rank-badge" style="color: #ff5252;"></i>
+                <img src="https://i.ibb.co.com/7xkXNkMB/1774702274567.jpg" class="donor-img">
+                <span class="donor-title">সাধারণ সদস্য ( সহ-সভাপতি )</span>
+                <div class="donor-name">আবু সিয়াম</div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>ফাউন্ডেশন কার্যক্রম</strong>
+                </div>
+            </div>
+            
+            
+            <div class="donor-card">
+                <i class="fas fa-heart rank-badge" style="color: #ff5252;"></i>
+                <img src="https://i.ibb.co.com/TBsGTbFv/1774702475269.jpg" class="donor-img">
+                <span class="donor-title">সাধারণ সদস্য ( সহ-সভাপতি )  </span>
+                <div class="donor-name">কামরুল শেখ</div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>ফাউন্ডেশন কার্যক্রম</strong>
+                </div>
+            </div>
+            
+            
+            <div class="donor-card">
+                <i class="fas fa-heart rank-badge" style="color: #ff5252;"></i>
+                <img src="#" class="donor-img">
+                <span class="donor-title">সাধারণ সদস্য ( সমাজ সেবা সম্পাদক)  </span>
+                <div class="donor-name">শাহাদৎ হোসেন</div>
+                <div class="contribution-info">
+                    সদস্যকাল: <strong>৭ মাস</strong> <br>
+                    অবদান: <strong>ফাউন্ডেশন কার্যক্রম</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="join-donor">
+            <h2>আপনিও হতে পারেন আমাদের মানবিক যাত্রার অংশীদার</h2>
+            <p>আপনার ছোট একটি অনুদান বদলে দিতে পারে একটি পরিবারের ভাগ্য। আজই নিয়মিত দাতা হিসেবে নিবন্ধিত হোন।</p>
+            <a href="/from/" class="join-btn">নিয়মিত দাতা হিসেবে যোগ দিন</a>
+        </div>
+    </div>
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+
+// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+Tawk_API.customStyle = {
+    visibility : {
+        desktop : {
+            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
+        },
+        mobile : {
+            yOffset : 75 // মোবাইলের জন্য পজিশন
+        }
+    }
+};
+
+
+
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+
+
+<div id="newScrollTop" style="
+    position: fixed;
+    right: 25px;
+    top: 75%;
+    transform: translateY(-50%) translateX(100px);
+    background: rgba(0, 121, 107, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    color: white;
+    width: 55px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px 15px 15px 50px;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+">
+    <div style="
+        background: #00796b;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    ">
+        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
+    </div>
+    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+</div>
+
+<script>
+(function() {
+    const btn = document.getElementById('newScrollTop');
+    
+    // স্ক্রল ইভেন্ট লিসেনার
+    window.addEventListener('scroll', function() {
+        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollPos > 300) {
+            btn.style.opacity = "1";
+            btn.style.visibility = "visible";
+            btn.style.transform = "translateY(-50%) translateX(0)";
+        } else {
+            btn.style.opacity = "0";
+            btn.style.visibility = "hidden";
+            btn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+    });
+
+    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
+    btn.onmouseover = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
+        this.style.borderColor = "#00796b";
+    };
+    btn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+    };
+
+    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
+    btn.onclick = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+})();
+</script>
+
+    
+    
+</body>
+</html>
