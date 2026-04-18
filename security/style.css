@@ -1,0 +1,141 @@
+/* আল্ট্রা প্রিমিয়াম গ্লাস-মরফিজম ডিজাইন */
+:root {
+    --primary-color: #00796b;
+    --secondary-color: #004d40;
+    --bg-gradient: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+    --error-color: #d32f2f;
+    --success-color: #2e7d32;
+    --text-main: #1a1a1a;
+    --text-muted: #657786;
+}
+
+body {
+    margin: 0; 
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg-gradient);
+    height: 100vh; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    -webkit-font-smoothing: antialiased; /* অ্যাপলের জন্য */
+    -moz-osx-font-smoothing: grayscale; /* মজিলা ফায়ারফক্সের জন্য */
+    user-select: none; /* টেক্সট কপি করা বন্ধ */
+}
+
+.reset-container {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px; 
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    width: 90%; 
+    max-width: 380px;
+    text-align: center;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.icon-box { 
+    font-size: 45px; 
+    background: #e0f2f1; 
+    width: 80px; 
+    height: 80px;
+    line-height: 80px; 
+    border-radius: 50%;
+    margin: 0 auto 20px; 
+    color: var(--primary-color);
+    box-shadow: inset 0 0 10px rgba(0, 121, 107, 0.1);
+}
+
+h2 { color: var(--text-main); margin-bottom: 10px; font-size: 24px; font-weight: 700; }
+p { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+
+.input-group { position: relative; margin-bottom: 15px; }
+input {
+    width: 100%; 
+    padding: 14px 45px 14px 15px;
+    border-radius: 10px; 
+    border: 2px solid #e1e8ed;
+    font-size: 15px; 
+    outline: none; 
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    color: var(--text-main);
+    background: #fafafa;
+}
+input:focus { 
+    border-color: var(--primary-color); 
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(0, 121, 107, 0.1);
+}
+
+#togglePassword {
+    position: absolute; 
+    right: 15px; 
+    top: 50%; 
+    transform: translateY(-50%);
+    cursor: pointer; 
+    color: var(--text-muted);
+    font-size: 16px;
+    transition: color 0.3s;
+}
+#togglePassword:hover { color: var(--primary-color); }
+
+.strength-rules {
+    text-align: left; 
+    font-size: 12px; 
+    margin-bottom: 20px;
+    padding: 12px; 
+    background: #f8f9fa; 
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+}
+.rule { color: #9e9e9e; display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.rule i { font-size: 8px; }
+.rule.valid { color: var(--success-color); font-weight: 600; }
+.rule.valid i::before { content: "\f00c"; font-size: 10px; }
+
+.strength-meter {
+    height: 6px; 
+    background: #e1e8ed;
+    border-radius: 10px; 
+    margin-bottom: 20px; 
+    overflow: hidden;
+}
+.strength-bar { height: 100%; width: 0%; transition: width 0.4s ease, background-color 0.4s ease; }
+
+button {
+    width: 100%; 
+    padding: 14px; 
+    border-radius: 10px;
+    border: none; 
+    background: var(--primary-color); 
+    color: white;
+    font-weight: 600; 
+    font-size: 16px; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 15px rgba(0, 121, 107, 0.2);
+}
+button:hover:not(:disabled) { 
+    background: var(--secondary-color); 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 20px rgba(0, 121, 107, 0.3);
+}
+button:disabled { background: #b0bec5; transform: none; cursor: not-allowed; box-shadow: none; }
+
+#message {
+    margin-top: 20px; 
+    padding: 12px; 
+    border-radius: 8px;
+    font-size: 14px; 
+    display: none; 
+    animation: slideUp 0.4s ease forwards;
+    font-weight: 500;
+}
+
+@keyframes slideUp { 
+    from { opacity: 0; transform: translateY(10px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
