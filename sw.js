@@ -1,24 +1,24 @@
-// ১. ইনস্টল হওয়ার সাথে সাথে নতুন ভার্সন পুশ করবে
+// সার্ভিস ওয়ার্কার ইনস্টল হওয়ার সময় কোনো ফাইল ক্যাশ করবে না
 self.addEventListener('install', (event) => {
   self.skipWaiting(); 
 });
 
-// ২. অ্যাক্টিভেট হওয়ার সময় পুরনো সব জঞ্জাল (Cache) পরিষ্কার করবে
+// পুরনো যত ক্যাশ সেভ করা আছে, সব ক্লিয়ার করে দিবে
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(keys.map((key) => caches.delete(key)));
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
     })
   );
-  self.clients.claim(); // সাথে সাথে কন্ট্রোল নিবে
+  self.clients.claim();
 });
 
-// ৩. নেটওয়ার্ক ছাড়া কিচ্ছু লোড হবে না
+// রিকোয়েস্ট ইন্টারসেপ্ট করা - শুধুমাত্র নেটওয়ার্ক থেকে ডেটা নিবে
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    fetch(event.request).catch(() => {
-      // ইন্টারনেট না থাকলে ব্রাউজার তার ডিফল্ট অফলাইন পেজ দেখাবে
-      return Promise.reject();
-    })
-  );
+  // এখানে ক্যাশ চেক করার কোনো কোড নেই, তাই সরাসরি ইন্টারনেট থেকে লোড হবে
+  event.respondWith(fetch(event.request));
 });
