@@ -799,26 +799,28 @@ s0.parentNode.insertBefore(s1,s0);
     });
   }
 
-  // Install Prompt Logic
+  // Install Prompt Logic (Auto Prompt)
   let deferredPrompt;
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // ডিফল্ট প্রম্পট থামিয়ে রাখা
+    // ডিফল্ট প্রম্পট থামিয়ে রাখা যেন ব্রাউজার নিজের ইচ্ছামতো না দেখায়
     e.preventDefault();
     deferredPrompt = e;
 
-    // আপনি চাইলে এখানে ১-২ সেকেন্ড দেরি করে পপআপ দেখাতে পারেন
+    // ইউজার সাইটে আসার ৩ সেকেন্ড পর পপআপটি দেখা যাবে
     setTimeout(() => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
             console.log('User installed the app');
+          } else {
+            console.log('User dismissed the install prompt');
           }
           deferredPrompt = null;
         });
       }
-    }, 3000); // ৩ সেকেন্ড পর অটো দেখাবে
+    }, 3000); // ৩০০০ মানে ৩ সেকেন্ড, চাইলে সময় কমাতে বা বাড়াতে পারো
   });
 </script>
 
