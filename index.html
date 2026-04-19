@@ -790,41 +790,37 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 <script>
-  // সার্ভিস ওয়ার্কার রেজিস্টার এবং অটো-আপডেট
+  // Service Worker Register
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js').then(reg => {
-        // নতুন আপডেট থাকলে সাথে সাথে রিফ্রেশ হবে
-        reg.onupdatefound = () => {
-          const installingWorker = reg.installing;
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              window.location.reload();
-            }
-          };
-        };
-      });
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW Registered'))
+        .catch(err => console.log('SW Failed', err));
     });
   }
 
-  // ইনস্টল প্রম্পট লজিক
+  // Install Prompt Logic (Auto Prompt)
   let deferredPrompt;
+
   window.addEventListener('beforeinstallprompt', (e) => {
+    // ডিফল্ট প্রম্পট থামিয়ে রাখা যেন ব্রাউজার নিজের ইচ্ছামতো না দেখায়
     e.preventDefault();
     deferredPrompt = e;
 
-    // ১ সেকেন্ড পর পপআপ দেখানোর চেষ্টা করবে
+    // ইউজার সাইটে আসার ৩ সেকেন্ড পর পপআপটি দেখা যাবে
     setTimeout(() => {
       if (deferredPrompt) {
         deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choice) => {
-          if (choice.outcome === 'accepted') {
-            console.log('App Installed');
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User installed the app');
+          } else {
+            console.log('User dismissed the install prompt');
           }
           deferredPrompt = null;
         });
       }
-    }, 1000); 
+    }, 3000); // ৩০০০ মানে ৩ সেকেন্ড, চাইলে সময় কমাতে বা বাড়াতে পারো
   });
 </script>
 
