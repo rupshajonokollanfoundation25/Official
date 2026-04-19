@@ -110,6 +110,19 @@
         @keyframes slideIn { to { transform: translateX(0); } }
         @keyframes slideOut { to { transform: translateX(120%); opacity: 0; } }
 
+        /* ======= NEW: SIDEBAR CSS (Glassmorphism) ======= */
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 99; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+        .profile-sidebar { position: fixed; top: 0; right: 0; width: 380px; max-width: 100%; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; padding: 30px; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+        .profile-sidebar.open { transform: translateX(0); }
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .profile-header img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); padding: 3px; margin-bottom: 15px; box-shadow: var(--shadow-soft); }
+        .profile-header h3 { font-size: 22px; color: var(--text-main); margin-bottom: 5px; }
+        .profile-header p { color: var(--text-muted); font-size: 14px; }
+        .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 15px; margin-bottom: 15px; box-shadow: var(--shadow-soft); text-align: left; }
+        .history-card h5 { color: var(--primary); font-size: 16px; margin-bottom: 5px; }
+        .mistake-box { margin-top: 10px; padding: 10px; background: var(--bg-color); border-radius: 8px; font-size: 13px; border-left: 3px solid var(--danger); }
+
         /* ======= RESPONSIVE FIXES ======= */
         @media (max-width: 768px) {
             .admin-grid { grid-template-columns: 1fr; }
@@ -120,6 +133,7 @@
             .result-grid-mobile { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .exam-nav-buttons { flex-direction: column; gap: 10px; }
             .exam-nav-buttons .btn { width: 100%; }
+            .profile-sidebar { width: 100%; }
         }
         @media (max-width: 480px) {
             .result-grid-mobile { grid-template-columns: 1fr !important; }
@@ -134,11 +148,29 @@
         <div class="logo"><i class="fas fa-graduation-cap"></i> ProExam LMS</div>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <button class="btn btn-outline btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-moon" id="themeIcon"></i></button>
+            
+            <button class="btn btn-outline hidden" id="profileBtn" onclick="toggleProfileSidebar()"><i class="fas fa-user-circle"></i> প্রোফাইল</button>
+
             <button class="btn btn-outline" id="adminLoginBtn" onclick="showLoginModal()"><i class="fas fa-user-shield"></i> Admin</button>
             <button class="btn btn-danger hidden" id="adminLogoutBtn" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             <button class="btn btn-primary" onclick="resetToHome()"><i class="fas fa-home"></i> Home</button>
         </div>
     </header>
+
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleProfileSidebar()"></div>
+    <div id="profileSidebar" class="profile-sidebar">
+        <button class="btn-icon" onclick="toggleProfileSidebar()" style="position: absolute; top: 20px; right: 20px; background: rgba(239,68,68,0.1); color: var(--danger); border: none;"><i class="fas fa-times"></i></button>
+        <div class="profile-header">
+            <img id="profPic" src="https://via.placeholder.com/90" alt="Profile">
+            <h3 id="profName">Student Name</h3>
+            <p id="profEmail">student@email.com</p>
+        </div>
+        <hr style="border: 1px dashed var(--border); margin: 20px 0;">
+        <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-history text-primary"></i> পরীক্ষার হিস্টরি</h4>
+        <div id="historyList" style="flex: 1;">
+            <p class="text-center text-muted" style="margin-top: 20px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
+        </div>
+    </div>
 
     <div class="container fade-in" id="mainContainer">
         
@@ -195,15 +227,15 @@
 
         <div id="studentSetupView">
             <div class="card text-center fade-in" id="step1Info" style="max-width: 500px; margin: 50px auto;">
-                <div style="width: 90px; height: 90px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; color: var(--primary); box-shadow: var(--shadow-soft);">
-                    <i class="fas fa-user-graduate"></i>
+                <div style="width: 90px; height: 90px; background: rgba(234, 67, 53, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; color: #ea4335; box-shadow: var(--shadow-soft);">
+                    <i class="fab fa-google"></i>
                 </div>
                 <h2 style="margin-bottom: 10px; font-size: 28px;">প্রো এক্সাম পোর্টালে স্বাগতম</h2>
-                <p style="color: var(--text-muted); margin-bottom: 30px;">আপনার মেধা যাচাই করুন একটি স্মার্ট প্ল্যাটফর্মে।</p>
+                <p style="color: var(--text-muted); margin-bottom: 30px;">নিরাপত্তার স্বার্থে শুধুমাত্র গুগল একাউন্ট দিয়ে লগইন করে পরীক্ষা শুরু করুন।</p>
                 
-                <div class="form-group"><input type="text" id="userName" placeholder="আপনার পূর্ণ নাম" required style="text-align: center; font-size:18px;"></div>
-                <div class="form-group"><input type="email" id="userEmail" placeholder="আপনার ইমেইল এড্রেস" required style="text-align: center; font-size:18px;"></div>
-                <button class="btn btn-primary" onclick="proceedToStep2()" style="width: 100%; padding: 16px; font-size: 18px;">পরবর্তী ধাপ <i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-primary" onclick="studentGoogleLogin()" style="width: 100%; padding: 16px; font-size: 18px; background: #ea4335; border-color: #ea4335; box-shadow: 0 4px 15px rgba(234, 67, 53, 0.3);">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
             </div>
 
             <div class="card hidden fade-in" id="step2Settings" style="max-width: 650px; margin: 30px auto;">
@@ -346,6 +378,7 @@
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
     const auth = firebase.auth();
+    const googleProvider = new firebase.auth.GoogleAuthProvider(); // Added Google Provider
 
     // --- State Variables ---
     let appData = { questions: [], adminSettings: { negativeMarking: true } };
@@ -368,19 +401,104 @@
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
+    // --- NEW: Sidebar Control Functions ---
+    function toggleProfileSidebar() {
+        const sidebar = document.getElementById('profileSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        if (sidebar.classList.contains('open')) {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        } else {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        }
+    }
+
+    function toggleDetails(key) {
+        document.getElementById('details-' + key).classList.toggle('hidden');
+    }
+
+    function fetchStudentHistory(uid) {
+        db.ref('user_history/' + uid).on('value', snap => {
+            const list = document.getElementById('historyList');
+            if (!snap.val()) {
+                return list.innerHTML = '<p class="text-center text-muted" style="margin-top: 20px;">কোনো হিস্টরি পাওয়া যায়নি।</p>';
+            }
+            let html = '';
+            const data = snap.val();
+            // Show latest first
+            Object.keys(data).reverse().forEach(key => {
+                const h = data[key];
+                const dateStr = new Date(h.date).toLocaleString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                html += `
+                <div class="history-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h5>${h.subject} (${h.class})</h5>
+                        <span style="font-size:12px; font-weight:bold; color:var(--primary);">${h.score} / ${h.total}</span>
+                    </div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><i class="far fa-clock"></i> ${dateStr}</p>
+                    <div style="display:flex; gap:10px; font-size:13px; margin-bottom:10px;">
+                        <span style="color:var(--success)"><i class="fas fa-check"></i> সঠিক: ${h.correct}</span>
+                        <span style="color:var(--danger)"><i class="fas fa-times"></i> ভুল: ${h.wrong}</span>
+                    </div>
+                    ${h.mistakesHTML ? `<button class="btn btn-outline" style="padding:6px; font-size:12px; width:100%; border-radius:6px;" onclick="toggleDetails('${key}')">ভুলগুলো দেখুন <i class="fas fa-chevron-down"></i></button>
+                    <div id="details-${key}" class="hidden mistake-box">
+                        ${h.mistakesHTML}
+                    </div>` : '<div class="mistake-box" style="border-left-color:var(--success); color:var(--success);"><i class="fas fa-star"></i> কোনো ভুল নেই! অসাধারণ!</div>'}
+                </div>`;
+            });
+            list.innerHTML = html;
+        });
+    }
+
     // --- Auth Logic ---
+    function studentGoogleLogin() {
+        auth.signInWithPopup(googleProvider).catch((error) => {
+            showToast('গুগল লগইন ব্যর্থ: ' + error.message, 'error');
+        });
+    }
+
     auth.onAuthStateChanged(user => {
         if (user) {
             document.getElementById('adminLoginBtn').classList.add('hidden');
             document.getElementById('adminLogoutBtn').classList.remove('hidden');
-            switchView('adminPanel');
-            closeLoginModal();
-            showToast('অ্যাডমিন প্যানেলে স্বাগতম!');
-            fetchAdminSettings();
+            
+            // Check if user is logged in via Google (Student) or Password (Admin)
+            const isGoogleUser = user.providerData.some(p => p.providerId === 'google.com');
+            
+            if (isGoogleUser) {
+                // Student Workflow
+                studentData.name = user.displayName;
+                studentData.email = user.email;
+                document.getElementById('step1Info').classList.add('hidden');
+                document.getElementById('step2Settings').classList.remove('hidden');
+                
+                // NEW: Setup Profile Sidebar Info
+                document.getElementById('profileBtn').classList.remove('hidden');
+                document.getElementById('profName').innerText = user.displayName;
+                document.getElementById('profEmail').innerText = user.email;
+                if (user.photoURL) document.getElementById('profPic').src = user.photoURL;
+                fetchStudentHistory(user.uid); // Fetch history
+
+                switchView('studentSetupView');
+                showToast('গুগল লগইন সফল হয়েছে!');
+            } else {
+                // Admin Workflow (Untouched)
+                switchView('adminPanel');
+                closeLoginModal();
+                showToast('অ্যাডমিন প্যানেলে স্বাগতম!');
+                fetchAdminSettings();
+            }
         } else {
             document.getElementById('adminLoginBtn').classList.remove('hidden');
             document.getElementById('adminLogoutBtn').classList.add('hidden');
+            
+            // NEW: Hide Profile Button on logout
+            document.getElementById('profileBtn').classList.add('hidden');
+
             if(!examState.active && document.getElementById('resultUI').classList.contains('hidden')){
+                document.getElementById('step1Info').classList.remove('hidden');
+                document.getElementById('step2Settings').classList.add('hidden');
                 switchView('studentSetupView');
             }
         }
@@ -475,18 +593,9 @@
             </div>`;
         });
     }
-    function deleteQuestion(id) { if(confirm('প্রশ্নটি মুছে ফেলতে চান? এটি আর ফেরত পাওয়া যাবে না।')) db.ref('questions/'+id).remove(); }
+    function deleteQuestion(id) { if(confirm('প্রশ্নটি মুছে ফেলতে চান? এটি আর ফেরত পাওয়া যাবে জৈন।')) db.ref('questions/'+id).remove(); }
 
     // --- Student Setup Flow ---
-    function proceedToStep2() {
-        const n = document.getElementById('userName').value.trim();
-        const e = document.getElementById('userEmail').value.trim();
-        if(!n || !e) return showToast('নাম ও ইমেইল আবশ্যক!', 'error');
-        studentData.name = n; studentData.email = e;
-        document.getElementById('step1Info').classList.add('hidden');
-        document.getElementById('step2Settings').classList.remove('hidden');
-    }
-
     function selectClass(cls) {
         studentData.class = cls;
         document.getElementById('btnSSC').className = cls==='SSC' ? 'btn btn-primary' : 'btn btn-outline';
@@ -639,10 +748,31 @@
 
         let correct = 0, wrong = 0;
         const total = examState.questions.length;
+        
+        // NEW: Generate Mistakes HTML for History Save
+        let mistakesHTMLForHistory = '';
 
         examState.questions.forEach((q, i) => {
-            if (examState.answers[i]) {
-                if (examState.answers[i] === q.correct) correct++; else wrong++;
+            const userAns = examState.answers[i];
+            if (userAns) {
+                if (userAns === q.correct) {
+                    correct++;
+                } else {
+                    wrong++;
+                    mistakesHTMLForHistory += `
+                    <div style="margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+                        <b><i class="fas fa-question-circle"></i></b> ${q.text}<br>
+                        <span style="color:var(--danger);"><i class="fas fa-times"></i> আপনার উত্তর: ${q.options[userAns]}</span><br>
+                        <span style="color:var(--success);"><i class="fas fa-check"></i> সঠিক উত্তর: ${q.options[q.correct]}</span>
+                    </div>`;
+                }
+            } else {
+                mistakesHTMLForHistory += `
+                <div style="margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);">
+                    <b><i class="fas fa-question-circle"></i></b> ${q.text}<br>
+                    <span style="color:var(--warning);"><i class="fas fa-exclamation-triangle"></i> আপনি কোনো উত্তর দেননি</span><br>
+                    <span style="color:var(--success);"><i class="fas fa-check"></i> সঠিক উত্তর: ${q.options[q.correct]}</span>
+                </div>`;
             }
         });
 
@@ -652,6 +782,20 @@
         let percent = Math.round((correct / total) * 100);
 
         localStorage.setItem('last_exam_' + studentData.email, new Date().getTime());
+
+        // NEW: Push to Firebase User History
+        if(auth.currentUser) {
+            db.ref('user_history/' + auth.currentUser.uid).push({
+                date: new Date().getTime(),
+                class: studentData.class,
+                subject: studentData.subject,
+                score: finalScore,
+                total: total,
+                correct: correct,
+                wrong: wrong,
+                mistakesHTML: mistakesHTMLForHistory
+            });
+        }
 
         // Animate Score Counter
         switchView('resultUI');
@@ -746,3 +890,4 @@
 
 </body>
 </html>
+
