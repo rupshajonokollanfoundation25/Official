@@ -382,7 +382,8 @@
 
     // --- State Variables ---
     let appData = { questions: [], adminSettings: { negativeMarking: true } };
-    let studentData = { name: '', email: '', class: '', subject: '', qCount: 0, timeMin: 0 };
+    // ADDED uid here to prevent session drop bug
+    let studentData = { name: '', email: '', uid: '', class: '', subject: '', qCount: 0, timeMin: 0 };
     let examState = { active: false, questions: [], answers: {}, currentIndex: 0, timerInterval: null };
 
     // --- Custom UI Utilities ---
@@ -448,6 +449,9 @@
                 </div>`;
             });
             list.innerHTML = html;
+        // ADDED ERROR HANDLER to prevent infinite loading
+        }, err => {
+            document.getElementById('historyList').innerHTML = `<p class="text-center text-danger" style="margin-top: 20px;">ডাটাবেজ কানেকশন সমস্যা: ${err.message}</p>`;
         });
     }
 
@@ -470,6 +474,8 @@
                 // Student Workflow
                 studentData.name = user.displayName;
                 studentData.email = user.email;
+                studentData.uid = user.uid; // Added to prevent session drop bug
+                
                 document.getElementById('step1Info').classList.add('hidden');
                 document.getElementById('step2Settings').classList.remove('hidden');
                 
@@ -783,9 +789,10 @@
 
         localStorage.setItem('last_exam_' + studentData.email, new Date().getTime());
 
-        // NEW: Push to Firebase User History
-        if(auth.currentUser) {
-            db.ref('user_history/' + auth.currentUser.uid).push({
+        // NEW: Push to Firebase User History with Fallback UID Fix
+        const userUid = auth.currentUser ? auth.currentUser.uid : studentData.uid;
+        if(userUid) {
+            db.ref('user_history/' + userUid).push({
                 date: new Date().getTime(),
                 class: studentData.class,
                 subject: studentData.subject,
@@ -794,7 +801,7 @@
                 correct: correct,
                 wrong: wrong,
                 mistakesHTML: mistakesHTMLForHistory
-            });
+            }).catch(err => console.error("History Save Error:", err));
         }
 
         // Animate Score Counter
@@ -890,4 +897,3 @@
 
 </body>
 </html>
-
