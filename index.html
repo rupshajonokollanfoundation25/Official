@@ -790,37 +790,55 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 <script>
-  // Service Worker Register
+  let deferredPrompt;
+  let hasInteracted = false;
+
+  // ১. সার্ভিস ওয়ার্কার রেজিস্টার (নিশ্চিত করুন sw.js ফাইলটি রুটে আছে)
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/sw.js')
-        .then(reg => console.log('SW Registered'))
-        .catch(err => console.log('SW Failed', err));
+        .then(() => console.log('Service Worker: Active'))
+        .catch(err => console.error('SW Error:', err));
     });
   }
 
-  // Install Prompt Logic (Auto Prompt)
-  let deferredPrompt;
-
+  // ২. ইনস্টল প্রম্পট ইভেন্ট ক্যাপচার করা
   window.addEventListener('beforeinstallprompt', (e) => {
-    // ডিফল্ট প্রম্পট থামিয়ে রাখা যেন ব্রাউজার নিজের ইচ্ছামতো না দেখায়
+    // ডিফল্ট পপআপ বন্ধ করা
     e.preventDefault();
     deferredPrompt = e;
+    console.log('PWA: Ready to install');
+  });
 
-    // ইউজার সাইটে আসার ৩ সেকেন্ড পর পপআপটি দেখা যাবে
-    setTimeout(() => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User installed the app');
-          } else {
-            console.log('User dismissed the install prompt');
-          }
+  // ৩. ইউজার সাইটে টাচ/ক্লিক করলে ২ সেকেন্ড পর প্রম্পট দেখানো
+  const triggerInstall = () => {
+    if (!hasInteracted && deferredPrompt) {
+      hasInteracted = true; // একবারের বেশি যেন রান না হয়
+
+      setTimeout(async () => {
+        // প্রম্পট দেখানোর আগে চেক করে নেওয়া
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          
+          // ইউজারের রেসপন্স চেক (সিকিউরিটি হ্যান্ডলিং)
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log(`User response: ${outcome}`);
+          
+          // প্রম্পট একবার ব্যবহার হয়ে গেলে ক্লিয়ার করে দেওয়া
           deferredPrompt = null;
-        });
-      }
-    }, 3000); // ৩০০০ মানে ৩ সেকেন্ড, চাইলে সময় কমাতে বা বাড়াতে পারো
+        }
+      }, 2000); // ঠিক ২ সেকেন্ড পর
+    }
+  };
+
+  // স্ক্রিনে যেকোনো জায়গায় টাচ বা ক্লিক করলেই ফাংশনটি ট্রিগার হবে
+  window.addEventListener('click', triggerInstall);
+  window.addEventListener('touchstart', triggerInstall);
+
+  // ৪. সাকসেসফুল ইনস্টল হ্যান্ডলিং
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA: App successfully installed!');
+    deferredPrompt = null;
   });
 </script>
 
