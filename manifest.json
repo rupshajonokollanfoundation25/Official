@@ -3,8 +3,8 @@
   "short_name": "RJF",
   "start_url": "https://rupshajonokollanfoundation.vercel.app",
   "display": "standalone",
-  "background_color": "#004D26",
-  "theme_color": "#004D26",
+  "background_color": "#E6EDEA",
+  "theme_color": "#008040",
   "icons": [
     {
       "src": "192.png",
