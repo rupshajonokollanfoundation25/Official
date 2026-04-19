@@ -1,0 +1,397 @@
+
+<!doctype html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Exam Portal - SSC & HSC</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #4f46e5; --primary-dark: #4338ca; --secondary: #10b981; --danger: #ef4444; --warning: #f59e0b; --dark: #1f2937; --light: #f3f4f6; --border: #e5e7eb; }
+        body { font-family: 'Hind Siliguri', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; width: 100%; }
+        header { background: white; padding: 15px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 700; color: var(--primary); }
+        .card { background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 25px; margin-bottom: 25px; }
+        .btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; font-family: 'Hind Siliguri'; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+        .hidden { display: none !important; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; color: #475569; }
+        input, select, textarea { width: 100%; padding: 10px; border: 2px solid var(--border); border-radius: 8px; font-family: 'Hind Siliguri'; }
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin: 15px 0; }
+        .subject-item { background: var(--light); padding: 10px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; text-align: center; font-weight: 600; }
+        .subject-item.selected { border-color: var(--primary); background: #f0f4ff; color: var(--primary); }
+        .question-card { background: #f9fafb; padding: 20px; border-radius: 10px; margin-bottom: 15px; border-left: 5px solid var(--primary); }
+        .option-btn { width: 100%; text-align: left; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; background: white; cursor: pointer; font-family: 'Hind Siliguri'; transition: 0.2s; }
+        .option-btn.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .admin-q-list { max-height: 350px; overflow-y: auto; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px; }
+        .modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); display:none; align-items:center; justify-content:center; z-index:1000; }
+        .result-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; text-align: left; }
+        .stat-box { background: rgba(255,255,255,0.2); padding: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">📚 Pro Exam Portal</div>
+        <div>
+            <button class="btn btn-outline" onclick="showLogin()">Admin</button>
+            <button class="btn btn-primary" onclick="location.reload()">Home</button>
+        </div>
+    </header>
+
+    <div id="adminPanel" class="hidden">
+        <div class="card">
+            <h3>➕ নতুন প্রশ্ন যোগ করুন</h3>
+            <form id="addQuestionForm" style="margin-top: 15px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>ক্লাস</label>
+                        <select id="qClass" required><option value="SSC">SSC</option><option value="HSC">HSC</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>সাবজেক্ট</label>
+                        <input type="text" id="qSubject" placeholder="উদা: ইংরেজি" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>প্রশ্ন</label>
+                    <textarea id="qText" rows="3" placeholder="প্রশ্ন এখানে লিখুন..." required></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" id="optA" placeholder="Option A" required>
+                    <input type="text" id="optB" placeholder="Option B" required>
+                    <input type="text" id="optC" placeholder="Option C" required>
+                    <input type="text" id="optD" placeholder="Option D" required>
+                </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>সঠিক উত্তর</label>
+                    <select id="qCorrect" required>
+                        <option value="">সিলেক্ট করুন</option>
+                        <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                    </select>
+                </div>
+                <button type="submit" id="saveBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">প্রশ্ন সেভ করুন</button>
+            </form>
+        </div>
+        <div class="card">
+            <h4>ডেটাবেস প্রশ্নের তালিকা</h4>
+            <div id="adminQuestionList" class="admin-q-list"></div>
+        </div>
+    </div>
+
+    <div id="homeSection">
+        <div class="card" id="userRegCard">
+            <h2>📝 পরীক্ষার্থীর তথ্য</h2>
+            <p style="margin-bottom: 15px; font-size: 14px; color: gray;">পরীক্ষা শুরু করতে আপনার নাম এবং ইমেইল দিন।</p>
+            <div class="form-group">
+                <label>আপনার নাম</label>
+                <input type="text" id="userName" placeholder="আপনার নাম লিখুন" required>
+            </div>
+            <div class="form-group">
+                <label>আপনার ইমেইল</label>
+                <input type="email" id="userEmail" placeholder="example@mail.com" required>
+            </div>
+            <button class="btn btn-primary" onclick="validateUser()" style="width: 100%;">এগিয়ে যান</button>
+        </div>
+
+        <div class="card hidden" id="selectionCard">
+            <h2>🎓 আপনার ক্লাস নির্বাচন করুন</h2>
+            <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <button class="btn btn-outline" id="btnSSC" onclick="selectUserClass('SSC')" style="flex:1; padding: 15px;">SSC</button>
+                <button class="btn btn-outline" id="btnHSC" onclick="selectUserClass('HSC')" style="flex:1; padding: 15px;">HSC</button>
+            </div>
+            
+            <div id="subjectSection" class="hidden">
+                <p style="margin-top: 20px; font-weight: 600;">সাবজেক্ট বেছে নিন:</p>
+                <div id="userSubjectsGrid" class="subjects-grid"></div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                    <div class="form-group">
+                        <label>প্রশ্নের সংখ্যা</label>
+                        <input type="number" id="userQCount" placeholder="উদা: 10" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>সময় (মিনিট)</label>
+                        <input type="number" id="userTimeLimit" placeholder="উদা: 5" min="1">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="checkTimeLimit()" style="width: 100%; padding: 15px;">পরীক্ষা শুরু করুন</button>
+            </div>
+        </div>
+
+        <div id="examUI" class="hidden">
+            <div class="card" style="display: flex; justify-content: space-between; position: sticky; top: 10px; z-index: 100;">
+                <span id="examTitle" style="font-weight:700; color: var(--primary);"></span>
+                <span id="timer" style="color:var(--danger); font-weight:700; font-size: 20px;">00:00</span>
+            </div>
+            <div id="questionsRender"></div>
+            <button class="btn btn-primary" onclick="submitExam()" style="width: 100%; padding: 15px; margin-bottom: 50px;">সাবমিট করুন</button>
+        </div>
+
+        <div id="resultUI" class="hidden">
+            <div class="card" style="text-align: center; background: var(--primary); color: white;">
+                <h2>আপনার ফলাফল</h2>
+                <h1 id="scoreDisplay" style="font-size: 42px; margin: 10px 0;">0.00</h1>
+                <p id="percentText">0% সঠিক উত্তর</p>
+                
+                <div class="result-stats">
+                    <div class="stat-box">সঠিক: <span id="correctCount">0</span></div>
+                    <div class="stat-box">ভুল: <span id="wrongCount">0</span></div>
+                    <div class="stat-box">নেগেটিভ: <span id="negativeMark">0.00</span></div>
+                    <div class="stat-box">মোট প্রশ্ন: <span id="totalQCount">0</span></div>
+                </div>
+                <p id="mailStatus" style="font-size: 12px; margin-top: 15px; opacity: 0.8;"></p>
+            </div>
+            <button class="btn btn-outline" onclick="location.reload()" style="width:100%; padding: 15px;">হোমে ফিরুন</button>
+        </div>
+    </div>
+</div>
+
+<div id="loginModal" class="modal">
+    <div style="background:white; padding:30px; border-radius:12px; width:320px; text-align:center;">
+        <h3>Admin Login</h3>
+        <input type="password" id="adminPass" placeholder="পাসওয়ার্ড" style="margin: 20px 0;">
+        <button class="btn btn-primary" onclick="verifyAdmin()" style="width:100%;">প্রবেশ করুন</button>
+        <p onclick="hideLogin()" style="margin-top:15px; cursor:pointer; color:gray; font-size: 14px;">বাতিল</p>
+    </div>
+</div>
+
+<script>
+    (function(){
+        emailjs.init("dtl9HyOi2wvJEUiRB"); 
+    })();
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA2FOd_BoCqcu49ijp5ffB1kdPB56PHz3Y",
+        authDomain: "group-chat-74483.firebaseapp.com",
+        databaseURL: "https://group-chat-74483-default-rtdb.firebaseio.com", 
+        projectId: "group-chat-74483",
+        storageBucket: "group-chat-74483.firebasestorage.app",
+        messagingSenderId: "1033238887345",
+        appId: "1:1033238887345:web:2f4d10eabaf33e8e481b90",
+        measurementId: "G-K3QHWJYRRP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let allQuestions = [];
+    let userSelectedClass = '';
+    let userSelectedSubject = '';
+    let examQuestions = [];
+    let userAnswers = {};
+    let timerInterval;
+    let userName = '';
+    let userEmail = '';
+
+    function loadData() {
+        db.ref('questions').on('value', (snapshot) => {
+            allQuestions = [];
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    allQuestions.push({ id: key, ...data[key] });
+                });
+            }
+            renderAdminList();
+        });
+    }
+    loadData();
+
+    function validateUser() {
+        userName = document.getElementById('userName').value.trim();
+        userEmail = document.getElementById('userEmail').value.trim();
+        if(!userName || !userEmail) return alert("দয়া করে নাম ও ইমেইল দিন!");
+        document.getElementById('userRegCard').classList.add('hidden');
+        document.getElementById('selectionCard').classList.remove('hidden');
+    }
+
+    function checkTimeLimit() {
+        const lastExam = localStorage.getItem('last_exam_' + userEmail);
+        const now = new Date().getTime();
+        if (lastExam && (now - lastExam < 180000)) {
+            const remaining = Math.ceil((180000 - (now - lastExam)) / 1000);
+            alert(`দয়া করে অপেক্ষা করুন! আপনি আবার পরীক্ষা দিতে পারবেন ${remaining} সেকেন্ড পর।`);
+            return;
+        }
+        startExam();
+    }
+
+    function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+    function hideLogin() { document.getElementById('loginModal').style.display = 'none'; }
+    function verifyAdmin() {
+        if(document.getElementById('adminPass').value === 'exam.com') {
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            hideLogin();
+        } else { alert('পাসওয়ার্ড ভুল!'); }
+    }
+
+    document.getElementById('addQuestionForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerText = "সেভ হচ্ছে...";
+        const qData = {
+            class: document.getElementById('qClass').value,
+            subject: document.getElementById('qSubject').value.trim(),
+            text: document.getElementById('qText').value.trim(),
+            options: {
+                A: document.getElementById('optA').value.trim(), B: document.getElementById('optB').value.trim(),
+                C: document.getElementById('optC').value.trim(), D: document.getElementById('optD').value.trim()
+            },
+            correct: document.getElementById('qCorrect').value
+        };
+        try {
+            await db.ref('questions').push(qData);
+            alert('সফলভাবে সেভ হয়েছে!');
+            e.target.reset();
+        } catch (error) { alert('ভুল হয়েছে: ' + error.message); }
+        finally { saveBtn.disabled = false; saveBtn.innerText = "প্রশ্ন সেভ করুন"; }
+    });
+
+    function renderAdminList() {
+        const list = document.getElementById('adminQuestionList');
+        list.innerHTML = allQuestions.length === 0 ? '<p style="text-align:center; color:gray;">কোনো প্রশ্ন নেই</p>' : '';
+        allQuestions.slice().reverse().forEach(q => {
+            list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:13px;"><b>${q.class}-${q.subject}:</b> ${q.text.substring(0, 30)}...</span>
+                    <button onclick="deleteQ('${q.id}')" style="color:var(--danger); border:none; background:none; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                </div>`;
+        });
+    }
+
+    function deleteQ(id) { if(confirm('মুছে ফেলবেন?')) db.ref('questions/'+id).remove(); }
+
+    function selectUserClass(cls) {
+        userSelectedClass = cls;
+        document.getElementById('btnSSC').classList.toggle('btn-primary', cls==='SSC');
+        document.getElementById('btnHSC').classList.toggle('btn-primary', cls==='HSC');
+        const subs = [...new Set(allQuestions.filter(q => q.class === cls).map(q => q.subject))];
+        const grid = document.getElementById('userSubjectsGrid');
+        grid.innerHTML = subs.length === 0 ? '<p style="color:red; grid-column: 1/-1;">প্রশ্ন পাওয়া যায়নি!</p>' : '';
+        subs.forEach(s => {
+            const div = document.createElement('div');
+            div.className = 'subject-item'; div.innerText = s;
+            div.onclick = () => {
+                document.querySelectorAll('.subject-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected'); userSelectedSubject = s;
+            };
+            grid.appendChild(div);
+        });
+        document.getElementById('subjectSection').classList.remove('hidden');
+    }
+
+    function startExam() {
+        if(!userSelectedSubject) return alert('সাবজেক্ট বেছে নিন!');
+        let qCountLimit = parseInt(document.getElementById('userQCount').value);
+        let timeLimitMin = parseInt(document.getElementById('userTimeLimit').value);
+        if(!qCountLimit || qCountLimit < 1) return alert('কয়টি প্রশ্নে পরীক্ষা দিবে তা লিখুন!');
+        if(!timeLimitMin || timeLimitMin < 1) return alert('কত মিনিট পরীক্ষা দিবে তা লিখুন!');
+        let filtered = allQuestions.filter(q => q.class === userSelectedClass && q.subject === userSelectedSubject);
+        if(filtered.length === 0) return alert('কোনো প্রশ্ন পাওয়া যায়নি!');
+        let finalLimit = Math.min(qCountLimit, filtered.length);
+        examQuestions = filtered.sort(() => 0.5 - Math.random()).slice(0, finalLimit);
+        userAnswers = {}; 
+        document.getElementById('selectionCard').classList.add('hidden');
+        document.getElementById('examUI').classList.remove('hidden');
+        document.getElementById('examTitle').innerText = `${userSelectedClass} - ${userSelectedSubject}`;
+        const render = document.getElementById('questionsRender');
+        render.innerHTML = '';
+        examQuestions.forEach((q, i) => {
+            render.innerHTML += `<div class="question-card"><p style="margin-bottom:12px;"><b>${i+1}. ${q.text}</b></p>
+                ${['A','B','C','D'].map(opt => `<button class="option-btn" id="q-${i}-${opt}" onclick="selectAns(${i}, '${opt}')"><b>${opt}.</b> ${q.options[opt]}</button>`).join('')}</div>`;
+        });
+        let sec = timeLimitMin * 60;
+        timerInterval = setInterval(() => {
+            sec--;
+            let m = Math.floor(sec/60), s = sec % 60;
+            document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
+            if(sec <= 0) { clearInterval(timerInterval); submitExam(); }
+        }, 1000);
+    }
+
+    function selectAns(qIdx, opt) {
+        userAnswers[qIdx] = opt;
+        ['A','B','C','D'].forEach(o => document.getElementById(`q-${qIdx}-${o}`).classList.remove('selected'));
+        document.getElementById(`q-${qIdx}-${opt}`).classList.add('selected');
+    }
+
+    async function submitExam() {
+        clearInterval(timerInterval);
+        let correct = 0;
+        let wrong = 0;
+        let total = examQuestions.length;
+
+        examQuestions.forEach((q, i) => {
+            if (userAnswers[i]) {
+                if (userAnswers[i] === q.correct) {
+                    correct++;
+                } else {
+                    wrong++;
+                }
+            }
+        });
+
+        let negative = (wrong * 0.25);
+        let finalScore = (correct - negative).toFixed(2);
+        let percentage = Math.round((correct / total) * 100);
+
+        localStorage.setItem('last_exam_' + userEmail, new Date().getTime());
+
+        document.getElementById('examUI').classList.add('hidden');
+        document.getElementById('resultUI').classList.remove('hidden');
+        
+        document.getElementById('scoreDisplay').innerText = finalScore;
+        document.getElementById('percentText').innerText = percentage + "% সঠিক উত্তর";
+        document.getElementById('correctCount').innerText = correct;
+        document.getElementById('wrongCount').innerText = wrong;
+        document.getElementById('negativeMark').innerText = negative.toFixed(2);
+        document.getElementById('totalQCount').innerText = total;
+
+        sendEmail(correct, wrong, finalScore, total, percentage, negative);
+        window.scrollTo(0, 0);
+    }
+
+    function sendEmail(correct, wrong, finalScore, total, percentage, negative) {
+        document.getElementById('mailStatus').innerText = "ফলাফল ইমেইলে পাঠানো হচ্ছে...";
+        
+        let solutionStr = "";
+        examQuestions.forEach((q, i) => {
+            let uAns = userAnswers[i] || "দেওয়া হয়নি";
+            solutionStr += `${i+1}. ${q.text}\nআপনার উত্তর: ${uAns}, সঠিক: ${q.correct}\n\n`;
+        });
+
+        const templateParams = {
+            user_name: userName,
+            user_email: userEmail,
+            subject: userSelectedSubject,
+            q_count: total,
+            correct_count: correct,
+            wrong_count: wrong,
+            negative_mark: negative.toFixed(2),
+            final_score: finalScore,
+            percentage: percentage + "%",
+            solution_details: solutionStr
+        };
+
+        emailjs.send('service_272nuuq', 'template_hlm44yd', templateParams)
+            .then(() => { document.getElementById('mailStatus').innerText = "ফলাফল ইমেইলে পাঠানো হয়েছে।"; })
+            .catch((err) => { document.getElementById('mailStatus').innerText = "ইমেইল পাঠানো সম্ভব হয়নি।"; console.log(err);});
+    }
+</script>
+
+</body>
+</html>
