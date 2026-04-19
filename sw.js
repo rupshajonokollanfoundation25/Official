@@ -1,22 +1,23 @@
-const CACHE_NAME = 'pwa-cache-v1';
-const urlsToCache = ['./', 'index.html']; 
-
-// সার্ভিস ওয়ার্কার ইনস্টল করা
+// সার্ভিস ওয়ার্কার ইনস্টল হওয়ার সময় কোনো ফাইল ক্যাশ করবে না
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('Opened cache');
-      return cache.addAll(urlsToCache);
-    })
-  );
+  self.skipWaiting(); 
 });
 
-// রিকোয়েস্ট ইন্টারসেপ্ট করা
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // যদি ক্যাশে থাকে তবে ওটাই দিবে, না থাকলে নেটওয়ার্ক থেকে নিবে
-      return response || fetch(event.request);
+// পুরনো যত ক্যাশ সেভ করা আছে, সব ক্লিয়ার করে দিবে
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          return caches.delete(cacheName);
+        })
+      );
     })
   );
+  self.clients.claim();
+});
+
+// রিকোয়েস্ট ইন্টারসেপ্ট করা - শুধুমাত্র নেটওয়ার্ক থেকে ডেটা নিবে
+self.addEventListener('fetch', (event) => {
+  event.respondWith(fetch(event.request));
 });
