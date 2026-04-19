@@ -1,9 +1,9 @@
 {
   "name": "Rupsha Jonokollan Foundation",
   "short_name": "RJF",
-  "start_url": "https://rupshajonokollanfoundation.vercel.app/",
+  "start_url": "https://rupshajonokollanfoundation.vercel.app",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#004D26",
   "theme_color": "#008040",
   "icons": [
     {
