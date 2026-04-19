@@ -438,19 +438,16 @@
 
     // --- Auth Logic ---
     async function studentGoogleLogin() {
-        const { error } = await _supabase.auth.signInWithOAuth({ provider: 'google' });
-        if (error) showToast('গুগল লগইন ব্যর্থ: ' + error.message, 'error');
-    }
+    const { error } = await _supabase.auth.signInWithOAuth({ 
+        provider: 'google',
+        options: {
+            // ফোল্ডারের শেষে শুধু স্ল্যাশ দিলেই index.html লোড হবে
+            redirectTo: 'https://rupshajonokollanfoundation.vercel.app/examiner/'
+        }
+    });
+    if (error) showToast('গুগল লগইন ব্যর্থ: ' + error.message, 'error');
+}
 
-    _supabase.auth.onAuthStateChange((event, session) => {
-        const user = session?.user;
-        if (user) {
-            document.getElementById('adminLoginBtn').classList.add('hidden');
-            document.getElementById('adminLogoutBtn').classList.remove('hidden');
-            
-            const isGoogleUser = user.app_metadata.provider === 'google';
-            
-            if (isGoogleUser) {
                 // Student Workflow
                 studentData.name = user.user_metadata.full_name || user.email.split('@')[0];
                 studentData.email = user.email;
