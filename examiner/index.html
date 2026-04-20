@@ -56,7 +56,6 @@
         .btn-outline { background: transparent; color: var(--text-main); border: 2px solid var(--border); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
         .btn-icon { padding: 10px; border-radius: 50%; width: 45px; height: 45px; font-size: 18px; }
-        .btn:disabled { opacity: 0.7; cursor: not-allowed; pointer-events: none; }
 
         /* Cards & Forms */
         .card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 35px; margin-bottom: 25px; border: 1px solid var(--border); }
@@ -124,6 +123,22 @@
         .history-card h5 { color: var(--primary); font-size: 16px; margin-bottom: 5px; }
         .mistake-box { margin-top: 10px; padding: 10px; background: var(--bg-color); border-radius: 8px; font-size: 13px; border-left: 3px solid var(--danger); }
 
+        /* ================= NEW FEATURES CSS ================= */
+        .bookmark-btn { background: transparent; border: 1px solid var(--warning); color: var(--warning); border-radius: var(--radius-md); padding: 8px 15px; cursor: pointer; transition: 0.3s; font-size: 14px; display: inline-flex; align-items: center; gap: 5px; font-weight: bold; }
+        .bookmark-btn:hover { background: rgba(245, 158, 11, 0.1); }
+        .bookmark-btn.active { background: var(--warning); color: white; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); }
+        .explanation-box { background: rgba(79, 70, 229, 0.05); border-left: 4px solid var(--primary); padding: 15px; margin-top: 15px; border-radius: 0 var(--radius-md) var(--radius-md) 0; font-size: 15px; color: var(--text-main); line-height: 1.5; }
+        .leaderboard-modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; place-items: center; }
+        .leaderboard-content { background: var(--surface); width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; border-radius: var(--radius-lg); padding: 30px; box-shadow: var(--shadow-hover); position: relative; animation: slideUp 0.3s ease; }
+        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid var(--border); transition: 0.2s; border-radius: 8px; }
+        .leaderboard-row:hover { background: var(--bg-color); transform: translateX(5px); }
+        .analytics-bar { height: 8px; background: var(--border); border-radius: 4px; margin-top: 5px; overflow: hidden; }
+        .analytics-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #818cf8); border-radius: 4px; }
+        .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 20px; gap: 5px; }
+        .tab-btn { flex: 1; padding: 10px 5px; text-align: center; cursor: pointer; border-bottom: 3px solid transparent; font-weight: 700; color: var(--text-muted); font-size: 14px; transition: 0.3s; margin-bottom: -2px; }
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active { border-color: var(--primary); color: var(--primary); }
+
         /* ======= RESPONSIVE FIXES ======= */
         @media (max-width: 768px) {
             .admin-grid { grid-template-columns: 1fr; }
@@ -150,10 +165,12 @@
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <button class="btn btn-outline btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-moon" id="themeIcon"></i></button>
             
+            <button class="btn btn-outline hidden" id="leaderboardBtn" onclick="openLeaderboard()"><i class="fas fa-trophy text-warning"></i> লিডারবোর্ড</button>
+
             <button class="btn btn-outline hidden" id="profileBtn" onclick="toggleProfileSidebar()"><i class="fas fa-user-circle"></i> প্রোফাইল</button>
 
             <button class="btn btn-outline" id="adminLoginBtn" onclick="showLoginModal()"><i class="fas fa-user-shield"></i> Admin</button>
-            <button class="btn btn-danger hidden" id="adminLogoutBtn" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <button class="btn btn-danger hidden" id="adminLogoutBtn" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             <button class="btn btn-primary" onclick="resetToHome()"><i class="fas fa-home"></i> Home</button>
         </div>
     </header>
@@ -166,11 +183,19 @@
             <h3 id="profName">Student Name</h3>
             <p id="profEmail">student@email.com</p>
         </div>
-        <hr style="border: 1px dashed var(--border); margin: 20px 0;">
-        <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-history text-primary"></i> পরীক্ষার হিস্টরি</h4>
+        
+        <div class="tabs">
+            <div class="tab-btn active" id="tabHist" onclick="switchProfTab('hist')"><i class="fas fa-history"></i> হিস্টরি</div>
+            <div class="tab-btn" id="tabAnal" onclick="switchProfTab('anal')"><i class="fas fa-chart-pie"></i> প্রগ্রেস</div>
+            <div class="tab-btn" id="tabBook" onclick="switchProfTab('book')"><i class="fas fa-bookmark"></i> বুকমার্কস</div>
+        </div>
+
         <div id="historyList" style="flex: 1;">
             <p class="text-center text-muted" style="margin-top: 20px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
         </div>
+
+        <div id="analContent" class="hidden" style="flex: 1;"></div>
+        <div id="bookContent" class="hidden" style="flex: 1;"></div>
     </div>
 
     <div class="container fade-in" id="mainContainer">
@@ -208,17 +233,29 @@
                             <option value="" disabled selected>সঠিক উত্তর নির্বাচন করুন</option>
                             <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
                         </select>
+                        
+                        <div class="form-group">
+                            <textarea id="qExplanation" rows="2" placeholder="প্রশ্নের বিস্তারিত ব্যাখ্যা (ঐচ্ছিক)"></textarea>
+                        </div>
+
                         <button type="submit" id="saveBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> সেভ করুন</button>
                     </form>
 
                     <hr style="border:1px dashed var(--border); margin: 25px 0;">
                     <h3 style="margin-bottom: 15px;"><i class="fas fa-file-import"></i> JSON বাল্ক ইমপোর্ট</h3>
-                    <textarea id="bulkJsonInput" rows="4" placeholder='[{"class":"SSC","subject":"Bangla","text":"Q1?","options":{"A":"1","B":"2","C":"3","D":"4"},"correct":"A"}]' style="font-family: monospace; font-size: 13px; margin-bottom:10px;"></textarea>
-                    <button class="btn btn-outline" id="bulkUploadBtn" onclick="processBulkImport()" style="width: 100%;"><i class="fas fa-upload"></i> একসাথে আপলোড করুন</button>
+                    <textarea id="bulkJsonInput" rows="4" placeholder='[{"class":"SSC","subject":"Bangla","text":"Q1?","options":{"A":"1","B":"2","C":"3","D":"4"},"correct":"A", "explanation":"কারণ..."}]' style="font-family: monospace; font-size: 13px; margin-bottom:10px;"></textarea>
+                    <button class="btn btn-outline" onclick="processBulkImport()" style="width: 100%;"><i class="fas fa-upload"></i> একসাথে আপলোড করুন</button>
                 </div>
 
                 <div class="card" style="display: flex; flex-direction: column;">
-                    <h3 style="margin-bottom: 20px;"><i class="fas fa-database"></i> প্রশ্ন ব্যাংক (<span id="totalQCount">0</span>)</h3>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:10px;">
+                        <h3><i class="fas fa-database"></i> প্রশ্ন ব্যাংক (<span id="totalQCount">0</span>)</h3>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline" onclick="exportQuestionsCSV()" style="padding: 8px 12px; font-size:13px;"><i class="fas fa-file-csv"></i> প্রশ্ন Export</button>
+                            <button class="btn btn-outline" onclick="exportResultsCSV()" style="padding: 8px 12px; font-size:13px;"><i class="fas fa-file-csv"></i> রেজাল্ট Export</button>
+                        </div>
+                    </div>
+
                     <div id="adminQuestionList" style="flex: 1; overflow-y: auto; max-height: 650px; padding-right: 10px;">
                         <p class="text-center text-muted" style="margin-top: 50px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
                     </div>
@@ -232,8 +269,8 @@
                     <i class="fab fa-google"></i>
                 </div>
                 <h2 style="margin-bottom: 10px; font-size: 28px;">প্রো এক্সাম পোর্টালে স্বাগতম</h2>
-                <p style="color: var(--text-muted); margin-bottom: 30px;">​"নিরাপদ লগইনের জন্য দয়া করে আপনার গুগল অ্যাকাউন্টটি ব্যবহার করুন। রূপসা জনকল্যাণ ফাউন্ডেশনের 'প্রো এক্সাম' প্ল্যাটফর্মটি আপনাদের জন্যই তৈরি করা হয়েছে।"</p>
-                
+                <p style="color: var(--text-muted); margin-bottom: 30px;">"নিরাপদ লগইনের জন্য দয়া করে আপনার গুগল অ্যাকাউন্টটি ব্যবহার করুন। অনেক মানুষ একসাথে যুক্ত হওয়ার কারণে সাইন-আপের পর গতি কিছুটা ধীর হতে পারে, তবে এতে ঘাবড়ানোর কিছু নেই। রূপসা জনকল্যাণ ফাউন্ডেশনের 'প্রো এক্সাম' প্ল্যাটফর্মটি আপনাদের জন্যই তৈরি করা হয়েছে। একবার টেস্ট করে দেখুন, আশা করি এর পারফরম্যান্স আপনাদের ভালো লাগবে।"</p>
+            
                 <button class="btn btn-primary" onclick="studentGoogleLogin()" style="width: 100%; padding: 16px; font-size: 18px; background: #ea4335; border-color: #ea4335; box-shadow: 0 4px 15px rgba(234, 67, 53, 0.3);">
                     <i class="fab fa-google"></i> Continue with Google
                 </button>
@@ -271,7 +308,10 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
                     <div>
                         <h3 id="examSubjectTitle" style="color: var(--primary); margin-bottom: 5px; font-size:22px;">Subject</h3>
-                        <p id="qCounterText" style="color: var(--text-muted); font-size: 15px; font-weight: 600;">Question 1 / 10</p>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <p id="qCounterText" style="color: var(--text-muted); font-size: 15px; font-weight: 600;">Question 1 / 10</p>
+                            <button id="bookmarkCurrentBtn" class="bookmark-btn" onclick="toggleBookmark()"><i class="far fa-bookmark"></i> বুকমার্ক</button>
+                        </div>
                     </div>
                     <div class="timer-badge" id="timerBadgeUI">
                         <i class="fas fa-stopwatch"></i> <span id="timerDisplay">00:00</span>
@@ -341,6 +381,17 @@
             <button class="btn btn-outline" onclick="closeLoginModal()" style="width: 100%; padding:15px; border:none;">ক্যানসেল</button>
         </div>
     </div>
+
+    <div id="leaderboardModal" class="leaderboard-modal">
+        <div class="leaderboard-content">
+            <button class="btn-icon" onclick="closeLeaderboard()" style="position: absolute; top: 15px; right: 15px; background: rgba(239,68,68,0.1); color: var(--danger); border: none;"><i class="fas fa-times"></i></button>
+            <h2 style="text-align:center; margin-bottom: 20px; color:var(--primary);"><i class="fas fa-crown text-warning"></i> টপ স্টুডেন্টস লিডারবোর্ড</h2>
+            <div id="leaderboardList" style="min-height: 200px;">
+                <p class="text-center"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+
     <style>@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }</style>
 
 <script>
@@ -363,7 +414,7 @@
     }
     initTheme();
 
-    // --- Init Firebase & EmailJS ---
+    // --- 1. Init Firebase & EmailJS ---
     (function(){ emailjs.init("dtl9HyOi2wvJEUiRB"); })();
 
     const firebaseConfig = {
@@ -385,6 +436,7 @@
     let appData = { questions: [], adminSettings: { negativeMarking: true } };
     let studentData = { name: '', email: '', uid: '', class: '', subject: '', qCount: 0, timeMin: 0 };
     let examState = { active: false, questions: [], answers: {}, currentIndex: 0, timerInterval: null };
+    let userBookmarks = []; // NEW
 
     // --- Custom UI Utilities ---
     function showToast(msg, type='success') {
@@ -419,15 +471,32 @@
         document.getElementById('details-' + key).classList.toggle('hidden');
     }
 
+    // NEW: Profile Tabs Switching
+    function switchProfTab(tab) {
+        document.getElementById('tabHist').classList.remove('active');
+        document.getElementById('tabAnal').classList.remove('active');
+        document.getElementById('tabBook').classList.remove('active');
+        
+        document.getElementById('historyList').classList.add('hidden');
+        document.getElementById('analContent').classList.add('hidden');
+        document.getElementById('bookContent').classList.add('hidden');
+        
+        if(tab==='hist') { document.getElementById('tabHist').classList.add('active'); document.getElementById('historyList').classList.remove('hidden'); }
+        if(tab==='anal') { document.getElementById('tabAnal').classList.add('active'); document.getElementById('analContent').classList.remove('hidden'); }
+        if(tab==='book') { document.getElementById('tabBook').classList.add('active'); document.getElementById('bookContent').classList.remove('hidden'); }
+    }
+
     function fetchStudentHistory(uid) {
-        // OPTIMIZATION: limitToLast(15) যুক্ত করা হয়েছে ব্যান্ডউইথ বাঁচাতে
-        db.ref('user_history/' + uid).limitToLast(15).on('value', snap => {
+        db.ref('user_history/' + uid).on('value', snap => {
             const list = document.getElementById('historyList');
             if (!snap.val()) {
+                generateAnalytics(null); // Clear analytics
                 return list.innerHTML = '<p class="text-center text-muted" style="margin-top: 20px;">কোনো হিস্টরি পাওয়া যায়নি।</p>';
             }
             let html = '';
             const data = snap.val();
+            generateAnalytics(data); // Process Analytics
+
             Object.keys(data).reverse().forEach(key => {
                 const h = data[key];
                 const dateStr = new Date(h.date).toLocaleString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -454,6 +523,35 @@
         });
     }
 
+    // NEW: Topic Wise Analytics Logic
+    function generateAnalytics(historyData) {
+        const anal = document.getElementById('analContent');
+        if(!historyData) return anal.innerHTML = '<p class="text-center text-muted" style="margin-top:20px;">পর্যাপ্ত ডাটা নেই।</p>';
+        
+        let subjects = {};
+        Object.keys(historyData).forEach(key => {
+            let h = historyData[key];
+            if(!subjects[h.subject]) subjects[h.subject] = { total: 0, score: 0 };
+            subjects[h.subject].total += parseInt(h.total);
+            subjects[h.subject].score += parseFloat(h.score);
+        });
+
+        let html = '<h4 style="margin-bottom:15px; color:var(--text-main);">বিষয়ভিত্তিক একুরেসি</h4>';
+        Object.keys(subjects).forEach(sub => {
+            let s = subjects[sub];
+            let percent = s.total > 0 ? ((s.score / s.total) * 100).toFixed(0) : 0;
+            if(percent < 0) percent = 0;
+            
+            html += `<div style="margin-bottom:15px; font-size:14px; background:var(--surface); padding:10px; border-radius:8px; border:1px solid var(--border);">
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <b style="color:var(--primary);">${sub}</b> <span style="font-weight:bold;">${percent}% Accuracy</span>
+                </div>
+                <div class="analytics-bar"><div class="analytics-fill" style="width:${percent}%"></div></div>
+            </div>`;
+        });
+        anal.innerHTML = html;
+    }
+
     // --- Auth Logic ---
     function studentGoogleLogin() {
         auth.signInWithPopup(googleProvider).catch((error) => {
@@ -461,17 +559,26 @@
         });
     }
 
+    // NEW: Logout Confirmation logic
+    function confirmLogout() {
+        if(confirm("আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?")) {
+            adminLogout();
+        }
+    }
+
     auth.onAuthStateChanged(user => {
         if (user) {
             document.getElementById('adminLoginBtn').classList.add('hidden');
             document.getElementById('adminLogoutBtn').classList.remove('hidden');
+            document.getElementById('leaderboardBtn').classList.remove('hidden'); // Show leaderboard for logged in users
             
             const isGoogleUser = user.providerData.some(p => p.providerId === 'google.com');
             
             if (isGoogleUser) {
+                // Student Workflow
                 studentData.name = user.displayName;
                 studentData.email = user.email;
-                studentData.uid = user.uid; 
+                studentData.uid = user.uid;
                 
                 document.getElementById('step1Info').classList.add('hidden');
                 document.getElementById('step2Settings').classList.remove('hidden');
@@ -480,11 +587,15 @@
                 document.getElementById('profName').innerText = user.displayName;
                 document.getElementById('profEmail').innerText = user.email;
                 if (user.photoURL) document.getElementById('profPic').src = user.photoURL;
+                
                 fetchStudentHistory(user.uid); 
+                syncBookmarks(); // NEW: Sync bookmarked questions
+                fetchBookmarks(); // NEW: Fetch them for sidebar
 
                 switchView('studentSetupView');
                 showToast('গুগল লগইন সফল হয়েছে!');
             } else {
+                // Admin Workflow
                 switchView('adminPanel');
                 closeLoginModal();
                 showToast('অ্যাডমিন প্যানেলে স্বাগতম!');
@@ -493,6 +604,7 @@
         } else {
             document.getElementById('adminLoginBtn').classList.remove('hidden');
             document.getElementById('adminLogoutBtn').classList.add('hidden');
+            document.getElementById('leaderboardBtn').classList.add('hidden');
             document.getElementById('profileBtn').classList.add('hidden');
 
             if(!examState.active && document.getElementById('resultUI').classList.contains('hidden')){
@@ -514,13 +626,10 @@
     function adminLogout() { auth.signOut(); }
 
     // --- Database Fetch ---
-    // OPTIMIZATION: .on() এর বদলে .once() ব্যবহার করা হয়েছে পুরো কোশ্চেন ব্যাংক ডাটাবেজ থেকে বারবার লোড হওয়া থামাতে।
-    db.ref('questions').once('value').then(snap => {
+    db.ref('questions').on('value', snap => {
         appData.questions = [];
         if(snap.val()) Object.keys(snap.val()).forEach(key => appData.questions.push({ id: key, ...snap.val()[key] }));
-        if(!document.getElementById('adminPanel').classList.contains('hidden')){
-            renderAdminQList();
-        }
+        renderAdminQList();
     });
 
     function fetchAdminSettings() {
@@ -529,7 +638,7 @@
                 appData.adminSettings = snap.val();
                 document.getElementById('negMarkToggle').checked = appData.adminSettings.negativeMarking;
             } else {
-                document.getElementById('negMarkToggle').checked = true;
+                document.getElementById('negMarkToggle').checked = true; // Default
             }
         });
     }
@@ -550,29 +659,19 @@
             subject: document.getElementById('qSubject').value.trim(),
             text: document.getElementById('qText').value.trim(),
             options: { A: document.getElementById('optA').value.trim(), B: document.getElementById('optB').value.trim(), C: document.getElementById('optC').value.trim(), D: document.getElementById('optD').value.trim() },
-            correct: document.getElementById('qCorrect').value
+            correct: document.getElementById('qCorrect').value,
+            explanation: document.getElementById('qExplanation').value.trim() // NEW: Added explanation to DB
         };
 
-        try { 
-            const newRef = await db.ref('questions').push(qData); 
-            // Update local array instead of re-fetching DB
-            appData.questions.push({ id: newRef.key, ...qData });
-            renderAdminQList();
-            showToast('প্রশ্ন যুক্ত হয়েছে!'); 
-            e.target.reset(); 
-        } 
+        try { await db.ref('questions').push(qData); showToast('প্রশ্ন যুক্ত হয়েছে!'); e.target.reset(); } 
         catch (err) { showToast('এরর: ' + err.message, 'error'); }
         finally { btn.innerHTML = '<i class="fas fa-save"></i> সেভ করুন'; btn.disabled = false; }
     });
 
+    // Bulk Import Logic
     async function processBulkImport() {
         const jsonStr = document.getElementById('bulkJsonInput').value.trim();
         if(!jsonStr) return showToast('JSON ডেটা দিন', 'error');
-        
-        const btn = document.getElementById('bulkUploadBtn');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> আপলোড হচ্ছে...';
-        btn.disabled = true;
-
         try {
             const data = JSON.parse(jsonStr);
             if(!Array.isArray(data)) throw new Error("ডেটা অ্যারে (Array) ফরম্যাটে হতে হবে");
@@ -581,20 +680,13 @@
             let count = 0;
             for(let q of data) {
                 if(q.class && q.subject && q.text && q.options && q.correct) {
-                    const newRef = await db.ref('questions').push(q);
-                    appData.questions.push({ id: newRef.key, ...q }); // Local update
+                    await db.ref('questions').push(q);
                     count++;
                 }
             }
-            renderAdminQList();
             showToast(`${count} টি প্রশ্ন সফলভাবে আপলোড হয়েছে!`, 'success');
             document.getElementById('bulkJsonInput').value = '';
-        } catch (e) { 
-            showToast('JSON ফরমেট ভুল: ' + e.message, 'error'); 
-        } finally {
-            btn.innerHTML = '<i class="fas fa-upload"></i> একসাথে আপলোড করুন';
-            btn.disabled = false;
-        }
+        } catch (e) { showToast('JSON ফরমেট ভুল: ' + e.message, 'error'); }
     }
 
     function renderAdminQList() {
@@ -608,20 +700,90 @@
                     <span style="font-size:12px; background:var(--primary-light); color:var(--primary); padding:3px 8px; border-radius:6px; font-weight:bold;">${q.class} | ${q.subject}</span>
                     <p style="margin-top:8px; font-size:15px; font-weight:600; color:var(--text-main);">${q.text}</p>
                     <p style="font-size:13px; color:var(--success); margin-top:5px; font-weight:bold;"><i class="fas fa-check"></i> Ans: ${q.correct}</p>
+                    ${q.explanation ? `<p style="font-size:12px; color:var(--text-muted); margin-top:5px; padding-left:5px; border-left:2px solid var(--border);"><i class="fas fa-info-circle"></i> ${q.explanation}</p>` : ''}
                 </div>
                 <button onclick="deleteQuestion('${q.id}')" class="btn-icon" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:none; cursor:pointer;"><i class="fas fa-trash-alt"></i></button>
             </div>`;
         });
     }
-    
-    function deleteQuestion(id) { 
-        if(confirm('প্রশ্নটি মুছে ফেলতে চান? এটি আর ফেরত পাওয়া যাবে না।')) {
-            db.ref('questions/'+id).remove(); 
-            // Update local array instantly
-            appData.questions = appData.questions.filter(q => q.id !== id);
-            renderAdminQList();
-        }
+    function deleteQuestion(id) { if(confirm('প্রশ্নটি মুছে ফেলতে চান? এটি আর ফেরত পাওয়া যাবে জৈন।')) db.ref('questions/'+id).remove(); }
+
+    // --- NEW: CSV Export Logic for Admin ---
+    function downloadCSV(filename, rows) {
+        let csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        let encodedUri = encodeURI(csvContent);
+        let link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", filename);
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
     }
+
+    function exportQuestionsCSV() {
+        let rows = [["Class", "Subject", "Question", "Option_A", "Option_B", "Option_C", "Option_D", "Correct_Answer", "Explanation"]];
+        appData.questions.forEach(q => {
+            rows.push([q.class, q.subject, `"${q.text.replace(/"/g, '""')}"`, `"${q.options.A}"`, `"${q.options.B}"`, `"${q.options.C}"`, `"${q.options.D}"`, q.correct, `"${(q.explanation||"").replace(/"/g, '""')}"`]);
+        });
+        downloadCSV("ProExam_Question_Bank.csv", rows);
+    }
+
+    function exportResultsCSV() {
+        db.ref('user_history').once('value').then(snap => {
+            let rows = [["User_Name", "Date", "Class", "Subject", "Score", "Total", "Correct", "Wrong"]];
+            if(snap.exists()) {
+                const data = snap.val();
+                Object.keys(data).forEach(uid => {
+                    Object.keys(data[uid]).forEach(key => {
+                        let h = data[uid][key];
+                        let dateStr = new Date(h.date).toLocaleString();
+                        rows.push([`"${h.name || 'Unknown'}"`, `"${dateStr}"`, h.class, h.subject, h.score, h.total, h.correct, h.wrong]);
+                    });
+                });
+            } else {
+                return showToast('কোনো রেজাল্ট ডাটা নেই', 'error');
+            }
+            downloadCSV("ProExam_All_Results.csv", rows);
+        });
+    }
+
+    // --- NEW: Leaderboard Logic ---
+    function openLeaderboard() {
+        document.getElementById('leaderboardModal').style.display = 'grid';
+        const list = document.getElementById('leaderboardList');
+        list.innerHTML = '<p class="text-center text-muted" style="margin-top:20px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>';
+        
+        db.ref('user_history').once('value').then(snap => {
+            if(!snap.exists()) return list.innerHTML = '<p class="text-center text-muted" style="margin-top:20px;">কোনো ডাটা নেই</p>';
+            let users = [];
+            const data = snap.val();
+            
+            Object.keys(data).forEach(uid => {
+                let totalScore = 0; let totalExams = 0; let name = "অজানা শিক্ষার্থী";
+                Object.keys(data[uid]).forEach(key => {
+                    totalScore += parseFloat(data[uid][key].score || 0);
+                    totalExams++;
+                    if(data[uid][key].name) name = data[uid][key].name;
+                });
+                users.push({ uid, name, score: totalScore.toFixed(2), exams: totalExams });
+            });
+            
+            users.sort((a,b) => b.score - a.score); // Highest first
+            
+            let html = '';
+            users.forEach((u, i) => {
+                let medal = i===0?'<i class="fas fa-medal" style="color:#fbbf24; font-size:20px;"></i>':(i===1?'<i class="fas fa-medal" style="color:#94a3b8; font-size:20px;"></i>':(i===2?'<i class="fas fa-medal" style="color:#b45309; font-size:20px;"></i>':`<span style="color:var(--text-muted); font-weight:bold; font-size:16px;">#${i+1}</span>`));
+                html += `<div class="leaderboard-row">
+                    <div style="font-weight:bold; font-size:16px; display:flex; align-items:center; gap:10px;">${medal} ${u.name}</div>
+                    <div style="text-align:right;">
+                        <div style="color:var(--primary); font-weight:bold; font-size:16px;">${u.score} Marks</div>
+                        <div style="font-size:12px; color:var(--text-muted)">${u.exams} Exams</div>
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        });
+    }
+    function closeLeaderboard() { document.getElementById('leaderboardModal').style.display = 'none'; }
+
 
     // --- Student Setup Flow ---
     function selectClass(cls) {
@@ -664,7 +826,7 @@
 
         const lastExam = localStorage.getItem('last_exam_' + studentData.email);
         const now = new Date().getTime();
-        if (lastExam && (now - lastExam < 180000)) { 
+        if (lastExam && (now - lastExam < 180000)) { // 3 min cooldown
             const rem = Math.ceil((180000 - (now - lastExam)) / 1000);
             return showToast(`অপেক্ষা করুন! আবার পরীক্ষা দিতে পারবেন ${rem} সেকেন্ড পর।`, 'error');
         }
@@ -685,8 +847,6 @@
 
         document.getElementById('timerBadgeUI').classList.remove('timer-critical');
         document.getElementById('reviewSection').classList.add('hidden');
-        document.getElementById('submitBtn').disabled = false;
-        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-flag-checkered"></i> সাবমিট করুন';
         
         document.getElementById('examSubjectTitle').innerText = `${studentData.class} - ${studentData.subject}`;
         switchView('examFocusUI');
@@ -704,8 +864,18 @@
         const current = examState.currentIndex;
 
         document.getElementById('qCounterText').innerText = `Question ${current + 1} of ${total}`;
-        document.getElementById('examProgress').style.width = `${((current) / total) * 100}%`; 
+        document.getElementById('examProgress').style.width = `${((current) / total) * 100}%`;
         
+        // NEW: Update Bookmark button state
+        const bBtn = document.getElementById('bookmarkCurrentBtn');
+        if(userBookmarks.includes(q.id)) {
+            bBtn.classList.add('active');
+            bBtn.innerHTML = '<i class="fas fa-bookmark"></i> সেভড';
+        } else {
+            bBtn.classList.remove('active');
+            bBtn.innerHTML = '<i class="far fa-bookmark"></i> বুকমার্ক';
+        }
+
         const qText = document.getElementById('liveQText');
         qText.style.opacity = 0;
         setTimeout(()=>{ qText.innerText = q.text; qText.style.opacity = 1; }, 150);
@@ -738,6 +908,62 @@
 
     function navigateQuestion(step) { examState.currentIndex += step; renderQuestionUI(); }
 
+    // --- NEW: Bookmark Logic ---
+    function toggleBookmark() {
+        if(!studentData.uid) return;
+        const q = examState.questions[examState.currentIndex];
+        const ref = db.ref(`bookmarks/${studentData.uid}/${q.id}`);
+        const btn = document.getElementById('bookmarkCurrentBtn');
+        
+        if(userBookmarks.includes(q.id)) {
+            ref.remove();
+            userBookmarks = userBookmarks.filter(id => id !== q.id);
+            btn.classList.remove('active');
+            btn.innerHTML = '<i class="far fa-bookmark"></i> বুকমার্ক';
+            showToast('বুকমার্ক রিমুভ হয়েছে!');
+        } else {
+            ref.set(q); 
+            userBookmarks.push(q.id);
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="fas fa-bookmark"></i> সেভড';
+            showToast('প্রশ্ন বুকমার্ক করা হয়েছে!', 'success');
+        }
+        fetchBookmarks();
+    }
+
+    function syncBookmarks() {
+        if(!studentData.uid) return;
+        db.ref(`bookmarks/${studentData.uid}`).on('value', snap => {
+            userBookmarks = snap.exists() ? Object.keys(snap.val()) : [];
+        });
+    }
+
+    function fetchBookmarks() {
+        if(!studentData.uid) return;
+        db.ref(`bookmarks/${studentData.uid}`).on('value', snap => {
+            const list = document.getElementById('bookContent');
+            if(!snap.exists()) return list.innerHTML = '<p class="text-center text-muted" style="margin-top:20px;">কোনো বুকমার্ক নেই।</p>';
+            let html = '';
+            const data = snap.val();
+            Object.keys(data).forEach(key => {
+                const q = data[key];
+                html += `<div class="history-card" style="font-size:14px;">
+                    <b style="color:var(--primary)">${q.subject} (${q.class}):</b> <span style="font-weight:bold;">${q.text}</span><br>
+                    <div style="margin-top:8px; display:flex; flex-direction:column; gap:4px;">
+                        <span style="color:var(--text-main);"><i class="far fa-circle text-muted"></i> A. ${q.options.A}</span>
+                        <span style="color:var(--text-main);"><i class="far fa-circle text-muted"></i> B. ${q.options.B}</span>
+                        <span style="color:var(--text-main);"><i class="far fa-circle text-muted"></i> C. ${q.options.C}</span>
+                        <span style="color:var(--text-main);"><i class="far fa-circle text-muted"></i> D. ${q.options.D}</span>
+                    </div>
+                    <div style="margin-top:10px; color:var(--success); font-weight:bold; border-top:1px dashed var(--border); padding-top:8px;">
+                        <i class="fas fa-check-circle"></i> সঠিক উত্তর: ${q.correct}
+                    </div>
+                </div>`;
+            });
+            list.innerHTML = html;
+        });
+    }
+
     function runTimer() {
         const badge = document.getElementById('timerBadgeUI');
         examState.timerInterval = setInterval(() => {
@@ -767,18 +993,12 @@
 
     // --- Evaluation, Results & Review ---
     function submitExamFinal() {
-        // OPTIMIZATION: Prevent Spam Clicking
-        if (!examState.active) return;
-        document.getElementById('submitBtn').disabled = true;
-        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> সাবমিট হচ্ছে...';
-        
         examState.active = false;
         clearInterval(examState.timerInterval);
         sessionStorage.removeItem('examEndTime');
 
         let correct = 0, wrong = 0;
         const total = examState.questions.length;
-        
         let mistakesHTMLForHistory = '';
 
         examState.questions.forEach((q, i) => {
@@ -814,6 +1034,7 @@
         const userUid = auth.currentUser ? auth.currentUser.uid : studentData.uid;
         if(userUid) {
             db.ref('user_history/' + userUid).push({
+                name: studentData.name, // NEW: Added Name for Leaderboard fetching
                 date: new Date().getTime(),
                 class: studentData.class,
                 subject: studentData.subject,
@@ -875,6 +1096,12 @@
             });
 
             if(isSkipped) html += `<p style="color:var(--warning); margin-top:10px; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> আপনি উত্তর দেননি!</p>`;
+            
+            // NEW: Render Explanation if exists
+            if (q.explanation) {
+                html += `<div class="explanation-box"><i class="fas fa-lightbulb" style="color:var(--warning);"></i> <b>ব্যাখ্যা:</b> ${q.explanation}</div>`;
+            }
+            
             html += `</div>`;
         });
         area.innerHTML = html;
@@ -893,15 +1120,7 @@
         statusTxt.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ইমেইলে রিপোর্ট তৈরি হচ্ছে...';
         
         let details = "";
-        // OPTIMIZATION: Email payload limit (সর্বোচ্চ ১৫টি প্রশ্ন ইমেইলে যাবে, বাকিগুলো শুধু ওয়েবসাইটে)
-        const maxQuestionsForEmail = 15;
-        examState.questions.slice(0, maxQuestionsForEmail).forEach((q, i) => { 
-            details += `Q${i+1}: ${q.text}\nYour Ans: ${examState.answers[i]||'Skipped'} | Correct: ${q.correct}\n\n`; 
-        });
-        
-        if (examState.questions.length > maxQuestionsForEmail) {
-            details += `\n...এবং আরও ${examState.questions.length - maxQuestionsForEmail} টি প্রশ্ন। পুরো উত্তরপত্র দেখতে ওয়েবসাইটে লগইন করুন।`;
-        }
+        examState.questions.forEach((q, i) => { details += `Q${i+1}: ${q.text}\nYour Ans: ${examState.answers[i]||'Skipped'} | Correct: ${q.correct}\n\n`; });
 
         const templateParams = {
             user_name: studentData.name, user_email: studentData.email, subject: studentData.subject,
@@ -924,3 +1143,4 @@
 
 </body>
 </html>
+
