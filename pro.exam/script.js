@@ -751,3 +751,61 @@ function resetToHome() {
     clearInterval(examState.timerInterval);
     location.reload();
 }
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('pro-notice-overlay');
+    const closeBtn = document.querySelector('.pro-close-btn');
+    const displayDuration = 10000; // ২০ সেকেন্ড (মিলিসেকেন্ডে)
+    let popupTimer;
+
+    // সেশন স্টোরেজ চেক: ইউজার কি এই সেশনে আগে নোটিশ দেখেছে?
+    if (!sessionStorage.getItem('noticeSeen')) {
+        // পেজ লোড হওয়ার ৫০০ মিলিসেকেন্ড পর সুন্দরভাবে শো করবে
+        setTimeout(() => {
+            showNotice();
+        }, 900);
+    }
+
+    function showNotice() {
+        overlay.classList.add('active');
+        
+        // ২০ সেকেন্ড পর অটোমেটিক বন্ধ
+        popupTimer = setTimeout(() => {
+            closeNotice();
+        }, displayDuration);
+    }
+
+    function closeNotice() {
+        overlay.classList.remove('active');
+        // সেশনে সেভ করে রাখছি যেন রিফ্রেশ দিলে আবার না আসে
+        sessionStorage.setItem('noticeSeen', 'true');
+        clearTimeout(popupTimer); // টাইমার ক্লিয়ার করা
+    }
+
+    // ১. ক্লোজ বাটনে ক্লিক করলে বন্ধ হবে
+    if(closeBtn) {
+        closeBtn.addEventListener('click', closeNotice);
+    }
+
+    // ২. পপ-আপের বাইরে (ব্যাকগ্রাউন্ডে) ক্লিক করলে বন্ধ হবে
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeNotice();
+        }
+    });
+
+    // ৩. কীবোর্ডের 'Esc' বাটন চাপলে বন্ধ হবে
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) {
+            closeNotice();
+        }
+    });
+});
