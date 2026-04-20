@@ -146,3 +146,119 @@ input:focus, select:focus, textarea:focus { border-color: var(--primary); box-sh
     .timer-badge { font-size: 15px; padding: 8px 15px; }
     .question-text { font-size: 20px; }
 }
+
+
+
+
+
+
+
+
+/* প্রিমিয়াম ওভারলে - গ্লাসমরফিজম ইফেক্ট */
+.pro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.6); /* ডার্ক ট্রান্সপারেন্ট */
+    backdrop-filter: blur(8px); /* ব্যাকগ্রাউন্ড ব্লার */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* পপ-আপ বক্স ডিজাইন */
+.pro-popup-box {
+    background: #ffffff;
+    width: 90%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: relative;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+/* অ্যাকটিভ স্টেট (যখন পপ-আপ দেখাবে) */
+.pro-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+.pro-overlay.active .pro-popup-box {
+    transform: translateY(0) scale(1);
+}
+
+/* ক্লোজ বাটন */
+.pro-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+.pro-close-btn:hover {
+    color: #ef4444; /* হোভার করলে লাল হবে */
+}
+
+/* আইকন স্টাইল */
+.pro-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    color: #3b82f6; /* নীল রঙ */
+    background: #eff6ff;
+    border-radius: 50%;
+    padding: 12px;
+}
+
+/* টেক্সট স্টাইল */
+.pro-title {
+    margin: 0 0 10px;
+    color: #1e293b;
+    font-size: 22px;
+    font-weight: 700;
+}
+.pro-text {
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* প্রোগ্রেস বার কনটেইনার এবং অ্যানিমেশন */
+.pro-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: #e2e8f0;
+}
+.pro-progress-bar {
+    height: 100%;
+    background: #3b82f6; /* নীল রঙের প্রোগ্রেস */
+    width: 100%;
+    transform-origin: left;
+}
+.pro-overlay.active .pro-progress-bar {
+    animation: proProgress 20s linear forwards;
+}
+
+/* ২০ সেকেন্ডের অ্যানিমেশন ফ্রেম */
+@keyframes proProgress {
+    0% { transform: scaleX(1); }
+    100% { transform: scaleX(0); }
+}
+
