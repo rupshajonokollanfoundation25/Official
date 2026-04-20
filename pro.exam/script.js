@@ -31,16 +31,15 @@ const firebaseConfigPrivate = {
 };
 
 const firebaseConfigQuestions = {
- 
-  apiKey: "AIzaSyA2FOd_BoCqcu49ijp5ffB1kdPB56PHz3Y",
-  authDomain: "group-chat-74483.firebaseapp.com",
-  databaseURL: "https://group-chat-74483-default-rtdb.firebaseio.com",
-  projectId: "group-chat-74483",
-  storageBucket: "group-chat-74483.firebasestorage.app",
-  messagingSenderId: "1033238887345",
-  appId: "1:1033238887345:web:2f4d10eabaf33e8e481b90",
+    apiKey: "AIzaSyA2FOd_BoCqcu49ijp5ffB1kdPB56PHz3Y",
+    authDomain: "group-chat-74483.firebaseapp.com",
+    databaseURL: "https://group-chat-74483-default-rtdb.firebaseio.com",
+    projectId: "group-chat-74483",
+    storageBucket: "group-chat-74483.firebasestorage.app",
+    messagingSenderId: "1033238887345",
+    appId: "1:1033238887345:web:2f4d10eabaf33e8e481b90"
+};
 
-    
 if (!firebase.apps.length) { 
     firebase.initializeApp(firebaseConfigPrivate); 
 }
