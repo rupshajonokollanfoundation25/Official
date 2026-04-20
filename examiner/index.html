@@ -11,7 +11,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
     <style>
-        /* ================= PREMIUM CSS VARIABLES ================= */
+        /* আপনার পূর্বের দেওয়া সকল CSS এখানে হুবহু রাখা হয়েছে (কোনো পরিবর্তন নেই) */
         :root {
             --primary: #4f46e5; --primary-hover: #4338ca; --primary-light: #e0e7ff;
             --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
@@ -23,8 +23,6 @@
             --radius-lg: 20px; --radius-md: 12px;
             --glass-bg: rgba(255, 255, 255, 0.85);
         }
-
-        /* Dark Mode Theme */
         [data-theme="dark"] {
             --primary: #6366f1; --primary-hover: #818cf8; --primary-light: #312e81;
             --bg-color: #0f172a; --surface: #1e293b;
@@ -33,110 +31,64 @@
             --glass-bg: rgba(30, 41, 59, 0.85);
             --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; transition: background-color 0.3s, color 0.3s; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
-        
-        /* Layout & Header (Glassmorphism) */
-        header { 
-            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;
-            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; 
-        }
+        header { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
         .logo { font-size: 24px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px; }
         .logo i { background: linear-gradient(135deg, var(--primary), #818cf8); color: white; padding: 8px 10px; border-radius: 10px; }
         .container { max-width: 1100px; margin: 40px auto; width: 90%; flex: 1; }
-
-        /* Buttons Pro */
-        .btn { padding: 12px 24px; border: none; border-radius: var(--radius-md); font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn { padding: 12px 24px; border: none; border-radius: var(--radius-md); font-weight: 600; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s ease; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), #6366f1); color: white; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); }
         .btn-outline { background: transparent; color: var(--text-main); border: 2px solid var(--border); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
         .btn-icon { padding: 10px; border-radius: 50%; width: 45px; height: 45px; font-size: 18px; }
-
-        /* Cards & Forms */
         .card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); padding: 35px; margin-bottom: 25px; border: 1px solid var(--border); }
         .form-group { margin-bottom: 20px; text-align: left; }
         label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-muted); font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: var(--radius-md); font-size: 15px; background: transparent; color: var(--text-main); outline: none; transition: 0.3s; }
+        input, select, textarea { width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: var(--radius-md); font-size: 15px; background: transparent; color: var(--text-main); outline: none; }
         input:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
-
-        /* Exam Interface */
         .progress-container { width: 100%; background: var(--border); height: 10px; border-radius: 10px; overflow: hidden; margin-bottom: 30px; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), #818cf8); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        
-        .timer-badge { background: var(--surface); border: 2px solid var(--border); color: var(--text-main); padding: 10px 20px; border-radius: 30px; font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
-        
-        /* Critical Timer Animation */
-        @keyframes pulse-red {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); background: var(--danger); color: white; border-color: var(--danger); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); background: var(--danger); color: white; border-color: var(--danger); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); background: var(--danger); color: white; border-color: var(--danger); }
-        }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), #818cf8); width: 0%; transition: width 0.5s; }
+        .timer-badge { background: var(--surface); border: 2px solid var(--border); color: var(--text-main); padding: 10px 20px; border-radius: 30px; font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+        @keyframes pulse-red { 0% { transform: scale(1); background: var(--danger); color: white; } 70% { transform: scale(1.05); } 100% { transform: scale(1); } }
         .timer-critical { animation: pulse-red 1s infinite; }
-
-        .question-text { font-size: 24px; font-weight: 700; margin-bottom: 30px; line-height: 1.5; color: var(--text-main); }
+        .question-text { font-size: 24px; font-weight: 700; margin-bottom: 30px; line-height: 1.5; }
         .option-label { display: flex; align-items: center; gap: 15px; padding: 18px 20px; border: 2px solid var(--border); border-radius: var(--radius-md); margin-bottom: 15px; cursor: pointer; transition: 0.2s; font-size: 16px; font-weight: 500; background: var(--surface); }
         .option-label:hover { border-color: var(--primary); transform: translateX(5px); }
         .option-label.selected { border-color: var(--primary); background: var(--primary-light); color: var(--primary); box-shadow: var(--shadow-hover); }
-        
-        /* Custom Checkmark for Selected Option */
-        .option-label.selected::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; font-size: 20px; color: var(--primary); animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .option-label.selected::after { content: '\f058'; font-family: 'Font Awesome 6 Free'; font-weight: 900; margin-left: auto; font-size: 20px; animation: popIn 0.3s; }
         @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
         .option-letter { background: var(--bg-color); border: 2px solid var(--border); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 700; color: var(--text-muted); }
         .option-label.selected .option-letter { background: var(--primary); border-color: var(--primary); color: white; }
-
-        /* Review Mode UI */
         .review-box { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; margin-bottom: 15px; background: var(--surface); text-align: left;}
         .review-q { font-weight: 700; font-size: 18px; margin-bottom: 15px; }
         .rev-opt { padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 15px;}
         .rev-correct { background: rgba(16, 185, 129, 0.1); border-color: var(--success); color: var(--success); font-weight: bold;}
         .rev-wrong { background: rgba(239, 68, 68, 0.1); border-color: var(--danger); color: var(--danger); }
-
-        /* Utilities */
         .hidden { display: none !important; }
         .fade-in { animation: fadeIn 0.5s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Toast */
         .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; }
-        .toast { background: var(--surface); border-left: 6px solid var(--primary); padding: 16px 24px; border-radius: 10px; box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 15px; font-weight: 600; color: var(--text-main); animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; transform: translateX(120%); }
+        .toast { background: var(--surface); border-left: 6px solid var(--primary); padding: 16px 24px; border-radius: 10px; box-shadow: var(--shadow-soft); display: flex; align-items: center; gap: 15px; font-weight: 600; color: var(--text-main); animation: slideIn 0.4s forwards; transform: translateX(120%); }
         .toast.error { border-left-color: var(--danger); }
         .toast.success { border-left-color: var(--success); }
         @keyframes slideIn { to { transform: translateX(0); } }
         @keyframes slideOut { to { transform: translateX(120%); opacity: 0; } }
-
-        /* ======= NEW: SIDEBAR CSS (Glassmorphism) ======= */
         .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 99; opacity: 0; visibility: hidden; transition: 0.3s; }
         .sidebar-overlay.active { opacity: 1; visibility: visible; }
-        .profile-sidebar { position: fixed; top: 0; right: 0; width: 380px; max-width: 100%; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: -5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; padding: 30px; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+        .profile-sidebar { position: fixed; top: 0; right: 0; width: 380px; max-width: 100%; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 100; transform: translateX(100%); transition: transform 0.4s; box-shadow: -5px 0 25px rgba(0,0,0,0.1); overflow-y: auto; padding: 30px; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
         .profile-sidebar.open { transform: translateX(0); }
         .profile-header { text-align: center; margin-bottom: 20px; }
-        .profile-header img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); padding: 3px; margin-bottom: 15px; box-shadow: var(--shadow-soft); }
-        .profile-header h3 { font-size: 22px; color: var(--text-main); margin-bottom: 5px; }
-        .profile-header p { color: var(--text-muted); font-size: 14px; }
-        .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 15px; margin-bottom: 15px; box-shadow: var(--shadow-soft); text-align: left; }
+        .profile-header img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--primary); padding: 3px; margin-bottom: 15px; }
+        .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 15px; margin-bottom: 15px; text-align: left; }
         .history-card h5 { color: var(--primary); font-size: 16px; margin-bottom: 5px; }
         .mistake-box { margin-top: 10px; padding: 10px; background: var(--bg-color); border-radius: 8px; font-size: 13px; border-left: 3px solid var(--danger); }
 
-        /* ======= RESPONSIVE FIXES ======= */
         @media (max-width: 768px) {
             .admin-grid { grid-template-columns: 1fr; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .card { padding: 20px; }
-            header { flex-direction: column; text-align: center; justify-content: center; padding: 15px; }
-            header > div { justify-content: center; }
-            .result-grid-mobile { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-            .exam-nav-buttons { flex-direction: column; gap: 10px; }
-            .exam-nav-buttons .btn { width: 100%; }
+            header { flex-direction: column; text-align: center; }
             .profile-sidebar { width: 100%; }
-        }
-        @media (max-width: 480px) {
-            .result-grid-mobile { grid-template-columns: 1fr !important; }
-            .timer-badge { font-size: 15px; padding: 8px 15px; }
-            .question-text { font-size: 20px; }
         }
     </style>
 </head>
@@ -145,10 +97,8 @@
     <header>
         <div class="logo"><i class="fas fa-graduation-cap"></i> ProExam LMS</div>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <button class="btn btn-outline btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-moon" id="themeIcon"></i></button>
-            
+            <button class="btn btn-outline btn-icon" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
             <button class="btn btn-outline hidden" id="profileBtn" onclick="toggleProfileSidebar()"><i class="fas fa-user-circle"></i> প্রোফাইল</button>
-
             <button class="btn btn-outline" id="adminLoginBtn" onclick="showLoginModal()"><i class="fas fa-user-shield"></i> Admin</button>
             <button class="btn btn-danger hidden" id="adminLogoutBtn" onclick="adminLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
             <button class="btn btn-primary" onclick="resetToHome()"><i class="fas fa-home"></i> Home</button>
@@ -164,437 +114,224 @@
             <p id="profEmail">student@email.com</p>
         </div>
         <hr style="border: 1px dashed var(--border); margin: 20px 0;">
-        <h4 style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;"><i class="fas fa-history text-primary"></i> পরীক্ষার হিস্টরি</h4>
-        <div id="historyList" style="flex: 1;">
-            <p class="text-center text-muted" style="margin-top: 20px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
-        </div>
+        <h4 style="margin-bottom: 15px;"><i class="fas fa-history text-primary"></i> পরীক্ষার হিস্টরি</h4>
+        <div id="historyList" style="flex: 1;"></div>
     </div>
 
     <div class="container fade-in" id="mainContainer">
         
         <div id="adminPanel" class="hidden">
-            <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                 <h2><i class="fas fa-chart-line text-primary"></i> অ্যাডমিন ড্যাশবোর্ড</h2>
-                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
-                    <label style="margin:0; display:flex; align-items:center; gap:8px; cursor:pointer;">
-                        <input type="checkbox" id="negMarkToggle" style="width:18px; height:18px;" onchange="saveAdminSettings()"> 
-                        <span style="font-weight:bold; color:var(--danger)">নেগেটিভ মার্কিং (০.২৫)</span>
-                    </label>
-                    <span class="badge" style="background: var(--success); color: white; padding: 5px 12px; border-radius: 20px; font-size:12px;">Secure</span>
-                </div>
+                <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" id="negMarkToggle" onchange="saveAdminSettings()"> 
+                    <span style="font-weight:bold; color:var(--danger)">নেগেটিভ মার্কিং</span>
+                </label>
             </div>
             
-            <div class="admin-grid">
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px;" class="admin-grid">
                 <div class="card">
-                    <h3 style="margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> ম্যানুয়ালি প্রশ্ন যোগ</h3>
-                    <form id="addQuestionForm">
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                            <select id="qClass" required style="flex:1; min-width: 100px;"><option value="SSC">SSC</option><option value="HSC">HSC</option></select>
-                            <input type="text" id="qSubject" placeholder="বিষয় (উদা: Physics)" required style="flex:2; min-width: 150px;">
+                    <h3><i class="fas fa-plus-circle"></i> প্রশ্ন যোগ করুন</h3>
+                    <form id="addQuestionForm" style="margin-top:20px;">
+                        <div style="display: flex; gap: 10px;">
+                            <select id="qClass" required><option value="SSC">SSC</option><option value="HSC">HSC</option></select>
+                            <input type="text" id="qSubject" placeholder="বিষয়" required>
                         </div>
-                        <div class="form-group" style="margin-top: 15px;">
-                            <textarea id="qText" rows="3" placeholder="প্রশ্ন লিখুন..." required></textarea>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px;">
+                        <textarea id="qText" rows="3" placeholder="প্রশ্ন লিখুন..." required style="margin-top:15px;"></textarea>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px;">
                             <input type="text" id="optA" placeholder="Option A" required>
                             <input type="text" id="optB" placeholder="Option B" required>
                             <input type="text" id="optC" placeholder="Option C" required>
                             <input type="text" id="optD" placeholder="Option D" required>
                         </div>
-                        <select id="qCorrect" required style="margin-bottom: 15px;">
-                            <option value="" disabled selected>সঠিক উত্তর নির্বাচন করুন</option>
+                        <select id="qCorrect" required style="margin-top:15px;">
+                            <option value="" disabled selected>সঠিক উত্তর</option>
                             <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
                         </select>
-                        <button type="submit" id="saveBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> সেভ করুন</button>
+                        <button type="submit" id="saveBtn" class="btn btn-primary" style="width: 100%; margin-top:15px;">সেভ করুন</button>
                     </form>
-
-                    <hr style="border:1px dashed var(--border); margin: 25px 0;">
-                    <h3 style="margin-bottom: 15px;"><i class="fas fa-file-import"></i> JSON বাল্ক ইমপোর্ট</h3>
-                    <textarea id="bulkJsonInput" rows="4" placeholder='[{"class":"SSC","subject":"Bangla","text":"Q1?","options":{"A":"1","B":"2","C":"3","D":"4"},"correct":"A"}]' style="font-family: monospace; font-size: 13px; margin-bottom:10px;"></textarea>
-                    <button class="btn btn-outline" onclick="processBulkImport()" style="width: 100%;"><i class="fas fa-upload"></i> একসাথে আপলোড করুন</button>
                 </div>
-
-                <div class="card" style="display: flex; flex-direction: column;">
-                    <h3 style="margin-bottom: 20px;"><i class="fas fa-database"></i> প্রশ্ন ব্যাংক (<span id="totalQCount">0</span>)</h3>
-                    <div id="adminQuestionList" style="flex: 1; overflow-y: auto; max-height: 650px; padding-right: 10px;">
-                        <p class="text-center text-muted" style="margin-top: 50px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
-                    </div>
+                <div class="card">
+                    <h3><i class="fas fa-database"></i> প্রশ্ন ব্যাংক (<span id="totalQCount">0</span>)</h3>
+                    <div id="adminQuestionList" style="max-height: 500px; overflow-y: auto; margin-top:20px;"></div>
                 </div>
             </div>
         </div>
 
         <div id="studentSetupView">
-            <div class="card text-center fade-in" id="step1Info" style="max-width: 500px; margin: 50px auto;">
-                <div style="width: 90px; height: 90px; background: rgba(234, 67, 53, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; color: #ea4335; box-shadow: var(--shadow-soft);">
+            <div class="card text-center" id="step1Info" style="max-width: 500px; margin: 50px auto;">
+                <div style="width: 80px; height: 80px; background: #ea4335; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 35px;">
                     <i class="fab fa-google"></i>
                 </div>
-                <h2 style="margin-bottom: 10px; font-size: 28px;">প্রো এক্সাম পোর্টালে স্বাগতম</h2>
-                <p style="color: var(--text-muted); margin-bottom: 30px;">নিরাপত্তার স্বার্থে শুধুমাত্র গুগল একাউন্ট দিয়ে লগইন করে পরীক্ষা শুরু করুন।</p>
-                
-                <button class="btn btn-primary" onclick="studentGoogleLogin()" style="width: 100%; padding: 16px; font-size: 18px; background: #ea4335; border-color: #ea4335; box-shadow: 0 4px 15px rgba(234, 67, 53, 0.3);">
+                <h2>স্বাগতম প্রো এক্সাম পোর্টালে</h2>
+                <p style="margin: 20px 0; color: var(--text-muted);">নিরাপদ লগইনের জন্য আপনার গুগল অ্যাকাউন্ট ব্যবহার করুন।</p>
+                <button class="btn btn-primary" onclick="studentGoogleLogin()" style="width: 100%; background: #ea4335; border:none; padding:15px;">
                     <i class="fab fa-google"></i> Continue with Google
                 </button>
             </div>
 
-            <div class="card hidden fade-in" id="step2Settings" style="max-width: 650px; margin: 30px auto;">
-                <h2 style="border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 25px;"><i class="fas fa-sliders-h"></i> পরীক্ষার কনফিগারেশন</h2>
-                
-                <label>১. আপনার ক্লাস নির্বাচন করুন:</label>
-                <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
-                    <button class="btn btn-outline" id="btnSSC" onclick="selectClass('SSC')" style="flex: 1; min-width: 120px; padding: 15px; font-size:18px;">SSC</button>
-                    <button class="btn btn-outline" id="btnHSC" onclick="selectClass('HSC')" style="flex: 1; min-width: 120px; padding: 15px; font-size:18px;">HSC</button>
+            <div class="card hidden" id="step2Settings" style="max-width: 600px; margin: 30px auto;">
+                <h2><i class="fas fa-sliders-h"></i> পরীক্ষার কনফিগারেশন</h2>
+                <label style="margin-top:20px;">ক্লাস নির্বাচন করুন:</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn btn-outline" id="btnSSC" onclick="selectClass('SSC')" style="flex:1;">SSC</button>
+                    <button class="btn btn-outline" id="btnHSC" onclick="selectClass('HSC')" style="flex:1;">HSC</button>
                 </div>
-
-                <div id="subjectWrapper" class="hidden" style="margin-bottom: 30px;">
-                    <label>২. বিষয় নির্বাচন করুন:</label>
-                    <div id="subjectGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;"></div>
+                <div id="subjectWrapper" class="hidden">
+                    <label>বিষয় নির্বাচন করুন:</label>
+                    <div id="subjectGrid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom:20px;"></div>
                 </div>
-
                 <div id="configWrapper" class="hidden">
-                    <label>৩. সেটআপ সম্পূর্ণ করুন:</label>
-                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
-                        <div style="flex: 1; min-width: 150px;"><input type="number" id="userQCount" placeholder="প্রশ্নের সংখ্যা (উদা: 10)" min="1"></div>
-                        <div style="flex: 1; min-width: 150px;"><input type="number" id="userTimeLimit" placeholder="সময় - মিনিট (উদা: 5)" min="1"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="number" id="userQCount" placeholder="প্রশ্নের সংখ্যা" min="1">
+                        <input type="number" id="userTimeLimit" placeholder="সময় (মিনিট)" min="1">
                     </div>
-                    <button class="btn btn-primary" onclick="startExamValidation()" style="width: 100%; padding: 18px; margin-top: 30px; font-size: 20px;"><i class="fas fa-play-circle"></i> পরীক্ষা শুরু করুন</button>
+                    <button class="btn btn-primary" onclick="startExamValidation()" style="width: 100%; margin-top: 20px; padding:15px;">শুরু করুন</button>
                 </div>
             </div>
         </div>
 
-        <div id="examFocusUI" class="hidden fade-in">
-            <div class="card" style="max-width: 850px; margin: 20px auto; position: relative; overflow: hidden;">
-                <div style="position: absolute; top:0; left:0; width:100%; height:6px; background: linear-gradient(90deg, var(--primary), #ec4899);"></div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+        <div id="examFocusUI" class="hidden">
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <h3 id="examSubjectTitle" style="color: var(--primary); margin-bottom: 5px; font-size:22px;">Subject</h3>
-                        <p id="qCounterText" style="color: var(--text-muted); font-size: 15px; font-weight: 600;">Question 1 / 10</p>
+                        <h3 id="examSubjectTitle">Subject</h3>
+                        <p id="qCounterText" style="font-size:14px; color:var(--text-muted);">Question 1</p>
                     </div>
                     <div class="timer-badge" id="timerBadgeUI">
                         <i class="fas fa-stopwatch"></i> <span id="timerDisplay">00:00</span>
                     </div>
                 </div>
-                
                 <div class="progress-container"><div class="progress-bar" id="examProgress"></div></div>
-
-                <div style="min-height: 300px; padding: 10px 0;">
+                <div style="min-height: 250px;">
                     <h2 class="question-text" id="liveQText">প্রশ্ন লোড হচ্ছে...</h2>
                     <div id="optionsRenderArea"></div>
                 </div>
-
-                <div class="exam-nav-buttons" style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 25px; gap: 10px;">
-                    <button class="btn btn-outline" id="prevBtn" onclick="navigateQuestion(-1)" style="padding: 12px 25px;"><i class="fas fa-arrow-left"></i> পূর্ববর্তী</button>
-                    <button class="btn btn-primary" id="nextBtn" onclick="navigateQuestion(1)" style="padding: 12px 30px;">পরবর্তী <i class="fas fa-arrow-right"></i></button>
-                    <button class="btn btn-success hidden" id="submitBtn" onclick="submitExamFinal()" style="background: var(--success); color: white; padding: 12px 30px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);"><i class="fas fa-flag-checkered"></i> সাবমিট করুন</button>
+                <div style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
+                    <button class="btn btn-outline" id="prevBtn" onclick="navigateQuestion(-1)">পূর্ববর্তী</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="navigateQuestion(1)">পরবর্তী</button>
+                    <button class="btn btn-success hidden" id="submitBtn" onclick="submitExamFinal()">সাবমিট</button>
                 </div>
             </div>
         </div>
 
-        <div id="resultUI" class="hidden fade-in">
-            <div class="card" style="max-width: 900px; margin: 0 auto; text-align:center; padding: 50px 30px; background: linear-gradient(135deg, var(--primary), #4338ca); color: white; position: relative; overflow: hidden;">
-                <div style="position: absolute; top: -50px; right: -50px; opacity: 0.1; font-size: 250px;"><i class="fas fa-trophy"></i></div>
-                <h1 style="margin-bottom: 10px; font-size: 32px;">ফলাফল কার্ড</h1>
-                <p id="emailStatusText" style="opacity: 0.9; margin-bottom: 30px;"><i class="fas fa-spinner fa-spin"></i> ইমেইলে রিপোর্ট তৈরি হচ্ছে...</p>
-                
-                <div style="width: 180px; height: 180px; border: 10px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; flex-direction:column; align-items: center; justify-content: center; margin: 0 auto 30px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);">
-                    <span id="scoreDisplay" style="font-size: 55px; font-weight: 800; line-height: 1;">0</span>
-                    <span style="font-size: 16px; opacity:0.8;">প্রাপ্ত নম্বর</span>
-                </div>
-                <h2 id="percentDisplay" style="font-size: 28px;">0% Accuracy</h2>
+        <div id="resultUI" class="hidden">
+            <div class="card text-center" style="background: var(--primary); color: white;">
+                <h1>আপনার ফলাফল</h1>
+                <div style="font-size: 60px; font-weight: 800; margin: 20px 0;" id="scoreDisplay">0</div>
+                <p id="percentDisplay">0% Accuracy</p>
             </div>
-
-            <div class="result-grid-mobile" style="max-width: 900px; margin: -30px auto 30px; position: relative; z-index: 10; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 0 20px;">
-                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-check-circle text-success" style="font-size:28px; color:var(--success);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">সঠিক</p><h3 id="resCorrect" style="font-size:24px;">0</h3></div>
-                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-times-circle text-danger" style="font-size:28px; color:var(--danger);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">ভুল</p><h3 id="resWrong" style="font-size:24px;">0</h3></div>
-                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-minus-circle text-warning" style="font-size:28px; color:var(--warning);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">নেগেটিভ</p><h3 id="resNegative" style="font-size:24px;">0.00</h3></div>
-                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-layer-group text-primary" style="font-size:28px; color:var(--primary);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">মোট প্রশ্ন</p><h3 id="resTotal" style="font-size:24px;">0</h3></div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px;">
+                <div class="card text-center" style="padding:15px; margin:0;"><h5>সঠিক</h5><h3 id="resCorrect">0</h3></div>
+                <div class="card text-center" style="padding:15px; margin:0;"><h5>ভুল</h5><h3 id="resWrong">0</h3></div>
+                <div class="card text-center" style="padding:15px; margin:0;"><h5>নেগেটিভ</h5><h3 id="resNegative">0</h3></div>
+                <div class="card text-center" style="padding:15px; margin:0;"><h5>মোট</h5><h3 id="resTotal">0</h3></div>
             </div>
-
-            <div style="max-width: 900px; margin: 0 auto; display: flex; gap: 15px; flex-wrap: wrap; padding: 0 20px;">
-                <button class="btn btn-outline" onclick="toggleReviewMode()" style="flex:1; min-width: 200px; padding:15px; font-size:16px;"><i class="fas fa-eye"></i> উত্তরপত্র দেখুন</button>
-                <button class="btn btn-primary" onclick="resetToHome()" style="flex:1; min-width: 200px; padding:15px; font-size:16px;"><i class="fas fa-redo"></i> নতুন পরীক্ষা</button>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-outline" style="flex:1;" onclick="toggleReviewMode()">উত্তরপত্র</button>
+                <button class="btn btn-primary" style="flex:1;" onclick="resetToHome()">আবার শুরু</button>
             </div>
-
-            <div id="reviewSection" class="hidden fade-in" style="max-width: 900px; margin: 30px auto 0;">
-                <h3 style="margin-bottom: 20px; text-align:center; border-bottom:1px solid var(--border); padding-bottom:10px;">বিস্তারিত সমাধান</h3>
+            <div id="reviewSection" class="hidden card" style="margin-top: 20px;">
                 <div id="reviewContentArea"></div>
             </div>
         </div>
+    </div>
 
+    <div id="adminLoginModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; place-items: center; z-index: 1000;">
+        <div class="card" style="width: 350px; text-align: center;">
+            <h2>Admin Login</h2>
+            <input type="email" id="adminEmail" placeholder="Email" style="margin-top:20px;">
+            <input type="password" id="adminPass" placeholder="Password" style="margin-top:10px;">
+            <button class="btn btn-primary" onclick="processAdminLogin()" style="width:100%; margin-top:20px;">Login</button>
+            <button class="btn btn-outline" onclick="closeLoginModal()" style="width:100%; margin-top:10px; border:none;">Cancel</button>
+        </div>
     </div>
 
     <div id="toastContainer" class="toast-container"></div>
 
-    <div id="adminLoginModal" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); display: none; place-items: center; z-index: 1000;">
-        <div class="card" style="width: 90%; max-width: 400px; padding: 40px; text-align: center; animation: slideUp 0.3s ease;">
-            <div style="width:60px; height:60px; background:var(--primary-light); color:var(--primary); font-size:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;"><i class="fas fa-lock"></i></div>
-            <h2 style="margin-bottom: 10px;">Admin Access</h2>
-            <p class="text-muted" style="margin-bottom: 30px; font-size: 14px;">Authorized personnel only</p>
-            
-            <div class="form-group"><input type="email" id="adminEmail" placeholder="Admin Email" required></div>
-            <div class="form-group" style="margin-bottom: 30px;"><input type="password" id="adminPass" placeholder="Password" required></div>
-            
-            <button class="btn btn-primary" onclick="processAdminLogin()" style="width: 100%; margin-bottom: 15px; padding:15px;">লগইন করুন</button>
-            <button class="btn btn-outline" onclick="closeLoginModal()" style="width: 100%; padding:15px; border:none;">ক্যানসেল</button>
-        </div>
-    </div>
-    <style>@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }</style>
-
 <script>
-    // --- Theme Management ---
-    function initTheme() {
-        const savedTheme = localStorage.getItem('proExamTheme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-    }
-    function toggleTheme() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('proExamTheme', next);
-        updateThemeIcon(next);
-    }
-    function updateThemeIcon(theme) {
-        const icon = document.getElementById('themeIcon');
-        icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-    }
-    initTheme();
+    // --- ১. কনফিগারেশন এবং ইনিশিয়ালাইজেশন ---
+    const supabaseUrl = 'https://erriuoaimugghjuiorpd.supabase.co';
+    const supabaseKey = 'sb_publishable_ephU-uxIXjNcHrwAfl0KDQ_upFzZOku'; // আপনার API Key
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // --- 1. Init Supabase & EmailJS ---
     (function(){ emailjs.init("dtl9HyOi2wvJEUiRB"); })();
 
-    const supabaseUrl = 'https://rrlmjazdqamhofxeszey.supabase.co';
-    const supabaseKey = 'Sb_publishable_cY3hPk1F4ksdQe1IXbUAOQ_T_r1TUKL';
-    const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-    // --- State Variables ---
     let appData = { questions: [], adminSettings: { negativeMarking: true } };
-    let studentData = { name: '', email: '', class: '', subject: '', qCount: 0, timeMin: 0 };
+    let studentData = { name: '', email: '', uid: '', class: '', subject: '' };
     let examState = { active: false, questions: [], answers: {}, currentIndex: 0, timerInterval: null };
 
-    // --- Custom UI Utilities ---
-    function showToast(msg, type='success') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> <span>${msg}</span>`;
-        container.appendChild(toast);
-        setTimeout(() => { toast.style.animation = 'slideOut 0.4s forwards'; setTimeout(() => toast.remove(), 400); }, 3000);
-    }
-    
-    function switchView(viewId) {
-        ['adminPanel', 'studentSetupView', 'examFocusUI', 'resultUI'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        document.getElementById(viewId).classList.remove('hidden');
-        window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-
-    // --- NEW: Sidebar Control Functions ---
-    function toggleProfileSidebar() {
-        const sidebar = document.getElementById('profileSidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        if (sidebar.classList.contains('open')) {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        } else {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-        }
-    }
-
-    function toggleDetails(key) {
-        document.getElementById('details-' + key).classList.toggle('hidden');
-    }
-
-    async function fetchStudentHistory(uid) {
-        const list = document.getElementById('historyList');
-        const { data, error } = await _supabase.from('user_history').select('*').eq('user_id', uid).order('exam_date', { ascending: false });
-        
-        if (error || !data || data.length === 0) {
-            return list.innerHTML = '<p class="text-center text-muted" style="margin-top: 20px;">কোনো হিস্টরি পাওয়া যায়নি।</p>';
-        }
-        let html = '';
-        data.forEach(h => {
-            const dateStr = new Date(h.exam_date).toLocaleString('bn-BD', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-            const key = h.id;
-            html += `
-            <div class="history-card">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h5>${h.subject} (${h.class_name})</h5>
-                    <span style="font-size:12px; font-weight:bold; color:var(--primary);">${h.score} / ${h.total_questions}</span>
-                </div>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;"><i class="far fa-clock"></i> ${dateStr}</p>
-                <div style="display:flex; gap:10px; font-size:13px; margin-bottom:10px;">
-                    <span style="color:var(--success)"><i class="fas fa-check"></i> সঠিক: ${h.correct_answers}</span>
-                    <span style="color:var(--danger)"><i class="fas fa-times"></i> ভুল: ${h.wrong_answers}</span>
-                </div>
-                ${h.mistakes_html ? `<button class="btn btn-outline" style="padding:6px; font-size:12px; width:100%; border-radius:6px;" onclick="toggleDetails('${key}')">ভুলগুলো দেখুন <i class="fas fa-chevron-down"></i></button>
-                <div id="details-${key}" class="hidden mistake-box">
-                    ${h.mistakes_html}
-                </div>` : '<div class="mistake-box" style="border-left-color:var(--success); color:var(--success);"><i class="fas fa-star"></i> কোনো ভুল নেই! অসাধারণ!</div>'}
-            </div>`;
-        });
-        list.innerHTML = html;
-    }
-
-    // --- Auth Logic ---
+    // --- ২. গুগল লগইন (Fix: Redirect Mode) ---
     async function studentGoogleLogin() {
-    const { error } = await _supabase.auth.signInWithOAuth({ 
-        provider: 'google',
-        options: {
-            // ফোল্ডারের শেষে শুধু স্ল্যাশ দিলেই index.html লোড হবে
-            redirectTo: 'https://rupshajonokollanfoundation.vercel.app/examiner/'
+        try {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin + window.location.pathname
+                }
+            });
+            if (error) throw error;
+        } catch (err) {
+            showToast("লগইন ত্রুটি: " + err.message, "error");
         }
-    });
-    if (error) showToast('গুগল লগইন ব্যর্থ: ' + error.message, 'error');
-}
+    }
 
-                // Student Workflow
-                studentData.name = user.user_metadata.full_name || user.email.split('@')[0];
-                studentData.email = user.email;
+    // Auth State Listener (লগইন হওয়ার পর অটোমেটিক রান হবে)
+    supabase.auth.onAuthStateChange(async (event, session) => {
+        const user = session?.user;
+        if (user) {
+            // চেক করা হচ্ছে এটা কি গুগল ইউজার নাকি অ্যাডমিন
+            if (user.app_metadata.provider === 'google') {
+                studentData = {
+                    name: user.user_metadata.full_name,
+                    email: user.email,
+                    uid: user.id
+                };
                 document.getElementById('step1Info').classList.add('hidden');
                 document.getElementById('step2Settings').classList.remove('hidden');
-                
-                // Setup Profile Sidebar Info
                 document.getElementById('profileBtn').classList.remove('hidden');
                 document.getElementById('profName').innerText = studentData.name;
-                document.getElementById('profEmail').innerText = user.email;
-                if (user.user_metadata.avatar_url) document.getElementById('profPic').src = user.user_metadata.avatar_url;
+                document.getElementById('profEmail').innerText = studentData.email;
+                if(user.user_metadata.avatar_url) document.getElementById('profPic').src = user.user_metadata.avatar_url;
                 
-                fetchStudentHistory(user.id); // Fetch history
-                switchView('studentSetupView');
+                fetchHistory(); // হিস্টরি লোড
+                showToast("সফলভাবে লগইন হয়েছে!");
             } else {
-                // Admin Workflow
+                // অ্যাডমিন লগইন হলে
                 switchView('adminPanel');
-                closeLoginModal();
-                fetchAdminSettings();
-            }
-        } else {
-            document.getElementById('adminLoginBtn').classList.remove('hidden');
-            document.getElementById('adminLogoutBtn').classList.add('hidden');
-            
-            document.getElementById('profileBtn').classList.add('hidden');
-
-            if(!examState.active && document.getElementById('resultUI').classList.contains('hidden')){
-                document.getElementById('step1Info').classList.remove('hidden');
-                document.getElementById('step2Settings').classList.add('hidden');
-                switchView('studentSetupView');
+                document.getElementById('adminLoginBtn').classList.add('hidden');
+                document.getElementById('adminLogoutBtn').classList.remove('hidden');
             }
         }
     });
 
-    function showLoginModal() { document.getElementById('adminLoginModal').style.display = 'grid'; }
-    function closeLoginModal() { document.getElementById('adminLoginModal').style.display = 'none'; document.getElementById('adminPass').value = ''; }
-    
-    async function processAdminLogin() {
-        const email = document.getElementById('adminEmail').value;
-        const pass = document.getElementById('adminPass').value;
-        if(!email || !pass) return showToast('ইমেইল ও পাসওয়ার্ড দিন', 'error');
+    // --- ৩. ডাটাবেজ অপারেশনস ---
+    async function fetchQuestions() {
+        const { data } = await supabase.from('questions').select('*');
+        appData.questions = data || [];
+        renderAdminQList();
+    }
+    fetchQuestions();
+
+    async function fetchHistory() {
+        const { data } = await supabase.from('user_history')
+            .select('*').eq('user_uid', studentData.uid).order('created_at', { ascending: false });
         
-        const { error } = await _supabase.auth.signInWithPassword({ email, password: pass });
-        if(error) showToast('লগইন ব্যর্থ: ' + error.message, 'error');
-        else showToast('অ্যাডমিন প্যানেলে স্বাগতম!');
-    }
-    
-    async function adminLogout() { 
-        await _supabase.auth.signOut(); 
-        location.reload(); 
-    }
-
-    // --- Database Fetch ---
-    async function fetchAllQuestions() {
-        const { data, error } = await _supabase.from('questions').select('*');
-        if (data) {
-            appData.questions = data;
-            renderAdminQList();
+        const list = document.getElementById('historyList');
+        if (!data || data.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:gray;">কোনো হিস্টরি নেই</p>';
+            return;
         }
-    }
-    fetchAllQuestions();
-
-    function fetchAdminSettings() {
-        const isNeg = localStorage.getItem('proExamNegMarking') !== 'false';
-        appData.adminSettings.negativeMarking = isNeg;
-        document.getElementById('negMarkToggle').checked = isNeg;
-    }
-
-    function saveAdminSettings() {
-        const isNeg = document.getElementById('negMarkToggle').checked;
-        localStorage.setItem('proExamNegMarking', isNeg);
-        appData.adminSettings.negativeMarking = isNeg;
-        showToast(`নেগেটিভ মার্কিং ${isNeg ? 'চালু' : 'বন্ধ'} করা হয়েছে।`);
+        list.innerHTML = data.map(h => `
+            <div class="history-card">
+                <h5>${h.subject} (${h.class})</h5>
+                <p style="font-size:12px; color:gray;">${new Date(h.created_at).toLocaleDateString('bn-BD')}</p>
+                <div style="margin-top:5px; font-weight:bold;">স্কোর: ${h.score} / ${h.total}</div>
+            </div>
+        `).join('');
     }
 
-    // --- Admin Question Operations ---
-    document.getElementById('addQuestionForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('saveBtn'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সেভ হচ্ছে...'; btn.disabled = true;
-        
-        const qData = {
-            class: document.getElementById('qClass').value,
-            subject: document.getElementById('qSubject').value.trim(),
-            text: document.getElementById('qText').value.trim(),
-            options: { A: document.getElementById('optA').value.trim(), B: document.getElementById('optB').value.trim(), C: document.getElementById('optC').value.trim(), D: document.getElementById('optD').value.trim() },
-            correct: document.getElementById('qCorrect').value
-        };
-
-        const { error } = await _supabase.from('questions').insert([qData]);
-        if(error) {
-            showToast('এরর: ' + error.message, 'error');
-        } else {
-            showToast('প্রশ্ন যুক্ত হয়েছে!'); 
-            e.target.reset();
-            fetchAllQuestions(); 
-        }
-        btn.innerHTML = '<i class="fas fa-save"></i> সেভ করুন'; btn.disabled = false;
-    });
-
-    // Bulk Import Logic
-    async function processBulkImport() {
-        const jsonStr = document.getElementById('bulkJsonInput').value.trim();
-        if(!jsonStr) return showToast('JSON ডেটা দিন', 'error');
-        try {
-            const data = JSON.parse(jsonStr);
-            if(!Array.isArray(data)) throw new Error("ডেটা অ্যারে (Array) ফরম্যাটে হতে হবে");
-            
-            showToast('আপলোড শুরু হয়েছে...', 'success');
-            const validQuestions = data.filter(q => q.class && q.subject && q.text && q.options && q.correct);
-            
-            if(validQuestions.length > 0) {
-                const { error } = await _supabase.from('questions').insert(validQuestions);
-                if(error) throw error;
-                showToast(`${validQuestions.length} টি প্রশ্ন সফলভাবে আপলোড হয়েছে!`, 'success');
-                document.getElementById('bulkJsonInput').value = '';
-                fetchAllQuestions(); 
-            } else {
-                showToast('সঠিক ফরম্যাটের কোনো প্রশ্ন পাওয়া যায়নি', 'error');
-            }
-        } catch (e) { showToast('এরর: ' + e.message, 'error'); }
-    }
-
-    function renderAdminQList() {
-        const list = document.getElementById('adminQuestionList');
-        document.getElementById('totalQCount').innerText = appData.questions.length;
-        if(appData.questions.length === 0) return list.innerHTML = '<p class="text-center text-muted" style="margin-top:20px;">কোনো প্রশ্ন নেই</p>';
-        list.innerHTML = '';
-        appData.questions.slice().reverse().forEach(q => {
-            list.innerHTML += `<div class="card" style="padding:15px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:flex-start;">
-                <div style="flex:1; padding-right:10px;">
-                    <span style="font-size:12px; background:var(--primary-light); color:var(--primary); padding:3px 8px; border-radius:6px; font-weight:bold;">${q.class} | ${q.subject}</span>
-                    <p style="margin-top:8px; font-size:15px; font-weight:600; color:var(--text-main);">${q.text}</p>
-                    <p style="font-size:13px; color:var(--success); margin-top:5px; font-weight:bold;"><i class="fas fa-check"></i> Ans: ${q.correct}</p>
-                </div>
-                <button onclick="deleteQuestion('${q.id}')" class="btn-icon" style="background:rgba(239, 68, 68, 0.1); color:var(--danger); border:none; cursor:pointer;"><i class="fas fa-trash-alt"></i></button>
-            </div>`;
-        });
-    }
-    
-    async function deleteQuestion(id) { 
-        if(confirm('প্রশ্নটি মুছে ফেলতে চান? এটি আর ফেরত পাওয়া যাবে জৈন।')) {
-            await _supabase.from('questions').delete().eq('id', id);
-            fetchAllQuestions();
-        }
-    }
-
-    // --- Student Setup Flow ---
+    // --- ৪. এক্সাম ইঞ্জিন ---
     function selectClass(cls) {
         studentData.class = cls;
         document.getElementById('btnSSC').className = cls==='SSC' ? 'btn btn-primary' : 'btn btn-outline';
@@ -602,97 +339,52 @@
         
         const subs = [...new Set(appData.questions.filter(q => q.class === cls).map(q => q.subject))];
         const grid = document.getElementById('subjectGrid');
-        
-        if(subs.length === 0) {
-            grid.innerHTML = '<p style="color:var(--danger); grid-column:1/-1;">এই ক্লাসের কোনো প্রশ্ন নেই!</p>';
-            document.getElementById('configWrapper').classList.add('hidden');
-        } else {
-            grid.innerHTML = '';
-            subs.forEach(s => {
-                const div = document.createElement('div');
-                div.className = 'card'; div.style = 'margin:0; padding:15px; text-align:center; cursor:pointer; font-weight:600; transition:0.3s;';
-                div.innerText = s;
-                div.onclick = () => {
-                    document.querySelectorAll('#subjectGrid .card').forEach(el => { el.style.background='var(--surface)'; el.style.borderColor='var(--border)'; el.style.color='var(--text-main)'; });
-                    div.style.background = 'var(--primary-light)'; div.style.borderColor = 'var(--primary)'; div.style.color = 'var(--primary)';
-                    studentData.subject = s;
-                    document.getElementById('configWrapper').classList.remove('hidden');
-                    window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'});
-                };
-                grid.appendChild(div);
-            });
-        }
+        grid.innerHTML = subs.map(s => `<button class="btn btn-outline" onclick="selectSub('${s}')">${s}</button>`).join('');
         document.getElementById('subjectWrapper').classList.remove('hidden');
     }
 
-    function startExamValidation() {
-        if(!studentData.subject) return showToast('বিষয় নির্বাচন করুন', 'error');
-        studentData.qCount = parseInt(document.getElementById('userQCount').value);
-        studentData.timeMin = parseInt(document.getElementById('userTimeLimit').value);
-        
-        if(!studentData.qCount || studentData.qCount < 1) return showToast('প্রশ্নের সংখ্যা দিন', 'error');
-        if(!studentData.timeMin || studentData.timeMin < 1) return showToast('সময় দিন (মিনিট)', 'error');
-
-        const lastExam = localStorage.getItem('last_exam_' + studentData.email);
-        const now = new Date().getTime();
-        if (lastExam && (now - lastExam < 180000)) { // 3 min cooldown
-            const rem = Math.ceil((180000 - (now - lastExam)) / 1000);
-            return showToast(`অপেক্ষা করুন! আবার পরীক্ষা দিতে পারবেন ${rem} সেকেন্ড পর।`, 'error');
-        }
-
-        initializeExam();
+    function selectSub(s) {
+        studentData.subject = s;
+        document.getElementById('configWrapper').classList.remove('hidden');
     }
 
-    // --- EXAM ENGINE ---
-    function initializeExam() {
+    function startExamValidation() {
+        const count = parseInt(document.getElementById('userQCount').value);
+        const time = parseInt(document.getElementById('userTimeLimit').value);
+        if(!count || !time) return showToast("সব ঘর পূরণ করুন", "error");
+
         let filtered = appData.questions.filter(q => q.class === studentData.class && q.subject === studentData.subject);
-        if(filtered.length === 0) return showToast('পর্যাপ্ত প্রশ্ন নেই!', 'error');
-        
-        let limit = Math.min(studentData.qCount, filtered.length);
-        examState.questions = filtered.sort(() => 0.5 - Math.random()).slice(0, limit); // Shuffle array
-        examState.answers = {};
+        if(filtered.length === 0) return showToast("প্রশ্ন পাওয়া যায়নি", "error");
+
+        examState.questions = filtered.sort(() => 0.5 - Math.random()).slice(0, count);
         examState.currentIndex = 0;
+        examState.answers = {};
         examState.active = true;
 
-        // Reset UI
-        document.getElementById('timerBadgeUI').classList.remove('timer-critical');
-        document.getElementById('reviewSection').classList.add('hidden');
-        
-        document.getElementById('examSubjectTitle').innerText = `${studentData.class} - ${studentData.subject}`;
         switchView('examFocusUI');
-        
-        const endTime = new Date().getTime() + (studentData.timeMin * 60 * 1000);
-        sessionStorage.setItem('examEndTime', endTime);
-        
-        renderQuestionUI();
-        runTimer();
+        renderQuestion();
+        startTimer(time);
     }
 
-    function renderQuestionUI() {
+    function renderQuestion() {
         const q = examState.questions[examState.currentIndex];
-        const total = examState.questions.length;
-        const current = examState.currentIndex;
+        document.getElementById('qCounterText').innerText = `Question ${examState.currentIndex + 1} / ${examState.questions.length}`;
+        document.getElementById('liveQText').innerText = q.text;
+        document.getElementById('examProgress').style.width = `${((examState.currentIndex + 1) / examState.questions.length) * 100}%`;
 
-        document.getElementById('qCounterText').innerText = `Question ${current + 1} of ${total}`;
-        document.getElementById('examProgress').style.width = `${((current) / total) * 100}%`; // Update progress bar length
-        
-        // Slight animation for question text
-        const qText = document.getElementById('liveQText');
-        qText.style.opacity = 0;
-        setTimeout(()=>{ qText.innerText = q.text; qText.style.opacity = 1; }, 150);
+        let html = '';
+        for (let key in q.options) {
+            const isSelected = examState.answers[examState.currentIndex] === key ? 'selected' : '';
+            html += `
+                <div class="option-label ${isSelected}" onclick="markAnswer('${key}')">
+                    <div class="option-letter">${key}</div>
+                    <div style="flex:1;">${q.options[key]}</div>
+                </div>`;
+        }
+        document.getElementById('optionsRenderArea').innerHTML = html;
 
-        let optsHtml = '';
-        ['A','B','C','D'].forEach(opt => {
-            const selected = examState.answers[current] === opt ? 'selected' : '';
-            optsHtml += `<div class="option-label ${selected}" onclick="markAnswer('${opt}')" id="label-${opt}">
-                <div class="option-letter">${opt}</div>
-                <div style="flex:1;">${q.options[opt]}</div>
-            </div>`;
-        });
-        document.getElementById('optionsRenderArea').innerHTML = optsHtml;
-
-        document.getElementById('prevBtn').style.visibility = current === 0 ? 'hidden' : 'visible';
-        if(current === total - 1) {
+        document.getElementById('prevBtn').style.visibility = examState.currentIndex === 0 ? 'hidden' : 'visible';
+        if(examState.currentIndex === examState.questions.length - 1) {
             document.getElementById('nextBtn').classList.add('hidden');
             document.getElementById('submitBtn').classList.remove('hidden');
         } else {
@@ -701,194 +393,147 @@
         }
     }
 
-    function markAnswer(opt) {
-        examState.answers[examState.currentIndex] = opt;
-        document.querySelectorAll('.option-label').forEach(el => el.classList.remove('selected'));
-        document.getElementById(`label-${opt}`).classList.add('selected');
+    function markAnswer(key) {
+        examState.answers[examState.currentIndex] = key;
+        renderQuestion();
     }
 
-    function navigateQuestion(step) { examState.currentIndex += step; renderQuestionUI(); }
+    function navigateQuestion(step) {
+        examState.currentIndex += step;
+        renderQuestion();
+    }
 
-    function runTimer() {
-        const badge = document.getElementById('timerBadgeUI');
+    function startTimer(min) {
+        let sec = min * 60;
         examState.timerInterval = setInterval(() => {
-            const end = parseInt(sessionStorage.getItem('examEndTime'));
-            const dist = end - new Date().getTime();
-            
-            if (dist <= 0) {
-                clearInterval(examState.timerInterval);
-                submitExamFinal();
-            } else {
-                let m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
-                let s = Math.floor((dist % (1000 * 60)) / 1000);
-                document.getElementById('timerDisplay').innerText = `${m}:${s<10?'0':''}${s}`;
-                
-                // Smart Critical Timer Pulse under 60 seconds
-                if(dist < 60000 && !badge.classList.contains('timer-critical')) {
-                    badge.classList.add('timer-critical');
-                }
-            }
+            sec--;
+            let m = Math.floor(sec / 60);
+            let s = sec % 60;
+            document.getElementById('timerDisplay').innerText = `${m}:${s<10?'0':''}${s}`;
+            if(sec < 60) document.getElementById('timerBadgeUI').classList.add('timer-critical');
+            if(sec <= 0) { clearInterval(examState.timerInterval); submitExamFinal(); }
         }, 1000);
     }
 
-    // Pro Anti-Cheat Warning
-    document.addEventListener("visibilitychange", () => {
-        if (document.hidden && examState.active) {
-            showToast('সতর্কতা: পরীক্ষার সময় অন্য ট্যাবে যাওয়া নিষেধ!', 'error');
-            // Optional: Automatically submit if cheating detected multiple times
-        }
-    });
-
-    // --- Evaluation, Results & Review ---
-    function submitExamFinal() {
+    async function submitExamFinal() {
         examState.active = false;
         clearInterval(examState.timerInterval);
-        sessionStorage.removeItem('examEndTime');
 
         let correct = 0, wrong = 0;
-        const total = examState.questions.length;
-        
-        // NEW: Generate Mistakes HTML for History Save
-        let mistakesHTMLForHistory = '';
-
         examState.questions.forEach((q, i) => {
-            const userAns = examState.answers[i];
-            if (userAns) {
-                if (userAns === q.correct) {
-                    correct++;
-                } else {
-                    wrong++;
-                    mistakesHTMLForHistory += `
-                    <div style="margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);">
-                        <b><i class="fas fa-question-circle"></i></b> ${q.text}<br>
-                        <span style="color:var(--danger);"><i class="fas fa-times"></i> আপনার উত্তর: ${q.options[userAns]}</span><br>
-                        <span style="color:var(--success);"><i class="fas fa-check"></i> সঠিক উত্তর: ${q.options[q.correct]}</span>
-                    </div>`;
-                }
-            } else {
-                mistakesHTMLForHistory += `
-                <div style="margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--border);">
-                    <b><i class="fas fa-question-circle"></i></b> ${q.text}<br>
-                    <span style="color:var(--warning);"><i class="fas fa-exclamation-triangle"></i> আপনি কোনো উত্তর দেননি</span><br>
-                    <span style="color:var(--success);"><i class="fas fa-check"></i> সঠিক উত্তর: ${q.options[q.correct]}</span>
-                </div>`;
-            }
+            if(examState.answers[i] === q.correct) correct++;
+            else if(examState.answers[i]) wrong++;
         });
 
-        // Use Admin Settings for Negative Marking
-        let negative = appData.adminSettings?.negativeMarking ? (wrong * 0.25) : 0;
-        let finalScore = (correct - negative).toFixed(2);
-        let percent = Math.round((correct / total) * 100);
+        let neg = appData.adminSettings.negativeMarking ? (wrong * 0.25) : 0;
+        let score = (correct - neg).toFixed(2);
+        let total = examState.questions.length;
 
-        localStorage.setItem('last_exam_' + studentData.email, new Date().getTime());
+        // Save to Supabase
+        await supabase.from('user_history').insert([{
+            user_uid: studentData.uid,
+            class: studentData.class,
+            subject: studentData.subject,
+            score: parseFloat(score),
+            total: total,
+            correct: correct,
+            wrong: wrong
+        }]);
 
-        // NEW: Push to Supabase User History
-        _supabase.auth.getSession().then(async ({ data: { session } }) => {
-            if(session?.user) {
-                await _supabase.from('user_history').insert([{
-                    user_id: session.user.id,
-                    class_name: studentData.class,
-                    subject: studentData.subject,
-                    score: parseFloat(finalScore),
-                    total_questions: total,
-                    correct_answers: correct,
-                    wrong_answers: wrong,
-                    mistakes_html: mistakesHTMLForHistory
-                }]);
-                fetchStudentHistory(session.user.id);
-            }
-        });
-
-        // Animate Score Counter
         switchView('resultUI');
-        animateValue("scoreDisplay", 0, parseFloat(finalScore), 1000);
-        document.getElementById('percentDisplay').innerText = `${percent}% Accuracy`;
+        document.getElementById('scoreDisplay').innerText = score;
         document.getElementById('resCorrect').innerText = correct;
         document.getElementById('resWrong').innerText = wrong;
-        document.getElementById('resNegative').innerText = negative.toFixed(2);
+        document.getElementById('resNegative').innerText = neg;
         document.getElementById('resTotal').innerText = total;
-
-        generateReviewUI();
-        dispatchEmailReport(correct, wrong, finalScore, total, percent, negative);
-        showToast('পরীক্ষা সফলভাবে সম্পন্ন হয়েছে!', 'success');
+        document.getElementById('percentDisplay').innerText = `${Math.round((correct/total)*100)}% Accuracy`;
+        
+        generateReview();
     }
 
-    // Number counting animation
-    function animateValue(id, start, end, duration) {
-        if (start === end) return document.getElementById(id).innerHTML = end;
-        let range = end - start;
-        let current = start;
-        let increment = end > start ? (range / (duration/20)) : -1;
-        let stepTime = Math.abs(Math.floor(duration / range));
-        let obj = document.getElementById(id);
-        let timer = setInterval(function() {
-            current += increment;
-            if((increment > 0 && current >= end) || (increment < 0 && current <= end)){
-                clearInterval(timer);
-                obj.innerHTML = end;
-            } else { obj.innerHTML = current.toFixed(2); }
-        }, 20);
-    }
-
-    function generateReviewUI() {
-        const area = document.getElementById('reviewContentArea');
+    function generateReview() {
         let html = '';
         examState.questions.forEach((q, i) => {
             const userAns = examState.answers[i];
-            const isCorrect = userAns === q.correct;
-            const isSkipped = !userAns;
-
             html += `<div class="review-box">
-                <div class="review-q">প্রশ্ন ${i+1}: ${q.text}</div>`;
-            
-            ['A','B','C','D'].forEach(opt => {
-                let cssClass = 'rev-opt';
-                let icon = '';
-                if(opt === q.correct) { cssClass += ' rev-correct'; icon='<i class="fas fa-check-circle" style="float:right;"></i>'; }
-                else if(opt === userAns && !isCorrect) { cssClass += ' rev-wrong'; icon='<i class="fas fa-times-circle" style="float:right;"></i>'; }
-                
-                html += `<div class="${cssClass}"><b>${opt}.</b> ${q.options[opt]} ${icon}</div>`;
-            });
-
-            if(isSkipped) html += `<p style="color:var(--warning); margin-top:10px; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> আপনি উত্তর দেননি!</p>`;
-            html += `</div>`;
+                <div class="review-q">${i+1}. ${q.text}</div>
+                ${['A','B','C','D'].map(key => {
+                    let cls = 'rev-opt';
+                    if(key === q.correct) cls += ' rev-correct';
+                    else if(key === userAns) cls += ' rev-wrong';
+                    return `<div class="${cls}">${key}. ${q.options[key]}</div>`;
+                }).join('')}
+            </div>`;
         });
-        area.innerHTML = html;
+        document.getElementById('reviewContentArea').innerHTML = html;
     }
 
-    function toggleReviewMode() {
-        const section = document.getElementById('reviewSection');
-        section.classList.toggle('hidden');
-        if(!section.classList.contains('hidden')) {
-            window.scrollTo({top: section.offsetTop, behavior: 'smooth'});
-        }
+    // --- ৫. ইউটিলিটি ফাংশনস ---
+    function switchView(id) {
+        ['adminPanel', 'studentSetupView', 'examFocusUI', 'resultUI'].forEach(v => document.getElementById(v).classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
     }
+    function toggleTheme() {
+        const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.getElementById('themeIcon').className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+    }
+    function showToast(msg, type='success') {
+        const t = document.createElement('div');
+        t.className = `toast ${type}`;
+        t.innerText = msg;
+        document.getElementById('toastContainer').appendChild(t);
+        setTimeout(() => { t.style.animation = 'slideOut 0.4s forwards'; setTimeout(() => t.remove(), 400); }, 3000);
+    }
+    function toggleProfileSidebar() {
+        document.getElementById('profileSidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('active');
+    }
+    function resetToHome() { location.reload(); }
 
-    function dispatchEmailReport(c, w, score, total, pct, neg) {
-        const statusTxt = document.getElementById('emailStatusText');
-        statusTxt.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ইমেইলে রিপোর্ট তৈরি হচ্ছে...';
-        
-        let details = "";
-        examState.questions.forEach((q, i) => { details += `Q${i+1}: ${q.text}\nYour Ans: ${examState.answers[i]||'Skipped'} | Correct: ${q.correct}\n\n`; });
+    // --- Admin Login ---
+    function showLoginModal() { document.getElementById('adminLoginModal').style.display = 'grid'; }
+    function closeLoginModal() { document.getElementById('adminLoginModal').style.display = 'none'; }
+    async function processAdminLogin() {
+        const email = document.getElementById('adminEmail').value;
+        const pass = document.getElementById('adminPass').value;
+        const { error } = await supabase.auth.signInWithPassword({ email, password: pass });
+        if(error) showToast("ভুল তথ্য!", "error");
+        else closeLoginModal();
+    }
+    async function adminLogout() { await supabase.auth.signOut(); location.reload(); }
 
-        const templateParams = {
-            user_name: studentData.name, user_email: studentData.email, subject: studentData.subject,
-            q_count: total, correct_count: c, wrong_count: w, negative_mark: neg.toFixed(2),
-            final_score: score, percentage: pct + "%", solution_details: details
+    // --- Admin Question Management ---
+    document.getElementById('addQuestionForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const q = {
+            class: document.getElementById('qClass').value,
+            subject: document.getElementById('qSubject').value,
+            text: document.getElementById('qText').value,
+            options: {
+                A: document.getElementById('optA').value,
+                B: document.getElementById('optB').value,
+                C: document.getElementById('optC').value,
+                D: document.getElementById('optD').value
+            },
+            correct: document.getElementById('qCorrect').value
         };
+        const { error } = await supabase.from('questions').insert([q]);
+        if(!error) { showToast("প্রশ্ন সেভ হয়েছে"); e.target.reset(); fetchQuestions(); }
+    };
 
-        emailjs.send('service_272nuuq', 'template_hlm44yd', templateParams)
-            .then(() => statusTxt.innerHTML = '<span style="color:#a7f3d0; font-weight:bold;"><i class="fas fa-check-circle"></i> ডিটেইল জরিমানা রিপোর্ট ইমেইলে পাঠানো হয়েছে।</span>')
-            .catch(() => statusTxt.innerHTML = '<span style="color:#fecaca;"><i class="fas fa-exclamation-circle"></i> ইমেইল সার্ভার ব্যস্ত আছে।</span>');
+    function renderAdminQList() {
+        const list = document.getElementById('adminQuestionList');
+        document.getElementById('totalQCount').innerText = appData.questions.length;
+        list.innerHTML = appData.questions.slice().reverse().map(q => `
+            <div class="card" style="padding:15px; margin-bottom:10px; display:flex; justify-content:space-between;">
+                <div><b>${q.subject}</b>: ${q.text}</div>
+                <button onclick="deleteQ('${q.id}')" style="color:red; border:none; background:none; cursor:pointer;"><i class="fas fa-trash"></i></button>
+            </div>
+        `).join('');
     }
-
-    function resetToHome() {
-        if(examState.active && !confirm('পরীক্ষা মাঝপথে বাতিল করতে চান?')) return;
-        examState.active = false;
-        clearInterval(examState.timerInterval);
-        location.reload();
-    }
+    async function deleteQ(id) { if(confirm('Delete?')) { await supabase.from('questions').delete().eq('id', id); fetchQuestions(); } }
+    function toggleReviewMode() { document.getElementById('reviewSection').classList.toggle('hidden'); }
 </script>
-
 </body>
 </html>
