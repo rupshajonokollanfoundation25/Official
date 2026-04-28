@@ -290,3 +290,39 @@ if (premiumBtn) {
         this.style.transform = "translateY(-3px) scale(1)";
     });
 }
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('pro-notice-overlay');
+    const countdownEl = document.getElementById('countdown-number');
+    let timeLeft = 20;
+
+    if (!sessionStorage.getItem('noticeSeen')) {
+        setTimeout(() => {
+            overlay.classList.add('active');
+            startCountdown();
+        }, 800);
+    }
+
+    function startCountdown() {
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownEl.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                closeNotice();
+            }
+        }, 1000);
+    }
+
+    function closeNotice() {
+        overlay.classList.remove('active');
+        sessionStorage.setItem('noticeSeen', 'true');
+    }
+
+    document.querySelector('.pro-close-btn').onclick = closeNotice;
+});
+
