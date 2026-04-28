@@ -763,12 +763,15 @@ function resetToHome() {
 document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('pro-notice-overlay');
     const closeBtn = document.querySelector('.pro-close-btn');
-    const displayDuration = 10000; // ২০ সেকেন্ড (মিলিসেকেন্ডে)
+    const countdownEl = document.getElementById('countdown-number'); // HTML-এ এই আইডি থাকতে হবে
+    
+    let displayDuration = 20000; // ২০ সেকেন্ড
+    let timeLeft = 20; 
     let popupTimer;
+    let countdownInterval;
 
-    // সেশন স্টোরেজ চেক: ইউজার কি এই সেশনে আগে নোটিশ দেখেছে?
+    // সেশন স্টোরেজ চেক
     if (!sessionStorage.getItem('noticeSeen')) {
-        // পেজ লোড হওয়ার ৫০০ মিলিসেকেন্ড পর সুন্দরভাবে শো করবে
         setTimeout(() => {
             showNotice();
         }, 900);
@@ -777,32 +780,43 @@ document.addEventListener('DOMContentLoaded', () => {
     function showNotice() {
         overlay.classList.add('active');
         
-        // ২০ সেকেন্ড পর অটোমেটিক বন্ধ
+        // ১. অটোমেটিক ক্লোজ টাইমার
         popupTimer = setTimeout(() => {
             closeNotice();
         }, displayDuration);
+
+        // ২. কাউন্টডাউন টেক্সট আপডেট (20, 19, 18...)
+        countdownInterval = setInterval(() => {
+            timeLeft--;
+            if (countdownEl) countdownEl.innerText = timeLeft;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
     }
 
     function closeNotice() {
         overlay.classList.remove('active');
-        // সেশনে সেভ করে রাখছি যেন রিফ্রেশ দিলে আবার না আসে
         sessionStorage.setItem('noticeSeen', 'true');
-        clearTimeout(popupTimer); // টাইমার ক্লিয়ার করা
+        
+        clearTimeout(popupTimer);
+        clearInterval(countdownInterval);
     }
 
-    // ১. ক্লোজ বাটনে ক্লিক করলে বন্ধ হবে
+    // ক্লোজ বাটন ক্লিক
     if(closeBtn) {
         closeBtn.addEventListener('click', closeNotice);
     }
 
-    // ২. পপ-আপের বাইরে (ব্যাকগ্রাউন্ডে) ক্লিক করলে বন্ধ হবে
+    // বাইরে ক্লিক করলে বন্ধ
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
             closeNotice();
         }
     });
 
-    // ৩. কীবোর্ডের 'Esc' বাটন চাপলে বন্ধ হবে
+    // Esc বাটন প্রেস করলে বন্ধ
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay.classList.contains('active')) {
             closeNotice();
