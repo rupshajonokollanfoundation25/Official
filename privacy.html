@@ -110,35 +110,89 @@
         }
 
 
-        .audio-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 20px;
-    max-width: 400px;
-    text-align: center;
-    color: #fff;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+       :root {
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --accent-color: #00d2ff; /* আপনার ওয়েবসাইটের ব্র্যান্ড কালার দিতে পারেন */
 }
 
-audio {
-    width: 100%;
-    margin-top: 10px;
-    filter: invert(100%); /* ডার্ক মোডের সাথে মানিয়ে নেওয়ার জন্য */
+.player-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
 }
+
+.track-info h3 { margin: 0; font-size: 1.2rem; font-weight: 500; }
+.track-info p { opacity: 0.6; font-size: 0.85rem; margin: 5px 0 20px; }
+
+/* Progress Bar Style */
+.progress-container {
+    background: rgba(255, 255, 255, 0.1);
+    height: 6px;
+    width: 100%;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    background: var(--accent-color);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.1s linear;
+}
+
+/* Control Button */
+.main-btn {
+    background: var(--accent-color);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.main-btn:hover { transform: scale(1.1); }
+ 
 
     </style>
 </head>
 <body>
 
 
-<div class="audio-container">
-    <p>অডিও শুনুন</p>
-    <audio controls>
-        <source src="audio.mp3" type="audio/mpeg">
-        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
-    </audio>
+<div class="player-card">
+    <div class="track-info">
+        <h3 id="track-name">Audio Track Name</h3>
+        <p id="artist-name">Rupsha Jonokollan Foundation</p>
+    </div>
+    
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <div class="controls">
+        <button id="play-pause" class="main-btn">
+            <span id="play-icon">▶</span>
+        </button>
+    </div>
+
+    <audio id="main-audio" src="audio.mp3"></audio>
 </div>
 
 
@@ -319,6 +373,54 @@ s0.parentNode.insertBefore(s1,s0);
         });
     };
 })();
+
+
+
+
+    const audio = document.getElementById('main-audio');
+const playBtn = document.getElementById('play-pause');
+const playIcon = document.getElementById('play-icon');
+const progress = document.getElementById('progress-bar');
+const progressContainer = document.getElementById('progress-container');
+
+let isPlaying = false;
+
+// Play or Pause function
+function togglePlay() {
+    if (isPlaying) {
+        audio.pause();
+        playIcon.innerText = '▶';
+    } else {
+        audio.play();
+        playIcon.innerText = '⏸';
+    }
+    isPlaying = !isPlaying;
+}
+
+// Update Progress Bar
+audio.addEventListener('timeupdate', (e) => {
+    const { duration, currentTime } = e.srcElement;
+    const progressPercent = (currentTime / duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+});
+
+// Click on Progress Bar to Seek
+progressContainer.addEventListener('click', (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    audio.currentTime = (clickX / width) * duration;
+});
+
+playBtn.addEventListener('click', togglePlay);
+
+// Reset when finished
+audio.addEventListener('ended', () => {
+    playIcon.innerText = '▶';
+    isPlaying = false;
+    progress.style.width = '0%';
+});
+
 </script>
 
     
