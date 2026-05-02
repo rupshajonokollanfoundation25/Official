@@ -470,49 +470,56 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-    const audio = document.getElementById('main-audio');
+  const audio = document.getElementById('main-audio');
 const playBtn = document.getElementById('play-pause');
-const playIcon = document.getElementById('play-icon');
-const progress = document.getElementById('progress-bar');
+const playSvg = document.getElementById('play-svg');
+const progressFill = document.getElementById('progress-fill');
 const progressContainer = document.getElementById('progress-container');
+const wave = document.getElementById('wave');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
 
 let isPlaying = false;
 
-// Play or Pause function
+// Format Time (00:00)
+function formatTime(time) {
+    const min = Math.floor(time / 60);
+    const sec = Math.floor(time % 60);
+    return `${min}:${sec < 10 ? '0' + sec : sec}`;
+}
+
+// Play/Pause
 function togglePlay() {
     if (isPlaying) {
         audio.pause();
-        playIcon.innerText = '▶';
+        wave.classList.remove('playing');
+        playSvg.innerHTML = '<path d="M8 5v14l11-7z"/>'; // Play Icon
     } else {
         audio.play();
-        playIcon.innerText = '⏸';
+        wave.classList.add('playing');
+        playSvg.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; // Pause Icon
     }
     isPlaying = !isPlaying;
 }
 
-// Update Progress Bar
-audio.addEventListener('timeupdate', (e) => {
-    const { duration, currentTime } = e.srcElement;
+// Update UI
+audio.addEventListener('timeupdate', () => {
+    const { duration, currentTime } = audio;
     const progressPercent = (currentTime / duration) * 100;
-    progress.style.width = `${progressPercent}%`;
+    progressFill.style.width = `${progressPercent}%`;
+    
+    currentTimeEl.innerText = formatTime(currentTime);
+    if(duration) durationEl.innerText = formatTime(duration);
 });
 
-// Click on Progress Bar to Seek
+// Click to Seek
 progressContainer.addEventListener('click', (e) => {
     const width = progressContainer.clientWidth;
     const clickX = e.offsetX;
-    const duration = audio.duration;
-    audio.currentTime = (clickX / width) * duration;
+    audio.currentTime = (clickX / width) * audio.duration;
 });
 
 playBtn.addEventListener('click', togglePlay);
-
-// Reset when finished
-audio.addEventListener('ended', () => {
-    playIcon.innerText = '▶';
-    isPlaying = false;
-    progress.style.width = '0%';
-});
 
 </script>
 
