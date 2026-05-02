@@ -109,131 +109,35 @@
 
 
 
-        .audio-player {
-    background: #1e1e2e;
-    color: #fff;
-    width: 350px;
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.album-art {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(45deg, #6a11cb, #2575fc);
+        .audio-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 80px;
-    margin-bottom: 20px;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    color: green;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
 }
 
-.track-title { font-size: 1.2rem; margin: 0; }
-.artist-name { color: #b3b3b3; font-size: 0.9rem; margin: 5px 0 20px; }
-
-.progress-area {
-    height: 6px;
+audio {
     width: 100%;
-    background: #444;
-    border-radius: 50px;
-    cursor: pointer;
-}
-
-.progress-bar {
-    height: inherit;
-    width: 0%;
-    background: #2575fc;
-    border-radius: inherit;
-    position: relative;
-}
-
-.timer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 12px;
-    color: #b3b3b3;
-}
-
-.controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 30px 0;
-}
-
-.controls button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.play-pause {
-    width: 55px;
-    height: 55px;
-    background: #fff !important;
-    color: #000 !important;
-    border-radius: 50%;
-    font-size: 24px !important;
-}
-
-.volume-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-#volume-slider {
-    flex: 1;
-    accent-color: #2575fc;
+    margin-top: 10px;
+    filter: invert(100%); /* ডার্ক মোডের সাথে মানিয়ে নেওয়ার জন্য */
 }
 
     </style>
 </head>
 <body>
 
-<div class="audio-player">
-    <div class="album-art">
-        <i class="fas fa-music"></i>
-    </div>
-    
-    <div class="player-controls">
-        <h2 class="track-title">আমাদের ফাউন্ডেশন সম্পর্কে জানুন</h2>
-        <p class="artist-name">অডিও প্লেয়ার শুনুন</p>
-
-        <audio id="main-audio" src="about.mp3"></audio>
-
-        <div class="progress-area">
-            <div class="progress-bar">
-                <span></span>
-            </div>
-            <div class="timer">
-                <span class="current">0:00</span>
-                <span class="duration">0:00</span>
-            </div>
-        </div>
-
-        <div class="controls">
-            <button id="prev"><i class="fas fa-step-backward"></i></button>
-            <button class="play-pause"><i class="fas fa-play"></i></button>
-            <button id="next"><i class="fas fa-step-forward"></i></button>
-        </div>
-        
-        <div class="volume-container">
-            <i class="fas fa-volume-up"></i>
-            <input type="range" id="volume-slider" min="0" max="100" value="80">
-        </div>
-    </div>
+<div class="audio-container">
+    <p>আমাদের ফাউন্ডেশন সম্পর্কে শুনুন</p>
+    <audio controls>
+        <source src="about.mp3" type="audio/mpeg">
+        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
+    </audio>
 </div>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
 
 
 
