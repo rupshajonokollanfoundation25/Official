@@ -1,73 +1,227 @@
-<div class="container" style="margin-top: 60px;">
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Font Awesome CDN (যদি আপনার প্রজেক্টে না থাকে তবে এটি ব্যবহার করুন) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <h2 style="text-align: center; color: var(--primary); font-size: 28px; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px;">
+    <style>
+        /* CSS ভেরিয়েবল সেটআপ */
+        :root {
+            --primary-color: #00796b;
+            --primary-light: #e0f2f1;
+            --primary-hover: #004d40;
+            --text-dark: #2c3e50;
+            --text-muted: #546e7a;
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --border-color: rgba(0, 121, 107, 0.15);
+            --shadow-default: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 15px 35px rgba(0, 121, 107, 0.12);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* কন্টেইনার এবং টাইটেল ডিজাইন */
+        .rjf-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+            font-family: 'Kalpurush', 'Hind Siliguri', sans-serif;
+        }
+
+        .rjf-title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .rjf-title i {
+            margin-right: 10px;
+        }
+
+        /* মূল কার্ড ডিজাইন */
+        .rjf-terms-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-default);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* প্রতিটি শর্তের আইটেম ডিজাইন */
+        .rjf-term-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: var(--primary-light);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* হোভার ইফেক্ট */
+        .rjf-term-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            background: #ffffff;
+            border-left-color: var(--primary-hover);
+        }
+
+        /* আইকন এবং টেক্সট ডিজাইন */
+        .rjf-term-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-top: 2px;
+            transition: var(--transition);
+        }
+
+        .rjf-term-item:hover .rjf-term-icon {
+            transform: scale(1.1);
+            color: var(--primary-hover);
+        }
+
+        .rjf-term-text h4 {
+            margin: 0 0 8px 0;
+            color: var(--text-dark);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .rjf-term-text p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 15px;
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+        /* রেসপন্সিভ ডিজাইন */
+        @media (max-width: 768px) {
+            .rjf-terms-card {
+                padding: 25px;
+                grid-template-columns: 1fr;
+            }
+            .rjf-title {
+                font-size: 24px;
+            }
+        }
+
+
+
+
+
+
+
+        .audio-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    max-width: 400px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+}
+
+audio {
+    width: 100%;
+    margin-top: 10px;
+    filter: invert(100%); /* ডার্ক মোডের সাথে মানিয়ে নেওয়ার জন্য */
+}
+
+    </style>
+</head>
+<body>
+
+
+<div class="audio-container">
+    <p>আমাদের সদস্যপদ সম্বন্ধে শুনুন </p>
+    <audio controls>
+        <source src="member.mp3" type="audio/mpeg">
+        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
+    </audio>
+</div>
+
+
+
+    
+
+<div class="rjf-container">
+    <h2 class="rjf-title">
         <i class="fas fa-file-contract"></i> সদস্যপদ ও শর্তাবলী
     </h2>
     
-    <div class="terms-card" style="
-        background: var(--glass);
-        backdrop-filter: blur(15px);
-        border-radius: 25px;
-        padding: 40px;
-        margin-bottom: 25px;
-        border: 1px solid var(--border);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
-    ">
+    <div class="rjf-terms-card">
         
-        <div class="term-item" style="
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(0, 121, 107, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid var(--primary);
-            transition: 0.3s;
-        ">
-            <i class="fas fa-hand-holding-heart" style="font-size: 20px; color: var(--primary); margin-top: 3px;"></i>
-            <div class="term-text">
-                <h4 style="margin: 0 0 5px 0; color: #222; font-size: 18px;">স্বেচ্ছাসেবী মানসিকতা</h4>
-                <p style="margin: 0; color: #555; font-size: 15px; text-align: justify; line-height: 1.6;">নিজ ইচ্ছায় রুপসা জনকল্যাণ ফাউন্ডেশনে কাজ করতে আগ্রহী হতে হবে।</p>
+        <!-- শর্ত ১ -->
+        <div class="rjf-term-item">
+            <i class="fas fa-hand-holding-heart rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>স্বেচ্ছাসেবী মানসিকতা</h4>
+                <p>সম্পূর্ণ নিজ ইচ্ছায় এবং নিঃস্বার্থভাবে রুপসা জনকল্যাণ ফাউন্ডেশনের মানবকল্যাণমূলক কাজে নিজেকে নিয়োজিত করার মানসিকতা থাকতে হবে।</p>
             </div>
         </div>
 
-        <div class="term-item" style="
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(0, 121, 107, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid var(--primary);
-            transition: 0.3s;
-        ">
-            <i class="fas fa-users" style="font-size: 20px; color: var(--primary); margin-top: 3px;"></i>
-            <div class="term-text">
-                <h4 style="margin: 0 0 5px 0; color: #222; font-size: 18px;">সহযোগিতামূলক আচরণ</h4>
-                <p style="margin: 0; color: #555; font-size: 15px; text-align: justify; line-height: 1.6;">ফাউন্ডেশনের স্বার্থে সকল সদস্যের সাথে সহযোগিতামূলক সম্পর্ক বজায় রাখতে হবে।</p>
+        <!-- শর্ত ২ -->
+        <div class="rjf-term-item">
+            <i class="fas fa-users rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>সহযোগিতামূলক আচরণ</h4>
+                <p>ফাউন্ডেশনের বৃহত্তর স্বার্থে সকল সদস্য, কর্মকর্তা এবং সাধারণ মানুষের সাথে সর্বদা সম্মানজনক ও সহযোগিতামূলক সম্পর্ক বজায় রাখতে হবে।</p>
             </div>
         </div>
 
-        <div class="term-item" style="
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(0, 121, 107, 0.05);
-            border-radius: 15px;
-            border-left: 4px solid var(--primary);
-            transition: 0.3s;
-        ">
-            <i class="fas fa-calendar-check" style="font-size: 20px; color: var(--primary); margin-top: 3px;"></i>
-            <div class="term-text">
-                <h4 style="margin: 0 0 5px 0; color: #222; font-size: 18px;">মাসিক অনুদান পরিশোধ</h4>
-                <p style="margin: 0; color: #555; font-size: 15px; text-align: justify; line-height: 1.6;">প্রত্যেক মাসের ১-১৫ তারিখের মধ্যেই রুপসা জনকল্যাণ ফাউন্ডেশন কর্তৃক নির্ধারিত মাসিক অনুদান (নির্দেশনা অনুযায়ী) পরিশোধ করতে হবে।</p>
+        <!-- শর্ত ৩ -->
+        <div class="rjf-term-item">
+            <i class="fas fa-calendar-check rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>মাসিক অনুদান পরিশোধ</h4>
+                <p>সংগঠনের কার্যক্রম সচল রাখতে প্রতি মাসের ১ থেকে ১৫ তারিখের মধ্যে ফাউন্ডেশন কর্তৃক নির্ধারিত মাসিক অনুদান নিয়মিত পরিশোধ করতে হবে।</p>
+            </div>
+        </div>
+
+        <!-- শর্ত ৪ (নতুন যুক্ত করা হয়েছে) -->
+        <div class="rjf-term-item">
+            <i class="fas fa-balance-scale rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>গঠনতন্ত্র ও শৃঙ্খলা</h4>
+                <p>ফাউন্ডেশনের সকল নিয়ম-কানুন, গঠনতন্ত্র এবং কার্যনির্বাহী কমিটির সিদ্ধান্ত বিনম্র শ্রদ্ধার সাথে মেনে চলতে হবে।</p>
+            </div>
+        </div>
+
+        <!-- শর্ত ৫ (নতুন যুক্ত করা হয়েছে) -->
+        <div class="rjf-term-item">
+            <i class="fas fa-comments rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>নিয়মিত সভায় উপস্থিতি</h4>
+                <p>ফাউন্ডেশন কর্তৃক আয়োজিত মাসিক বা জরুরি সভাগুলোতে যথাসম্ভব উপস্থিত থাকতে হবে এবং সংগঠনের উন্নয়নে গঠনমূলক মতামত প্রদান করতে হবে।</p>
+            </div>
+        </div>
+
+        <!-- শর্ত ৬ (নতুন যুক্ত করা হয়েছে) -->
+        <div class="rjf-term-item">
+            <i class="fas fa-dove rjf-term-icon"></i>
+            <div class="rjf-term-text">
+                <h4>অরাজনৈতিক অবস্থান</h4>
+                <p>এটি একটি সম্পূর্ণ অরাজনৈতিক ও অলাভজনক প্রতিষ্ঠান। সংগঠনের নাম বা পদবি ব্যবহার করে কোনো রাজনৈতিক বা ব্যক্তিগত স্বার্থ হাসিল করা যাবে না।</p>
             </div>
         </div>
 
     </div>
-    </div>
+</div>
+
+</body>
+</html>
