@@ -105,9 +105,142 @@
             .about-card { padding: 25px; }
             .about-card p { font-size: 16px; }
         }
+
+
+
+
+        .audio-player {
+    background: #1e1e2e;
+    color: #fff;
+    width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.album-art {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.track-title { font-size: 1.2rem; margin: 0; }
+.artist-name { color: #b3b3b3; font-size: 0.9rem; margin: 5px 0 20px; }
+
+.progress-area {
+    height: 6px;
+    width: 100%;
+    background: #444;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    height: inherit;
+    width: 0%;
+    background: #2575fc;
+    border-radius: inherit;
+    position: relative;
+}
+
+.timer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 30px 0;
+}
+
+.controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.play-pause {
+    width: 55px;
+    height: 55px;
+    background: #fff !important;
+    color: #000 !important;
+    border-radius: 50%;
+    font-size: 24px !important;
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume-slider {
+    flex: 1;
+    accent-color: #2575fc;
+}
+
     </style>
 </head>
 <body>
+
+<div class="audio-player">
+    <div class="album-art">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <div class="player-controls">
+        <h2 class="track-title">আমাদের ফাউন্ডেশন সম্পর্কে জানুন</h2>
+        <p class="artist-name">অডিও প্লেয়ার শুনুন</p>
+
+        <audio id="main-audio" src="about.mp3"></audio>
+
+        <div class="progress-area">
+            <div class="progress-bar">
+                <span></span>
+            </div>
+            <div class="timer">
+                <span class="current">0:00</span>
+                <span class="duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="prev"><i class="fas fa-step-backward"></i></button>
+            <button class="play-pause"><i class="fas fa-play"></i></button>
+            <button id="next"><i class="fas fa-step-forward"></i></button>
+        </div>
+        
+        <div class="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" id="volume-slider" min="0" max="100" value="80">
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+
+
+
+
+
+    
 
 <div class="container">
     
@@ -233,6 +366,77 @@
         });
     };
 })();
+
+
+
+
+
+
+
+
+    const mainAudio = document.querySelector("#main-audio");
+const playPauseBtn = document.querySelector(".play-pause");
+const progressBar = document.querySelector(".progress-bar");
+const progressArea = document.querySelector(".progress-area");
+const volumeSlider = document.querySelector("#volume-slider");
+
+// Play or Pause logic
+playPauseBtn.addEventListener("click", () => {
+    const isMusicPaused = playPauseBtn.classList.contains("paused");
+    isMusicPaused ? pauseMusic() : playMusic();
+});
+
+function playMusic() {
+    playPauseBtn.classList.add("paused");
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    mainAudio.play();
+}
+
+function pauseMusic() {
+    playPauseBtn.classList.remove("paused");
+    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    mainAudio.pause();
+}
+
+// Update Progress Bar
+mainAudio.addEventListener("timeupdate", (e) => {
+    const currentTime = e.target.currentTime;
+    const duration = e.target.duration;
+    let progressWidth = (currentTime / duration) * 100;
+    progressBar.style.width = `${progressWidth}%`;
+
+    // Time update
+    let musicCurrentTime = document.querySelector(".current");
+    let musicDuration = document.querySelector(".duration");
+    
+    mainAudio.addEventListener("loadeddata", () => {
+        let audioDuration = mainAudio.duration;
+        let totalMin = Math.floor(audioDuration / 60);
+        let totalSec = Math.floor(audioDuration % 60);
+        if(totalSec < 10) totalSec = `0${totalSec}`;
+        musicDuration.innerText = `${totalMin}:${totalSec}`;
+    });
+
+    let currentMin = Math.floor(currentTime / 60);
+    let currentSec = Math.floor(currentTime % 60);
+    if(currentSec < 10) currentSec = `0${currentSec}`;
+    musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
+});
+
+// Seek music
+progressArea.addEventListener("click", (e) => {
+    let progressWidthVal = progressArea.clientWidth;
+    let clickedOffSetX = e.offsetX;
+    let songDuration = mainAudio.duration;
+    mainAudio.currentTime = (clickedOffSetX / progressWidthVal) * songDuration;
+    playMusic();
+});
+
+// Volume control
+volumeSlider.addEventListener("input", (e) => {
+    mainAudio.volume = e.target.value / 100;
+});
+
 </script>
 
 
