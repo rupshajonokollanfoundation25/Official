@@ -110,201 +110,139 @@
         }
 
 
-:root {
-    --primary-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-    --text-gradient: linear-gradient(to right, #00d2ff, #92fe9d);
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.15);
+
+
+
+
+
+
+        
+
+.audio-player {
+    background: #1e1e2e;
+    color: #fff;
+    width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.pro-audio-wrapper {
+.album-art {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    border-radius: 15px;
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 40px;
+    font-size: 80px;
+    margin-bottom: 20px;
 }
 
-.glass-player {
-    width: 360px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border); /* আপনার সেই প্রিয় বর্ডার */
-    border-radius: 35px;
-    padding: 30px;
-    box-shadow: 0 25px 45px rgba(0,0,0,0.4);
-    transition: 0.3s ease-in-out;
-}
+.track-title { font-size: 1.2rem; margin: 0; }
+.artist-name { color: #b3b3b3; font-size: 0.9rem; margin: 5px 0 20px; }
 
-.glass-player:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-5px);
-}
-
-/* Gradient Text for Title */
-.gradient-text {
-    background: var(--text-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin: 10px 0 5px;
-}
-
-.sub-text {
-    color: #4facfe; /* আর্টিস্টের জন্য রঙিন টেক্সট */
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    margin-bottom: 25px;
-}
-
-/* Visualizer Animation */
-.visualizer {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 30px;
-    gap: 5px;
-}
-
-.visualizer span {
-    width: 5px;
-    height: 10px;
-    background: var(--primary-gradient);
-    border-radius: 10px;
-    transition: 0.3s;
-}
-
-.playing span {
-    animation: wave 0.6s infinite alternate;
-}
-
-@keyframes wave {
-    0% { height: 5px; }
-    100% { height: 30px; }
-}
-
-/* Progress Bar */
-.progress-container {
+.progress-area {
     height: 6px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
+    width: 100%;
+    background: #444;
+    border-radius: 50px;
     cursor: pointer;
-    overflow: hidden;
-    margin-top: 10px;
 }
 
-.progress-fill {
+.progress-bar {
+    height: inherit;
     width: 0%;
-    height: 100%;
-    background: var(--primary-gradient);
-    box-shadow: 0 0 10px #4facfe;
+    background: #2575fc;
+    border-radius: inherit;
+    position: relative;
 }
 
-.time-info {
+.timer {
     display: flex;
     justify-content: space-between;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: bold;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #b3b3b3;
 }
 
-/* Controls */
-.controls-row {
+.controls {
     display: flex;
     justify-content: space-around;
     align-items: center;
     margin: 30px 0;
 }
 
-.main-action {
-    width: 65px;
-    height: 65px;
-    background: #fff;
-    color: #000;
-    border-radius: 50%;
+.controls button {
+    background: none;
     border: none;
-    font-size: 1.5rem;
+    color: #fff;
+    font-size: 20px;
     cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     transition: 0.3s;
 }
 
-.main-action:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px #4facfe;
+.play-pause {
+    width: 55px;
+    height: 55px;
+    background: #fff !important;
+    color: #000 !important;
+    border-radius: 50%;
+    font-size: 24px !important;
 }
 
-.side-btn {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.6);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-/* Volume Slider */
-.volume-box {
+.volume-container {
     display: flex;
     align-items: center;
     gap: 10px;
-    justify-content: center;
-    margin-top: 10px;
 }
 
-#volume {
-    accent-color: #4facfe;
-    width: 100px;
-    cursor: pointer;
+#volume-slider {
+    flex: 1;
+    accent-color: #2575fc;
 }
 
 
     </style>
 </head>
 <body>
- <div class="pro-audio-wrapper">
-    <div class="glass-player">
-        <div class="top-section">
-            <div class="visualizer" id="visualizer">
-                <span></span><span></span><span></span><span></span><span></span>
+<div class="audio-player">
+    <div class="album-art">
+        <i class="fas fa-music"></i>
+    </div>
+    
+    <div class="player-controls">
+        <h2 class="track-title">GitHub Track Name</h2>
+        <p class="artist-name">Professional Audio</p>
+
+        <audio id="main-audio" src="audio.mp3"></audio>
+
+        <div class="progress-area">
+            <div class="progress-bar">
+                <span></span>
             </div>
-            <div class="track-info">
-                <h2 class="gradient-text" id="title">Digital Melodies</h2>
-                <p class="sub-text" id="artist">Rupsha Jonokollan Foundation</p>
+            <div class="timer">
+                <span class="current">0:00</span>
+                <span class="duration">0:00</span>
             </div>
         </div>
 
-        <div class="progress-box">
-            <div class="time-info">
-                <span id="current-time">0:00</span>
-                <span id="duration">0:00</span>
-            </div>
-            <div class="progress-container" id="progress-container">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
+        <div class="controls">
+            <button id="prev"><i class="fas fa-step-backward"></i></button>
+            <button class="play-pause"><i class="fas fa-play"></i></button>
+            <button id="next"><i class="fas fa-step-forward"></i></button>
         </div>
-
-        <div class="controls-row">
-            <button class="icon-btn side-btn"><i class="fas fa-random"></i></button>
-            <button class="icon-btn main-action" id="play-pause">
-                <span id="play-icon">▶</span>
-            </button>
-            <button class="icon-btn side-btn"><i class="fas fa-redo"></i></button>
-        </div>
-
-        <div class="volume-box">
-            <span>🔈</span>
-            <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
-            <span>🔊</span>
+        
+        <div class="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" id="volume-slider" min="0" max="100" value="80">
         </div>
     </div>
-
-    <audio id="audio-engine" src="audio.mp3"></audio>
 </div>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    
     
 
 
@@ -488,70 +426,67 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
+const mainAudio = document.querySelector("#main-audio");
+const playPauseBtn = document.querySelector(".play-pause");
+const progressBar = document.querySelector(".progress-bar");
+const progressArea = document.querySelector(".progress-area");
+const volumeSlider = document.querySelector("#volume-slider");
 
-const audio = document.getElementById('audio-engine');
-const playBtn = document.getElementById('play-pause');
-const playIcon = document.getElementById('play-icon');
-const progressFill = document.getElementById('progress-fill');
-const progressContainer = document.getElementById('progress-container');
-const visualizer = document.getElementById('visualizer');
-const volumeSlider = document.getElementById('volume');
-const currentTimeText = document.getElementById('current-time');
-const durationText = document.getElementById('duration');
+// Play or Pause logic
+playPauseBtn.addEventListener("click", () => {
+    const isMusicPaused = playPauseBtn.classList.contains("paused");
+    isMusicPaused ? pauseMusic() : playMusic();
+});
 
-let isPlaying = false;
-
-// Play/Pause Logic
-function toggleMusic() {
-    if (isPlaying) {
-        audio.pause();
-        visualizer.classList.remove('playing');
-        playIcon.innerHTML = '▶';
-    } else {
-        audio.play();
-        visualizer.classList.add('playing');
-        playIcon.innerHTML = '⏸';
-    }
-    isPlaying = !isPlaying;
+function playMusic() {
+    playPauseBtn.classList.add("paused");
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+    mainAudio.play();
 }
 
-// Update UI
-audio.addEventListener('timeupdate', () => {
-    const { duration, currentTime } = audio;
-    const progressPercent = (currentTime / duration) * 100;
-    progressFill.style.width = `${progressPercent}%`;
+function pauseMusic() {
+    playPauseBtn.classList.remove("paused");
+    playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+    mainAudio.pause();
+}
 
-    // Time Format (MM:SS)
-    const formatTime = (time) => {
-        const m = Math.floor(time / 60);
-        const s = Math.floor(time % 60);
-        return `${m}:${s < 10 ? '0'+s : s}`;
-    };
+// Update Progress Bar
+mainAudio.addEventListener("timeupdate", (e) => {
+    const currentTime = e.target.currentTime;
+    const duration = e.target.duration;
+    let progressWidth = (currentTime / duration) * 100;
+    progressBar.style.width = `${progressWidth}%`;
 
-    currentTimeText.innerText = formatTime(currentTime);
-    if (duration) durationText.innerText = formatTime(duration);
+    // Time update
+    let musicCurrentTime = document.querySelector(".current");
+    let musicDuration = document.querySelector(".duration");
+    
+    mainAudio.addEventListener("loadeddata", () => {
+        let audioDuration = mainAudio.duration;
+        let totalMin = Math.floor(audioDuration / 60);
+        let totalSec = Math.floor(audioDuration % 60);
+        if(totalSec < 10) totalSec = `0${totalSec}`;
+        musicDuration.innerText = `${totalMin}:${totalSec}`;
+    });
+
+    let currentMin = Math.floor(currentTime / 60);
+    let currentSec = Math.floor(currentTime % 60);
+    if(currentSec < 10) currentSec = `0${currentSec}`;
+    musicCurrentTime.innerText = `${currentMin}:${currentSec}`;
 });
 
-// Click to Seek
-progressContainer.addEventListener('click', (e) => {
-    const width = progressContainer.clientWidth;
-    const clickX = e.offsetX;
-    audio.currentTime = (clickX / width) * audio.duration;
+// Seek music
+progressArea.addEventListener("click", (e) => {
+    let progressWidthVal = progressArea.clientWidth;
+    let clickedOffSetX = e.offsetX;
+    let songDuration = mainAudio.duration;
+    mainAudio.currentTime = (clickedOffSetX / progressWidthVal) * songDuration;
+    playMusic();
 });
 
-// Volume Control
-volumeSlider.addEventListener('input', (e) => {
-    audio.volume = e.target.value;
-});
-
-playBtn.addEventListener('click', toggleMusic);
-
-// Auto Reset on End
-audio.addEventListener('ended', () => {
-    isPlaying = false;
-    visualizer.classList.remove('playing');
-    playIcon.innerHTML = '▶';
-    progressFill.style.width = '0%';
+// Volume control
+volumeSlider.addEventListener("input", (e) => {
+    mainAudio.volume = e.target.value / 100;
 });
 </script>
 
