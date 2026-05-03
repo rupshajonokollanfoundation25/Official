@@ -32,13 +32,12 @@
                 <span class="text-gray-500">সদস্য আইডি:</span>
                 <span id="display-id" class="font-bold text-teal-800 uppercase tracking-widest">---</span>
             </div>
-            <div id="member-info-container" class="space-y-4">
-                <p class="text-center text-sm text-gray-400 italic">সার্ভার থেকে তথ্য সংগ্রহ করা হচ্ছে...</p>
-            </div>
+            <div id="member-info-container" class="space-y-4 pt-2">
+                </div>
         </div>
 
         <div class="mt-8">
-            <a href="/" class="inline-block bg-teal-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-teal-800 transition">হোম পেজে যান</a>
+            <a href="https://rupshajonokollanfoundation.vercel.app" class="inline-block bg-teal-700 text-white px-6 py-2 rounded-full font-semibold hover:bg-teal-800 transition">হোম পেজে যান</a>
         </div>
     </div>
 
@@ -46,36 +45,96 @@
         <i class="fas fa-exclamation-triangle text-red-600 text-5xl mb-4"></i>
         <h1 class="text-2xl font-bold text-gray-800">ত্রুটি!</h1>
         <p class="text-gray-600 mt-2">দুঃখিত, এই মেম্বার আইডিটি সঠিক নয় অথবা আমাদের ডাটাবেসে নেই।</p>
-        <a href="/" class="mt-6 inline-block text-teal-700 font-bold underline">ফিরে যান</a>
+        <a href="https://rupshajonokollanfoundation.vercel.app" class="mt-6 inline-block text-teal-700 font-bold underline">ফিরে যান</a>
     </div>
 
-    <script>
-        // URL থেকে Member ID ধরা (যেমন: .../verify?id=RJF123)
-        const urlParams = new URLSearchParams(window.location.search);
-        const memberId = urlParams.get('id');
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        window.onload = function() {
-            if (!memberId) {
+        // Firebase Config (আপনার দেওয়া কনফিগ)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC-ke7FIUPX5Ksow8vJQ4axmGAIdiKd49Q",
+            authDomain: "member-selection.firebaseapp.com",
+            projectId: "member-selection",
+            storageBucket: "member-selection.firebasestorage.app",
+            messagingSenderId: "434008909239",
+            appId: "1:434008909239:web:a790d1e0603ebfdbd27432",
+            measurementId: "G-JVMKJZLCC5"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // URL থেকে ID সংগ্রহ করার লজিক
+        // এটি ?id=RJF... অথবা /verify/RJF... উভয় ক্ষেত্রেই কাজ করার চেষ্টা করবে
+        const getMemberId = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('id')) return urlParams.get('id');
+            
+            const pathParts = window.location.pathname.split('/');
+            return pathParts[pathParts.length - 1];
+        };
+
+        const memberId = getMemberId();
+
+        async function verifyMember() {
+            if (!memberId || memberId === 'verify' || memberId === '') {
                 showError();
                 return;
             }
 
-            // এখানে আপনার API বা ডাটাবেস থেকে তথ্য আনতে পারেন
-            // বর্তমানে আমি একটি ডেমো মেকানিজম দেখাচ্ছি
-            setTimeout(() => {
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('verified-card').classList.remove('hidden');
-                document.getElementById('display-id').innerText = memberId;
-                
-                // এখানে আপনি Fetch API ব্যবহার করে ডাটা আনতে পারেন
-                // fetch(`YOUR_API_ENDPOINT/${memberId}`)
-            }, 1500);
-        };
+            try {
+                // ডাটাবেসে member_id ফিল্ডের সাথে মিলিয়ে দেখা হচ্ছে
+                const q = query(collection(db, "members"), where("member_id", "==", memberId));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    showError();
+                } else {
+                    const memberData = querySnapshot.docs[0].data();
+                    showSuccess(memberData);
+                }
+            } catch (error) {
+                console.error("Verification Error:", error);
+                showError();
+            }
+        }
+
+        function showSuccess(data) {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('verified-card').classList.remove('hidden');
+            document.getElementById('display-id').innerText = data.member_id;
+            
+            // তথ্যগুলো সাজিয়ে দেখানো
+            const infoContainer = document.getElementById('member-info-container');
+            infoContainer.innerHTML = `
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">নাম:</span>
+                    <span class="font-semibold text-gray-800">${data.full_name}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">পেশা:</span>
+                    <span class="font-semibold text-gray-800">${data.occupation || 'N/A'}</span>
+                </div>
+                <div class="flex justify-between border-b pb-2">
+                    <span class="text-gray-500">সদস্যপদ:</span>
+                    <span class="font-semibold text-teal-700">${data.membership_type}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">রক্তের গ্রুপ:</span>
+                    <span class="font-bold text-red-600">${data.blood_group || 'N/A'}</span>
+                </div>
+            `;
+        }
 
         function showError() {
             document.getElementById('loader').classList.add('hidden');
             document.getElementById('error-card').classList.remove('hidden');
         }
+
+        // ভেরিফিকেশন শুরু
+        verifyMember();
     </script>
 </body>
 </html>
