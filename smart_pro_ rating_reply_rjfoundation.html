@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Admin Pro - RJ Foundation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.95);
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f1f5f9;
+        }
+
+        body { 
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif; 
+            background: radial-gradient(circle at top right, #e2e8f0, #f1f5f9);
+            margin: 0; padding: 20px; color: #334155; min-height: 100vh;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        /* Header & Stats */
+        .admin-header {
+            background: var(--glass); backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 24px; border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 25px;
+        }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .header-top h1 { margin: 0; font-size: 24px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
+        .stat-card { background: white; padding: 15px; border-radius: 16px; text-align: center; border: 1px solid #e2e8f0; }
+        .stat-card span { display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase; }
+        .stat-card strong { font-size: 22px; color: var(--primary); }
+
+        /* Search Area */
+        .search-container { margin-bottom: 20px; position: relative; }
+        .search-bar { width: 100%; padding: 12px 45px; border-radius: 15px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; box-sizing: border-box; transition: 0.3s; }
+        .search-bar:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+        .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+
+        /* Review Card */
+        .review-card {
+            background: white; border-radius: 20px; padding: 25px; margin-bottom: 20px;
+            border: 1px solid #e2e8f0; transition: 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .review-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+        
+        .status-indicator { position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: var(--warning); }
+        .status-replied { background: var(--success); }
+
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 45px; height: 45px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; }
+        
+        .rating { color: #fbbf24; font-size: 13px; }
+        .comment-box { background: #f8fafc; padding: 15px; border-radius: 15px; font-size: 15px; line-height: 1.6; margin-bottom: 15px; color: #475569; }
+
+        /* Moderation Actions */
+        .btn-delete-full { color: #94a3b8; background: none; border: none; cursor: pointer; padding: 5px; transition: 0.2s; }
+        .btn-delete-full:hover { color: var(--danger); }
+
+        /* Quick Templates */
+        .template-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .chip { background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-size: 12px; cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
+        .chip:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* Reply Interface */
+        .reply-area { border-top: 1px solid #f1f5f9; padding-top: 20px; }
+        .reply-title { font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+        .reply-input-wrapper { display: flex; gap: 10px; background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 8px; transition: 0.3s; }
+        .reply-input-wrapper:focus-within { border-color: var(--accent); }
+        
+        .reply-text { flex: 1; border: none; outline: none; padding: 8px; font-family: inherit; font-size: 14px; resize: none; min-height: 40px; }
+        
+        .action-btn { background: var(--accent); color: white; border: none; width: 45px; height: 45px; border-radius: 10px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        /* Existing Reply Styling */
+        .existing-reply { background: #f0fdf4; border-radius: 12px; padding: 15px; position: relative; border: 1px solid #dcfce7; }
+        .reply-content { font-size: 14px; color: #166534; margin: 0; line-height: 1.5; }
+        .reply-actions { display: flex; gap: 15px; margin-top: 10px; }
+        .reply-action-btn { background: none; border: none; font-size: 12px; font-weight: 600; cursor: pointer; color: #64748b; padding: 0; }
+        .reply-action-btn:hover { text-decoration: underline; }
+
+        /* Toast & Loading */
+        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #0f172a; color: white; padding: 12px 25px; border-radius: 50px; font-size: 14px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transition: 0.4s; z-index: 9999; }
+        #toast.show { opacity: 1; visibility: visible; bottom: 50px; }
+
+        .loading-spinner { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px; color: var(--accent); font-size: 30px; gap: 15px; }
+        .loading-text { font-size: 16px; color: #64748b; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+<div id="toast">প্রসেসিং হচ্ছে...</div>
+
+<div class="container">
+    <div class="admin-header">
+        <div class="header-top">
+            <h1><i class="fas fa-user-shield"></i> RJ Admin Pro</h1>
+            <div style="font-size: 13px; color: #64748b; font-weight: 600;">লাইভ কন্ট্রোল ড্যাশবোর্ড</div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card"><span>মোট রিভিউ</span><strong id="totalCount">0</strong></div>
+            <div class="stat-card"><span>বাকি আছে</span><strong id="pendingCount" style="color: var(--warning);">0</strong></div>
+            <div class="stat-card"><span>রিপ্লাইড</span><strong id="repliedCount" style="color: var(--success);">0</strong></div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="searchInput" class="search-bar" placeholder="ইউজার বা কমেন্ট লিখে খুঁজুন..." onkeyup="filterReviews()">
+    </div>
+
+    <div id="reviewList">
+        <div class="loading-spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <div class="loading-text">ডেটা লোড হচ্ছে, দয়া করে অপেক্ষা করুন...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ফায়ারবেস কনফিগারেশন
+    const reviewConfig = {
+        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
+        authDomain: "rating-revieww.firebaseapp.com",
+        projectId: "rating-revieww",
+        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+    };
+    firebase.initializeApp(reviewConfig);
+    const db = firebase.firestore();
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // স্মার্ট টেম্পলেট ব্যবহার
+    function useTemplate(docId, msg) {
+        const input = document.getElementById(`reply-${docId}`);
+        if(input) input.value = msg;
+    }
+
+    // স্মার্ট রিভিউ লোডার (ফিক্সড)
+    function initAdminPanel() {
+        // orderBy বাদ দিয়ে লোড করছি যাতে Index এর জন্য লোডিং আটকে না থাকে
+        db.collection("reviews").onSnapshot(snapshot => {
+            const list = document.getElementById('reviewList');
+            let html = "";
+            let replied = 0;
+            let pending = 0;
+
+            if (snapshot.empty) {
+                list.innerHTML = `<div style="text-align:center; padding:50px; color:#94a3b8;">কোনো ডেটা পাওয়া যায়নি!</div>`;
+                return;
+            }
+
+            // ডেটাগুলোকে জাভাস্ক্রিপ্ট দিয়ে সর্ট করা হচ্ছে (Latest First)
+            const sortedDocs = [];
+            snapshot.forEach(doc => sortedDocs.push({ id: doc.id, ...doc.data() }));
+            sortedDocs.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+
+            sortedDocs.forEach(data => {
+                const id = data.id;
+                const hasReply = !!data.adminReply;
+                
+                if(hasReply) replied++; else pending++;
+
+                const stars = '<i class="fas fa-star"></i>'.repeat(data.rating || 0) + '<i class="far fa-star"></i>'.repeat(5 - (data.rating || 0));
+                const initial = data.userName ? data.userName.charAt(0).toUpperCase() : '?';
+
+                html += `
+                    <div class="review-card" data-search="${(data.userName || '').toLowerCase()} ${(data.comment || '').toLowerCase()}">
+                        <div class="status-indicator ${hasReply ? 'status-replied' : ''}"></div>
+                        <div class="card-header">
+                            <div class="user-info">
+                                <div class="avatar">${initial}</div>
+                                <div>
+                                    <div style="font-weight:700; color: #1e293b;">${data.userName || 'অচেনা ইউজার'}</div>
+                                    <div style="font-size:12px; color: #64748b;">${data.userEmail || 'ইমেইল নেই'}</div>
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div class="rating">${stars}</div>
+                                <button class="btn-delete-full" onclick="deleteFullReview('${id}')" title="পুরো রিভিউ মুছুন">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="comment-box">${data.comment || 'কোনো মন্তব্য নেই'}</div>
+
+                        <div class="reply-area">
+                            <div class="reply-title">
+                                <i class="fas fa-reply-all"></i> ${hasReply ? 'আপনার উত্তর' : 'রিপ্লাই দিন'}
+                            </div>
+
+                            ${hasReply ? `
+                                <div class="existing-reply">
+                                    <p class="reply-content" id="content-${id}">${data.adminReply}</p>
+                                    <div class="reply-actions">
+                                        <button class="reply-action-btn" onclick="editMode('${id}', \`${data.adminReply}\`)">এডিট করুন</button>
+                                        <button class="reply-action-btn" style="color:var(--danger)" onclick="deleteReply('${id}')">মুছে ফেলুন</button>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div class="template-row">
+                                    <div class="chip" onclick="useTemplate('${id}', 'আমাদের সাথে থাকার জন্য আপনাকে অনেক ধন্যবাদ!')">ধন্যবাদ</div>
+                                    <div class="chip" onclick="useTemplate('${id}', 'আপনার সুন্দর মতামতের জন্য আমরা কৃতজ্ঞ।')">কৃতজ্ঞতা</div>
+                                    <div class="chip" onclick="useTemplate('${id}', 'বিষয়টি আমরা গুরুত্ব সহকারে দেখছি।')">তদন্ত</div>
+                                </div>
+                                <div class="reply-input-wrapper">
+                                    <textarea id="reply-${id}" class="reply-text" placeholder="এখানে রিপ্লাই লিখুন..." rows="1"></textarea>
+                                    <button onclick="sendReply('${id}')" class="action-btn" id="btn-${id}">
+                                        <i class="fas fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('totalCount').innerText = snapshot.size;
+            document.getElementById('pendingCount').innerText = pending;
+            document.getElementById('repliedCount').innerText = replied;
+            list.innerHTML = html;
+
+        }, error => {
+            console.error("Firebase Error: ", error);
+            document.getElementById('reviewList').innerHTML = `<div style="color:red; text-align:center; padding:20px;">এরর: ডেটা লোড করা যাচ্ছে না। ফায়ারবেস রুলস চেক করুন।</div>`;
+        });
+    }
+
+    // রিপ্লাই পাঠানো
+    async function sendReply(docId) {
+        const text = document.getElementById(`reply-${docId}`).value.trim();
+        const btn = document.getElementById(`btn-${docId}`);
+        if(!text) { showToast("আগে কিছু লিখুন!"); return; }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        try {
+            await db.collection("reviews").doc(docId).update({ adminReply: text });
+            showToast("রিপ্লাই পাবলিশ হয়েছে!");
+        } catch (e) {
+            showToast("সেভ করতে সমস্যা হয়েছে!");
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        }
+    }
+
+    // এডিট মোড
+    function editMode(docId, oldText) {
+        const container = document.getElementById(`content-${docId}`).parentElement;
+        container.innerHTML = `
+            <div class="reply-input-wrapper">
+                <textarea id="reply-${docId}" class="reply-text" rows="2">${oldText}</textarea>
+                <button onclick="sendReply('${docId}')" class="action-btn" id="btn-${docId}">
+                    <i class="fas fa-check"></i>
+                </button>
+            </div>
+            <button class="reply-action-btn" style="margin-top:8px" onclick="initAdminPanel()">বাতিল করুন</button>
+        `;
+    }
+
+    // রিপ্লাই ডিলিট
+    async function deleteReply(docId) {
+        if(confirm("আপনি কি শুধু রিপ্লাইটি মুছতে চান?")) {
+            try {
+                await db.collection("reviews").doc(docId).update({ adminReply: firebase.firestore.FieldValue.delete() });
+                showToast("রিপ্লাই মুছে ফেলা হয়েছে।");
+            } catch (e) { showToast("মুছতে সমস্যা হয়েছে!"); }
+        }
+    }
+
+    // পুরো রিভিউ ডিলিট (Moderation)
+    async function deleteFullReview(docId) {
+        if(confirm("সাবধান! আপনি কি পুরো রিভিউটি চিরতরে ডিলিট করতে চান?")) {
+            try {
+                await db.collection("reviews").doc(docId).delete();
+                showToast("রিভিউ ডিলিট হয়েছে।");
+            } catch (e) { showToast("ডিলিট করা যায়নি!"); }
+        }
+    }
+
+    // সার্চ ফিল্টার
+    function filterReviews() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.review-card').forEach(card => {
+            const content = card.getAttribute('data-search');
+            card.style.display = content.includes(q) ? 'block' : 'none';
+        });
+    }
+
+    initAdminPanel();
+</script>
+
+</body>
+</html>
