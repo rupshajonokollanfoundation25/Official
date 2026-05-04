@@ -3,101 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback - RJ Foundation</title>
+    <title>Premium Feedback - RJ Foundation</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
-        .review-form { max-width: 550px; margin: 20px auto; padding: 25px; background: #fff; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .verify-box { text-align: center; padding: 10px; }
-        .input-group { position: relative; margin-top: 15px; }
-        .verify-input { 
-            width: 100%; padding: 12px 15px; border-radius: 10px; border: 2px solid #e0e0e0; 
-            outline: none; transition: 0.3s; box-sizing: border-box; font-size: 15px;
+        /* Base Styling */
+        body { 
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            margin: 0; 
+            padding: 40px 20px; 
+            color: #334155;
+            min-height: 100vh;
         }
-        .verify-input:focus { border-color: #00796b; box-shadow: 0 0 8px rgba(0, 121, 107, 0.1); }
-        .verify-btn { 
-            width: 100%; background: linear-gradient(135deg, #00796b, #004d40); color: white; 
-            padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; 
-            margin-top: 15px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .verify-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 121, 107, 0.3); }
-        .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding: 10px; background: #e0f2f1; border-radius: 12px; }
-        .user-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #00796b; }
-        
-        /* নতুন স্টার রেটিং স্টাইল */
-        .star-rating { display: flex; gap: 5px; margin-bottom: 15px; cursor: pointer; font-size: 24px; }
-        .star-rating span { color: #ccc; transition: 0.2s; }
-        .star-rating span.active { color: #ffb300; }
 
-        textarea { width: 100%; height: 100px; padding: 12px; border-radius: 10px; border: 1px solid #ccc; resize: none; box-sizing: border-box; }
-        .submit-btn { width: 100%; margin-top: 15px; background: #00796b; color: white; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .review-form { 
+            max-width: 650px; 
+            margin: 0 auto; 
+            padding: 40px; 
+            background: #ffffff; 
+            border-radius: 24px; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1); 
+            border: 1px solid rgba(255,255,255,0.8);
+            position: relative;
+        }
+
+        .header-title {
+            text-align: center; color: #0f172a; font-weight: 700; font-size: 32px;
+            margin-bottom: 5px; letter-spacing: -0.5px;
+        }
+        .header-subtitle { text-align: center; color: #64748b; font-size: 15px; margin-bottom: 35px; }
+
+        /* Input & Button Styling */
+        .verify-box { text-align: center; }
+        .input-group { position: relative; margin-top: 20px; }
+        .input-icon { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 18px; }
+
+        .verify-input { 
+            width: 100%; padding: 16px 16px 16px 50px; border-radius: 16px; 
+            border: 2px solid #e2e8f0; background: #f8fafc; outline: none; 
+            transition: all 0.3s ease; box-sizing: border-box; font-size: 16px; font-family: inherit;
+        }
+        .verify-input:focus { border-color: #059669; background: #ffffff; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+
+        .primary-btn { 
+            width: 100%; background: linear-gradient(135deg, #059669 0%, #047857 100%); 
+            color: white; padding: 16px; border: none; border-radius: 16px; font-size: 17px;
+            font-weight: 600; cursor: pointer; margin-top: 20px; transition: all 0.3s ease; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; font-family: inherit;
+        }
+        .primary-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.4); }
+        .primary-btn:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* User Info Section */
+        .user-info { 
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 25px; padding: 15px 20px; background: #f8fafc; 
+            border-radius: 16px; border: 1px solid #e2e8f0;
+        }
+        .user-profile-left { display: flex; align-items: center; gap: 15px; }
+        .user-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #10b981; padding: 2px; background: white; object-fit: cover; }
+        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 8px; transition: 0.3s; }
+        .logout-btn:hover { background: #fef2f2; }
+
+        /* Star Rating & Textarea */
+        .rating-container { text-align: center; margin-bottom: 25px; }
+        .rating-label { font-weight: 600; color: #475569; margin-bottom: 12px; display: block; font-size: 18px;}
+        .star-rating { display: flex; justify-content: center; gap: 10px; cursor: pointer; font-size: 38px; }
+        .star-rating span { color: #cbd5e1; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .star-rating span:hover, .star-rating span.active { color: #fbbf24; transform: scale(1.15) translateY(-2px); text-shadow: 0 5px 15px rgba(251, 191, 36, 0.4); }
+
+        textarea { 
+            width: 100%; height: 140px; padding: 18px; border-radius: 16px; 
+            border: 2px solid #e2e8f0; background: #f8fafc; resize: none; box-sizing: border-box; 
+            font-family: inherit; font-size: 16px; transition: all 0.3s ease; line-height: 1.6;
+        }
+        textarea:focus { border-color: #059669; background: #ffffff; outline: none; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
+
+        /* Review Items */
+        .section-divider { display: flex; align-items: center; text-align: center; margin: 45px 0 30px; color: #64748b; font-weight: 600; font-size: 18px; }
+        .section-divider::before, .section-divider::after { content: ''; flex: 1; border-bottom: 2px solid #e2e8f0; }
+        .section-divider::before { margin-right: 20px; }
+        .section-divider::after { margin-left: 20px; }
+
+        .review-item { 
+            background: #ffffff; border-radius: 18px; padding: 24px; margin-bottom: 20px; 
+            border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease;
+        }
+        .review-item:hover { border-color: #cbd5e1; box-shadow: 0 10px 20px -5px rgba(0,0,0,0.08); transform: translateY(-2px); }
+
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 15px; }
+        .reviewer-profile { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+        .reviewer-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; }
+        .review-name-box { display: flex; flex-direction: column; min-width: 0; }
+        .review-name { font-weight: 600; color: #1e293b; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .review-stars { color: #fbbf24; font-size: 14px; letter-spacing: 2px; flex-shrink: 0; display: flex; }
+        .review-text { font-size: 16px; color: #475569; line-height: 1.7; margin: 0; }
+        .review-date { font-size: 13px; color: #94a3b8; display: block; margin-top: 15px; font-weight: 500;}
+
+        /* Admin Reply */
+        .admin-reply-box {
+            background: #f1f5f9; border-left: 4px solid #3b82f6;
+            padding: 12px 16px; border-radius: 0 12px 12px 0;
+            margin-top: 15px; font-size: 15px; color: #334155;
+        }
+        .admin-reply-box strong { color: #1e293b; display: block; margin-bottom: 4px; font-size: 14px;}
+
+        /* Reactions */
+        .reaction-bar { display: flex; gap: 15px; margin-top: 15px; border-top: 1px solid #f1f5f9; padding-top: 15px; }
+        .reaction-btn { 
+            background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 20px;
+            font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 5px; font-family: inherit;
+        }
+        .reaction-btn:hover { background: #f1f5f9; transform: scale(1.05); }
+        .reaction-btn.active-helpful { background: #ecfdf5; color: #059669; border-color: #a7f3d0; }
+        .reaction-btn.active-love { background: #fef2f2; color: #ef4444; border-color: #fecaca; }
+        /* Added Reaction Animation */
+        .reaction-btn:active { transform: scale(0.9); }
+
+        /* Own Review Section Highlight */
+        .my-review-card { border: 2px solid #10b981; background: #ecfdf5; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid #d1fae5; padding-top: 15px; }
+        .btn-action { padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: 0.3s; display: flex; align-items: center; gap: 6px; }
+        .btn-edit { background: #0f172a; color: white; }
+        .btn-edit:hover { background: #334155; }
+        .btn-delete { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; }
+        .btn-delete:hover { background: #fee2e2; }
+
+        /* Load More Button */
+        .load-more-btn {
+            display: block; width: fit-content; margin: 30px auto 0;
+            background: white; border: 2px solid #cbd5e1; color: #475569;
+            padding: 10px 25px; border-radius: 20px; font-weight: 600; cursor: pointer;
+            transition: 0.3s; font-family: inherit;
+        }
+        .load-more-btn:hover { border-color: #94a3b8; color: #0f172a; }
+
+        /* Skeleton Loading Animation */
+        .skeleton { animation: shimmer 1.5s infinite linear; background: linear-gradient(to right, #f1f5f9 40%, #e2e8f0 50%, #f1f5f9 60%); background-size: 200% 100%; border-radius: 8px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        .skeleton-avatar { width: 40px; height: 40px; border-radius: 50%; }
+        .skeleton-text { height: 14px; margin-bottom: 10px; width: 100%; }
+        .skeleton-text.short { width: 40%; }
+
+        /* Thank You Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000; opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: white; padding: 40px; border-radius: 24px; text-align: center;
+            max-width: 400px; width: 90%; transform: translateY(30px) scale(0.9);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.show .modal-content { transform: translateY(0) scale(1); }
+        .modal-icon {
+            width: 80px; height: 80px; background: #ecfdf5; color: #10b981;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 40px; margin: 0 auto 20px; box-shadow: 0 0 0 10px #d1fae5;
+        }
+
+        /* Toast & Scroll */
+        #toastBox { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { min-width: 280px; padding: 16px 20px; background: white; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 15px; transform: translateX(120%); transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); border-left: 5px solid; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-left-color: #10b981; color: #047857; }
+        .toast.error { border-left-color: #ef4444; color: #b91c1c; }
+        .toast.info { border-left-color: #3b82f6; color: #1d4ed8; }
+
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: #0f172a; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.4); border: none; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 999; }
+        #scrollTopBtn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #scrollTopBtn:hover { transform: translateY(-5px) scale(1.05); background: #334155; }
         
-        .review-item { background: #fafafa; border-radius: 12px; padding: 15px; margin-bottom: 15px; border-left: 5px solid #00796b; overflow: hidden; word-wrap: break-word; }
-        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; gap: 10px; }
-        .review-name { font-weight: bold; color: #333; overflow-wrap: anywhere; }
-        .review-stars { color: #ffb300; font-size: 14px; white-space: nowrap; flex-shrink: 0; }
-        .review-text { font-size: 14px; color: #555; line-height: 1.5; word-break: break-word; }
-        .review-date { font-size: 11px; color: #888; display: block; margin-top: 8px; font-style: italic; }
-        
-        .error-msg {
-    color: #d32f2f;
-    background: #ffebee;
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-size: 14px;
-    display: none; /* শুরুতে লুকানো থাকবে */
-    border: 1px solid #ffcdd2;
-    text-align: center;
-}
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="review-form">
-    <h2 style="text-align: center; color: #00796b;">মতামত ও রিভিউ</h2>
-    
-    <div id="verifySection" class="verify-box">
-        <p style="color: #555;">রিভিউ দিতে আপনার নিবন্ধিত ইমেইলটি ভেরিফাই করুন</p>
-        <div class="input-group">
-            <input type="email" id="emailInput" class="verify-input" placeholder="আপনার ইমেইল দিন...">
-        </div>
-        <button onclick="verifyUser()" id="vBtn" class="verify-btn">
-            ভেরিফাই করুন <i class="fas fa-shield-alt"></i>
-        </button>
-        <p id="statusMsg" style="font-size: 13px; margin-top: 12px;"></p>
+<div id="toastBox"></div>
+
+<div class="modal-overlay" id="thankYouModal">
+    <div class="modal-content">
+        <div class="modal-icon"><i class="fas fa-check"></i></div>
+        <h2 style="color: #0f172a; margin-bottom: 10px;">ধন্যবাদ!</h2>
+        <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">আপনার মূল্যবান মতামত সফলভাবে জমা হয়েছে।</p>
+        <button class="primary-btn" onclick="closeModal()">ঠিক আছে</button>
     </div>
-
-    <div id="reviewContent" style="display:none;">
-        <div id="userInfo" class="user-info"></div>
-        
-        <div id="reviewInputArea">
-            <label>আপনার রেটিং দিন:</label>
-            <div class="star-rating" id="starRating">
-                <span onclick="setRating(1)">★</span>
-                <span onclick="setRating(2)">★</span>
-                <span onclick="setRating(3)">★</span>
-                <span onclick="setRating(4)">★</span>
-                <span onclick="setRating(5)">★</span>
-            </div>
-            
-            <textarea id="reviewText" placeholder="আমাদের সম্পর্কে আপনার মূল্যবান মতামত লিখুন..."></textarea>
-            <div id="reviewError" class="error-msg"></div>
-            <button onclick="submitReview()" class="submit-btn">রিভিউ জমা দিন</button>
-        </div>
-    </div>
-
-
-
-    <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
-    <h4>সকলের মতামত সমূহ:</h4>
-    <div id="allReviews"></div>
 </div>
 
+<div class="review-form">
+    <h2 class="header-title">মতামত ও রিভিউ</h2>
+    <p class="header-subtitle">আপনার মূল্যবান মতামত আমাদের সেবার মান উন্নত করতে সাহায্য করে</p>
+    
+    <div id="verifySection" class="verify-box">
+        <div id="emailStep">
+            <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">রিভিউ প্রদান করতে বা ম্যানেজ করতে ইমেইল ভেরিফাই করুন</p>
+            <div class="input-group">
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="emailInput" class="verify-input" placeholder="আপনার রেজিস্টার্ড ইমেইল অ্যাড্রেস...">
+            </div>
+            <button onclick="verifyEmailDirectly()" id="vBtn" class="primary-btn">
+                এগিয়ে যান <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <div id="registerPromptBox" class="hidden" style="margin-top: 20px; padding: 20px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 16px; text-align: center;">
+                <h4 style="color: #1e40af; margin: 0 0 8px 0; font-size: 16px;"><i class="fas fa-exclamation-circle"></i> অ্যাকাউন্ট খুঁজে পাওয়া যায়নি!</h4>
+                <p style="color: #3b82f6; font-size: 14px; margin: 0 0 15px 0;">আমাদের সিস্টেমে আপনার ইমেইলটি পাওয়া যায়নি। অনুগ্রহ করে আগে রেজিস্ট্রেশন করুন।</p>
+                <a href="registration.html" style="background: #2563eb; color: white; padding: 12px 24px; border-radius: 12px; font-size: 15px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;"><i class="fas fa-user-plus"></i> এখনই রেজিস্ট্রেশন করুন</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="authContent" class="hidden">
+        <div id="userInfo" class="user-info"></div>
+        
+        <div id="myExistingReviewBox" class="hidden">
+            <h4 style="margin: 0 0 15px 0; color: #047857; font-size: 16px;"><i class="fas fa-history"></i> আপনার বর্তমান রিভিউ</h4>
+            <div id="myReviewContent" class="review-item my-review-card"></div>
+        </div>
+
+        <div id="reviewInputArea" class="hidden">
+            <div class="rating-container">
+                <span class="rating-label" id="ratingTitle">আপনার অভিজ্ঞতা কেমন ছিল?</span>
+                <div class="star-rating" id="starRating">
+                    <span onclick="setRating(1)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(2)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(3)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(4)"><i class="fas fa-star"></i></span>
+                    <span onclick="setRating(5)"><i class="fas fa-star"></i></span>
+                </div>
+            </div>
+            
+            <textarea id="reviewText" placeholder="আমাদের সার্ভিস সম্পর্কে আপনার মতামত বিস্তারিত লিখুন..."></textarea>
+            
+            <div style="display: flex; gap: 10px;">
+                <button onclick="cancelEdit()" id="cancelBtn" class="primary-btn hidden" style="background: #e2e8f0; color: #475569; width: auto; padding: 16px 25px;">
+                    <i class="fas fa-times"></i> বাতিল
+                </button>
+                <button onclick="submitReview()" class="primary-btn" id="submitBtn">
+                    রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider">সকল গ্রাহকের মতামত</div>
+    
+    <div id="allReviews">
+        </div>
+    
+    <button id="loadMoreBtn" class="load-more-btn hidden" onclick="loadMoreReviews()">আরও দেখুন <i class="fas fa-chevron-down"></i></button>
+</div>
+
+<button id="scrollTopBtn" onclick="scrollToTop()" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
 <script>
+    // --- Firebase Configurations (UNCHANGED) ---
     const loginConfig = {
         apiKey: "AIzaSyD80uA81X3bkwiousPwXpIv6OKkk1k2icA",
         authDomain: "rjfoundation-25.firebaseapp.com",
@@ -118,223 +289,333 @@
     const reviewApp = firebase.initializeApp(reviewConfig, "ReviewProject");
     const db = firebase.firestore(reviewApp);
 
+    // --- State Variables ---
     let currentUserData = null;
-    let selectedRating = 5; // Default rating
+    let selectedRating = 5;
+    let existingReviewId = null; 
+    let existingReviewData = null;
+    let currentLimit = 5; // For Pagination
+    let unsubscribeReviews = null;
 
+    // --- Premium Toast Function ---
+    function showToast(message, type = "success") {
+        const toastBox = document.getElementById('toastBox');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        let icon = type === 'error' ? "fa-exclamation-circle" : (type === 'info' ? "fa-info-circle" : "fa-check-circle");
+        toast.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+        toastBox.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3500);
+    }
+
+    // --- Star Rating Logic ---
     function setRating(n) {
         selectedRating = n;
-        const stars = document.querySelectorAll('.star-rating span');
-        stars.forEach((star, index) => {
-            if (index < n) {
-                star.classList.add('active');
-            } else {
-                star.classList.remove('active');
-            }
+        document.querySelectorAll('.star-rating span').forEach((star, index) => {
+            star.classList.toggle('active', index < n);
         });
     }
-    setRating(5);
+    setRating(5); 
 
-    function verifyUser() {
-        const email = document.getElementById('emailInput').value;
+    function formatDate(timestamp) {
+        if(!timestamp) return "এইমাত্র";
+        const date = timestamp.toDate();
+        return date.toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' }) + " | " + date.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+    }
+
+    function getStarsHtml(rating) {
+        return '<i class="fas fa-star"></i>'.repeat(rating) + '<i class="far fa-star" style="color: #e2e8f0;"></i>'.repeat(5 - rating);
+    }
+
+    // --- Direct Email Verification Logic (No OTP) ---
+    async function verifyEmailDirectly() {
+        const email = document.getElementById('emailInput').value.trim();
         const btn = document.getElementById('vBtn');
-        const msg = document.getElementById('statusMsg');
-        msg.innerHTML = ""; 
+        const registerBox = document.getElementById('registerPromptBox');
 
-        if(!email) {
-            msg.innerHTML = "⚠️ দয়া করে একটি ইমেইল দিন!";
-            msg.style.color = "red";
-            return;
+        if(!email) { showToast('দয়া করে আপনার ইমেইল প্রদান করুন!', 'error'); return; }
+
+        // Added Email Format Regex Validation here
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if(!emailPattern.test(email)) { 
+            showToast('সঠিক ইমেইল ফরম্যাট ব্যবহার করুন!', 'error'); 
+            return; 
         }
 
         btn.disabled = true;
-        btn.innerText = "চেক করা হচ্ছে...";
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> চেক করা হচ্ছে...';
+        registerBox.classList.add('hidden');
 
-        auth.fetchSignInMethodsForEmail(email).then(methods => {
+        try {
+            const methods = await auth.fetchSignInMethodsForEmail(email);
             if (methods.length > 0) {
-                msg.innerHTML = "✅ ভেরিফিকেশন সফল! ফর্ম লোড হচ্ছে...";
-                msg.style.color = "green";
                 
-                setTimeout(() => {
-                    document.getElementById('verifySection').style.display = 'none';
-                    document.getElementById('reviewContent').style.display = 'block';
-                    
-                    currentUserData = { 
-                        email: email, 
-                        name: email.split('@')[0].toUpperCase(),
-                        uid: "verified-user" 
-                    };
+                // Email found, login directly
+                const namePart = email.split('@')[0];
+                currentUserData = { email: email, name: namePart.charAt(0).toUpperCase() + namePart.slice(1), uid: "verified-user" };
 
-                    document.getElementById('userInfo').innerHTML = `
-                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="user-img">
+                document.getElementById('verifySection').classList.add('hidden');
+                document.getElementById('authContent').classList.remove('hidden');
+                
+                document.getElementById('userInfo').innerHTML = `
+                    <div class="user-profile-left">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="user-img" alt="User">
                         <div>
-                            <strong class="review-name">${currentUserData.name}</strong><br>
-                            <span style="font-size: 12px; color: #2e7d32;">✅ ভেরিফাইড মেম্বার</span>
+                            <strong style="font-size: 17px; color:#0f172a; display:block; margin-bottom:2px;">${currentUserData.name}</strong>
+                            <span style="font-size: 13px; color: #059669; font-weight: 600;"><i class="fas fa-check-circle"></i> ভেরিফাইড ইউজার</span>
                         </div>
-                    `;
-                }, 1000);
-            } else {
-                msg.innerHTML = `
-                    <div style="background: #ffebee; padding: 10px; border-radius: 10px; border: 1px solid #ffcdd2; margin-top: 10px;">
-                        <p style="color: #d32f2f; margin-bottom: 8px;">🚫 এই ইমেইলটি আমাদের সদস্য তালিকায় নেই।</p>
-                        <a href="registration.html" style="display: inline-block; background: #00796b; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 13px;">এখনই সাইন আপ করুন</a>
                     </div>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> লগআউট</button>
                 `;
+
+                showToast('লগইন সফল হয়েছে!', 'success');
+                checkExistingReview(email);
+
+            } else {
+                showToast('এই ইমেইলটি আমাদের সিস্টেমে নেই।', 'error');
                 btn.disabled = false;
-                btn.innerText = " দুঃখিত ! অনুগ্রহ করে আবার চেষ্টা করুন";
+                btn.innerHTML = 'আবার চেষ্টা করুন <i class="fas fa-redo"></i>';
+                registerBox.classList.remove('hidden');
             }
-        }).catch(err => {
-            msg.innerText = "⚠️ আপনার ইমেইল টি সঠিক নয়!";
-            msg.style.color = "red";
+        } catch (err) {
+            showToast('নেটওয়ার্ক সমস্যা বা ইমেইল সঠিক নয়!', 'error');
             btn.disabled = false;
-        });
+            btn.innerHTML = 'এগিয়ে যান <i class="fas fa-arrow-right"></i>';
+        }
     }
 
-function submitReview() {
-    const text = document.getElementById('reviewText').value;
-    const errorDiv = document.getElementById('reviewError');
-
-    // আগে এরর মেসেজ থাকলে তা মুছে ফেলা
-    errorDiv.style.display = "none";
-    errorDiv.innerText = "";
-
-    if(!text) {
-        // alert এর বদলে এখানে বক্সটি দেখাবে
-        errorDiv.innerText = "⚠️ দয়া করে আপনার মূল্যবান মতামত লিখুন!";
-        errorDiv.style.display = "block";
-        return;
+    // --- Logout ---
+    function logout() {
+        currentUserData = null; existingReviewId = null; existingReviewData = null;
+        document.getElementById('emailInput').value = '';
+        
+        // Reset verify section UI
+        document.getElementById('emailStep').classList.remove('hidden');
+        document.getElementById('registerPromptBox').classList.add('hidden');
+        const btn = document.getElementById('vBtn');
+        btn.disabled = false;
+        btn.innerHTML = 'এগিয়ে যান <i class="fas fa-arrow-right"></i>';
+        
+        document.getElementById('authContent').classList.add('hidden');
+        document.getElementById('verifySection').classList.remove('hidden');
+        showToast('সফলভাবে লগআউট হয়েছেন', 'info');
     }
 
-    // বাকি সেভ করার কোড...
-    db.collection("reviews").add({
-        uid: currentUserData.uid,
-        userName: currentUserData.name,
-        userEmail: currentUserData.email,
-        rating: selectedRating,
-        comment: text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-        alert("ধন্যবাদ! আপনার রিভিউটি জমা হয়েছে।"); // সফল হলে এলার্ট দিতে পারেন বা পেজ রিলোড হবে
-        location.reload(); 
-    }).catch(err => {
-        alert("সেভ করতে সমস্যা হয়েছে!");
-    });
-}
+    // --- Check Existing Review ---
+    async function checkExistingReview(email) {
+        try {
+            const snapshot = await db.collection("reviews").where("userEmail", "==", email).limit(1).get();
+            if (!snapshot.empty) {
+                const doc = snapshot.docs[0];
+                existingReviewId = doc.id;
+                existingReviewData = doc.data();
+                showMyReviewCard();
+            } else {
+                existingReviewId = null;
+                document.getElementById('myExistingReviewBox').classList.add('hidden');
+                document.getElementById('reviewInputArea').classList.remove('hidden');
+                document.getElementById('ratingTitle').innerText = "আপনার অভিজ্ঞতা কেমন ছিল?";
+                document.getElementById('submitBtn').innerHTML = 'রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>';
+                setRating(5); document.getElementById('reviewText').value = "";
+            }
+        } catch (err) { showToast('ডেটা লোড করতে সমস্যা হচ্ছে!', 'error'); }
+    }
 
+    function showMyReviewCard() {
+        document.getElementById('reviewInputArea').classList.add('hidden');
+        const contentArea = document.getElementById('myReviewContent');
+        const initial = existingReviewData.userName.charAt(0).toUpperCase();
+        
+        contentArea.innerHTML = `
+            <div class="review-header">
+                <div class="reviewer-profile">
+                    <div class="reviewer-avatar">${initial}</div>
+                    <div class="review-name-box">
+                        <span class="review-name">${existingReviewData.userName}</span>
+                        <small style="color:#10b981; font-size:12px; font-weight:600;">আমার রিভিউ</small>
+                    </div>
+                </div>
+                <span class="review-stars">${getStarsHtml(existingReviewData.rating)}</span>
+            </div>
+            <p class="review-text">${existingReviewData.comment}</p>
+            <small class="review-date"><i class="far fa-clock"></i> ${formatDate(existingReviewData.timestamp)}</small>
+            <div class="action-buttons">
+                <button onclick="startEdit()" class="btn-action btn-edit"><i class="fas fa-pen"></i> এডিট করুন</button>
+                <button onclick="deleteReview()" class="btn-action btn-delete"><i class="fas fa-trash"></i> মুছে ফেলুন</button>
+            </div>
+        `;
+        document.getElementById('myExistingReviewBox').classList.remove('hidden');
+    }
 
+    function startEdit() {
+        document.getElementById('myExistingReviewBox').classList.add('hidden');
+        document.getElementById('reviewInputArea').classList.remove('hidden');
+        document.getElementById('ratingTitle').innerText = "আপনার রিভিউ আপডেট করুন";
+        document.getElementById('submitBtn').innerHTML = 'আপডেট করুন <i class="fas fa-sync-alt"></i>';
+        document.getElementById('cancelBtn').classList.remove('hidden');
+        setRating(existingReviewData.rating);
+        document.getElementById('reviewText').value = existingReviewData.comment;
+    }
+
+    function cancelEdit() { document.getElementById('cancelBtn').classList.add('hidden'); showMyReviewCard(); }
+
+    async function deleteReview() {
+        if(confirm("আপনি কি নিশ্চিত যে আপনার রিভিউটি মুছে ফেলতে চান?")) {
+            try {
+                await db.collection('reviews').doc(existingReviewId).delete();
+                showToast('রিভিউ সফলভাবে মুছে ফেলা হয়েছে!', 'success');
+                existingReviewId = null; existingReviewData = null;
+                checkExistingReview(currentUserData.email);
+            } catch (err) { showToast('মুছে ফেলতে সমস্যা হয়েছে!', 'error'); }
+        }
+    }
+
+    // --- Modal Logic ---
+    function showModal() { document.getElementById('thankYouModal').classList.add('show'); }
+    function closeModal() { document.getElementById('thankYouModal').classList.remove('show'); }
+
+    // --- Submit / Update Review ---
+    async function submitReview() {
+        const text = document.getElementById('reviewText').value.trim();
+        const submitBtn = document.getElementById('submitBtn');
+
+        if(!text) { showToast('দয়া করে আপনার মতামত বক্সে লিখুন!', 'error'); document.getElementById('reviewText').focus(); return; }
+
+        submitBtn.disabled = true;
+        const isUpdating = existingReviewId !== null;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> সেভ হচ্ছে...';
+
+        const payload = {
+            uid: currentUserData.uid, userName: currentUserData.name, userEmail: currentUserData.email,
+            rating: selectedRating, comment: text, timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            if (isUpdating) {
+                await db.collection("reviews").doc(existingReviewId).update(payload);
+                showToast('রিভিউ সফলভাবে আপডেট হয়েছে!', 'success');
+            } else {
+                await db.collection("reviews").add(payload);
+                showModal(); // Show Premium Modal on fresh submit
+            }
+            document.getElementById('cancelBtn').classList.add('hidden');
+            checkExistingReview(currentUserData.email);
+        } catch (err) {
+            showToast('সেভ করতে সমস্যা হয়েছে! আবার চেষ্টা করুন।', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = isUpdating ? 'আপডেট করুন <i class="fas fa-sync-alt"></i>' : 'রিভিউ জমা দিন <i class="fas fa-paper-plane"></i>';
+        }
+    }
+
+    // --- Skeleton Loading UI ---
+    function showSkeleton() {
+        const container = document.getElementById('allReviews');
+        let html = '';
+        for(let i=0; i<3; i++) {
+            html += `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer-profile"><div class="skeleton skeleton-avatar"></div><div style="flex:1"><div class="skeleton skeleton-text short"></div><div class="skeleton skeleton-text" style="width: 20%"></div></div></div>
+                    </div>
+                    <div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div>
+                </div>`;
+        }
+        container.innerHTML = html;
+    }
+
+    // --- Emoji Reaction Logic (Pro Feature) ---
+    async function toggleReaction(docId, type) {
+        try {
+            const docRef = db.collection("reviews").doc(docId);
+            const docData = await docRef.get();
+            if(docData.exists) {
+                let reactions = docData.data().reactions || { helpful: 0, love: 0 };
+                reactions[type] = (reactions[type] || 0) + 1;
+                await docRef.update({ reactions: reactions });
+            }
+        } catch(e) { console.log("Reaction error", e); }
+    }
+
+    // --- Load All Reviews with Pagination (Pro Feature) ---
     function loadReviews() {
-        db.collection("reviews").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+        if(currentLimit === 5) showSkeleton(); // Only show skeleton on first load
+
+        if(unsubscribeReviews) unsubscribeReviews();
+
+        unsubscribeReviews = db.collection("reviews").orderBy("timestamp", "desc").limit(currentLimit).onSnapshot(snapshot => {
+            const reviewsContainer = document.getElementById('allReviews');
+            const loadBtn = document.getElementById('loadMoreBtn');
+            
+            if (snapshot.empty) {
+                reviewsContainer.innerHTML = '<p style="text-align: center; color: #94a3b8; font-size:16px;">এখনো কোনো রিভিউ নেই। আপনিই প্রথম রিভিউ দিন!</p>';
+                loadBtn.classList.add('hidden');
+                return;
+            }
+
             let html = "";
             snapshot.forEach(doc => {
                 const data = doc.data();
-                const stars = "⭐".repeat(data.rating);
+                const docId = doc.id;
+                const initial = data.userName ? data.userName.charAt(0).toUpperCase() : 'U';
                 
-                // টাইমস্ট্যাম্প থেকে তারিখ ও সময় বের করা
-                let dateString = "Just now";
-                if(data.timestamp) {
-                    const date = data.timestamp.toDate();
-                    dateString = date.toLocaleDateString('bn-BD') + " | " + date.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
-                }
+                // Reaction Data
+                const reactions = data.reactions || { helpful: 0, love: 0 };
+                
+                // Added Premium Badge to Admin Reply
+                const adminReplyHTML = data.adminReply ? `
+                    <div class="admin-reply-box">
+                        <strong style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-check-circle" style="color: #3b82f6;"></i> RJ Foundation Team 
+                            <span style="background: #e0f2fe; color: #0284c7; font-size: 11px; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.5px;">Official</span>
+                        </strong>
+                        ${data.adminReply}
+                    </div>
+                ` : '';
 
                 html += `
                     <div class="review-item">
                         <div class="review-header">
-                            <span class="review-name">${data.userName}</span>
-                            <span class="review-stars">${stars}</span>
+                            <div class="reviewer-profile">
+                                <div class="reviewer-avatar">${initial}</div>
+                                <div class="review-name-box"><span class="review-name">${data.userName}</span></div>
+                            </div>
+                            <span class="review-stars">${getStarsHtml(data.rating)}</span>
                         </div>
                         <p class="review-text">${data.comment}</p>
-                        <small class="review-date">তারিখ: ${dateString}</small>
+                        ${adminReplyHTML}
+                        
+                        <div class="reaction-bar">
+                            <button class="reaction-btn" onclick="toggleReaction('${docId}', 'helpful')"><i class="far fa-thumbs-up"></i> Helpful ${reactions.helpful > 0 ? `(${reactions.helpful})` : ''}</button>
+                            <button class="reaction-btn" onclick="toggleReaction('${docId}', 'love')"><i class="far fa-heart"></i> Love ${reactions.love > 0 ? `(${reactions.love})` : ''}</button>
+                        </div>
+                        <small class="review-date" style="margin-top:10px;"><i class="far fa-clock"></i> ${formatDate(data.timestamp)}</small>
                     </div>
                 `;
             });
-            document.getElementById('allReviews').innerHTML = html;
+            reviewsContainer.innerHTML = html;
+
+            // Handle Pagination Visibility
+            if(snapshot.docs.length >= currentLimit) { loadBtn.classList.remove('hidden'); } 
+            else { loadBtn.classList.add('hidden'); }
         });
     }
+
+    function loadMoreReviews() {
+        currentLimit += 5;
+        loadReviews();
+    }
     
+    // Initialize
     loadReviews();
+
+    // --- Scroll to Top Logic ---
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.onscroll = function() {
+        scrollTopBtn.classList.toggle("show", document.body.scrollTop > 350 || document.documentElement.scrollTop > 350);
+    };
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 </script>
 
-
-
-<div id="newScrollTop" style="
-    position: fixed;
-    right: 25px;
-    top: 75%;
-    transform: translateY(-50%) translateX(100px);
-    background: rgba(0, 121, 107, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    color: white;
-    width: 55px;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px 15px 15px 50px;
-    cursor: pointer;
-    z-index: 10000;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    visibility: hidden;
-">
-    <div style="
-        background: #00796b;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 4px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    ">
-        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
-    </div>
-    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
-</div>
-
-<script>
-(function() {
-    const btn = document.getElementById('newScrollTop');
-    
-    // স্ক্রল ইভেন্ট লিসেনার
-    window.addEventListener('scroll', function() {
-        let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollPos > 300) {
-            btn.style.opacity = "1";
-            btn.style.visibility = "visible";
-            btn.style.transform = "translateY(-50%) translateX(0)";
-        } else {
-            btn.style.opacity = "0";
-            btn.style.visibility = "hidden";
-            btn.style.transform = "translateY(-50%) translateX(100px)";
-        }
-    });
-
-    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
-    btn.onmouseover = function() {
-        this.style.background = "rgba(0, 121, 107, 0.15)";
-        this.style.borderColor = "#00796b";
-    };
-    btn.onmouseout = function() {
-        this.style.background = "rgba(0, 121, 107, 0.2)";
-        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
-    };
-
-    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
-    btn.onclick = function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
-})();
-</script>
-
-
-    
 </body>
 </html>
