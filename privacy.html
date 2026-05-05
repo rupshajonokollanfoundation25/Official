@@ -5,138 +5,250 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - RJ Foundation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --primary-color: #00796b;
+            --primary-light: #48a999;
             --secondary-color: #004d40;
-            --bg-color: #f4f7f6;
-            --text-color: #333;
+            --bg-gradient-1: #e0f2f1;
+            --bg-gradient-2: #b2dfdb;
+            --text-main: #2d3748;
+            --text-muted: #4a5568;
+        }
+
+        /* Smooth scrolling */
+        html { 
+            scroll-behavior: smooth; 
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Hind Siliguri', 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            background-attachment: fixed;
+            color: var(--text-main);
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .privacy-container {
-            max-width: 800px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        /* প্রিমিয়াম গ্লাসমরফিজমের জন্য ব্যাকগ্রাউন্ড অ্যানিমেশন */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 12s infinite alternate ease-in-out;
+        }
+        body::before {
+            width: 400px; height: 400px;
+            background: #80cbc4;
+            top: -100px; left: -100px;
+        }
+        body::after {
+            width: 350px; height: 350px;
+            background: #4db6ac;
+            bottom: -50px; right: -50px;
+            animation-duration: 15s;
         }
 
-        .header {
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(40px) scale(1.1); }
+        }
+
+        /* মডার্ন অডিও কন্টেইনার */
+        .audio-container {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px 25px;
+            max-width: 450px;
+            margin: 20px auto 30px auto;
             text-align: center;
-            border-bottom: 2px solid #e0f2f1;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--primary-color);
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .section {
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            font-size: 20px;
             color: var(--secondary-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
-            margin-bottom: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255,255,255,0.3);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .audio-container:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+        .audio-container p {
+            margin: 0 0 12px 0;
+            font-weight: 600;
+            font-size: 17px;
+        }
+        audio {
+            width: 100%;
+            border-radius: 10px;
+            outline: none;
+            /* আপনার আগের ডার্ক মোড ইনভার্ট ফিল্টারটি চাইলে নিচে ব্যবহার করতে পারেন, তবে গ্লাস থিমে এটি ছাড়াই বেশি ভালো লাগে */
+            /* filter: invert(100%); */
         }
 
-        .section p {
-            margin-left: 19px;
-            text-align: justify;
-            color: #555;
-            margin-top: 5px;
+        /* প্রো-ম্যাক্স গ্লাসমরফিজম কন্টেইনার */
+        .privacy-container {
+            max-width: 850px;
+            margin: 0 auto 40px auto;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5);
         }
 
-        .section ul {
-            margin-left: 40px;
-            color: #555;
-            list-style-type: square;
-        }
-
-        .highlight-card {
-            background: #e0f2f1;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 10px 0 10px 19px;
-            border-left: 3px solid var(--primary-color);
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 14px;
-            color: #888;
-        }
-
+        /* স্মার্ট ব্যাক বাটন */
         .back-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 25px;
             text-decoration: none;
             color: var(--primary-color);
-            font-weight: bold;
-            transition: 0.3s;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
-
         .back-btn:hover {
-            color: var(--secondary-color);
+            background: var(--primary-color);
+            color: #fff;
             transform: translateX(-5px);
+            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
         }
 
-        @media (max-width: 600px) {
-            .privacy-container { padding: 25px 15px; }
-            .header h1 { font-size: 22px; }
+        /* হেডার ডিজাইন */
+        .header {
+            text-align: center;
+            border-bottom: 2px solid rgba(0, 121, 107, 0.1);
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+            font-size: 38px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-top: 10px;
+            font-weight: 500;
         }
 
+        /* সেকশন কার্ড ডিজাইন */
+        .section {
+            margin-bottom: 35px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+        .section:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+        }
 
+        .section h2 {
+            font-size: 22px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+        .section h2 i {
+            color: var(--primary-color);
+            background: rgba(0, 121, 107, 0.12);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
 
+        .section p {
+            text-align: justify;
+            color: var(--text-main);
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
 
+        /* কাস্টম লিস্ট আইটেম */
+        .section ul {
+            margin-top: 15px;
+            margin-left: 10px;
+            color: var(--text-main);
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .section ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            line-height: 1.7;
+            font-size: 16px;
+        }
+        .section ul li::before {
+            content: '\f058';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
 
+        /* হাইলাইট কার্ড */
+        .highlight-card {
+            background: linear-gradient(135deg, rgba(0, 121, 107, 0.15), rgba(0, 77, 64, 0.05));
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin: 20px 0 0 0;
+            border-left: 5px solid var(--primary-color);
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
 
+        /* ফুটার নোট */
+        .footer-note {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
 
-
-        
-
-.audio-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 20px;
-    max-width: 400px;
-    text-align: center;
-    color: green;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-}
-
-audio {
-    width: 100%;
-    margin-top: 10px;
-    filter: invert(100%); /* ডার্ক মোডের সাথে মানিয়ে নেওয়ার জন্য */
-}
-
-
+        /* রেস্পন্সিভ ডিজাইন */
+        @media (max-width: 768px) {
+            .privacy-container { padding: 30px 20px; border-radius: 25px; }
+            .header h1 { font-size: 28px; }
+            .section { padding: 20px; }
+            .section h2 { font-size: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -147,12 +259,6 @@ audio {
         আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
     </audio>
 </div>
-
-    
-
-
-
-    
 
 <div class="privacy-container">
     <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> ফিরে যান</a>
@@ -169,7 +275,7 @@ audio {
 
     <div class="section">
         <h2><i class="fas fa-user-shield"></i> তথ্যের ব্যবহার</h2>
-        <p>সংগৃহীত তথ্যগুলো শুধুমাত্র আপনার প্রোফাইল ভেরিফিকেশন এবং ওয়েবসাইটে আপনার রিভিউ প্রদর্শন করার জন্য ব্যবহৃত হয়। আমরা আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা শেয়ার করি না।</p>
+        <p>সংগৃহীত তথ্যগুলো শুধুমাত্র আপনার প্রোফাইল ভেরিফিকেশন এবং ওয়েবসাইটে আপনার রিভিউ প্রদর্শন করার জন্য ব্যবহৃত হয়। আমরা আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা শেয়ার করি পণ্ডিত না।</p>
     </div>
 
     <div class="section">
@@ -206,20 +312,15 @@ audio {
         <p>আপনি চাইলে যেকোনো সময় আপনার রিভিউ ডিলিট করার অনুরোধ করতে পারেন। এছাড়া আপনার তথ্য সংক্রান্ত যেকোনো জিজ্ঞাসায় আমাদের ফাউন্ডেশনের সাথে সরাসরি যোগাযোগ করতে পারেন।</p>
        
        <p style="font-weight: bold; margin-top: 10px;">ফোন (what's app):+8801957329211</p>
-    </div>
-        <p style="font-weight: bold; margin-top: 10px;">ইমেইল: info.rjfoundation25@gmail.com</p>
+       <p style="font-weight: bold; margin-top: 10px;">ইমেইল: info.rjfoundation25@gmail.com</p>
     </div>
 
     <div class="footer-note">
-        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 20px;">
+        <hr style="border: 0; border-top: 1px solid rgba(0, 121, 107, 0.2); margin-bottom: 20px;">
         <p>© ২০২৬ রুপসা জনকল্যাণ ফাউন্ডেশন। সকল স্বত্ব সংরক্ষিত।</p>
     </div>
 </div>
 
-
-
-
-<!--Start of Tawk.to Script-->
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 
@@ -235,8 +336,6 @@ Tawk_API.customStyle = {
     }
 };
 
-
-
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
@@ -246,11 +345,6 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<!--End of Tawk.to Script-->
-
-
-
-
 <div id="newScrollTop" style="
     position: fixed;
     right: 25px;
@@ -270,8 +364,8 @@ s0.parentNode.insertBefore(s1,s0);
     cursor: pointer;
     z-index: 10000;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
 ">
@@ -288,7 +382,7 @@ s0.parentNode.insertBefore(s1,s0);
     ">
         <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
     </div>
-    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+    <span style="font-size: 8px; font-weight: 900; color: #004d40; letter-spacing: 0.05px;">উপরে যান</span>
 </div>
 
 <script>
@@ -312,12 +406,12 @@ s0.parentNode.insertBefore(s1,s0);
 
     // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
     btn.onmouseover = function() {
-        this.style.background = "rgba(0, 121, 107, 0.15)";
-        this.style.borderColor = "#00796b";
+        this.style.background = "rgba(0, 121, 107, 0.3)";
+        this.style.borderColor = "rgba(0, 121, 107, 0.5)";
     };
     btn.onmouseout = function() {
         this.style.background = "rgba(0, 121, 107, 0.2)";
-        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+        this.style.borderColor = "rgba(255, 255, 255, 0.3)";
     };
 
     // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
@@ -328,12 +422,7 @@ s0.parentNode.insertBefore(s1,s0);
         });
     };
 })();
-
-
-
 </script>
 
-    
-    
 </body>
 </html>
