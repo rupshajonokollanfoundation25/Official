@@ -51,7 +51,7 @@ function updateNotice(newText) {
 const notice = document.querySelector('.moving-text');
 if (notice) {
     // এখানে টেক্সটের দৈর্ঘ্য অনুযায়ী স্পিড এডজাস্ট করা যায়
-    notice.style.animationDuration = '50s'; 
+    notice.style.animationDuration = '60s'; 
 }
 
 // বাণীর তালিকা (এরে)
