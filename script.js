@@ -8,7 +8,7 @@ function toggleLanguage() {
         title.innerText = "Rupsha Jonokollan Foundation";
     } else {
         btn.innerText = "English";
-        title.innerText = "রুপসা জনকল্যাণ ফাউন্ডেশন";
+        title.innerText = "রূপসা জনকল্যাণ ফাউন্ডেশন";
     }
 }
 
@@ -51,7 +51,7 @@ function updateNotice(newText) {
 const notice = document.querySelector('.moving-text');
 if (notice) {
     // এখানে টেক্সটের দৈর্ঘ্য অনুযায়ী স্পিড এডজাস্ট করা যায়
-    notice.style.animationDuration = '20s'; 
+    notice.style.animationDuration = '50s'; 
 }
 
 // বাণীর তালিকা (এরে)
