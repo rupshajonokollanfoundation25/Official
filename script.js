@@ -201,7 +201,7 @@ function startLoading() {
 
     // ২ সেকেন্ড পর রেজিস্ট্রেশন পেজে নিয়ে যাবে
     setTimeout(() => {
-        window.location.href = "registration.html";
+        window.location.href = "/registration/";
     }, 2000);
 }
 
