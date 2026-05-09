@@ -44,14 +44,27 @@
         .header-top h1 { margin: 0; font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.5px; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; }
+        
+        /* Updated Stat Card for Clickable Filters */
         .stat-card { 
             background: white; padding: 20px; border-radius: 20px; 
-            border: 1px solid #f1f5f9; transition: 0.3s;
+            border: 2px solid transparent; transition: all 0.3s ease;
             display: flex; flex-direction: column; align-items: center;
+            cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            position: relative; overflow: hidden;
         }
-        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
-        .stat-card span { font-size: 12px; color: #64748b; font-weight: 700; margin-bottom: 5px; }
-        .stat-card strong { font-size: 28px; color: var(--primary); }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 20px rgba(0,0,0,0.05); }
+        
+        /* Active State Styles */
+        .stat-card.active { border-color: var(--accent); background: #f8fafc; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.1); transform: translateY(-4px); }
+        .stat-card.active::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--accent); }
+        #card-pending.active { border-color: var(--warning); box-shadow: 0 10px 20px rgba(245, 158, 11, 0.1); }
+        #card-pending.active::before { background: var(--warning); }
+        #card-replied.active { border-color: var(--success); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.1); }
+        #card-replied.active::before { background: var(--success); }
+
+        .stat-card span { font-size: 13px; color: #64748b; font-weight: 700; margin-bottom: 5px; z-index: 1; }
+        .stat-card strong { font-size: 32px; color: var(--primary); z-index: 1; line-height: 1; }
 
         /* Enhanced Search Area */
         .search-container { margin-bottom: 25px; position: relative; }
@@ -126,7 +139,6 @@
         }
         .action-btn:hover { transform: scale(1.05); background: #2563eb; }
 
-        /* Existing Reply Styling */
         .existing-reply { 
             background: #f0fdf4; border-radius: 18px; padding: 20px; 
             position: relative; border: 1px solid #dcfce7;
@@ -139,7 +151,6 @@
         .reply-action-btn { background: none; border: none; font-size: 13px; font-weight: 700; cursor: pointer; color: #64748b; padding: 0; transition: 0.2s; }
         .reply-action-btn:hover { color: var(--accent); }
 
-        /* Toast & Animations */
         #toast { 
             position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); 
             background: var(--primary); color: white; padding: 16px 32px; border-radius: 20px; 
@@ -149,6 +160,10 @@
 
         .loading-spinner { padding: 100px; text-align: center; color: var(--accent); }
         .loading-spinner i { font-size: 40px; margin-bottom: 15px; }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 48px; color: #cbd5e1; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -163,15 +178,15 @@
         </div>
         
         <div class="stats-grid">
-            <div class="stat-card">
+            <div class="stat-card active" id="card-all" onclick="setFilter('all')" title="সব রিভিউ দেখতে ক্লিক করুন">
                 <span>মোট রিভিউ</span>
                 <strong id="totalCount">0</strong>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" id="card-pending" onclick="setFilter('pending')" title="রিপ্লাই বাকি আছে এমন রিভিউ দেখতে ক্লিক করুন">
                 <span>বাকি আছে</span>
                 <strong id="pendingCount" style="color: var(--warning);">0</strong>
             </div>
-            <div class="stat-card">
+            <div class="stat-card" id="card-replied" onclick="setFilter('replied')" title="রিপ্লাই দেওয়া রিভিউ দেখতে ক্লিক করুন">
                 <span>রিপ্লাইড</span>
                 <strong id="repliedCount" style="color: var(--success);">0</strong>
             </div>
@@ -180,7 +195,7 @@
 
     <div class="search-container">
         <i class="fas fa-search search-icon"></i>
-        <input type="text" id="searchInput" class="search-bar" placeholder="ইউজার নেম বা কমেন্টের কিওয়ার্ড দিয়ে খুঁজুন..." onkeyup="filterReviews()">
+        <input type="text" id="searchInput" class="search-bar" placeholder="ইউজার নেম বা কমেন্টের কিওয়ার্ড দিয়ে খুঁজুন..." onkeyup="applyFilters()">
     </div>
 
     <div id="reviewList">
@@ -192,7 +207,7 @@
 </div>
 
 <script>
-    // Firebase Configuration (সংরক্ষিত)
+    // Firebase Configuration
     const reviewConfig = {
         apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
         authDomain: "rating-revieww.firebaseapp.com",
@@ -201,6 +216,9 @@
     };
     firebase.initializeApp(reviewConfig);
     const db = firebase.firestore();
+
+    // Global Filter State
+    let currentFilter = 'all';
 
     function showToast(msg) {
         const t = document.getElementById('toast');
@@ -214,6 +232,60 @@
         if(input) {
             input.value = msg;
             input.focus();
+            input.style.height = input.scrollHeight + 'px';
+        }
+    }
+
+    // Set Filter Status & Apply
+    function setFilter(filterType) {
+        currentFilter = filterType;
+        
+        // UI Active State Update
+        document.querySelectorAll('.stat-card').forEach(card => card.classList.remove('active'));
+        document.getElementById(`card-${filterType}`).classList.add('active');
+        
+        applyFilters();
+    }
+
+    // Combined Filter Logic (Search + Status)
+    function applyFilters() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const cards = document.querySelectorAll('.review-card');
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const searchContent = card.getAttribute('data-search');
+            const status = card.getAttribute('data-status');
+            
+            let textMatch = searchContent.includes(q);
+            let statusMatch = true;
+            
+            if (currentFilter === 'pending') {
+                statusMatch = (status === 'pending');
+            } else if (currentFilter === 'replied') {
+                statusMatch = (status === 'replied');
+            }
+            
+            if (textMatch && statusMatch) {
+                card.style.display = 'block';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show empty state if no results match filter/search
+        let emptyDiv = document.getElementById('empty-filter-state');
+        if (visibleCount === 0 && cards.length > 0) {
+            if (!emptyDiv) {
+                emptyDiv = document.createElement('div');
+                emptyDiv.id = 'empty-filter-state';
+                emptyDiv.className = 'empty-state';
+                emptyDiv.innerHTML = '<i class="fas fa-search-minus"></i><br><b>কোনো ডাটা পাওয়া যায়নি!</b>';
+                document.getElementById('reviewList').appendChild(emptyDiv);
+            }
+        } else if (emptyDiv) {
+            emptyDiv.remove();
         }
     }
 
@@ -225,7 +297,7 @@
             let pending = 0;
 
             if (snapshot.empty) {
-                list.innerHTML = `<div style="text-align:center; padding:100px; color:#94a3b8;"><i class="far fa-folder-open" style="font-size:40px; margin-bottom:15px;"></i><br>এখনও কোনো রিভিউ জমা পড়েনি!</div>`;
+                list.innerHTML = `<div class="empty-state"><i class="far fa-folder-open"></i><br>এখনও কোনো রিভিউ জমা পড়েনি!</div>`;
                 return;
             }
 
@@ -240,9 +312,10 @@
 
                 const stars = '<i class="fas fa-star"></i>'.repeat(data.rating || 0) + '<i class="far fa-star"></i>'.repeat(5 - (data.rating || 0));
                 const initial = data.userName ? data.userName.charAt(0).toUpperCase() : '?';
+                const statusType = hasReply ? 'replied' : 'pending';
 
                 html += `
-                    <div class="review-card" data-search="${(data.userName || '').toLowerCase()} ${(data.comment || '').toLowerCase()}">
+                    <div class="review-card" data-search="${(data.userName || '').toLowerCase()} ${(data.comment || '').toLowerCase()}" data-status="${statusType}">
                         <div class="status-indicator ${hasReply ? 'status-replied' : ''}"></div>
                         <div class="card-header">
                             <div class="user-info" style="display:flex; align-items:center; gap:15px;">
@@ -254,7 +327,7 @@
                             </div>
                             <div style="display:flex; align-items:center; gap:15px;">
                                 <div class="rating">${stars}</div>
-                                <button class="btn-delete-full" onclick="deleteFullReview('${id}')">
+                                <button class="btn-delete-full" title="পুরো রিভিউ ডিলিট করুন" onclick="deleteFullReview('${id}')">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -293,10 +366,16 @@
                 `;
             });
 
+            // Update Counters
             document.getElementById('totalCount').innerText = snapshot.size;
             document.getElementById('pendingCount').innerText = pending;
             document.getElementById('repliedCount').innerText = replied;
+            
+            // Render HTML
             list.innerHTML = html;
+            
+            // Re-apply current filter so layout stays correct on live updates
+            applyFilters();
 
         }, error => {
             console.error("Firebase Error: ", error);
@@ -333,7 +412,9 @@
             </div>
             <button class="reply-action-btn" style="margin-top:10px; color:var(--danger)" onclick="initAdminPanel()">বাতিল করুন</button>
         `;
-        document.getElementById(`reply-${docId}`).focus();
+        const ta = document.getElementById(`reply-${docId}`);
+        ta.focus();
+        ta.style.height = ta.scrollHeight + 'px';
     }
 
     async function deleteReply(docId) {
@@ -354,14 +435,7 @@
         }
     }
 
-    function filterReviews() {
-        const q = document.getElementById('searchInput').value.toLowerCase();
-        document.querySelectorAll('.review-card').forEach(card => {
-            const content = card.getAttribute('data-search');
-            card.style.display = content.includes(q) ? 'block' : 'none';
-        });
-    }
-
+    // Initialize
     initAdminPanel();
 </script>
 
