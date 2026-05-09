@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rupsha jonokollan foundation- feedback section</title>
+    <title>rupsha jonokollan foundation - feedback section</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -65,9 +65,8 @@
         .user-info { 
             display: flex; align-items: center; justify-content: space-between;
             margin-bottom: 25px; padding: 15px 20px; background: #f8fafc; 
-            border-radius: 16px; border: 1px solid #e2e8f0; gap: 15px; /* Added gap to keep elements separated */
+            border-radius: 16px; border: 1px solid #e2e8f0; gap: 15px; 
         }
-        /* Modified user-profile-left to handle long names perfectly */
         .user-profile-left { display: flex; align-items: center; gap: 15px; flex: 1; min-width: 0; }
         .user-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #10b981; padding: 2px; background: white; object-fit: cover; flex-shrink: 0; }
         .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 8px; transition: 0.3s; flex-shrink: 0; }
@@ -87,12 +86,32 @@
         }
         textarea:focus { border-color: #059669; background: #ffffff; outline: none; box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1); }
 
-        /* Review Items */
+        /* Section Divider */
         .section-divider { display: flex; align-items: center; text-align: center; margin: 45px 0 30px; color: #64748b; font-weight: 600; font-size: 18px; }
         .section-divider::before, .section-divider::after { content: ''; flex: 1; border-bottom: 2px solid #e2e8f0; }
         .section-divider::before { margin-right: 20px; }
         .section-divider::after { margin-left: 20px; }
 
+        /* --- New Average Rating Summary Styling --- */
+        .rating-summary-card {
+            display: flex; gap: 30px; background: #f8fafc; padding: 25px; border-radius: 20px;
+            border: 1px solid #e2e8f0; margin-bottom: 30px; flex-wrap: wrap; align-items: center;
+        }
+        .summary-left { text-align: center; flex: 1; min-width: 150px; border-right: 2px solid #e2e8f0; padding-right: 20px;}
+        @media (max-width: 600px) { .summary-left { border-right: none; border-bottom: 2px solid #e2e8f0; padding-right: 0; padding-bottom: 20px; } }
+        .summary-left h1 { font-size: 52px; color: #0f172a; margin: 0; line-height: 1; font-weight: 700; }
+        .summary-stars { color: #fbbf24; font-size: 22px; margin: 12px 0; }
+        .summary-left p { color: #64748b; font-size: 15px; margin: 0; font-weight: 600;}
+        
+        .summary-right { flex: 2; min-width: 250px; display: flex; flex-direction: column; gap: 10px; }
+        .rating-bar-row { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; color: #475569;}
+        .bar-label { min-width: 45px; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+        .bar-label i { color: #fbbf24; font-size: 13px;}
+        .progress-track { flex: 1; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #10b981 0%, #059669 100%); border-radius: 10px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bar-percent { min-width: 45px; text-align: left; color: #0f172a; font-size: 13px;}
+
+        /* Review Items */
         .review-item { 
             background: #ffffff; border-radius: 18px; padding: 24px; margin-bottom: 20px; 
             border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s ease;
@@ -103,7 +122,6 @@
         .reviewer-profile { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
         .reviewer-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, #059669 0%, #10b981 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; flex-shrink: 0; }
         .review-name-box { display: flex; flex-direction: column; min-width: 0; }
-        /* Changed from nowrap to wrap so that full name is visible properly */
         .review-name { font-weight: 600; color: #1e293b; font-size: 16px; word-break: break-word; white-space: normal; }
         .review-stars { color: #fbbf24; font-size: 14px; letter-spacing: 2px; flex-shrink: 0; display: flex; }
         .review-text { font-size: 16px; color: #475569; line-height: 1.7; margin: 0; }
@@ -206,6 +224,23 @@
     <h2 class="header-title">মতামত ও রিভিউ</h2>
     <p class="header-subtitle">আপনার মূল্যবান মতামত আমাদের সেবার মান উন্নত করতে সাহায্য করে</p>
     
+    
+    
+       <!-- Average Rating Summary Section -->
+    <div id="averageRatingSection" class="hidden">
+        <div class="rating-summary-card">
+            <div class="summary-left">
+                <h1 id="avgRatingValue">0.0</h1>
+                <div class="summary-stars" id="avgRatingStars"></div>
+                <p id="totalReviewCount">0টি রিভিউ</p>
+            </div>
+            <div class="summary-right" id="ratingProgressBars">
+                <!-- Bars dynamically generated by JS -->
+            </div>
+        </div>
+    </div>
+    
+    
     <div id="verifySection" class="verify-box">
         <div id="emailStep">
             <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">রিভিউ প্রদান করতে বা ম্যানেজ করতে ইমেইল ভেরিফাই করুন</p>
@@ -260,8 +295,9 @@
 
     <div class="section-divider">সকল গ্রাহকের মতামত</div>
     
-    <div id="allReviews">
-        </div>
+ 
+    
+    <div id="allReviews"></div>
     
     <button id="loadMoreBtn" class="load-more-btn hidden" onclick="loadMoreReviews()">আরও দেখুন <i class="fas fa-chevron-down"></i></button>
 </div>
@@ -269,7 +305,7 @@
 <button id="scrollTopBtn" onclick="scrollToTop()" title="Go to top"><i class="fas fa-chevron-up"></i></button>
 
 <script>
-    // --- Firebase Configurations (UNCHANGED) ---
+    // --- Firebase Configurations ---
     const loginConfig = {
         apiKey: "AIzaSyD80uA81X3bkwiousPwXpIv6OKkk1k2icA",
         authDomain: "rjfoundation-25.firebaseapp.com",
@@ -295,7 +331,7 @@
     let selectedRating = 5;
     let existingReviewId = null; 
     let existingReviewData = null;
-    let currentLimit = 5; // For Pagination
+    let currentLimit = 5; 
     let unsubscribeReviews = null;
 
     // --- Premium Toast Function ---
@@ -329,7 +365,7 @@
         return '<i class="fas fa-star"></i>'.repeat(rating) + '<i class="far fa-star" style="color: #e2e8f0;"></i>'.repeat(5 - rating);
     }
 
-    // --- Direct Email Verification Logic (No OTP) ---
+    // --- Direct Email Verification Logic ---
     async function verifyEmailDirectly() {
         const email = document.getElementById('emailInput').value.trim();
         const btn = document.getElementById('vBtn');
@@ -356,7 +392,6 @@
                 document.getElementById('verifySection').classList.add('hidden');
                 document.getElementById('authContent').classList.remove('hidden');
                 
-                // Modified HTML structure slightly to make sure name wraps perfectly inside the box
                 document.getElementById('userInfo').innerHTML = `
                     <div class="user-profile-left">
                         <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="user-img" alt="User">
@@ -559,6 +594,63 @@
         } catch(e) { console.log("Reaction error", e); }
     }
 
+    // --- Calculate Average Rating Summary ---
+    function calculateAverageStats() {
+        db.collection("reviews").onSnapshot(snapshot => {
+            const summarySection = document.getElementById('averageRatingSection');
+            
+            if (snapshot.empty) {
+                summarySection.classList.add('hidden');
+                return;
+            }
+            
+            summarySection.classList.remove('hidden');
+            
+            let totalStars = 0;
+            let totalReviews = snapshot.docs.length;
+            let counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+            
+            snapshot.forEach(doc => {
+                let rating = doc.data().rating || 0;
+                if(rating >= 1 && rating <= 5) {
+                    counts[rating]++;
+                    totalStars += rating;
+                }
+            });
+            
+            // Calculate Average
+            let avg = (totalStars / totalReviews).toFixed(1);
+            document.getElementById('avgRatingValue').innerText = avg;
+            document.getElementById('totalReviewCount').innerText = `${totalReviews}টি রিভিউ`;
+            
+            // Generate Stars for Average (Including Half Stars)
+            let fullStars = Math.floor(avg);
+            let halfStar = (avg - fullStars) >= 0.5 ? 1 : 0;
+            let emptyStars = 5 - fullStars - halfStar;
+            
+            let starsHtml = '<i class="fas fa-star"></i>'.repeat(fullStars) + 
+                            (halfStar ? '<i class="fas fa-star-half-alt"></i>' : '') + 
+                            '<i class="far fa-star" style="color: #e2e8f0;"></i>'.repeat(emptyStars);
+            document.getElementById('avgRatingStars').innerHTML = starsHtml;
+            
+            // Generate Progress Bars
+            let barsHtml = '';
+            for(let i = 5; i >= 1; i--) {
+                let percent = totalReviews > 0 ? ((counts[i] / totalReviews) * 100).toFixed(0) : 0;
+                barsHtml += `
+                    <div class="rating-bar-row">
+                        <div class="bar-label">${i} <i class="fas fa-star"></i></div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+                        <div class="bar-percent">${percent}%</div>
+                    </div>
+                `;
+            }
+            document.getElementById('ratingProgressBars').innerHTML = barsHtml;
+        });
+    }
+
     // --- Load All Reviews with Pagination ---
     function loadReviews() {
         if(currentLimit === 5) showSkeleton(); 
@@ -641,7 +733,8 @@
         loadReviews();
     }
     
-    // Initialize
+    // Initialize Stats & Reviews
+    calculateAverageStats();
     loadReviews();
 
     // --- Scroll to Top Logic ---
