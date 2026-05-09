@@ -196,7 +196,7 @@
     <div class="modal-content">
         <div class="modal-icon"><i class="fas fa-check"></i></div>
         <h2 style="color: #0f172a; margin-bottom: 10px;">ধন্যবাদ!</h2>
-        <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">আপনার মূল্যবান মতামত সফলভাবে জমা হয়েছে।</p>
+        <p style="color: #64748b; font-size: 16px; margin-bottom: 25px;">আপনার মূল্যবান মতামত সফলভাবে জমা হয়েছে。</p>
         <button class="primary-btn" onclick="closeModal()">ঠিক আছে</button>
     </div>
 </div>
@@ -524,15 +524,42 @@
         container.innerHTML = html;
     }
 
-    // --- Emoji Reaction Logic (Pro Feature) ---
+    // --- Emoji Reaction Logic (Pro Feature - Updated for Single React) ---
     async function toggleReaction(docId, type) {
         try {
+            let userId = currentUserData ? currentUserData.email : localStorage.getItem('rj_guest_id');
+            if (!userId) {
+                userId = 'guest_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('rj_guest_id', userId);
+            }
+
             const docRef = db.collection("reviews").doc(docId);
             const docData = await docRef.get();
             if(docData.exists) {
-                let reactions = docData.data().reactions || { helpful: 0, love: 0 };
-                reactions[type] = (reactions[type] || 0) + 1;
-                await docRef.update({ reactions: reactions });
+                let data = docData.data();
+                let reactions = data.reactions || { helpful: 0, love: 0 };
+                let reactedUsers = data.reactedUsers || { helpful: [], love: [] };
+                
+                // Initialize arrays if missing
+                if (!reactedUsers.helpful) reactedUsers.helpful = [];
+                if (!reactedUsers.love) reactedUsers.love = [];
+
+                const hasReacted = reactedUsers[type].includes(userId);
+
+                if (hasReacted) {
+                    // Remove reaction (Toggle off)
+                    reactedUsers[type] = reactedUsers[type].filter(id => id !== userId);
+                    reactions[type] = Math.max(0, (reactions[type] || 0) - 1);
+                } else {
+                    // Add reaction (Toggle on)
+                    reactedUsers[type].push(userId);
+                    reactions[type] = (reactions[type] || 0) + 1;
+                }
+
+                await docRef.update({ 
+                    reactions: reactions,
+                    reactedUsers: reactedUsers
+                });
             }
         } catch(e) { console.log("Reaction error", e); }
     }
@@ -559,8 +586,24 @@
                 const docId = doc.id;
                 const initial = data.userName ? data.userName.charAt(0).toUpperCase() : 'U';
                 
-                // Reaction Data
+                // Reaction Data & User Checking Logic
                 const reactions = data.reactions || { helpful: 0, love: 0 };
+                const reactedUsers = data.reactedUsers || { helpful: [], love: [] };
+                
+                let currentUserId = currentUserData ? currentUserData.email : localStorage.getItem('rj_guest_id');
+                if (!currentUserId) {
+                    currentUserId = 'guest_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('rj_guest_id', currentUserId);
+                }
+                
+                const hasReactedHelpful = reactedUsers.helpful && reactedUsers.helpful.includes(currentUserId);
+                const hasReactedLove = reactedUsers.love && reactedUsers.love.includes(currentUserId);
+
+                const helpfulBtnClass = hasReactedHelpful ? 'reaction-btn active-helpful' : 'reaction-btn';
+                const loveBtnClass = hasReactedLove ? 'reaction-btn active-love' : 'reaction-btn';
+
+                const helpfulIcon = hasReactedHelpful ? 'fas fa-thumbs-up' : 'far fa-thumbs-up';
+                const loveIcon = hasReactedLove ? 'fas fa-heart' : 'far fa-heart';
                 
                 // Added Premium Badge to Admin Reply
                 const adminReplyHTML = data.adminReply ? `
@@ -586,8 +629,8 @@
                         ${adminReplyHTML}
                         
                         <div class="reaction-bar">
-                            <button class="reaction-btn" onclick="toggleReaction('${docId}', 'helpful')"><i class="far fa-thumbs-up"></i> Helpful ${reactions.helpful > 0 ? `(${reactions.helpful})` : ''}</button>
-                            <button class="reaction-btn" onclick="toggleReaction('${docId}', 'love')"><i class="far fa-heart"></i> Love ${reactions.love > 0 ? `(${reactions.love})` : ''}</button>
+                            <button class="${helpfulBtnClass}" onclick="toggleReaction('${docId}', 'helpful')"><i class="${helpfulIcon}"></i> Helpful ${reactions.helpful > 0 ? `(${reactions.helpful})` : ''}</button>
+                            <button class="${loveBtnClass}" onclick="toggleReaction('${docId}', 'love')"><i class="${loveIcon}"></i> Love ${reactions.love > 0 ? `(${reactions.love})` : ''}</button>
                         </div>
                         <small class="review-date" style="margin-top:10px;"><i class="far fa-clock"></i> ${formatDate(data.timestamp)}</small>
                     </div>
