@@ -3,189 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Member Verification | Rupsha Jonokollan Foundation</title>
+    <title>Smart Member Verification | RJF</title>
     
-    <!-- Tailwind CSS (With custom config for Dark Mode) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'media', // Automatically switches based on user's device theme
+            darkMode: 'media',
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Hind Siliguri', 'sans-serif'] }
+                    fontFamily: { sans: ['Hind Siliguri', 'sans-serif'] },
+                    colors: {
+                        brand: { 50: '#f0fdfa', 500: '#14b8a6', 600: '#0d9488', 900: '#134e4a' }
+                    }
                 }
             }
         }
     </script>
     
+    <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
         
         body { 
-            /* Light Mode Background */
             background: linear-gradient(135deg, #e0f2fe 0%, #f3f4f6 100%);
             min-height: 100vh;
             transition: background 0.3s ease;
         }
-
-        /* Dark Mode Background */
         @media (prefers-color-scheme: dark) {
             body { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
         }
         
         .glass-card { 
-            background: rgba(255, 255, 255, 0.85); 
-            backdrop-filter: blur(16px); 
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 24px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
-            transition: all 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); 
         }
-
-        /* Dark Mode Glass Card */
         @media (prefers-color-scheme: dark) {
             .glass-card {
-                background: rgba(30, 41, 59, 0.85);
+                background: rgba(30, 41, 59, 0.9);
                 border: 1px solid rgba(255, 255, 255, 0.1);
-                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             }
+        }
+
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 5rem;
+            font-weight: 800;
+            color: rgba(20, 184, 166, 0.05);
+            pointer-events: none;
+            white-space: nowrap;
+            z-index: 0;
         }
 
         /* Animations */
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
             100% { opacity: 1; transform: scale(1) translateY(0); }
         }
-        .animate-pop-in { animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-        @keyframes pulse-bg {
-            0% { background-color: #e2e8f0; }
-            50% { background-color: #cbd5e1; }
-            100% { background-color: #e2e8f0; }
-        }
-        .skeleton { animation: pulse-bg 1.5s infinite; border-radius: 8px; }
-
-        /* Dark Mode Skeleton */
-        @media (prefers-color-scheme: dark) {
-            @keyframes pulse-bg-dark {
-                0% { background-color: #334155; }
-                50% { background-color: #475569; }
-                100% { background-color: #334155; }
-            }
-            .skeleton { animation: pulse-bg-dark 1.5s infinite; }
-        }
-
-        /* Print Media Styles */
-        @media print {
-            body { background: white !important; }
-            .no-print { display: none !important; }
-            .glass-card { box-shadow: none !important; border: 1px solid #ddd !important; background: white !important; }
-            * { color: black !important; }
-        }
+        .animate-pop-in { animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .skeleton { animation: pulse 1.5s infinite; border-radius: 8px; background: #e2e8f0; }
+        @media (prefers-color-scheme: dark) { .skeleton { background: #334155; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
 
-    <!-- 1. Search Card (Shows if no ID is found in URL) -->
+    <!-- 1. Search & Scan Card -->
     <div id="search-card" class="hidden animate-pop-in glass-card max-w-md w-full p-8 text-center relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-indigo-600"></div>
-        <div class="w-20 h-20 bg-blue-50 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-magnifying-glass text-blue-500 text-3xl"></i>
+        <div class="w-20 h-20 bg-blue-50 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+            <i class="fas fa-shield-check text-blue-500 text-4xl"></i>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">মেম্বার ভেরিফিকেশন</h1>
-        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">সদস্যের সঠিক পরিচয় নিশ্চিত করতে আইডি দিয়ে সার্চ করুন</p>
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">স্মার্ট ভেরিফিকেশন</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">আইডি লিখুন অথবা কার্ড স্ক্যান করুন</p>
         
+        <!-- Scanner Area -->
+        <div id="qr-reader" class="mb-4 hidden rounded-xl overflow-hidden border-2 border-dashed border-blue-300"></div>
+        
+        <div class="flex gap-2 mb-4">
+            <button id="start-scan-btn" class="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-bold hover:bg-slate-200 transition flex items-center justify-center gap-2">
+                <i class="fas fa-qrcode"></i> স্ক্যান করুন
+            </button>
+        </div>
+
         <form id="search-form" class="space-y-4">
             <input type="text" id="search-input" placeholder="Enter Member ID (e.g. RJF1001)" required
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 uppercase tracking-wider text-center">
-            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-bold hover:shadow-lg transition duration-200">
-                <i class="fas fa-check-circle mr-2"></i> ভেরিফাই করুন
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase tracking-wider text-center font-bold">
+            <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-bold hover:shadow-lg transition duration-200 flex justify-center items-center gap-2">
+                <i class="fas fa-arrow-right"></i> ভেরিফাই
             </button>
         </form>
     </div>
 
-    <!-- 2. Loader Card (Skeleton) -->
-    <div id="loader" class="hidden glass-card max-w-md w-full p-8">
-        <div class="skeleton h-20 w-20 rounded-full mx-auto mb-6"></div>
-        <div class="skeleton h-8 w-3/4 mx-auto mb-4"></div>
-        <div class="skeleton h-4 w-1/2 mx-auto mb-8"></div>
-        <div class="space-y-4">
-            <div class="skeleton h-12 w-full"></div>
-            <div class="skeleton h-12 w-full"></div>
-            <div class="skeleton h-12 w-full"></div>
+    <!-- 2. Loader Card -->
+    <div id="loader" class="hidden glass-card max-w-md w-full p-8 text-center">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+            <div class="absolute inset-0 border-4 border-t-blue-500 border-blue-100 dark:border-slate-700 rounded-full animate-spin"></div>
+            <i class="fas fa-fingerprint absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl text-blue-500"></i>
         </div>
+        <h2 class="text-lg font-bold text-gray-700 dark:text-gray-300">ডাটাবেস চেক করা হচ্ছে...</h2>
     </div>
 
-    <!-- 3. Verified Result Card -->
-    <div id="verified-card" class="hidden animate-pop-in glass-card max-w-md w-full p-6 sm:p-8 text-center relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-500 to-emerald-600"></div>
+    <!-- 3. Verified Digital ID Card -->
+    <div id="verified-wrapper" class="hidden w-full max-w-md space-y-4 animate-pop-in">
         
-        <!-- Profile Picture Integration -->
-        <div class="relative w-24 h-24 mx-auto mb-4">
-            <div class="bg-gradient-to-br from-teal-100 to-teal-50 w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden border-4 border-white dark:border-gray-700">
-                <img id="profile-img" src="rjf.webp" alt="Profile" class="w-full h-full object-cover" onerror="this.src='rjf.webp'">
+        <!-- The Downloadable Card Element -->
+        <div id="id-card-element" class="glass-card p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-500 to-emerald-500"></div>
+            <div class="watermark">VERIFIED RJF</div>
+            
+            <div class="relative z-10">
+                <div class="flex justify-between items-start mb-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="rjf.webp" onerror="this.style.display='none'" alt="Logo" class="w-10 h-10 rounded-full shadow-sm">
+                        <div>
+                            <h2 class="text-sm font-bold text-gray-800 dark:text-white uppercase">Rupsha Jonokollan</h2>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400">Foundation (RJF)</p>
+                        </div>
+                    </div>
+                    <div class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold flex items-center gap-1 shadow-sm">
+                        <i class="fas fa-circle-check"></i> Verified
+                    </div>
+                </div>
+
+                <div class="flex gap-4">
+                    <!-- Profile Pic -->
+                    <div class="w-24 h-24 shrink-0 rounded-xl overflow-hidden border-2 border-brand-500 shadow-md">
+                        <img id="profile-img" src="" alt="Profile" class="w-full h-full object-cover bg-slate-100">
+                    </div>
+                    
+                    <!-- Short Info -->
+                    <div class="flex-1">
+                        <h1 class="text-xl font-bold text-gray-900 dark:text-white leading-tight" id="member-name-title">---</h1>
+                        <p class="text-brand-600 dark:text-brand-400 text-sm font-semibold mb-2" id="member-designation">---</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-mono bg-gray-100 dark:bg-slate-800 inline-block px-2 py-1 rounded">ID: <span id="display-id" class="font-bold text-gray-800 dark:text-white">---</span></p>
+                    </div>
+                </div>
+
+                <div id="member-info-container" class="mt-5 space-y-2 text-sm">
+                    <!-- Dynamic Rows -->
+                </div>
+
+                <!-- QR Section -->
+                <div class="mt-5 pt-4 border-t border-dashed border-gray-300 dark:border-gray-600 flex justify-between items-center">
+                    <div>
+                        <p class="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Official Scan Code</p>
+                        <p class="text-[9px] text-gray-400">Valid on RJF Database</p>
+                    </div>
+                    <img id="qr-code-img" src="" alt="QR" class="w-12 h-12 bg-white p-0.5 rounded shadow-sm">
+                </div>
             </div>
-            <div class="absolute bottom-0 right-0 bg-green-500 border-2 border-white dark:border-gray-800 text-white p-1.5 rounded-full shadow-lg">
-                <i class="fas fa-check text-xs"></i>
-            </div>
-        </div>
-        
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-1 tracking-tight" id="member-name-title">সদস্যপদ ভেরিফাইড</h1>
-        <div class="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400 px-3 py-1 rounded-full text-sm font-semibold mb-6">
-            <i class="fas fa-shield-halved"></i> ভেরিফাইড মেম্বার
         </div>
 
-        <div class="space-y-3 text-left bg-white/60 dark:bg-slate-800/60 p-5 rounded-xl border border-gray-100 dark:border-gray-700">
-            <div class="flex justify-between items-center border-b border-gray-200/60 dark:border-gray-700 pb-3">
-                <span class="text-gray-500 dark:text-gray-400 text-sm"><i class="fas fa-id-card mr-2 opacity-70"></i>সদস্য আইডি</span>
-                <span id="display-id" class="font-bold text-teal-700 dark:text-teal-400 uppercase tracking-widest text-lg bg-teal-50 dark:bg-slate-700 px-2 py-1 rounded">---</span>
-            </div>
-            <div id="member-info-container" class="space-y-3 pt-1">
-                <!-- Info injected dynamically here -->
-            </div>
-        </div>
-
-        <!-- Smart QR Code Section -->
-        <div class="mt-6 p-4 bg-gray-50 dark:bg-slate-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-between no-print">
-            <div class="text-left">
-                <p class="text-xs font-bold text-gray-800 dark:text-white uppercase mb-1">ডিজিটাল ভেরিফিকেশন</p>
-                <p class="text-[10px] text-gray-500 dark:text-gray-400">স্ক্যান করে অরিজিনাল ডাটাবেসে চেক করুন</p>
-            </div>
-            <div class="w-16 h-16 bg-white p-1 rounded shadow-sm">
-                <img id="qr-code-img" src="" alt="QR Code" class="w-full h-full object-cover">
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="mt-6 flex flex-wrap gap-3 no-print">
-            <button id="share-btn" class="flex-1 bg-blue-50 border border-blue-200 dark:border-slate-600 dark:bg-slate-700 text-blue-700 dark:text-blue-400 py-2.5 rounded-xl font-bold hover:bg-blue-100 dark:hover:bg-slate-600 transition duration-200 flex items-center justify-center gap-2">
-                <i class="fas fa-share-nodes"></i> শেয়ার
+        <!-- Action Buttons (Won't be downloaded) -->
+        <div class="grid grid-cols-2 gap-3 no-print">
+            <button id="download-btn" class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-3 rounded-xl font-bold hover:scale-105 transition flex items-center justify-center gap-2 shadow-lg">
+                <i class="fas fa-download"></i> কার্ড সেভ করুন
             </button>
-            <button onclick="window.print()" class="flex-1 bg-white dark:bg-slate-800 border-2 border-teal-600 dark:border-teal-500 text-teal-700 dark:text-teal-400 py-2.5 rounded-xl font-bold hover:bg-teal-50 dark:hover:bg-slate-700 transition duration-200 flex items-center justify-center gap-2">
-                <i class="fas fa-print"></i> প্রিন্ট
+            <button id="share-btn" class="bg-blue-100 text-blue-700 py-3 rounded-xl font-bold hover:bg-blue-200 transition flex items-center justify-center gap-2 shadow-sm">
+                <i class="fas fa-share-nodes"></i> শেয়ার করুন
             </button>
-            <a href="https://rupshajonokollanfoundation.vercel.app" class="w-full bg-gradient-to-r from-teal-600 to-emerald-600 text-white py-3 rounded-xl font-bold hover:shadow-lg hover:-translate-y-0.5 transition duration-200 shadow-md">
-                হোম পেজ
+            <a href="https://rupshajonokollanfoundation.vercel.app" class="col-span-2 bg-gradient-to-r from-brand-500 to-emerald-500 text-white py-3 rounded-xl font-bold hover:shadow-lg transition text-center shadow-md">
+                <i class="fas fa-house mr-2"></i> হোম পেজে ফিরে যান
             </a>
         </div>
     </div>
 
     <!-- 4. Error Card -->
-    <div id="error-card" class="hidden animate-pop-in glass-card max-w-md w-full p-8 text-center relative overflow-hidden">
+    <div id="error-card" class="hidden animate-pop-in glass-card max-w-md w-full p-8 text-center">
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-500 to-rose-600"></div>
         <div class="bg-red-50 dark:bg-red-900/30 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-user-xmark text-red-500 text-5xl"></i>
+            <i class="fas fa-triangle-exclamation text-red-500 text-5xl"></i>
         </div>
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">তথ্য পাওয়া যায়নি!</h1>
-        <p id="error-message" class="text-gray-600 dark:text-gray-300 mb-8 bg-red-50/50 dark:bg-red-900/20 p-4 rounded-lg border border-red-100 dark:border-red-800">
-            দুঃখিত, এই মেম্বার আইডিটি সঠিক নয় অথবা আমাদের ডাটাবেসে নিবন্ধিত নেই।
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">ডাটা পাওয়া যায়নি!</h1>
+        <p id="error-message" class="text-sm text-gray-600 dark:text-gray-300 mb-6 bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
+            আইডিটি সঠিক নয় অথবা ডাটাবেসে নেই।
         </p>
-        <button onclick="window.location.href=window.location.pathname" class="w-full bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white py-3 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600 transition duration-200 mb-3">
-            <i class="fas fa-search mr-2"></i> নতুন আইডি খুঁজুন
+        <button onclick="window.location.href=window.location.pathname" class="w-full bg-slate-800 text-white py-3 rounded-xl font-bold hover:bg-slate-700 transition">
+            <i class="fas fa-rotate-right mr-2"></i> আবার চেষ্টা করুন
         </button>
     </div>
 
@@ -193,73 +200,58 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyC-ke7FIUPX5Ksow8vJQ4axmGAIdiKd49Q",
             authDomain: "member-selection.firebaseapp.com",
             projectId: "member-selection",
             storageBucket: "member-selection.firebasestorage.app",
             messagingSenderId: "434008909239",
-            appId: "1:434008909239:web:a790d1e0603ebfdbd27432",
-            measurementId: "G-JVMKJZLCC5"
+            appId: "1:434008909239:web:a790d1e0603ebfdbd27432"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        let html5QrcodeScanner = null;
 
-        // --- Core Functions ---
-        
+        // --- Utilities ---
         const getMemberId = () => {
             const urlParams = new URLSearchParams(window.location.search);
             let id = urlParams.get('id');
             if (!id) {
                 const pathParts = window.location.pathname.split('/');
                 id = pathParts[pathParts.length - 1];
-                if(id === 'verify.html' || id === '') return null; // Avoid processing page name as ID
+                if(['verify.html', ''].includes(id)) return null;
             }
             return id ? id.trim().toUpperCase() : null; 
         };
 
-        // Privacy: Smart Data Masking (e.g. 017****5678)
-        const maskMobile = (number) => {
-            if (!number || number.length < 11) return number;
-            return number.substring(0, 3) + '*****' + number.substring(number.length - 3);
+        const maskMobile = (number) => (!number || number.length < 11) ? number : number.substring(0, 3) + '*****' + number.substring(number.length - 3);
+
+        const playHapticAndVoice = (name) => {
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // Haptic
+            if ('speechSynthesis' in window) {
+                const msg = new SpeechSynthesisUtterance(`Verification successful. Welcome, ${name}`);
+                msg.lang = 'en-US';
+                msg.rate = 0.9;
+                window.speechSynthesis.speak(msg);
+            }
         };
 
-        const triggerConfetti = () => {
-            var duration = 3 * 1000;
-            var end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#0d9488', '#059669', '#ffffff'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#0d9488', '#059669', '#ffffff'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        };
+        const generateAvatar = (name) => `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=0D9488&color=fff&size=256&bold=true`;
 
-        // UI View Manager
         const showView = (viewId) => {
-            ['search-card', 'loader', 'verified-card', 'error-card'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
+            ['search-card', 'loader', 'verified-wrapper', 'error-card'].forEach(id => document.getElementById(id).classList.add('hidden'));
             document.getElementById(viewId).classList.remove('hidden');
         };
 
+        // --- Core Logic ---
         async function verifyMember() {
             const memberId = getMemberId();
-
-            if (!memberId || memberId === 'VERIFY') {
-                showView('search-card');
-                return;
-            }
+            if (!memberId || memberId === 'VERIFY') return showView('search-card');
 
             showView('loader');
-
-            // Caching: Check if data is already in sessionStorage
             const cachedData = sessionStorage.getItem(`rjf_member_${memberId}`);
-            if (cachedData) {
-                setTimeout(() => showSuccess(JSON.parse(cachedData)), 500); // Small delay for UX
-                return;
-            }
+            if (cachedData) return setTimeout(() => showSuccess(JSON.parse(cachedData)), 500);
 
             try {
                 const q = query(collection(db, "members"), where("member_id", "==", memberId));
@@ -267,93 +259,107 @@
 
                 setTimeout(() => {
                     if (querySnapshot.empty) {
-                        showError(`সদস্য আইডি <strong>${memberId}</strong> ডাটাবেসে পাওয়া যায়নি।`);
+                        showError(`আইডি <strong>${memberId}</strong> ডাটাবেসে নেই।`);
                     } else {
-                        const memberData = querySnapshot.docs[0].data();
-                        // Save to cache to reduce Firebase reads
-                        sessionStorage.setItem(`rjf_member_${memberId}`, JSON.stringify(memberData));
-                        showSuccess(memberData);
+                        const data = querySnapshot.docs[0].data();
+                        sessionStorage.setItem(`rjf_member_${memberId}`, JSON.stringify(data));
+                        showSuccess(data);
                     }
-                }, 800);
-
+                }, 1000);
             } catch (error) {
-                console.error("Verification Error:", error);
-                showError("সার্ভারের সাথে কানেক্ট করা যাচ্ছে না। দয়া করে ইন্টারনেট কানেকশন চেক করুন।");
+                showError("সার্ভারের সমস্যা। ইন্টারনেট কানেকশন চেক করুন।");
             }
         }
 
         function showSuccess(data) {
-            showView('verified-card');
+            showView('verified-wrapper');
+            playHapticAndVoice(data.full_name);
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#14b8a6', '#10b981', '#3b82f6'] });
             
-            // Dynamic Title & Names
-            document.title = `Verified: ${data.full_name || 'Member'} | RJF`;
+            document.title = `Verified: ${data.full_name} | RJF`;
             document.getElementById('display-id').innerText = data.member_id || getMemberId();
+            document.getElementById('member-name-title').innerText = data.full_name;
+            document.getElementById('member-designation').innerText = data.membership_type || 'General Member';
             
-            // Profile Picture
-            const profileImg = document.getElementById('profile-img');
-            if (data.photo_url) {
-                profileImg.src = data.photo_url;
-            }
+            // Smart Avatar Logic
+            document.getElementById('profile-img').src = data.photo_url ? data.photo_url : generateAvatar(data.full_name);
 
-            // Generate Smart QR Code pointing to this exact URL
             const currentUrl = window.location.origin + window.location.pathname + '?id=' + (data.member_id || getMemberId());
             document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(currentUrl)}&margin=1`;
 
-            // Data Render with Masking
             const infoContainer = document.getElementById('member-info-container');
-            const createRow = (icon, label, value, valueClass = 'text-gray-800 dark:text-gray-200') => `
-                <div class="flex justify-between items-center border-b border-gray-100 dark:border-gray-700 last:border-0 pb-2 last:pb-0">
-                    <span class="text-gray-500 dark:text-gray-400 text-sm flex items-center">
-                        <i class="fas ${icon} w-5 text-gray-400 dark:text-gray-500"></i> ${label}
-                    </span>
-                    <span class="font-semibold text-right ${valueClass}">${value || '---'}</span>
+            const createRow = (icon, label, value) => `
+                <div class="flex justify-between items-center bg-white/40 dark:bg-slate-800/40 p-2 rounded">
+                    <span class="text-gray-500 dark:text-gray-400 text-xs"><i class="fas ${icon} w-4"></i> ${label}</span>
+                    <span class="font-bold text-gray-800 dark:text-gray-200 text-sm">${value || '---'}</span>
                 </div>
             `;
-
             infoContainer.innerHTML = `
-                ${createRow('fa-user', 'নাম', data.full_name)}
-                ${createRow('fa-briefcase', 'পেশা', data.occupation)}
-                ${createRow('fa-star', 'সদস্যপদ ধরন', data.membership_type, 'text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-slate-700 px-2 py-0.5 rounded')}
-                ${createRow('fa-droplet', 'রক্তের গ্রুপ', data.blood_group, 'text-red-600 dark:text-red-400 font-bold')}
-                ${createRow('fa-venus-mars', 'লিঙ্গ', data.gender)}
-                ${createRow('fa-phone', 'মোবাইল নম্বর', maskMobile(data.mobile_number))}
-                ${createRow('fa-location-dot', 'ঠিকানা', data.permanent_address)}
+                ${createRow('fa-droplet text-red-500', 'ব্লাড গ্রুপ', data.blood_group)}
+                ${createRow('fa-phone text-blue-500', 'মোবাইল', maskMobile(data.mobile_number))}
+                ${createRow('fa-briefcase text-amber-600', 'পেশা', data.occupation)}
             `;
 
-            // Share API Setup
-            document.getElementById('share-btn').onclick = () => {
-                if (navigator.share) {
-                    navigator.share({
-                        title: 'Verified Member - RJF',
-                        text: `${data.full_name}-এর ভেরিফাইড মেম্বারশিপ প্রোফাইল দেখুন।`,
-                        url: currentUrl
-                    }).catch(console.error);
-                } else {
-                    navigator.clipboard.writeText(currentUrl);
-                    alert('লিংকটি কপি করা হয়েছে!');
-                }
+            // Download Logic (html2canvas)
+            document.getElementById('download-btn').onclick = () => {
+                const card = document.getElementById('id-card-element');
+                // Temporary remove rounded corners for clean square export if needed
+                html2canvas(card, { scale: 3, useCORS: true, backgroundColor: null }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = `RJF_ID_${data.member_id}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
             };
 
-            triggerConfetti();
+            // Share Logic
+            document.getElementById('share-btn').onclick = () => {
+                if (navigator.share) {
+                    navigator.share({ title: 'RJF Verified Profile', text: 'View Verified Member Profile', url: currentUrl });
+                } else {
+                    navigator.clipboard.writeText(currentUrl); alert('লিংক কপি হয়েছে!');
+                }
+            };
         }
 
-        function showError(customMessage = null) {
-            showView('error-card');
-            if (customMessage) {
-                document.getElementById('error-message').innerHTML = customMessage;
-            }
-        }
+        function showError(msg) { showView('error-card'); if (msg) document.getElementById('error-message').innerHTML = msg; }
 
-        // Search Form Logic
-        document.getElementById('search-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const val = document.getElementById('search-input').value.trim();
-            if(val) {
-                window.location.href = window.location.pathname + '?id=' + encodeURIComponent(val);
+        // --- QR Scanner Implementation ---
+        document.getElementById('start-scan-btn').addEventListener('click', () => {
+            const qrReaderArea = document.getElementById('qr-reader');
+            qrReaderArea.classList.remove('hidden');
+            
+            if(!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5Qrcode("qr-reader");
+                html5QrcodeScanner.start(
+                    { facingMode: "environment" }, // Rear camera
+                    { fps: 10, qrbox: { width: 250, height: 250 } },
+                    (decodedText) => {
+                        html5QrcodeScanner.stop();
+                        qrReaderArea.classList.add('hidden');
+                        
+                        // Extract ID if URL is scanned, or use direct text
+                        try {
+                            const url = new URL(decodedText);
+                            const id = url.searchParams.get('id');
+                            window.location.href = window.location.pathname + '?id=' + encodeURIComponent(id || decodedText);
+                        } catch(e) {
+                            window.location.href = window.location.pathname + '?id=' + encodeURIComponent(decodedText);
+                        }
+                    },
+                    (error) => { /* Ignore regular frame scanning errors */ }
+                ).catch(err => {
+                    alert("ক্যামেরা ওপেন করা যাচ্ছে না। পারমিশন দিন।");
+                });
             }
         });
 
-        // Initialize
+        document.getElementById('search-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const val = document.getElementById('search-input').value.trim();
+            if(val) window.location.href = window.location.pathname + '?id=' + encodeURIComponent(val);
+        });
+
         document.addEventListener('DOMContentLoaded', verifyMember);
     </script>
 </body>
