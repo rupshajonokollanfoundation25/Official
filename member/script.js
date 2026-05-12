@@ -11,8 +11,8 @@ const foundationMembers = [
         status: "active", // active হলে সবুজ, inactive হলে কমলা ডট দেখাবে
         image: "https://i.ibb.co.com/GvXXrwf7/FB-IMG-1771418638416.jpg",
         desc: "ফাউন্ডেশনের সামগ্রিক কার্যক্রম পরিচালনা এবং দিকনির্দেশনা প্রদান করেন।",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/engrrafiqulislam.rafiq.18",
+        whatsapp: "https://wa.me/"
     },
     {
         id: 2,
@@ -20,10 +20,10 @@ const foundationMembers = [
         role: "প্রতিষ্ঠাতা পরিচালক",
         category: "প্রতিষ্ঠাতা পরিচালক",
         status: "active",
-        image: "https://i.ibb.co.com/PzfpYJm9/FB-IMG-1771418626588.jpg",
+        image: "harrun.webp",
         desc: "মাঠ পর্যায়ের সার্বিক ব্যবস্থাপনা এবং সদস্যদের মাঝে সমন্বয় সাধন করেন।",
-        facebook: "https://facebook.com",
-        whatsapp: "" 
+        facebook: "https://www.facebook.com/harunor.roshid.195011",
+        whatsapp: "https://wa.me/" 
     },
     {
         id: 3,
@@ -33,41 +33,41 @@ const foundationMembers = [
         status: "active",
         image: "https://i.ibb.co.com/NnWNhPHh/1774421801136.jpg",
         desc: "ফাউন্ডেশনের সকল প্রকার অনুদান এবং ব্যয়ের স্বচ্ছ হিসাব রক্ষণাবেক্ষণ করেন।",
-        facebook: "",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/fa.ruqe.75",
+        whatsapp: "https://wa.me/"
     },
     {
         id: 4,
         name: "মনিরুল ইসলাম মনির",
         role: "সিনিয়র সহ-সভাপতি",
         category: "সিনিয়র সহ-সভাপতি",
-        status: "inactive",
-        image: "https://i.ibb.co.com/LdzT718H/img-1-1776439537863.jpg",
+        status: "active",
+        image: "monir.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/md.monirulislammoon.71",
+        whatsapp: "https://wa.me/"
     },
     {
     id: 5,
         name: "নাঈম ইসলাম",
         role: "সাংগঠনিক সম্পাদক",
         category: "সাংগঠনিক সম্পাদক",
-        status: "inactive",
-        image: "https://i.ibb.co.com/gLSzV1Pv/img-1-1776439684132.jpg",
+        status: "active",
+        image: "naim.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/nayeem94170",
+        whatsapp: "https://wa.me/"
     },
     {
     id: 6,
         name: "কাওসার আহমেদ",
         role: "সাধারণ সম্পাদক",
         category: "সাধারণ সম্পাদক",
-        status: "inactive",
-        image: "https://i.ibb.co.com/Z6Kz0SdT/img-2-1776439752872.jpg",
+        status: "active",
+        image: "kawsar.webp",
         desc: "none",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/kawsar.ahmed.481662",
+        whatsapp: "https://wa.me/"
     },
     {
         id: 7,
@@ -75,7 +75,7 @@ const foundationMembers = [
         role: "প্রচার সম্পাদক",
         category: "প্রচার সম্পাদক",
         status: "active",
-        image: "https://i.ibb.co.com/GfV0HT0n/IMG-20251217-095654.jpg",
+        image: "imran_ahmed.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
         facebook: "https://facebook.com/imran.ahmedddddd",
         whatsapp: "https://wa.me/8801957329211"
@@ -86,11 +86,11 @@ const foundationMembers = [
         name: "আব্দুল্লাহ্ আল ফাহিম",
         role: "সহ-সভাপতি",
         category: "সহ-সভাপতি",
-        status: "inactive",
-        image: "https://i.ibb.co.com/gYmBRMv/img-3-1776439810155.jpg",
+        status: "active",
+        image: "fahim.webp",
         desc: "none",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/profile.php?id=100080505806242",
+        whatsapp: "https://wa.me/"
     },
     
     
@@ -100,10 +100,10 @@ const foundationMembers = [
         role: "সহ-সভাপতি",
         category: "সহ-সভাপতি",
         status: "inactive",
-        image: "https://i.ibb.co.com/C315WJhX/img-4-1776439847482.jpg",
+        image: "siam.webp",
         desc: "none",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/Siamphoria",
+        whatsapp: "https://wa.me/"
     },
     
     
@@ -112,11 +112,11 @@ const foundationMembers = [
         name: "কামরুল শেখ",
         role: "সহ-সভাপতি",
         category: "সহ-সভাপতি",
-        status: "inactive",
-        image: "https://i.ibb.co.com/SDbtMypJ/img-1-1776439894660.jpg",
+        status: "active",
+        image: "kamrul.webp",
         desc: "none",
-        facebook: "https://facebook.com",
-        whatsapp: "https://wa.me/1234567890"
+        facebook: "https://www.facebook.com/md.kamrul.hasan.972559",
+        whatsapp: "https://wa.me/"
     },
     
     
