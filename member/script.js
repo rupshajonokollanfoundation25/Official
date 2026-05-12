@@ -9,7 +9,7 @@ const foundationMembers = [
         role: "প্রতিষ্ঠাতা পরিচালক",
         category: "প্রতিষ্ঠাতা পরিচালক",
         status: "active", // active হলে সবুজ, inactive হলে কমলা ডট দেখাবে
-        image: "https://i.ibb.co.com/GvXXrwf7/FB-IMG-1771418638416.jpg",
+        image: "rafiqul.webp",
         desc: "ফাউন্ডেশনের সামগ্রিক কার্যক্রম পরিচালনা এবং দিকনির্দেশনা প্রদান করেন।",
         facebook: "https://www.facebook.com/engrrafiqulislam.rafiq.18",
         whatsapp: "https://wa.me/"
