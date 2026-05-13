@@ -1,6 +1,26 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+
+<!-- ম্যানিফেস্ট ফাইল লিঙ্ক -->
+<link rel="manifest" href="manifest.json">
+
+<!-- সার্ভিস ওয়ার্কার রেজিস্টার করা -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('Service Worker Registered!'))
+        .catch(err => console.log('Service Worker Failed!', err));
+    });
+  }
+</script>
+
+
+
+
+
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rupsha jonokollan foundation - feedback section</title>
