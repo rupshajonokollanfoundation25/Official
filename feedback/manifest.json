@@ -1,7 +1,7 @@
 {
-  "name": "রূপসা জনকল্যাণ ফাউন্ডেশন",
+  "name": "rupsha.info",
   "short_name": "RJF",
-  "start_url": "/index.html/",
+  "start_url": "/feedback/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
