@@ -1,6 +1,6 @@
 {
   "name": "rupsha.info",
-  "short_name": "RJF",
+  "short_name": "Feedback",
   "start_url": "/feedback/",
   "display": "standalone",
   "background_color": "#ffffff",
