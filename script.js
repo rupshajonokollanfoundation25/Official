@@ -117,39 +117,6 @@ aboutSection.style.transform = 'translateY(30px)';
 aboutSection.style.transition = 'all 0.8s ease-out';
 
 
-// মেম্বার বিস্তারিত দেখার ফাংশন
-function showMember(name, role, desc, img) {
-    const modal = document.getElementById('memberModal');
-    
-    // ডাটা সেট করা
-    document.getElementById('m-name').innerText = name;
-    document.getElementById('m-role').innerText = role;
-    document.getElementById('m-desc').innerText = desc;
-    document.getElementById('m-img').src = img;
-    
-    // মোডাল দেখানো
-    modal.style.display = "flex";
-    
-    // ব্যাকগ্রাউন্ড স্ক্রল বন্ধ
-    document.body.style.overflow = "hidden";
-}
-
-// মোডাল বন্ধ করার ফাংশন
-function closeModal() {
-    const modal = document.getElementById('memberModal');
-    modal.style.display = "none";
-    
-    // ব্যাকগ্রাউন্ড স্ক্রল চালু
-    document.body.style.overflow = "auto";
-}
-
-// মোডালের বাইরে ক্লিক করলে বন্ধ হবে
-window.onclick = function(event) {
-    const modal = document.getElementById('memberModal');
-    if (event.target == modal) {
-        closeModal();
-    }
-}
 
 // কাউন্টার এনিমেশন ফাংশন
 function startCounters() {
@@ -188,22 +155,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-//বাটন স্টাইল
-function startLoading() {
-    const btn = document.getElementById('regBtn');
-    const spinner = document.getElementById('spinner');
-    const text = document.getElementById('btn-text');
-
-    // লোডিং শুরু
-    btn.disabled = true;
-    spinner.style.display = 'inline-block';
-    text.innerText = 'প্রসেসিং হচ্ছে...';
-
-    // ২ সেকেন্ড পর রেজিস্ট্রেশন পেজে নিয়ে যাবে
-    setTimeout(() => {
-        window.location.href = "/registration/";
-    }, 2000);
-}
 
 
 
@@ -222,56 +173,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
-window.OneSignal = window.OneSignal || [];
-OneSignal.push(function() {
-    // এটি নোটিফিকেশন আসা মাত্র কাজ শুরু করবে
-    OneSignal.on('notificationForegroundWillDisplay', function(event) {
-        let notification = event.notification;
-        let notifs = JSON.parse(localStorage.getItem('notif_list')) || [];
-        notifs.unshift({
-            title: notification.title || "নতুন আপডেট",
-            body: notification.body || "",
-            time: new Date().toLocaleString('bn-BD')
-        });
-        localStorage.setItem('notif_list', JSON.stringify(notifs));
-        renderNotifs();
-    });
-});
-
-function toggleRJNotif() {
-    document.getElementById('rj-notif-inbox').classList.toggle('rj-notif-closed');
-    document.getElementById('rj-notif-badge').classList.add('rj-hidden');
-}
-
-function renderNotifs() {
-    const container = document.getElementById('rj-notif-content');
-    const badge = document.getElementById('rj-notif-badge');
-    let notifs = JSON.parse(localStorage.getItem('notif_list')) || [];
-
-    if (notifs.length > 0) {
-        badge.innerText = notifs.length;
-        badge.classList.remove('rj-hidden');
-        container.innerHTML = notifs.map(n => `
-            <div class="rj-notif-item">
-                <span class="rj-notif-title">${n.title}</span>
-                <span class="rj-notif-body">${n.body}</span>
-                <span class="rj-notif-time">${n.time}</span>
-            </div>
-        `).join('');
-    } else {
-        container.innerHTML = `<div id="rj-empty-state"><i class="fa-solid fa-envelope-open"></i><p>কোনো নতুন আপডেট নেই</p></div>`;
-        badge.classList.add('rj-hidden');
-    }
-}
-
-function clearAllRJNotifs() {
-    localStorage.removeItem('notif_list');
-    renderNotifs();
-}
-
-document.addEventListener('DOMContentLoaded', renderNotifs);
 
 
 
@@ -294,66 +195,3 @@ if (premiumBtn) {
 
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const overlay = document.getElementById('pro-notice-overlay');
-    const closeBtn = document.querySelector('.pro-close-btn');
-    const countdownEl = document.getElementById('countdown-number'); // HTML-এ এই আইডি থাকতে হবে
-    
-    let displayDuration = 20000; // ২০ সেকেন্ড
-    let timeLeft = 20; 
-    let popupTimer;
-    let countdownInterval;
-
-    // সেশন স্টোরেজ চেক
-    if (!sessionStorage.getItem('noticeSeen')) {
-        setTimeout(() => {
-            showNotice();
-        }, 900);
-    }
-
-    function showNotice() {
-        overlay.classList.add('active');
-        
-        // ১. অটোমেটিক ক্লোজ টাইমার
-        popupTimer = setTimeout(() => {
-            closeNotice();
-        }, displayDuration);
-
-        // ২. কাউন্টডাউন টেক্সট আপডেট (20, 19, 18...)
-        countdownInterval = setInterval(() => {
-            timeLeft--;
-            if (countdownEl) countdownEl.innerText = timeLeft;
-            
-            if (timeLeft <= 0) {
-                clearInterval(countdownInterval);
-            }
-        }, 1000);
-    }
-
-    function closeNotice() {
-        overlay.classList.remove('active');
-        sessionStorage.setItem('noticeSeen', 'true');
-        
-        clearTimeout(popupTimer);
-        clearInterval(countdownInterval);
-    }
-
-    // ক্লোজ বাটন ক্লিক
-    if(closeBtn) {
-        closeBtn.addEventListener('click', closeNotice);
-    }
-
-    // বাইরে ক্লিক করলে বন্ধ
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeNotice();
-        }
-    });
-
-    // Esc বাটন প্রেস করলে বন্ধ
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && overlay.classList.contains('active')) {
-            closeNotice();
-        }
-    });
-});
