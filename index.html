@@ -32,59 +32,8 @@
 <body>
 
 
-<div id="pro-notice-overlay" class="pro-overlay">
-    <div class="pro-popup-box">
-        <button class="pro-close-btn">&times;</button>
-        
-        <div class="pro-video-container">
-            <video autoplay muted loop playsinline class="notice-video">
-                <source src="https://youtu.be/jIihWH1A_Xk?si=_jDNHy26JRh347XT" type="video/mp4">
-            </video>
-            <div class="countdown-overlay"><span id="countdown-number">10</span>s</div>
-        </div>
-        
-        <h3 class="pro-title">জরুরি ঘোষণা!</h3>
-        <p class="pro-text">আমাদের ফাউন্ডেশনের সকল কার্যক্রম ও তথ্যের আপডেট পেতে আমাদের ওয়েবসাইটি সাবস্ক্রাইব করুন,এবং অবশ্যই নোটিফিকেশন allow করে দিবেন।রূপসা জনকল্যাণ ফাউন্ডেশনের সাথে থাকার জন্য আপনাকে অসংখ্য ধন্যবাদ,</p>
-        
-        <div class="pro-progress-container">
-            <div class="pro-progress-bar"></div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
 
     
-
-<div id="rj-notification-wrapper">
-    <div id="rj-notif-bell" onclick="toggleRJNotif()">
-        <i class="fa-solid fa-bell"></i>
-        <span id="rj-notif-badge" class="rj-hidden">0</span>
-    </div>
-
-    <div id="rj-notif-inbox" class="rj-notif-closed">
-        <div class="rj-notif-header">
-            <span>নোটিফিকেশন সেন্টার</span>
-            <button onclick="clearAllRJNotifs()">সব মুছুন</button>
-        </div>
-        
-        <div id="rj-notif-content">
-            <div id="rj-empty-state">
-                <i class="fa-solid fa-envelope-open"></i>
-                <p>কোনো নতুন আপডেট নেই</p>
-            </div>
-        </div>
-        
-        <div class="rj-notif-footer">
-            <small>RJ Foundation Digital Support</small>
-        </div>
-    </div>
-</div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     
 
@@ -93,6 +42,7 @@
         
         <div class="lantern-box left"><i class="fas fa-fan"></i></div>
         <div class="lantern-box right"><i class="fas fa-fan"></i></div>
+        <div class="lantern-box top"><i class="fas fa-fan"></i></div>
 
         <div class="top-nav">
             <button class="glass-btn" onclick="toggleLanguage()" id="langBtn">English</button>
@@ -157,114 +107,9 @@
 </div>
 
 
-<section class="newsletter-section" style="padding: 60px 20px;">
-    <style>
-        /* শুধু লোডিং স্পিনারের জন্য আলাদা CSS, যা অন্য কিছুকে পরিবর্তন করবে না */
-        .loader-spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ffffff;
-            border-bottom-color: transparent;
-            border-radius: 50%;
-            display: inline-block;
-            animation: rotation 1s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        @keyframes rotation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-
-    <div class="glass-box" style="
-        max-width: 700px; 
-        margin: 0 auto; 
-        background: rgba(220, 220, 220, 0.5);
-        backdrop-filter: blur(15px);
-        padding: 10px 25px; 
-        border-radius: 30px; 
-        border: 10px solid rgba(255,255,255,0.2);
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    ">
-        <h2 style="color: #00796b; margin-bottom: 10px;">সংযুক্ত থাকুন আমাদের সাথে</h2>
-        <p style="color: #555; margin-bottom: 30px;">সাবস্ক্রাইব করুন এবং আমাদের কার্যক্রমের আপডেট সরাসরি ইমেইলে পান।</p>
-
-        <form id="newsletter-form" style="display: flex; flex-direction: column; gap: 15px;">
-            <input type="hidden" name="action" value="subscribe">
-
-            <input type="email" name="email" id="userEmail" placeholder="আপনার সঠিক ইমেইলটি দিন..." required 
-                style="padding: 15px; border-radius: 12px; border: 1px solid #ddd; outline: none; font-size: 16px;">
-            
-            <button type="submit" id="submitBtn" style="
-                background: #00796b; 
-                color: white; 
-                padding: 15px; 
-                border-radius: 12px; 
-                border: none; 
-                font-weight: bold; 
-                cursor: pointer;
-                transition: 0.3s;
-            ">সাবস্ক্রাইব করুন</button>
-        </form>
-
-        <div id="responseMsg" style="margin-top: 20px; display: none; padding: 15px; border-radius: 10px;"></div>
-    </div>
-</section>
-
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyRb61Evqy5O5J-D_M4L0fnt5R526d_iatJqT0TMm5Fw0dEXtMZugwoccXpm1o0HbVU/exec'; 
-    const form = document.getElementById('newsletter-form');
-    const btn = document.getElementById('submitBtn');
-    const msg = document.getElementById('responseMsg');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        btn.disabled = true;
-        // এখানে স্পিনারটি যোগ করা হয়েছে
-        btn.innerHTML = '<span class="loader-spinner"></span> অপেক্ষা করুন...';
-        msg.style.display = "none";
-
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => response.text()) 
-        .then(data => {
-            btn.disabled = false;
-            btn.innerHTML = "সাবস্ক্রাইব করুন";
-            
-            if (data === "Already Exists") {
-                msg.innerHTML = "এই ইমেইলটি দিয়ে ইতিমধ্যে সাবস্ক্রাইব করা হয়েছে! ⚠️";
-                msg.style.display = "block";
-                msg.style.background = "#fff3e0";
-                msg.style.color = "#e65100";
-            } else {
-                msg.innerHTML = "অভিনন্দন! সাবস্ক্রাইব সম্পূর্ণ হয়েছে বিভিন্ন ধরনের আপডেট পেতে আমাদের সাথেই থাকুন ধন্যবাদ";
-                msg.style.display = "block";
-                msg.style.background = "#e0f2f1";
-                msg.style.color = "#00796b";
-                form.reset();
-            }
-        })
-        .catch(error => {
-            btn.disabled = false;
-            btn.innerHTML = "আবার চেষ্টা করুন";
-            msg.innerHTML = "উফ! কোথাও একটা ভুল হয়েছে।";
-            msg.style.display = "block";
-            msg.style.background = "#ffebee";
-            msg.style.color = "#c62828";
-        });
-    });
-</script>
 
 
 
-
-<div class="button-container">
-    <a href="/member/" class="premium-btn">
-        <span class="btn-text">আমাদের স্থায়ী সদস্যদের দেখুন</span>
-        <div class="btn-glow"></div>
-    </a>
-</div>
 
 
 
@@ -387,18 +232,19 @@
 
 
 
-    <div class="container">
-    <button class="btn" id="regBtn" onclick="startLoading()">
-        <span id="btn-text">ওয়েবসাইট ভেরিফাই করুন</span>
-        <span class="loader" id="spinner"></span>
-    </button>
-</div>
-
+  
 
 
 
 
     
+<div class="button-container">
+    <a href="/member/" class="premium-btn">
+        <span class="btn-text">আমাদের স্থায়ী সদস্যদের দেখুন</span>
+        <div class="btn-glow"></div>
+    </a>
+</div>
+
 
 
 
