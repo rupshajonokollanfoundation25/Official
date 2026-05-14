@@ -117,7 +117,7 @@ header {
     top: 20px;
     left: 20px;
     z-index: 1001;
-    background: black;
+    background: green;
     backdrop-filter: blur(10px);
     width: 40px;
     height: 40px;
@@ -125,7 +125,7 @@ header {
     align-items: center;
     justify-content: center;
     border-radius: 8px;
-    color: red;
+    color: white;
     font-size: 20px;
     cursor: pointer;
     border: 1px solid rgba(255,255,255,0.3);
