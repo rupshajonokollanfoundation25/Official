@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Newsletter Subscription</title>
+    
+    <!-- Google Fonts for Premium Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            // এখানে আপনার EmailJS Public Key দিবেন
+            emailjs.init("5WkuPppeJbXX5MYwv"); 
+        })();
+    </script>
+
+    <style>
+        /* CSS ভ্যারিয়েবল ফর থিমিং */
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-gradient: linear-gradient(135deg, #f0fdf4 0%, #c7d2fe 100%);
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --success: #10b981;
+            --error: #ef4444;
+            --font-en: 'Inter', sans-serif;
+            --font-bn: 'Noto Sans Bengali', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-bn);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* Glassmorphism Card Design */
+        .newsletter-container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            max-width: 420px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .newsletter-container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* আইকন ডিজাইন */
+        .icon-wrapper {
+            background: #e0e7ff;
+            color: var(--primary-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .newsletter-container h2 {
+            color: var(--text-main);
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .newsletter-container p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        /* ইনপুট ফিল্ড ও বাটন */
+        .input-group {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: var(--font-en);
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            background: #ffffff;
+        }
+
+        input[type="email"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: var(--font-bn);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: var(--primary-hover);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+        }
+
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        button.loading .spinner { display: block; }
+        button.loading .btn-text { display: none; }
+
+        /* Toast Notification System */
+        #toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: #ffffff;
+            color: var(--text-main);
+            padding: 16px 24px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border-left: 5px solid;
+        }
+
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--error); }
+        
+        .toast-icon { font-size: 20px; }
+        .toast.success .toast-icon { color: var(--success); }
+        .toast.error .toast-icon { color: var(--error); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Main Card -->
+    <div class="newsletter-container">
+        <div class="icon-wrapper">
+            <!-- Mail SVG Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+        </div>
+        <h2>নিউজ লেটার</h2>
+        <p>আমাদের সর্বশেষ আপডেট,এবং কার্যক্রম সম্বন্ধে সবার আগে আপডেট পেতে আপনার ইমেইল দিয়ে সাবস্ক্রাইব করে আমাদের ফাউন্ডেশনের সাথেই থাকুন।</p>
+        <p><strong>"ধন্যবাদ"</strong></p>
+        
+        <form id="subscribe-form" novalidate>
+            <div class="input-group">
+                <input type="email" id="email-input" placeholder="আপনার ইমেইল ঠিকানা লিখুন..." autocomplete="email" required>
+                <button type="submit" id="submit-btn">
+                    <span class="btn-text">সাবস্ক্রাইব করুন</span>
+                    <div class="spinner"></div>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- Firebase v10 Modular SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        // 'collection' এবং 'addDoc' বাদ দেওয়া হয়েছে কারণ আমরা এখন EmailJS ব্যবহার করছি
+        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+
+        // আপনার ফায়ারবেস কনফিগারেশন (আগের মতোই)
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6HgOwGzJ_Oz1aQEmx4trzeU-_cIc2Ed4",
+            authDomain: "rjf-app.firebaseapp.com",
+            projectId: "rjf-app",
+            storageBucket: "rjf-app.firebasestorage.app",
+            messagingSenderId: "615952765681",
+            appId: "1:615952765681:web:6e2763c85f6bd4de4a4f50",
+            measurementId: "G-014X6R8JQH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // UI Elements
+        const form = document.getElementById('subscribe-form');
+        const emailInput = document.getElementById('email-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const toastContainer = document.getElementById('toast-container');
+
+        // Email Regex Validator
+        const isValidEmail = (email) => {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        };
+
+        // Premium Toast Notification Function
+        const showToast = (message, type = 'success') => {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = type === 'success' ? '✔' : '✖';
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            // Animate In
+            setTimeout(() => toast.classList.add('show'), 10);
+            
+            // Remove after 3.5 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        };
+
+        // Form Submit Handler
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = emailInput.value.trim().toLowerCase();
+            
+            // 1. Frontend Validation
+            if (!email) {
+                showToast("অনুগ্রহ করে আপনার ইমেইল দিন!", "error");
+                emailInput.focus();
+                return;
+            }
+            if (!isValidEmail(email)) {
+                showToast("সঠিক ইমেইল ঠিকানা প্রদান করুন!", "error");
+                emailInput.focus();
+                return;
+            }
+            
+            // 2. Loading State ON
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+
+            try {
+                // 3. Check if email exists in Firebase
+                const subscriberRef = doc(db, "subscribers", email);
+                const subscriberSnap = await getDoc(subscriberRef);
+
+                if (subscriberSnap.exists()) {
+                    showToast("আপনি ইতিমধ্যেই সাবস্ক্রাইব করে আছেন!", "error");
+                } else {
+                    // 4. Add new subscriber to Firebase Database
+                    await setDoc(subscriberRef, {
+                        email: email,
+                        timestamp: serverTimestamp()
+                    });
+
+                    // 5. Send confirmation mail via EmailJS (স্মার্ট ফ্রি পদ্ধতি)
+                    const templateParams = {
+                        user_email: email, // EmailJS টেমপ্লেটে {{user_email}} বসাবেন
+                    };
+
+                    // এখানে আপনার Service ID এবং Template ID দিবেন
+                    await emailjs.send('service_6zt1ng2', 'template_hm107n2', templateParams);
+
+                    showToast("সফলভাবে সাবস্ক্রাইব হয়েছে!", "success");
+                    form.reset();
+                }
+            } catch (error) {
+                console.error("Error: ", error);
+                showToast("সার্ভার ত্রুটি! আবার চেষ্টা করুন।", "error");
+            } finally {
+                // 6. Loading State OFF
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
