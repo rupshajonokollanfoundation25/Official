@@ -92,7 +92,7 @@ header {
 
 /* ফ্যান বা ল্যান্টার্ন অ্যানিমেশন */
 .lantern-box {
-    position: absolute;
+    position: fixed;
     top: 15px;
     color: rgba(255, 215, 0, 0.7);
     font-size: 18px;
@@ -117,7 +117,7 @@ header {
     top: 20px;
     left: 20px;
     z-index: 1001;
-    background: rgba(43, 62, 57, 0.2)
+    background: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(10px);
     width: 40px;
     height: 40px;
