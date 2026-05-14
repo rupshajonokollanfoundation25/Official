@@ -3,317 +3,813 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Broadcast Panel</title>
+    <title>Pro Admin Dashboard | Newsletter</title>
     
-    <!-- Google Fonts: Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Quill.js for Rich Text Editing -->
+    <!-- Quill.js for Rich Text Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    
-    <!-- SweetAlert2 for Premium Popups -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("5WkuPppeJbXX5MYwv"); // আপনার Public Key
+        })();
+    </script>
+
+    <!-- SweetAlert2 for Smart Alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
-            --primary-color: #00796b;
-            --primary-hover: #005a4f;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #666666;
-            --border-color: #e0e0e0;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-body: #f3f4f6;
+            --surface: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --success: #10b981;
+            --font-en: 'Inter', sans-serif;
+            --font-bn: 'Noto Sans Bengali', sans-serif;
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-color);
+            font-family: var(--font-bn);
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+        }
+
+        /* =========================================================
+           NEW: ULTRA PREMIUM LOGIN SCREEN STYLES (Glassmorphism)
+           ========================================================= */
+        #login-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(-45deg, #4f46e5, #3b82f6, #0ea5e9, #6366f1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            z-index: 9999;
+            font-family: var(--font-bn);
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
 
-        .admin-panel {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 650px;
-            padding: 40px;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .premium-login-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
             border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        .admin-panel:hover {
-            transform: translateY(-5px);
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header-section h2 {
-            color: var(--primary-color);
-            font-size: 28px;
-            font-weight: 700;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .header-section p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .form-control {
+            padding: 3.5rem 2.5rem;
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
+            max-width: 420px;
+            color: white;
+            text-align: center;
+            animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .premium-login-card h2 {
+            font-size: 2.2rem;
+            margin: 0 0 0.5rem 0;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .premium-login-card p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .input-group svg {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .premium-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.1rem 1rem 1.1rem 3.2rem;
+            border-radius: 14px;
+            color: white;
+            font-size: 1.05rem;
+            font-family: var(--font-en);
+            outline: none;
             transition: all 0.3s ease;
             box-sizing: border-box;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 121, 107, 0.1);
+        .premium-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-family: var(--font-bn);
         }
 
-        /* Quill Editor Styling Override */
-        .ql-toolbar.ql-snow {
-            border: 2px solid var(--border-color);
-            border-bottom: none;
-            border-radius: 12px 12px 0 0;
-            background: #fafafa;
-        }
-        .ql-container.ql-snow {
-            border: 2px solid var(--border-color);
-            border-radius: 0 0 12px 12px;
-            height: 200px;
-            font-size: 15px;
-            font-family: 'Poppins', sans-serif;
-        }
-        .ql-editor:focus {
-            outline: none;
+        .premium-input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
 
-        .footer-tools {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--text-muted);
+        .premium-input:focus + svg, 
+        .premium-input:not(:placeholder-shown) + svg {
+            color: white;
         }
 
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-color), #009688);
-            color: #fff;
-            padding: 16px;
+        .premium-btn {
+            background: white;
+            color: var(--primary);
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
+            width: 100%;
+            padding: 1.1rem;
+            border-radius: 14px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            font-family: var(--font-bn);
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .submit-btn:hover {
-            background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
-            box-shadow: 0 10px 25px rgba(0, 121, 107, 0.4);
-            transform: translateY(-2px);
+        .premium-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            background: #f8fafc;
         }
 
-        .submit-btn:disabled {
-            background: #a0c4c0;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+        .premium-btn:active {
+            transform: translateY(0);
         }
 
-        /* Loader Animation */
-        .loader {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
+        .premium-btn .spinner {
+            border: 2px solid rgba(79, 70, 229, 0.2);
+            border-top-color: var(--primary);
+        }
+
+        /* Logout Button Style */
+        .btn-logout {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fca5a5;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: var(--font-bn);
+            font-size: 0.9rem;
+        }
+        .btn-logout:hover { background: #fecaca; }
+
+        /* =========================================================
+           EXISTING STYLES (No changes here as requested)
+           ========================================================= */
+        /* Navbar */
+        .navbar {
+            background: var(--surface);
+            padding: 1rem 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: var(--font-en);
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Rich Text Editor Styling */
+        #editor-container {
+            height: 300px;
+            border-radius: 0 0 8px 8px;
+            font-family: var(--font-en);
+            font-size: 15px;
+        }
+        .ql-toolbar {
+            border-radius: 8px 8px 0 0;
+            border-color: var(--border) !important;
+            background: #f9fafb;
+        }
+        .ql-container {
+            border-color: var(--border) !important;
+        }
+
+        /* Button */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-family: var(--font-bn);
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.05rem;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn:hover { background: var(--primary-hover); }
+        .btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+        /* Stats & List */
+        .stat-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-around;
+        }
+        .stat-item h2 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        .stat-item p {
+            margin: 0.2rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .list-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9fafb;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .list-controls label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .subscriber-list {
+            max-height: 450px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .subscriber-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .subscriber-item:hover { background: #f3f4f6; }
+        .subscriber-item:last-child { border-bottom: none; }
+        
+        /* Custom Checkbox */
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+        
+        /* Spinner */
+        .spinner {
+            display: none;
             width: 20px;
             height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            display: none;
         }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .btn.loading .spinner, .premium-btn.loading .spinner { display: block; }
+        .btn.loading .btn-text, .premium-btn.loading .btn-text { display: none; }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<div class="admin-panel">
-    <div class="header-section">
-        <h2>নিউজ ব্রডকাস্ট প্যানেল 🚀</h2>
-        <p>আপনার সকল সাবস্ক্রাইবারদের কাছে প্রফেশনাল ইমেইল পাঠান মাত্র এক ক্লিকে।</p>
-    </div>
-    
-    <form id="broadcast-form">
-        <div class="form-group">
-            <label for="subject">নিউজের বিষয় (Subject)</label>
-            <input type="text" id="subject" class="form-control" placeholder="যেমন: নতুন ইভেন্ট বা স্পেশাল অফার..." required>
+    <!-- ==========================================
+         NEW: ULTRA PREMIUM LOGIN OVERLAY
+         ========================================== -->
+    <div id="login-overlay">
+        <div class="premium-login-card">
+            <h2>রূপসা জনকল্যাণ ফাউন্ডেশন</h2>
+            <span>এটি সকলের জন্য উপলব্ধ নয় শুধু এডমিনদের জন্য তৈরি করা হয়েছে</span>
+            
+            <div class="input-group">
+                <input type="email" id="admin-email" class="premium-input" placeholder="এডমিন ইমেইল দিন">
+                <!-- User Icon -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            
+            <div class="input-group">
+                <input type="password" id="admin-password" class="premium-input" placeholder="*********">
+                <!-- Lock Icon -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            
+            <button id="login-btn" class="premium-btn">
+                <span class="btn-text">লগইন করুন</span>
+                <div class="spinner"></div>
+            </button>
         </div>
-        
-        <div class="form-group">
-            <label>নিউজের বিস্তারিত (Message)</label>
-            <!-- Rich Text Editor Container -->
-            <div id="editor-container"></div>
-            <div class="footer-tools">
-                <span id="char-count">০ টি অক্ষর</span>
-                <span>Supports HTML formatting</span>
+    </div>
+
+    <!-- ==========================================
+         MAIN DASHBOARD (Initially Hidden)
+         ========================================== -->
+    <div id="dashboard-wrapper" style="display: none;">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <h1>রূপসা জনকল্যাণ ফাউন্ডেশন</h1>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span style="color: var(--success); font-weight: bold;">● ডাটাবেস কানেক্টেড</span>
+                <!-- NEW: Logout Button -->
+                <button id="logout-btn" class="btn-logout">লগআউট</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Left Column: Email Composer -->
+            <div class="card">
+                <div class="card-header">
+                    নতুন ইমেইল তৈরি করুন
+                </div>
+                
+                <div class="form-group">
+                    <label>ইমেইলের সাবজেক্ট (Subject)</label>
+                    <input type="text" id="email-subject" class="form-control" placeholder="যেমন: আপনাদের জন্য বিশেষ অফার!">
+                </div>
+
+                <div class="form-group">
+                    <label>বিস্তারিত মেসেজ (Email Body)</label>
+                    <!-- Quill Editor -->
+                    <div id="editor-container"></div>
+                </div>
+
+                <button id="send-btn" class="btn">
+                    <span class="btn-text" id="btn-text">সিলেক্ট করা ইউজারদের পাঠান (0)</span>
+                    <div class="spinner"></div>
+                </button>
+            </div>
+
+            <!-- Right Column: Stats & Subscribers -->
+            <div>
+                <div class="stat-box">
+                    <div class="stat-item">
+                        <h2 id="total-count">0</h2>
+                        <p>মোট ইউজার</p>
+                    </div>
+                    <div class="stat-item">
+                        <h2 id="selected-count-display" style="color: #10b981;">0</h2>
+                        <p>সিলেক্ট করা হয়েছে</p>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 1rem;">
+                    <div class="list-controls">
+                        <label>
+                            <input type="checkbox" id="select-all"> সবাইকে সিলেক্ট করুন
+                        </label>
+                    </div>
+                    
+                    <div class="subscriber-list" id="subscriber-list">
+                        <!-- Emails will load here -->
+                        <div style="text-align: center; color: gray; padding: 30px;">
+                            ডাটা লোড হচ্ছে... (যদি না আসে, ফায়ারবেস রুলস চেক করুন)
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        <button type="submit" id="send-btn" class="submit-btn">
-            <span class="loader" id="btn-loader"></span>
-            <span id="btn-text">সবাইকে পাঠান</span>
-        </button>
-    </form>
-</div>
+    </div>
 
-<!-- Quill.js Library -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Firebase Setup & App Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+        // NEW: Firebase Auth Imports
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
-<script>
-    // ১. Quill Editor ইনিশিয়ালাইজ করা (Text Formatting এর জন্য)
-    var quill = new Quill('#editor-container', {
-        theme: 'snow',
-        placeholder: 'আপনার সুন্দর নিউজটি এখানে লিখুন...',
-        modules: {
-            toolbar: [
-                ['bold', 'italic', 'underline'],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                ['link'],
-                ['clean']
-            ]
-        }
-    });
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyD6HgOwGzJ_Oz1aQEmx4trzeU-_cIc2Ed4",
+            authDomain: "rjf-app.firebaseapp.com",
+            projectId: "rjf-app",
+            storageBucket: "rjf-app.firebasestorage.app",
+            messagingSenderId: "615952765681",
+            appId: "1:615952765681:web:6e2763c85f6bd4de4a4f50"
+        };
 
-    // ২. লাইভ ক্যারেক্টার কাউন্টার
-    quill.on('text-change', function() {
-        var text = quill.getText().trim();
-        var length = text.length;
-        document.getElementById('char-count').innerText = length + " টি অক্ষর";
-    });
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app); // NEW: Auth Initialization
 
-    // ৩. গুগল শিট স্ক্রিপ্ট ইউআরএল
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyRb61Evqy5O5J-D_M4L0fnt5R526d_iatJqT0TMm5Fw0dEXtMZugwoccXpm1o0HbVU/exec';
-    
-    const form = document.getElementById('broadcast-form');
-    const btn = document.getElementById('send-btn');
-    const btnText = document.getElementById('btn-text');
-    const btnLoader = document.getElementById('btn-loader');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault();
-        
-        const subjectValue = document.getElementById('subject').value.trim();
-        // HTML ফরম্যাটে মেসেজ নেওয়া হচ্ছে যাতে বোল্ড/ইটালিক স্টাইল ইমেইলে যায়
-        const messageHTML = quill.root.innerHTML; 
-        const messageText = quill.getText().trim();
-
-        if(messageText.length === 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'খালি মেসেজ!',
-                text: 'অনুগ্রহ করে নিউজের বিস্তারিত অংশে কিছু লিখুন।',
-                confirmButtonColor: '#00796b'
-            });
-            return;
-        }
-
-        // ৪. SweetAlert2 এর মাধ্যমে স্মার্ট কনফার্মেশন
-        Swal.fire({
-            title: 'আপনি কি নিশ্চিত?',
-            text: "এই নিউজটি আপনার লিস্টে থাকা সকল সাবস্ক্রাইবারদের কাছে পাঠানো হবে!",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#00796b',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'হ্যাঁ, পাঠিয়ে দিন!',
-            cancelButtonText: 'বাতিল করুন'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // ফর্ম সেন্ডিং শুরু
-                btn.disabled = true;
-                btnText.innerText = "পাঠানো হচ্ছে...";
-                btnLoader.style.display = "inline-block";
-                
-                // ম্যানুয়ালি ফর্ম ডাটা তৈরি করা (যেহেতু Quill ব্যবহার করা হয়েছে)
-                const formData = new FormData();
-                formData.append('action', 'broadcast');
-                formData.append('subject', subjectValue);
-                formData.append('message', messageHTML); 
-
-                fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => {
-                    // সফল হলে
-                    btn.disabled = false;
-                    btnText.innerText = "সবাইকে পাঠান";
-                    btnLoader.style.display = "none";
-                    
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'দারুণ!',
-                        text: 'সফলভাবে সবার কাছে নিউজ পাঠানো হয়েছে!',
-                        confirmButtonColor: '#00796b'
-                    });
-                    
-                    // ফর্ম রিসেট
-                    document.getElementById('subject').value = '';
-                    quill.setContents([]);
-                })
-                .catch(error => {
-                    // ভুল হলে
-                    btn.disabled = false;
-                    btnText.innerText = "সবাইকে পাঠান";
-                    btnLoader.style.display = "none";
-                    
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'সমস্যা হয়েছে!',
-                        text: 'ইন্টারনেট কানেকশন চেক করুন অথবা কিছুক্ষণ পর আবার চেষ্টা করুন।',
-                        confirmButtonColor: '#00796b'
-                    });
-                });
+        // Initialize Quill Rich Text Editor
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'আপনার ইমেইলের বিস্তারিত এখানে লিখুন...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image'],
+                    ['clean']
+                ]
             }
         });
-    });
-</script>
 
+        // UI Elements
+        const listContainer = document.getElementById('subscriber-list');
+        const selectAllCheckbox = document.getElementById('select-all');
+        const selectedCountDisplay = document.getElementById('selected-count-display');
+        const btnText = document.getElementById('btn-text');
+        
+        let allCheckboxes = [];
+
+        // আপডেট সিলেকশন কাউন্টার
+        function updateSelectionCount() {
+            const selectedBoxes = document.querySelectorAll('.sub-checkbox:checked');
+            const count = selectedBoxes.length;
+            selectedCountDisplay.innerText = count;
+            
+            if(count > 0) {
+                btnText.innerText = `সিলেক্ট করা ইউজারদের পাঠান (${count})`;
+            } else {
+                btnText.innerText = `কাউকে সিলেক্ট করা হয়নি (0)`;
+            }
+
+            // Update Select All Checkbox state
+            if(allCheckboxes.length > 0 && count === allCheckboxes.length) {
+                selectAllCheckbox.checked = true;
+            } else {
+                selectAllCheckbox.checked = false;
+            }
+        }
+
+        // Fetch Subscribers from Firebase
+        async function loadSubscribers() {
+            try {
+                console.log("Fetching data from Firebase...");
+                const querySnapshot = await getDocs(collection(db, "subscribers"));
+                listContainer.innerHTML = ''; // Clear loading text
+                
+                let count = 0;
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if(data.email) {
+                        count++;
+                        const label = document.createElement('label');
+                        label.className = 'subscriber-item';
+                        label.innerHTML = `
+                            <input type="checkbox" class="sub-checkbox" value="${data.email}">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <span style="font-family: var(--font-en);">${data.email}</span>
+                        `;
+                        listContainer.appendChild(label);
+                    }
+                });
+
+                document.getElementById('total-count').innerText = count;
+                
+                if(count === 0) {
+                    listContainer.innerHTML = '<div style="text-align: center; color: gray; padding: 30px;">ডাটাবেসে কোন ইমেইল পাওয়া যায়নি!</div>';
+                }
+
+                // Add Event Listeners to new checkboxes
+                allCheckboxes = document.querySelectorAll('.sub-checkbox');
+                allCheckboxes.forEach(box => {
+                    box.addEventListener('change', updateSelectionCount);
+                });
+
+                updateSelectionCount();
+
+            } catch (error) {
+                console.error("Error fetching subscribers: ", error);
+                listContainer.innerHTML = `
+                    <div style="text-align: center; color: #ef4444; padding: 30px;">
+                        <b>ডাটা লোড করতে সমস্যা হয়েছে!</b><br>
+                        অনুগ্রহ করে Firebase Firestore Rules চেক করুন।
+                    </div>`;
+            }
+        }
+
+        // Select All Toggle Logic
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            allCheckboxes.forEach(box => {
+                box.checked = isChecked;
+            });
+            updateSelectionCount();
+        });
+
+        // Handle Send Email
+        document.getElementById('send-btn').addEventListener('click', async () => {
+            const subject = document.getElementById('email-subject').value.trim();
+            const messageHTML = quill.root.innerHTML;
+            const plainText = quill.getText().trim();
+
+            // Get Selected Emails
+            const selectedCheckboxes = document.querySelectorAll('.sub-checkbox:checked');
+            const selectedEmails = Array.from(selectedCheckboxes).map(box => box.value);
+
+            if (selectedEmails.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'সতর্কতা',
+                    text: 'ইমেইল পাঠানোর জন্য তালিকা থেকে অন্তত একজনকে সিলেক্ট করুন!',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            if (!subject || plainText === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'অসম্পূর্ণ ফর্ম',
+                    text: 'অনুগ্রহ করে সাবজেক্ট এবং মেসেজ উভয়ই পূরণ করুন!',
+                    confirmButtonColor: '#4f46e5'
+                });
+                return;
+            }
+
+            // SweetAlert2 Confirmation Box
+            const confirmResult = await Swal.fire({
+                title: 'আপনি কি নিশ্চিত?',
+                text: `আপনি সিলেক্ট করা ${selectedEmails.length} জনকে ইমেইল পাঠাতে চাচ্ছেন।`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4f46e5',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'হ্যাঁ, পাঠান',
+                cancelButtonText: 'না, বাতিল করুন'
+            });
+
+            if (!confirmResult.isConfirmed) return;
+
+            const btn = document.getElementById('send-btn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                const bccList = selectedEmails.join(',');
+
+                const templateParams = {
+                    subject: subject,
+                    html_message: messageHTML, 
+                    bcc_emails: bccList 
+                };
+
+                await emailjs.send('service_6zt1ng2', 'template_aij2w7a', templateParams);
+
+                // Success Alert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'সফল!',
+                    text: `সফলভাবে ${selectedEmails.length} জনের কাছে ইমেইল পাঠানো হয়েছে! 🎉`,
+                    confirmButtonColor: '#4f46e5'
+                });
+                
+                // Clear Form
+                document.getElementById('email-subject').value = '';
+                quill.root.innerHTML = '';
+                
+                // Uncheck all after sending
+                selectAllCheckbox.checked = false;
+                allCheckboxes.forEach(box => box.checked = false);
+                updateSelectionCount();
+                
+            } catch (error) {
+                console.error("Email sending failed:", error);
+                
+                // Error Alert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'দুঃখিত!',
+                    text: 'ইমেইল পাঠাতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।',
+                    confirmButtonColor: '#4f46e5'
+                });
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+
+        // ============================================
+        // NEW: AUTHENTICATION SYSTEM LOGIC
+        // ============================================
+        const loginOverlay = document.getElementById('login-overlay');
+        const dashboardWrapper = document.getElementById('dashboard-wrapper');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Check Auth State
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User Logged In -> Hide login, show dashboard securely
+                loginOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loginOverlay.style.visibility = 'hidden';
+                    loginOverlay.style.display = 'none';
+                    dashboardWrapper.style.display = 'block';
+                }, 500);
+                // Only load database AFTER verified login
+                loadSubscribers(); 
+            } else {
+                // User NOT Logged In -> Show premium login box
+                dashboardWrapper.style.display = 'none';
+                loginOverlay.style.display = 'flex';
+                loginOverlay.style.visibility = 'visible';
+                loginOverlay.style.opacity = '1';
+            }
+        });
+
+        // Handle Login Request
+        loginBtn.addEventListener('click', async () => {
+            const email = document.getElementById('admin-email').value.trim();
+            const password = document.getElementById('admin-password').value;
+
+            if(!email || !password) {
+                Swal.fire({ icon: 'warning', title: 'সতর্কতা', text: 'অনুগ্রহ করে ইমেইল ও পাসওয়ার্ড প্রদান করুন!' });
+                return;
+            }
+
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                const Toast = Swal.mixin({
+                    toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true
+                });
+                Toast.fire({ icon: 'success', title: 'লগইন সফল হয়েছে!' });
+                
+                document.getElementById('admin-email').value = '';
+                document.getElementById('admin-password').value = '';
+            } catch (error) {
+                let errorMsg = 'ভুল ইমেইল অথবা পাসওয়ার্ড!';
+                if(error.code === 'auth/network-request-failed') errorMsg = 'ইন্টারনেট কানেকশন চেক করুন!';
+                if(error.code === 'auth/invalid-credential') errorMsg = 'আপনার দেওয়া ইমেইল বা পাসওয়ার্ড সঠিক নয়!';
+                
+                Swal.fire({ icon: 'error', title: 'লগইন ফেইল্ড', text: errorMsg, confirmButtonColor: '#4f46e5' });
+            } finally {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Add "Enter" key press to login
+        document.getElementById('admin-password').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+
+        // Handle Logout Request
+        logoutBtn.addEventListener('click', async () => {
+            const confirm = await Swal.fire({
+                title: 'লগআউট করতে চান?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'হ্যাঁ',
+                cancelButtonText: 'না'
+            });
+
+            if(confirm.isConfirmed) {
+                await signOut(auth);
+                // Clear UI to protect data immediately
+                listContainer.innerHTML = '';
+                document.getElementById('total-count').innerText = '0';
+                selectedCountDisplay.innerText = '0';
+                btnText.innerText = 'সিলেক্ট করা ইউজারদের পাঠান (0)';
+            }
+        });
+
+    </script>
 </body>
 </html>
