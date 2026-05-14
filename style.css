@@ -746,56 +746,6 @@ body.dark-mode .feedback-btn {
     box-shadow: 0 5px 15px rgba(0,0,0,0.4);
 }
 
-/* রেজিষ্টেশন বাটন */
-/* বাটনটি মাঝখানে নেওয়ার জন্য এই অংশটুকু */
-.container {
-    display: flex;
-    justify-content: center; /* ডানে-বামে মাঝখানে */
-    align-items: center;     /* উপর-নিচে মাঝখানে */
-    height: 10vh;           /* পুরো স্ক্রিনের উচ্চতা অনুযায়ী */
-}
-
-/* তোমার দেওয়া আসল কোড (কোনো পরিবর্তন করা হয়নি) */
-.btn {
-    position: relative;
-    padding: 15px 40px;
-    background: #00796b;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* টেক্সট আর স্পিনারের গ্যাপ */
-    transition: 0.3s;
-}
-
-/* স্পিনার ডিজাইন */
-.loader {
-    width: 20px;
-    height: 20px;
-    border: 3px solid #ffffff;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: none; /* শুরুতে বন্ধ থাকবে */
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-}
-
-@keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* লোডিং অবস্থায় বাটনের স্টাইল */
-.btn:disabled {
-    background: #004d40;
-    cursor: not-allowed;
-    opacity: 0.8;
-}
 
 
 
