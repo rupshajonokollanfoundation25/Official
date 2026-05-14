@@ -1,44 +1,319 @@
-<div class="admin-panel" style="max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-    <h2 style="color: #00796b; text-align: center;">নিউজ ব্রডকাস্ট প্যানেল</h2>
-    <p style="text-align: center; color: #666;">এখান থেকে সকল সাবস্ক্রাইবারকে এক ক্লিকে ইমেইল পাঠান।</p>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Broadcast Panel</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Quill.js for Rich Text Editing -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    
+    <!-- SweetAlert2 for Premium Popups -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --primary-color: #00796b;
+            --primary-hover: #005a4f;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .admin-panel {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 650px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .admin-panel:hover {
+            transform: translateY(-5px);
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header-section h2 {
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .header-section p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 121, 107, 0.1);
+        }
+
+        /* Quill Editor Styling Override */
+        .ql-toolbar.ql-snow {
+            border: 2px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            background: #fafafa;
+        }
+        .ql-container.ql-snow {
+            border: 2px solid var(--border-color);
+            border-radius: 0 0 12px 12px;
+            height: 200px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .ql-editor:focus {
+            outline: none;
+        }
+
+        .footer-tools {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), #009688);
+            color: #fff;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+            box-shadow: 0 10px 25px rgba(0, 121, 107, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:disabled {
+            background: #a0c4c0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loader Animation */
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-panel">
+    <div class="header-section">
+        <h2>নিউজ ব্রডকাস্ট প্যানেল 🚀</h2>
+        <p>আপনার সকল সাবস্ক্রাইবারদের কাছে প্রফেশনাল ইমেইল পাঠান মাত্র এক ক্লিকে।</p>
+    </div>
     
     <form id="broadcast-form">
-        <input type="hidden" name="action" value="broadcast">
+        <div class="form-group">
+            <label for="subject">নিউজের বিষয় (Subject)</label>
+            <input type="text" id="subject" class="form-control" placeholder="যেমন: নতুন ইভেন্ট বা স্পেশাল অফার..." required>
+        </div>
         
-        <label>নিউজের বিষয় (Subject):</label>
-        <input type="text" name="subject" placeholder="যেমন: নতুন ইভেন্ট আপডেট" required style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px;">
+        <div class="form-group">
+            <label>নিউজের বিস্তারিত (Message)</label>
+            <!-- Rich Text Editor Container -->
+            <div id="editor-container"></div>
+            <div class="footer-tools">
+                <span id="char-count">০ টি অক্ষর</span>
+                <span>Supports HTML formatting</span>
+            </div>
+        </div>
         
-        <label>নিউজের বিস্তারিত (Message):</label>
-        <textarea name="message" rows="6" placeholder="আপনার নিউজটি এখানে লিখুন..." required style="width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px;"></textarea>
-        
-        <button type="submit" id="send-btn" style="width: 100%; background: #00796b; color: #fff; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">সবাইকে পাঠান</button>
+        <button type="submit" id="send-btn" class="submit-btn">
+            <span class="loader" id="btn-loader"></span>
+            <span id="btn-text">সবাইকে পাঠান</span>
+        </button>
     </form>
-    <p id="status" style="text-align: center; margin-top: 15px; font-weight: bold;"></p>
 </div>
 
+<!-- Quill.js Library -->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
 <script>
+    // ১. Quill Editor ইনিশিয়ালাইজ করা (Text Formatting এর জন্য)
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        placeholder: 'আপনার সুন্দর নিউজটি এখানে লিখুন...',
+        modules: {
+            toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link'],
+                ['clean']
+            ]
+        }
+    });
+
+    // ২. লাইভ ক্যারেক্টার কাউন্টার
+    quill.on('text-change', function() {
+        var text = quill.getText().trim();
+        var length = text.length;
+        document.getElementById('char-count').innerText = length + " টি অক্ষর";
+    });
+
+    // ৩. গুগল শিট স্ক্রিপ্ট ইউআরএল
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyRb61Evqy5O5J-D_M4L0fnt5R526d_iatJqT0TMm5Fw0dEXtMZugwoccXpm1o0HbVU/exec';
+    
     const form = document.getElementById('broadcast-form');
     const btn = document.getElementById('send-btn');
-    const status = document.getElementById('status');
+    const btnText = document.getElementById('btn-text');
+    const btnLoader = document.getElementById('btn-loader');
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        btn.disabled = true;
-        btn.innerHTML = "পাঠানো হচ্ছে...";
         
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            btn.disabled = false;
-            btn.innerHTML = "সবাইকে পাঠান";
-            status.innerHTML = "✅ সফলভাবে সবার কাছে নিউজ পাঠানো হয়েছে!";
-            status.style.color = "green";
-            form.reset();
-        })
-        .catch(error => {
-            btn.disabled = false;
-            status.innerHTML = "❌ কোনো সমস্যা হয়েছে, আবার চেষ্টা করুন।";
-            status.style.color = "red";
+        const subjectValue = document.getElementById('subject').value.trim();
+        // HTML ফরম্যাটে মেসেজ নেওয়া হচ্ছে যাতে বোল্ড/ইটালিক স্টাইল ইমেইলে যায়
+        const messageHTML = quill.root.innerHTML; 
+        const messageText = quill.getText().trim();
+
+        if(messageText.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'খালি মেসেজ!',
+                text: 'অনুগ্রহ করে নিউজের বিস্তারিত অংশে কিছু লিখুন।',
+                confirmButtonColor: '#00796b'
+            });
+            return;
+        }
+
+        // ৪. SweetAlert2 এর মাধ্যমে স্মার্ট কনফার্মেশন
+        Swal.fire({
+            title: 'আপনি কি নিশ্চিত?',
+            text: "এই নিউজটি আপনার লিস্টে থাকা সকল সাবস্ক্রাইবারদের কাছে পাঠানো হবে!",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#00796b',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'হ্যাঁ, পাঠিয়ে দিন!',
+            cancelButtonText: 'বাতিল করুন'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // ফর্ম সেন্ডিং শুরু
+                btn.disabled = true;
+                btnText.innerText = "পাঠানো হচ্ছে...";
+                btnLoader.style.display = "inline-block";
+                
+                // ম্যানুয়ালি ফর্ম ডাটা তৈরি করা (যেহেতু Quill ব্যবহার করা হয়েছে)
+                const formData = new FormData();
+                formData.append('action', 'broadcast');
+                formData.append('subject', subjectValue);
+                formData.append('message', messageHTML); 
+
+                fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    // সফল হলে
+                    btn.disabled = false;
+                    btnText.innerText = "সবাইকে পাঠান";
+                    btnLoader.style.display = "none";
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'দারুণ!',
+                        text: 'সফলভাবে সবার কাছে নিউজ পাঠানো হয়েছে!',
+                        confirmButtonColor: '#00796b'
+                    });
+                    
+                    // ফর্ম রিসেট
+                    document.getElementById('subject').value = '';
+                    quill.setContents([]);
+                })
+                .catch(error => {
+                    // ভুল হলে
+                    btn.disabled = false;
+                    btnText.innerText = "সবাইকে পাঠান";
+                    btnLoader.style.display = "none";
+                    
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'সমস্যা হয়েছে!',
+                        text: 'ইন্টারনেট কানেকশন চেক করুন অথবা কিছুক্ষণ পর আবার চেষ্টা করুন।',
+                        confirmButtonColor: '#00796b'
+                    });
+                });
+            }
         });
     });
 </script>
+
+</body>
+</html>
