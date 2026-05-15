@@ -658,3 +658,37 @@ function typeEffect() {
 
 // পেজ লোড হওয়ার ১ সেকেন্ড পর টাইপিং শুরু হবে
 setTimeout(typeEffect, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+const btn = document.querySelector('.smart-sub-btn');
+
+btn.addEventListener('mouseenter', () => {
+  // হ্যাপটিক ভাইব্রেশন সিমুলেশন (ঐচ্ছিক)
+  if (window.navigator.vibrate) {
+    window.navigator.vibrate(10);
+  }
+});
+
+// স্ক্রল করলে বাটনটি হালকা ছোট হবে যাতে বিরক্তিকর না লাগে
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 100) {
+    btn.style.transform = 'scale(0.9)';
+    btn.style.opacity = '0.8';
+  } else {
+    btn.style.transform = 'scale(1)';
+    btn.style.opacity = '1';
+  }
+});
+
+
