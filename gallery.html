@@ -305,6 +305,103 @@
         @media (max-width: 480px) {
             .gallery-grid { columns: 1; }
         }
+
+
+
+
+
+
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
+:root {
+  --neon-glow: #00f2fe;
+  --neon-purple: #4facfe;
+}
+
+/* নেভিগেশন কন্টেইনার - যা বাটনকে মাঝখানে রাখবে */
+.ultra-nav {
+  position: fixed;
+  top: 20px; /* উপর থেকে একটু নিচে ফ্লোটিং স্টাইল */
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none; /* যাতে পেজের অন্য কিছুতে ক্লিক করতে বাধা না দেয় */
+}
+
+/* স্মার্ট সাবস্ক্রাইব বাটন */
+.smart-sub-btn {
+  pointer-events: auto; /* বাটন ক্লিকযোগ্য করার জন্য */
+  position: relative;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 100px;
+  color: black;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* বাটন হোভার করলে যা হবে */
+.smart-sub-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  background: #fff;
+  color: #000;
+  box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
+  border-color: transparent;
+}
+
+/* শিমার (Shimmer) ইফেক্ট - যা বাটনের ওপর দিয়ে লাইট পাস করবে */
+.shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: all 0.2s;
+  animation: shineLoop 4s infinite linear;
+}
+
+@keyframes shineLoop {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+/* নিয়ন বর্ডার এনিমেশন (নিচে একটি সরু রেখা যা গ্লো করবে) */
+.smart-sub-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neon-glow), var(--neon-purple));
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+}
+
+.smart-sub-btn:hover::after {
+  width: 80%;
+}
     </style>
 </head>
 <body>
