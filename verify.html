@@ -23,9 +23,10 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- New: jsPDF for PDF Download & Lottie for Smart Animation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- New: HTML5 QR Code Scanner -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
@@ -77,17 +78,20 @@
             .glass-card { box-shadow: none !important; border: 1px solid #ddd !important; background: white !important; }
             * { color: black !important; }
         }
+
+        /* QR Reader Custom Styles */
+        #qr-reader { border: none !important; }
+        #qr-reader button { background-color: #0d9488; color: white; padding: 8px 16px; border-radius: 8px; margin-top: 10px; cursor: pointer; border: none; font-weight: bold; }
+        #qr-reader a { display: none; }
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
 
     <!-- Floating Buttons Container -->
     <div class="fixed top-4 right-4 z-50 no-print flex gap-3">
-        <!-- New: Language Toggle -->
         <button id="lang-toggle" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-gray-200 dark:border-gray-700 px-3 py-2 rounded-full shadow-lg text-gray-700 dark:text-gray-300 font-bold text-xs transition duration-300 hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center">
             EN/বাং
         </button>
-        <!-- Dark Mode Toggle Button (Original) -->
         <button id="theme-toggle" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur border border-gray-200 dark:border-gray-700 w-10 h-10 rounded-full shadow-lg text-gray-700 dark:text-gray-300 transition duration-300 hover:scale-105 active:scale-95 cursor-pointer flex items-center justify-center">
             <i id="theme-toggle-icon" class="fas fa-moon text-lg"></i>
         </button>
@@ -103,13 +107,18 @@
         <p class="text-gray-500 dark:text-gray-400 text-sm mb-6 translate-subtitle">সদস্যের সঠিক পরিচয় নিশ্চিত করতে আইডি দিয়ে সার্চ করুন</p>
         
         <form id="search-form" class="space-y-4">
-            <!-- Updated Input Field with Voice Search -->
+            <!-- Updated Input Field with Voice & QR Search -->
             <div class="relative">
-                <input type="text" id="search-input" placeholder="Enter Member ID (e.g. RJF1001)" required
-                    class="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 uppercase tracking-wider text-center">
-                <button type="button" id="voice-search-btn" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-slate-600 rounded-full text-blue-500 hover:bg-blue-100 transition duration-200" title="Voice Search">
-                    <i class="fas fa-microphone"></i>
-                </button>
+                <input type="text" id="search-input" placeholder="Member ID (year-code)" required
+                    class="w-full pl-4 pr-20 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-slate-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-teal-500 uppercase tracking-wider text-center">
+                <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                    <button type="button" id="qr-scan-btn" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-slate-600 rounded-full text-teal-600 hover:bg-teal-100 transition duration-200" title="QR Scan">
+                        <i class="fas fa-qrcode"></i>
+                    </button>
+                    <button type="button" id="voice-search-btn" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-slate-600 rounded-full text-blue-500 hover:bg-blue-100 transition duration-200" title="Voice Search">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
             </div>
             <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-bold shadow-md hover:shadow-xl hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300">
                 <i class="fas fa-check-circle mr-2"></i> <span class="translate-btn">ভেরিফাই করুন</span>
@@ -133,17 +142,14 @@
     <div id="verified-card" class="hidden animate-pop-in glass-card max-w-md w-full p-6 sm:p-8 text-center relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-teal-500 to-emerald-600"></div>
         
-        <!-- New: Dynamic Watermark for Security (Hidden by default, shown during download) -->
         <div id="card-watermark" class="absolute inset-0 z-0 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 select-none">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-300 dark:text-gray-600 transform -rotate-45 tracking-widest uppercase">Rupsha Foundation</h2>
         </div>
 
-        <!-- Profile Picture Integration -->
         <div class="relative w-24 h-24 mx-auto mb-4 z-10">
             <div class="bg-slate-200 dark:bg-slate-700 animate-pulse w-full h-full rounded-full flex items-center justify-center shadow-inner overflow-hidden border-4 border-white dark:border-gray-700">
                 <img id="profile-img" src="rjf.webp" alt="Profile" class="w-full h-full object-cover opacity-0 transition-opacity duration-500" onload="this.classList.remove('opacity-0'); this.parentElement.classList.remove('animate-pulse');" onerror="this.src='rjf.webp'; this.classList.remove('opacity-0'); this.parentElement.classList.remove('animate-pulse');">
             </div>
-            <!-- New: Lottie Animation instead of static icon -->
             <div class="absolute bottom-0 right-0 bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden w-8 h-8 flex items-center justify-center border-2 border-white dark:border-gray-800">
                 <lottie-player src="https://assets8.lottiefiles.com/packages/lf20_c6101q2o.json" background="transparent" speed="1" style="width: 40px; height: 40px;" autoplay></lottie-player>
             </div>
@@ -159,7 +165,6 @@
                 <span class="text-gray-500 dark:text-gray-400 text-sm translate-v-id"><i class="fas fa-id-card mr-2 opacity-70"></i>সদস্য আইডি</span>
                 <div class="flex items-center gap-2">
                     <span id="display-id" class="font-bold text-teal-700 dark:text-teal-400 uppercase tracking-widest text-lg bg-teal-50 dark:bg-slate-700 px-2 py-1 rounded">---</span>
-                    <!-- New: Copy Button -->
                     <button id="copy-id-btn" class="text-gray-400 hover:text-teal-500 transition-colors" title="Copy ID">
                         <i class="fas fa-copy"></i>
                     </button>
@@ -170,7 +175,6 @@
             </div>
         </div>
 
-        <!-- Smart QR Code Section -->
         <div class="mt-6 p-4 bg-gray-50 dark:bg-slate-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-between no-print z-10 relative">
             <div class="text-left">
                 <p class="text-xs font-bold text-gray-800 dark:text-white uppercase mb-1 flex items-center gap-1">
@@ -183,13 +187,11 @@
             </div>
         </div>
         
-        <!-- New: Live Security Timestamp -->
         <div class="mt-4 flex justify-between items-center px-2 z-10 relative">
             <p class="text-[10px] text-gray-500 dark:text-gray-400"><i class="fas fa-clock mr-1"></i> <span id="live-time"></span></p>
             <p class="text-[10px] text-green-600 dark:text-green-400 font-semibold flex items-center gap-1.5"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> Active Status</p>
         </div>
 
-        <!-- Action Buttons -->
         <div class="mt-6 grid grid-cols-2 gap-3 no-print z-10 relative">
             <button id="share-btn" class="bg-blue-50 border border-blue-200 dark:border-slate-600 dark:bg-slate-700 text-blue-700 dark:text-blue-400 py-2.5 rounded-xl font-bold hover:shadow-md active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2">
                 <i class="fas fa-share-nodes"></i> <span class="translate-btn-share">শেয়ার</span>
@@ -197,7 +199,6 @@
             <button id="download-btn" class="bg-indigo-50 border border-indigo-200 dark:border-slate-600 dark:bg-slate-700 text-indigo-700 dark:text-indigo-400 py-2.5 rounded-xl font-bold hover:shadow-md active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2">
                 <i class="fas fa-image"></i> <span class="translate-btn-save">ইমেজ সেভ</span>
             </button>
-            <!-- New: PDF Download Button -->
             <button id="pdf-btn" class="bg-red-50 border border-red-200 dark:border-slate-600 dark:bg-slate-700 text-red-700 dark:text-red-400 py-2.5 rounded-xl font-bold hover:shadow-md active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2">
                 <i class="fas fa-file-pdf"></i> <span class="translate-btn-pdf">পিডিএফ</span>
             </button>
@@ -223,6 +224,15 @@
         <button onclick="window.location.href=window.location.pathname" class="w-full bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-white py-3 rounded-xl font-bold hover:bg-gray-200 dark:hover:bg-slate-600 active:scale-[0.98] transition duration-200 mb-3">
             <i class="fas fa-search mr-2"></i> <span class="translate-err-btn">নতুন আইডি খুঁজুন</span>
         </button>
+    </div>
+
+    <!-- 5. New QR Scanner Modal -->
+    <div id="qr-modal" class="hidden fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm animate-pop-in">
+        <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl max-w-sm w-full relative shadow-2xl">
+            <button id="close-qr-btn" class="absolute -top-3 -right-3 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center z-10 shadow-lg hover:scale-105 active:scale-95 transition-transform"><i class="fas fa-times"></i></button>
+            <h3 class="text-center font-bold text-gray-800 dark:text-white mb-4 text-lg translate-qr-scan">কিউআর কোড স্ক্যান করুন</h3>
+            <div id="qr-reader" class="w-full overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700"></div>
+        </div>
     </div>
 
     <script type="module">
@@ -268,7 +278,7 @@
             localStorage.theme = !isDark ? 'dark' : 'light';
         });
 
-        // --- New: Language Toggle Logic ---
+        // --- Language Toggle Logic ---
         let currentLang = 'bn';
         const langToggleBtn = document.getElementById('lang-toggle');
         
@@ -289,6 +299,7 @@
                 '.translate-btn-home': 'Home Page',
                 '.translate-err-title': 'Data Not Found!',
                 '.translate-err-btn': 'Search New ID',
+                '.translate-qr-scan': 'Scan QR Code',
                 'fa-user': 'Name', 'fa-briefcase': 'Occupation', 'fa-star': 'Membership Type', 
                 'fa-droplet': 'Blood Group', 'fa-venus-mars': 'Gender', 'fa-phone': 'Mobile', 'fa-location-dot': 'Address'
             },
@@ -308,6 +319,7 @@
                 '.translate-btn-home': 'হোম পেজ',
                 '.translate-err-title': 'তথ্য পাওয়া যায়নি!',
                 '.translate-err-btn': 'নতুন আইডি খুঁজুন',
+                '.translate-qr-scan': 'কিউআর কোড স্ক্যান করুন',
                 'fa-user': 'নাম', 'fa-briefcase': 'পেশা', 'fa-star': 'সদস্যপদ ধরন', 
                 'fa-droplet': 'রক্তের গ্রুপ', 'fa-venus-mars': 'লিঙ্গ', 'fa-phone': 'মোবাইল নম্বর', 'fa-location-dot': 'ঠিকানা'
             }
@@ -324,7 +336,6 @@
                         : dict[selector];
                 }
             }
-            // Trigger re-render of dynamic info if exists
             const memberId = getMemberId();
             if(memberId && document.getElementById('verified-card').classList.contains('hidden') === false) {
                 const data = JSON.parse(sessionStorage.getItem(`rjf_member_${memberId}`));
@@ -381,7 +392,6 @@
             document.getElementById(viewId).classList.remove('hidden');
         };
 
-        // Date Formatter for Live Timestamp
         const updateLiveTime = () => {
             const now = new Date();
             document.getElementById('live-time').innerText = now.toLocaleString('en-US', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit' });
@@ -467,14 +477,12 @@
             renderDynamicInfo(data, currentLang);
             updateLiveTime();
 
-            // Setup New Copy functionality
             document.getElementById('copy-id-btn').onclick = () => {
                 navigator.clipboard.writeText(data.member_id || getMemberId()).then(() => {
                     showToast(currentLang === 'bn' ? 'আইডি কপি করা হয়েছে!' : 'ID Copied!', 'fa-copy');
                 });
             };
 
-            // Setup Share
             document.getElementById('share-btn').onclick = () => {
                 if (navigator.share) {
                     navigator.share({ title: 'Verified Member - RJF', text: `${data.full_name}-এর ভেরিফাইড মেম্বারশিপ প্রোফাইল দেখুন।`, url: currentUrl }).catch(console.error);
@@ -483,7 +491,6 @@
                 }
             };
 
-            // Image Download Setup (With Watermark)
             document.getElementById('download-btn').onclick = () => {
                 const card = document.getElementById('verified-card');
                 const isDark = document.documentElement.classList.contains('dark');
@@ -491,7 +498,7 @@
                 
                 showToast(currentLang === 'bn' ? 'কার্ড ডাউনলোড হচ্ছে...' : 'Downloading Card...', 'fa-spinner fa-spin', 'text-blue-400');
                 
-                watermark.classList.remove('opacity-0'); // Show watermark
+                watermark.classList.remove('opacity-0'); 
                 watermark.classList.add('opacity-10');
 
                 html2canvas(card, {
@@ -499,7 +506,7 @@
                     backgroundColor: isDark ? '#1e293b' : '#ffffff',
                     scale: 2, useCORS: true
                 }).then(canvas => {
-                    watermark.classList.remove('opacity-10'); // Hide watermark back
+                    watermark.classList.remove('opacity-10'); 
                     watermark.classList.add('opacity-0');
                     const link = document.createElement('a');
                     link.download = `RJF_Verified_${data.member_id || getMemberId()}.png`;
@@ -512,7 +519,6 @@
                 });
             };
 
-            // New: PDF Download Setup
             document.getElementById('pdf-btn').onclick = () => {
                 const card = document.getElementById('verified-card');
                 const isDark = document.documentElement.classList.contains('dark');
@@ -577,16 +583,64 @@
 
             voiceBtn.addEventListener('click', () => { recognition.start(); });
         } else {
-            voiceBtn.style.display = 'none'; // Hide if browser doesn't support
+            voiceBtn.style.display = 'none'; 
         }
 
-        // Search Form Logic
+        // New: QR Scanner Feature Logic
+        const qrScanBtn = document.getElementById('qr-scan-btn');
+        const qrModal = document.getElementById('qr-modal');
+        const closeQrBtn = document.getElementById('close-qr-btn');
+        let html5QrcodeScanner;
+
+        qrScanBtn.addEventListener('click', () => {
+            qrModal.classList.remove('hidden');
+            if (!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "qr-reader", { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 }, false);
+                
+                html5QrcodeScanner.render((decodedText) => {
+                    let scannedId = decodedText;
+                    try {
+                        const url = new URL(decodedText);
+                        scannedId = url.searchParams.get('id') || decodedText;
+                    } catch(e) {}
+                    
+                    document.getElementById('search-input').value = scannedId;
+                    closeQrModal();
+                    showToast(currentLang === 'bn' ? 'স্ক্যান সফল হয়েছে!' : 'Scan Successful!', 'fa-check-circle', 'text-green-500');
+                    document.getElementById('search-form').dispatchEvent(new Event('submit'));
+                }, (errorMessage) => {
+                    // Ignore background scan errors
+                });
+            }
+        });
+
+        const closeQrModal = () => {
+            qrModal.classList.add('hidden');
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.clear().then(() => {
+                    html5QrcodeScanner = null;
+                    document.getElementById('qr-reader').innerHTML = '';
+                }).catch(err => console.error("Failed to clear scanner", err));
+            }
+        };
+
+        closeQrBtn.addEventListener('click', closeQrModal);
+
+        // Updated Search Form Logic with Auto 'RJF-' Prefix
         document.getElementById('search-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            const val = document.getElementById('search-input').value.trim();
-            const regex = /^[a-zA-Z0-9\-]+$/; 
+            let val = document.getElementById('search-input').value.trim().toUpperCase();
             
             if(val) {
+                // Auto add "RJF-" if user typed numbers only, or typed "RJF2026-9689"
+                if (/^\d/.test(val)) {
+                    val = 'RJF-' + val;
+                } else if (val.startsWith('RJF') && !val.startsWith('RJF-')) {
+                    val = val.replace('RJF', 'RJF-');
+                }
+
+                const regex = /^[a-zA-Z0-9\-]+$/; 
                 if(!regex.test(val)) {
                     showToast(currentLang === 'bn' ? 'আইডিতে স্পেশাল ক্যারেক্টার ব্যবহার করা যাবে না!' : 'No special characters allowed!', 'fa-circle-xmark', 'text-red-500');
                     return;
@@ -595,7 +649,7 @@
             }
         });
 
-        // Initialize (Fixed to run without DOMContentLoaded wrapper as it's a module)
+        // Initialize
         verifyMember();
 
     </script>
