@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Admin Dashboard | Newsletter</title>
+    <title>rupsha jonokollan foundation| Newsletter</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -208,6 +208,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky; /* Make navbar fixed to the top */
+            top: 0;
+            z-index: 1000;
+            box-sizing: border-box; /* Fix alignment width issue */
+            width: 100%;
         }
 
         .navbar h1 {
@@ -443,7 +448,7 @@
         <nav class="navbar">
             <h1>রূপসা জনকল্যাণ ফাউন্ডেশন</h1>
             <div style="display: flex; align-items: center; gap: 15px;">
-                <span style="color: var(--success); font-weight: bold;">● ডাটাবেস কানেক্টেড</span>
+                <span id="db-status" style="color: var(--text-muted); font-weight: bold;">● কানেক্টিং...</span>
                 <!-- NEW: Logout Button -->
                 <button id="logout-btn" class="btn-logout">লগআউট</button>
             </div>
@@ -572,9 +577,15 @@
 
         // Fetch Subscribers from Firebase
         async function loadSubscribers() {
+            const dbStatusEl = document.getElementById('db-status');
             try {
                 console.log("Fetching data from Firebase...");
                 const querySnapshot = await getDocs(collection(db, "subscribers"));
+                
+                // Database Connected successfully
+                dbStatusEl.innerText = '● ডাটাবেস কানেক্টেড';
+                dbStatusEl.style.color = 'var(--success)';
+
                 listContainer.innerHTML = ''; // Clear loading text
                 
                 let count = 0;
@@ -608,6 +619,10 @@
                 updateSelectionCount();
 
             } catch (error) {
+                // Database Disconnected/Error
+                dbStatusEl.innerText = '● ডাটাবেস ডিসকানেক্টেড';
+                dbStatusEl.style.color = '#ef4444';
+
                 console.error("Error fetching subscribers: ", error);
                 listContainer.innerHTML = `
                     <div style="text-align: center; color: #ef4444; padding: 30px;">
@@ -709,7 +724,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'দুঃখিত!',
-                    text: 'ইমেইল পাঠাতে সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।',
+                    text: 'ইমেইল পাঠাতে সমস্যা হয়েছে। দয়া করে মেরামত করুন।',
                     confirmButtonColor: '#4f46e5'
                 });
             } finally {
@@ -807,6 +822,8 @@
                 document.getElementById('total-count').innerText = '0';
                 selectedCountDisplay.innerText = '0';
                 btnText.innerText = 'সিলেক্ট করা ইউজারদের পাঠান (0)';
+                document.getElementById('db-status').innerText = '● কানেক্টিং...';
+                document.getElementById('db-status').style.color = 'var(--text-muted)';
             }
         });
 
