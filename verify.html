@@ -645,7 +645,7 @@
 
                const regex = /^[a-zA-Z0-9\-]+$/;     
                 if(!regex.test(val)) {
-                    showToast(currentLang === 'bn' ? 'আইডিতে স্পেশাল ক্যারেক্টার ব্যবহার করা যাবে না!' : 'No special characters allowed!', 'fa-circle-xmark', 'text-red-500');
+                    showToast(currentLang === 'bn' ? 'আইডিতে কোনো স্পেশাল ক্যারেক্টার/লিংক ব্যবহার করা যাবে না!' : 'No special characters/link allowed!', 'fa-circle-xmark', 'text-red-500');
                     return;
                 }
                 window.location.href = window.location.pathname + '?id=' + encodeURIComponent(val);
