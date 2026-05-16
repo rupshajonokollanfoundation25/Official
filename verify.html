@@ -643,7 +643,9 @@
                     val = val.replace('RJF', 'https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-');
                 }
 
-                const regex = /^[a-zA-Z0-9\-]+$/; 
+               // const regex = /^[a-zA-Z0-9\-]+$/; যখন প্রয়োজন হবে তখন ব্যবহার করব
+
+                const regex = /^[a-zA-Z0-9\-\:\/\.]+$/;
                 if(!regex.test(val)) {
                     showToast(currentLang === 'bn' ? 'আইডিতে স্পেশাল ক্যারেক্টার ব্যবহার করা যাবে না!' : 'No special characters allowed!', 'fa-circle-xmark', 'text-red-500');
                     return;
