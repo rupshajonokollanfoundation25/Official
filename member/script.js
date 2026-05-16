@@ -34,7 +34,7 @@ const foundationMembers = [
         image: "https://i.ibb.co.com/NnWNhPHh/1774421801136.jpg",
         desc: "ফাউন্ডেশনের সকল প্রকার অনুদান এবং ব্যয়ের স্বচ্ছ হিসাব রক্ষণাবেক্ষণ করেন।",
         facebook: "https://www.facebook.com/fa.ruqe.75",
-        whatsapp: "https://wa.me/"
+        verify: "https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-1390"
     },
     {
         id: 4,
