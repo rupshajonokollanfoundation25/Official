@@ -78,7 +78,7 @@ const foundationMembers = [
         image: "imran_ahmed.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
         facebook: "https://facebook.com/imran.ahmedddddd",
-        whatsapp: "https://wa.me/8801957329211"
+        github: "https://wa.me/8801957329211"
     },         
     
      {
