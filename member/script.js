@@ -32,7 +32,8 @@ const foundationMembers = [
         category: "সভাপতি",
         status: "active",
         image: "omor.webp",
-        desc: "member id:RJF-2026-1390",
+        desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
+        id: "member id:RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
@@ -589,6 +590,8 @@ function openMemberModal(id) {
         document.getElementById('modal-role').innerText = member.role;
         document.getElementById('modal-img').src = member.image;
         document.getElementById('modal-desc').innerText = member.desc;
+        document.getElementById('modal-id').innerText = member.id;
+
 
         // সোশ্যাল লিংক সেটআপ
         let socialHTML = '';
