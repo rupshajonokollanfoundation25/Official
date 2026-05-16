@@ -11,6 +11,7 @@ const foundationMembers = [
         status: "active", // active হলে সবুজ, inactive হলে কমলা ডট দেখাবে
         image: "rafiqul.webp",
         desc: "ফাউন্ডেশনের সামগ্রিক কার্যক্রম পরিচালনা এবং দিকনির্দেশনা প্রদান করেন।",
+        memberid: "",
         facebook: "https://www.facebook.com/engrrafiqulislam.rafiq.18",
         whatsapp: "https://wa.me/"
     },
@@ -22,6 +23,7 @@ const foundationMembers = [
         status: "active",
         image: "harrun.webp",
         desc: "মাঠ পর্যায়ের সার্বিক ব্যবস্থাপনা এবং সদস্যদের মাঝে সমন্বয় সাধন করেন।",
+        memberid: "",
         facebook: "https://www.facebook.com/harunor.roshid.195011",
         whatsapp: "https://wa.me/" 
     },
@@ -45,6 +47,7 @@ const foundationMembers = [
         status: "active",
         image: "monir.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
+        memberid: "",
         facebook: "https://www.facebook.com/md.monirulislammoon.71",
         whatsapp: "https://wa.me/"
     },
@@ -56,6 +59,7 @@ const foundationMembers = [
         status: "active",
         image: "naim.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
+        memberid: "",
         facebook: "https://www.facebook.com/nayeem94170",
         whatsapp: "https://wa.me/"
     },
@@ -67,6 +71,7 @@ const foundationMembers = [
         status: "active",
         image: "kawsar.webp",
         desc: "none",
+        memberid: "",
         facebook: "https://www.facebook.com/kawsar.ahmed.481662",
         whatsapp: "https://wa.me/"
     },
@@ -91,6 +96,7 @@ const foundationMembers = [
         status: "active",
         image: "fahim.webp",
         desc: "none",
+         memberid: "",
         facebook: "https://www.facebook.com/profile.php?id=100080505806242",
         whatsapp: "https://wa.me/"
     },
@@ -104,6 +110,7 @@ const foundationMembers = [
         status: "inactive",
         image: "siam.webp",
         desc: "none",
+        memberid: "",
         facebook: "https://www.facebook.com/Siamphoria",
         whatsapp: "https://wa.me/"
     },
@@ -117,6 +124,7 @@ const foundationMembers = [
         status: "active",
         image: "kamrul.webp",
         desc: "none",
+        memberid: "",
         facebook: "https://www.facebook.com/md.kamrul.hasan.972559",
         whatsapp: "https://wa.me/"
     },
@@ -131,6 +139,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -145,6 +154,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -158,6 +168,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://i.ibb.co.com/x8JsW2bV/Screenshot-2026-04-17-21-44-20-022-com-microsoft-emmx-edit.jpg",
         desc: "খেলাধুলা এবং তার পাশাপাশি বিভিন্ন ধরনের ক্রিয়ায় অংশগ্রহণ করেন",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -170,7 +181,8 @@ const foundationMembers = [
         category: "দপ্তর সম্পাদক",
         status: "inactive",
         image: "https://i.ibb.co.com/3YY1z5Wy/IMG-20250607-183611.jpg",
-        desc: "ই ফাউন্ডেশন এর কাগজ পাতি এবং সকল দাপ্তরিক বিষয়ক জিনিসপত্র ইনার কাছে গচ্ছিত থাকে",
+        desc: " ফাউন্ডেশনের কাগজ পাতি এবং সকল দাপ্তরিক বিষয়ক জিনিসপত্র ইনার কাছে গচ্ছিত থাকে",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -183,6 +195,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -196,6 +209,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://i.ibb.co.com/gLXWCHjC/img-2-1776440001717.jpg",
         desc: "ইনি বিভিন্ন ধরনের সাংস্কৃতিক অনুষ্ঠানের এবং খেলাধুলাতে অবস্থান করেন",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -209,6 +223,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://i.ibb.co.com/ynnR8jyV/img-2-1771574187607.jpg",
         desc: "ফাউন্ডেশনের সকল হিসাব এবং ফাউন্ডেশনের টাকা উত্তোলন করে থাকেন",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -222,6 +237,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -235,6 +251,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -248,6 +265,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -261,6 +279,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -274,6 +293,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -288,6 +308,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -302,6 +323,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -316,6 +338,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -330,6 +353,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -343,6 +367,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -358,6 +383,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -372,6 +398,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -386,6 +413,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -401,6 +429,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -414,6 +443,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -427,6 +457,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -441,6 +472,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -454,6 +486,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -467,6 +500,7 @@ const foundationMembers = [
         status: "inactive",
         image: "https://via.placeholder.com/150",
         desc: "none",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -479,7 +513,8 @@ const foundationMembers = [
         category: "",
         status: "inactive",
         image: "https://via.placeholder.com/150",
-        desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
+        desc: "undefined",
+        memberid: "",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
