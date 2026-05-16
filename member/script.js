@@ -33,7 +33,7 @@ const foundationMembers = [
         status: "active",
         image: "omor.webp",
         desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
-        memberid: "member id:RJF-2026-1390",
+        memberid: "member id: RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
@@ -78,7 +78,7 @@ const foundationMembers = [
         status: "active",
         image: "imran_ahmed.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
-        memberid: " RJF-2026-9689 ",
+        memberid: " member id: RJF-2026-9689 ",
         facebook: "https://facebook.com/imran.ahmedddddd",
         whatsapp: "https://wa.me/8801957329211"
     },         
