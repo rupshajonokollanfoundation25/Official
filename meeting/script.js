@@ -170,3 +170,25 @@ window.addEventListener('scroll', () => {
     btn.style.opacity = '1';
   }
 });
+
+
+
+
+
+
+
+
+
+
+function closeNotice() {
+  const noticeBox = document.getElementById('smartNotice');
+  // স্মুথভাবে হাইড করার জন্য স্টাইল পরিবর্তন
+  noticeBox.style.opacity = '0';
+  noticeBox.style.transform = 'translateY(-10px)';
+  
+  // ০.৩ সেকেন্ড পর পুরোপুরি রিমুভ করে দেওয়া
+  setTimeout(() => {
+    noticeBox.style.display = 'none';
+  }, 300);
+}
+
