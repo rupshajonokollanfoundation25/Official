@@ -32,7 +32,8 @@ const foundationMembers = [
         category: "সভাপতি",
         status: "active",
         image: "omor.webp",
-        desc: "ফাউন্ডেশনের সকল প্রকার অনুদান এবং ব্যয়ের স্বচ্ছ হিসাব রক্ষণাবেক্ষণ করেন।  member id:RJF-2026-1390",
+        desc: "ফাউন্ডেশনের সকল প্রকার অনুদান এবং ব্যয়ের স্বচ্ছ হিসাব রক্ষণাবেক্ষণ করেন।",
+        memberid:"member id:RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
