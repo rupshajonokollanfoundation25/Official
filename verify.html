@@ -638,9 +638,9 @@
             if(val) {
                 // Auto add "RJF-2026-" if user typed numbers only, or typed "RJF2026-9689"
                 if (/^\d/.test(val)) {
-                    val = 'RJF-2026-' + val;
-                } else if (val.startsWith('RJF') && !val.startsWith('RJF-2026-')) {
-                    val = val.replace('RJF', 'RJF-2026');
+                    val = 'https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-' + val;
+                } else if (val.startsWith('RJF') && !val.startsWith('https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-')) {
+                    val = val.replace('RJF', 'https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-');
                 }
 
                 const regex = /^[a-zA-Z0-9\-]+$/; 
