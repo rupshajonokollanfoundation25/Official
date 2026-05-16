@@ -437,3 +437,31 @@ body {
 .smart-sub-btn:hover::after {
   width: 80%;
 }
+
+
+
+
+
+
+
+
+
+.modal-id-btn {
+    background-color: #007bff; /* বাটনের ব্যাকগ্রাউন্ড কালার (আপনার পছন্দমতো পরিবর্তন করতে পারেন) */
+    color: white; /* লেখার কালার */
+    border: none; /* ডিফল্ট বর্ডার বাদ দেওয়ার জন্য */
+    padding: 8px 16px; /* বাটনের ভেতরের জায়গা বা সাইজ */
+    font-family: 'Hind Siliguri', sans-serif; /* ফন্ট */
+    font-size: 14px;
+    border-radius: 4px; /* কোনাগুলো হালকা গোল করার জন্য */
+    cursor: pointer; /* মাউস নিলে যেন হাতের চিহ্ন দেখায় */
+    transition: background 0.3s ease; /* হোভার ইফেক্ট মসৃণ করার জন্য */
+    display: inline-block;
+    margin: 10px 0;
+}
+
+/* মাউস পয়েন্টার বাটনের ওপর নিলে যে রঙ হবে */
+.modal-id-btn:hover {
+    background-color: #0056b3; 
+}
+
