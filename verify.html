@@ -293,7 +293,7 @@
                 '.translate-v-title': 'Membership Verified',
                 '.translate-v-badge': 'Verified Member',
                 '.translate-v-id': '<i class="fas fa-id-card mr-2 opacity-70"></i>Member ID',
-                '.translate-qr-title': 'Digital Verification',
+                '.translate-qr-title': 'Foundation Member Verify',
                 '.translate-qr-sub': 'Scan to check in original database',
                 '.translate-btn-share': 'Share',
                 '.translate-btn-save': 'Save Image',
@@ -313,7 +313,7 @@
                 '.translate-v-title': 'সদস্যপদ ভেরিফাইড',
                 '.translate-v-badge': 'ভেরিফাইড মেম্বার',
                 '.translate-v-id': '<i class="fas fa-id-card mr-2 opacity-70"></i>সদস্য আইডি',
-                '.translate-qr-title': 'ডিজিটাল ভেরিফিকেশন',
+                '.translate-qr-title': 'ফাউন্ডেশন মেম্বার ভেরিফাই',
                 '.translate-qr-sub': 'স্ক্যান করে অরিজিনাল ডাটাবেসে চেক করুন',
                 '.translate-btn-share': 'শেয়ার',
                 '.translate-btn-save': 'ইমেজ সেভ',
@@ -569,7 +569,7 @@
             
             recognition.onstart = function() {
                 voiceBtn.classList.add('animate-pulse', 'text-red-500', 'bg-red-100');
-                showToast(currentLang === 'bn' ? 'বলুন, আমি শুনছি...' : 'Listening...', 'fa-microphone');
+                showToast(currentLang === 'bn' ? ' এখন বলুন, আমি শুনছি...' : 'Listening...', 'fa-microphone');
             };
             
             recognition.onresult = function(event) {
