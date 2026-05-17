@@ -690,7 +690,7 @@ function openMemberModal(id) {
         if(member.whatsapp) {
             socialHTML += `<a href="${member.whatsapp}" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>`;
         }
-        if(member.github) {
+        if(member.github && member.github.trim() !== "") {
             socialHTML += `<a href="${member.github}" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>`;
         }
         document.getElementById('modal-social').innerHTML = socialHTML;
