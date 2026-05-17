@@ -1,15 +1,27 @@
-// সার্ভিস ওয়ার্কার ইনস্টল হওয়ার সময় কোনো ফাইল ক্যাশ করবে না
+const CACHE_NAME = 'offline-cache-v2'; // ক্যাশের একটি নাম
+const OFFLINE_URL = 'offline.html';    // তোমার অফলাইন পেজের নাম
+
+// ১. ইনস্টল ইভেন্ট: শুধু অফলাইন পেজটি সেভ করবে, অন্য কোনো ফাইল ক্যাশ করবে না
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); 
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      // অফলাইন পেজটি ক্যাশে যুক্ত করা হচ্ছে
+      return cache.add(new Request(OFFLINE_URL, { cache: 'reload' }));
+    })
+  );
+  self.skipWaiting(); // দ্রুত অ্যাক্টিভ করার জন্য
 });
 
-// পুরনো যত ক্যাশ সেভ করা আছে, সব ক্লিয়ার করে দিবে
+// ২. অ্যাক্টিভ ইভেন্ট: তোমার শর্ত অনুযায়ী পুরনো সব ক্যাশ ক্লিয়ার করবে (যাতে অ্যাপ ফাস্ট থাকে)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          return caches.delete(cacheName);
+          // বর্তমান ক্যাশ ছাড়া বাকি সব পুরনো ক্যাশ ডিলিট করে দিবে
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
         })
       );
     })
@@ -17,8 +29,23 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// রিকোয়েস্ট ইন্টারসেপ্ট করা - শুধুমাত্র নেটওয়ার্ক থেকে ডেটা নিবে
+// ৩. ফেচ ইভেন্ট (রিকোয়েস্ট ইন্টারসেপ্ট করা): তোমার শর্ত অনুযায়ী নেটওয়ার্ক থেকে ডেটা নিবে
 self.addEventListener('fetch', (event) => {
-  // এখানে ক্যাশ চেক করার কোনো কোড নেই, তাই সরাসরি ইন্টারনেট থেকে লোড হবে
-  event.respondWith(fetch(event.request));
+  
+  // যদি ইউজার কোনো পেজ (HTML) লোড করতে চায়
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      // প্রথমে সরাসরি ইন্টারনেট থেকে ডাটা নেওয়ার চেষ্টা করবে (তোমার আগের কোডের মতো)
+      fetch(event.request).catch(() => {
+        // যদি ইন্টারনেট না থাকে (error খায়), তখনই শুধু ক্যাশ থেকে offline.html দেখাবে
+        return caches.open(CACHE_NAME).then((cache) => {
+          return cache.match(OFFLINE_URL);
+        });
+      })
+    );
+  } else {
+    // ছবি, CSS, JS বা API রিকোয়েস্টের ক্ষেত্রে সরাসরি ইন্টারনেট থেকেই লোড হবে, কোনো ক্যাশ করবে না
+    event.respondWith(fetch(event.request));
+  }
+  
 });
