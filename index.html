@@ -685,6 +685,24 @@ s0.parentNode.insertBefore(s1,s0);
 
     
 
+
+
+
+    <script>
+  // ব্রাউজার সার্ভিস ওয়ার্কার সাপোর্ট করে কি না তা চেক করা হচ্ছে
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then((registration) => {
+          console.log('সার্ভিস ওয়ার্কার সফলভাবে রেজিস্টার হয়েছে:', registration.scope);
+        })
+        .catch((error) => {
+          console.log('সার্ভিস ওয়ার্কার রেজিস্টার করতে সমস্যা হয়েছে:', error);
+        });
+    });
+  }
+</script>
+
     
     <script src="script.js"></script>
 </body>
