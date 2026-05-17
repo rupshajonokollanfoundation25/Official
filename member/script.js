@@ -104,8 +104,8 @@ const foundationMembers = [
         status: "active",
         image: "fahim.webp",
         desc: "none",
-        memberid: "",
-         profileUrl: "#",
+        memberid: "RJF-2026-4412",
+         profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-4412",
         facebook: "https://www.facebook.com/profile.php?id=100080505806242",
         whatsapp: "https://wa.me/"
     },
@@ -134,8 +134,8 @@ const foundationMembers = [
         status: "active",
         image: "kamrul.webp",
         desc: "none",
-        memberid: "",
-        profileUrl: "#",
+        memberid: "RJF-2026-3428",
+        profileUrl: "/verify/RJF-2026-3428",
         facebook: "https://www.facebook.com/md.kamrul.hasan.972559",
         whatsapp: "https://wa.me/"
     },
@@ -181,8 +181,8 @@ const foundationMembers = [
         status: "inactive",
         image: "https://i.ibb.co.com/x8JsW2bV/Screenshot-2026-04-17-21-44-20-022-com-microsoft-emmx-edit.jpg",
         desc: "খেলাধুলা এবং তার পাশাপাশি বিভিন্ন ধরনের ক্রিয়ায় অংশগ্রহণ করেন",
-        memberid: "",
-        profileUrl: "#",
+        memberid: "rupshajonokollanfoundation.vercel.app/verify/RJF-2026-6659",
+        profileUrl: "RJF-2026-6659",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
