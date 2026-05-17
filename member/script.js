@@ -86,7 +86,8 @@ const foundationMembers = [
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
         memberid: " member id: RJF-2026-9689 ",
         facebook: "https://facebook.com/imran.ahmedddddd",
-        whatsapp: "https://wa.me/8801957329211"
+        whatsapp: "https://wa.me/8801957329211",
+        github: ""
     },         
     
      {
@@ -627,6 +628,7 @@ function openMemberModal(id) {
         document.getElementById('modal-img').src = member.image;
         document.getElementById('modal-desc').innerText = member.desc;
         document.getElementById('modal-memberid').innerText = member.memberid;
+         document.getElementById('modal-memberlink').innerText = member.memberlink;
 
 
         // সোশ্যাল লিংক সেটআপ
@@ -636,6 +638,9 @@ function openMemberModal(id) {
         }
         if(member.whatsapp) {
             socialHTML += `<a href="${member.whatsapp}" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>`;
+        }
+        if(member.github) {
+            socialHTML += `<a href="${member.github}" target="_blank" title="github"><i class="fa-brands fa-github"></i></a>`;
         }
         document.getElementById('modal-social').innerHTML = socialHTML;
 
