@@ -38,7 +38,7 @@ const foundationMembers = [
         image: "omor.webp",
         desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
         memberid: " RJF-2026-1390",
-        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-1390",
+        profileUrl: "/verify/RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
@@ -64,7 +64,7 @@ const foundationMembers = [
         image: "naim.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
         memberid: "RJF-2026-2843",
-        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-2843",
+        profileUrl: "/verify/RJF-2026-2843",
         facebook: "https://www.facebook.com/nayeem94170",
         whatsapp: "https://wa.me/"
     },
@@ -77,7 +77,7 @@ const foundationMembers = [
         image: "kawsar.webp",
         desc: "none",
         memberid: "RJF-2026-8214",
-        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-8214",
+        profileUrl: "/verify/RJF-2026-8214",
         facebook: "https://www.facebook.com/kawsar.ahmed.481662",
         whatsapp: "https://wa.me/"
     },
@@ -90,7 +90,7 @@ const foundationMembers = [
         image: "imran_ahmed.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
         memberid: " RJF-2026-9689 ",
-        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-9689",
+        profileUrl: "/verify/RJF-2026-9689",
         facebook: "https://facebook.com/imran.ahmedddddd",
         whatsapp: "https://wa.me/8801957329211",
         github: "https://github.com/imran-ahmed-imran"
@@ -105,7 +105,7 @@ const foundationMembers = [
         image: "fahim.webp",
         desc: "none",
         memberid: "RJF-2026-4412",
-         profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-4412",
+         profileUrl: "/verify/RJF-2026-4412",
         facebook: "https://www.facebook.com/profile.php?id=100080505806242",
         whatsapp: "https://wa.me/"
     },
@@ -179,10 +179,10 @@ const foundationMembers = [
         role: "ক্রিয়া সম্পাদক",
         category: "ক্রিয়া সম্পাদক",
         status: "inactive",
-        image: "https://i.ibb.co.com/x8JsW2bV/Screenshot-2026-04-17-21-44-20-022-com-microsoft-emmx-edit.jpg",
+        image: "humayon.webp",
         desc: "খেলাধুলা এবং তার পাশাপাশি বিভিন্ন ধরনের ক্রিয়ায় অংশগ্রহণ করেন",
-        memberid: "rupshajonokollanfoundation.vercel.app/verify/RJF-2026-6659",
-        profileUrl: "RJF-2026-6659",
+        memberid: "RJF-2026-6659",
+        profileUrl: "/verify/RJF-2026-6659",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -194,7 +194,7 @@ const foundationMembers = [
         role: "দপ্তর সম্পাদক",
         category: "দপ্তর সম্পাদক",
         status: "inactive",
-        image: "https://i.ibb.co.com/3YY1z5Wy/IMG-20250607-183611.jpg",
+        image: "sumon.webp",
         desc: " ফাউন্ডেশনের কাগজ পাতি এবং সকল দাপ্তরিক বিষয়ক জিনিসপত্র ইনার কাছে গচ্ছিত থাকে",
         memberid: "",
         profileUrl: "#",
