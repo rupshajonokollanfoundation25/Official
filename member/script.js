@@ -76,8 +76,8 @@ const foundationMembers = [
         status: "active",
         image: "kawsar.webp",
         desc: "none",
-        memberid: "",
-        profileUrl: "#",
+        memberid: "RJF-2026-8214",
+        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-8214",
         facebook: "https://www.facebook.com/kawsar.ahmed.481662",
         whatsapp: "https://wa.me/"
     },
