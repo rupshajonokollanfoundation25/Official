@@ -36,7 +36,6 @@ const foundationMembers = [
         image: "omor.webp",
         desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
         memberid: "member id: RJF-2026-1390",
-        memberlink: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
@@ -628,8 +627,7 @@ function openMemberModal(id) {
         document.getElementById('modal-img').src = member.image;
         document.getElementById('modal-desc').innerText = member.desc;
         document.getElementById('modal-memberid').innerText = member.memberid;
-         document.getElementById('modal-memberlink').innerText = member.memberlink;
-
+         
 
         // সোশ্যাল লিংক সেটআপ
         let socialHTML = '';
@@ -640,7 +638,7 @@ function openMemberModal(id) {
             socialHTML += `<a href="${member.whatsapp}" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>`;
         }
         if(member.github) {
-            socialHTML += `<a href="${member.github}" target="_blank" title="github"><i class="fa-brands fa-github"></i></a>`;
+            socialHTML += `<a href="${member.github}" target="_blank" title="GitHub"><i class="fa-brands fa-github"></i></a>`;
         }
         document.getElementById('modal-social').innerHTML = socialHTML;
 
