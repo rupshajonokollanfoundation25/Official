@@ -223,7 +223,7 @@ const foundationMembers = [
         role: "সংস্কৃতি বিষয়ক সম্পাদক",
         category: "সংস্কৃতি বিষয়ক সম্পাদক",
         status: "inactive",
-        image: "https://i.ibb.co.com/gLXWCHjC/img-2-1776440001717.jpg",
+        image: "humayon1.webp",
         desc: "ইনি বিভিন্ন ধরনের সাংস্কৃতিক অনুষ্ঠানের এবং খেলাধুলাতে অবস্থান করেন",
         memberid: "",
         profileUrl: "#",
