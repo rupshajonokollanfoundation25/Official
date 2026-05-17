@@ -63,8 +63,8 @@ const foundationMembers = [
         status: "active",
         image: "naim.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
-        memberid: "",
-        profileUrl: "#",
+        memberid: "RJF-2026-2843",
+        profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-2843",
         facebook: "https://www.facebook.com/nayeem94170",
         whatsapp: "https://wa.me/"
     },
