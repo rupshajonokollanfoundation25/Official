@@ -12,6 +12,7 @@ const foundationMembers = [
         image: "rafiqul.webp",
         desc: "ফাউন্ডেশনের সামগ্রিক কার্যক্রম পরিচালনা এবং দিকনির্দেশনা প্রদান করেন।",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/engrrafiqulislam.rafiq.18",
         whatsapp: "https://wa.me/"
     },
@@ -24,6 +25,7 @@ const foundationMembers = [
         image: "harrun.webp",
         desc: "মাঠ পর্যায়ের সার্বিক ব্যবস্থাপনা এবং সদস্যদের মাঝে সমন্বয় সাধন করেন।",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/harunor.roshid.195011",
         whatsapp: "https://wa.me/" 
     },
@@ -35,7 +37,7 @@ const foundationMembers = [
         status: "active",
         image: "omor.webp",
         desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
-        memberid: "member id: RJF-2026-1390",
+        memberid: " RJF-2026-1390",
         profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
@@ -49,6 +51,7 @@ const foundationMembers = [
         image: "monir.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/md.monirulislammoon.71",
         whatsapp: "https://wa.me/"
     },
@@ -61,6 +64,7 @@ const foundationMembers = [
         image: "naim.webp",
         desc: "জরুরি সেবা এবং প্রজেক্ট বাস্তবায়নে সরাসরি ভূমিকা পালন করেন।",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/nayeem94170",
         whatsapp: "https://wa.me/"
     },
@@ -73,6 +77,7 @@ const foundationMembers = [
         image: "kawsar.webp",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/kawsar.ahmed.481662",
         whatsapp: "https://wa.me/"
     },
@@ -84,7 +89,7 @@ const foundationMembers = [
         status: "active",
         image: "imran_ahmed.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
-        memberid: " member id: RJF-2026-9689 ",
+        memberid: " RJF-2026-9689 ",
         profileUrl: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-9689",
         facebook: "https://facebook.com/imran.ahmedddddd",
         whatsapp: "https://wa.me/8801957329211",
@@ -99,7 +104,8 @@ const foundationMembers = [
         status: "active",
         image: "fahim.webp",
         desc: "none",
-         memberid: "",
+        memberid: "",
+         profileUrl: "#",
         facebook: "https://www.facebook.com/profile.php?id=100080505806242",
         whatsapp: "https://wa.me/"
     },
@@ -114,6 +120,7 @@ const foundationMembers = [
         image: "siam.webp",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/Siamphoria",
         whatsapp: "https://wa.me/"
     },
@@ -128,6 +135,7 @@ const foundationMembers = [
         image: "kamrul.webp",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://www.facebook.com/md.kamrul.hasan.972559",
         whatsapp: "https://wa.me/"
     },
@@ -143,6 +151,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -158,6 +167,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -172,6 +182,7 @@ const foundationMembers = [
         image: "https://i.ibb.co.com/x8JsW2bV/Screenshot-2026-04-17-21-44-20-022-com-microsoft-emmx-edit.jpg",
         desc: "খেলাধুলা এবং তার পাশাপাশি বিভিন্ন ধরনের ক্রিয়ায় অংশগ্রহণ করেন",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -186,6 +197,7 @@ const foundationMembers = [
         image: "https://i.ibb.co.com/3YY1z5Wy/IMG-20250607-183611.jpg",
         desc: " ফাউন্ডেশনের কাগজ পাতি এবং সকল দাপ্তরিক বিষয়ক জিনিসপত্র ইনার কাছে গচ্ছিত থাকে",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -199,6 +211,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -213,6 +226,7 @@ const foundationMembers = [
         image: "https://i.ibb.co.com/gLXWCHjC/img-2-1776440001717.jpg",
         desc: "ইনি বিভিন্ন ধরনের সাংস্কৃতিক অনুষ্ঠানের এবং খেলাধুলাতে অবস্থান করেন",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -227,6 +241,7 @@ const foundationMembers = [
         image: "https://i.ibb.co.com/ynnR8jyV/img-2-1771574187607.jpg",
         desc: "ফাউন্ডেশনের সকল হিসাব এবং ফাউন্ডেশনের টাকা উত্তোলন করে থাকেন",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -241,6 +256,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -255,6 +271,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -269,6 +286,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -283,6 +301,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -297,6 +316,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -312,6 +332,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -327,6 +348,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -342,6 +364,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -357,6 +380,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -371,6 +395,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -387,6 +412,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -402,6 +428,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -417,6 +444,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -433,6 +461,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -447,6 +476,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -461,6 +491,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -476,6 +507,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -490,6 +522,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -504,6 +537,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "none",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -518,6 +552,7 @@ const foundationMembers = [
         image: "https://via.placeholder.com/150",
         desc: "undefined",
         memberid: "",
+        profileUrl: "#",
         facebook: "https://facebook.com",
         whatsapp: "https://wa.me/1234567890"
     },
@@ -636,7 +671,7 @@ function openMemberModal(id) {
         const memberLink = document.getElementById('modal-member-link');
 
         if(member.memberid && member.memberid.trim() !== "") {
-            memberIdBtn.innerText = "মেম্বার আইডি: " + member.memberid;
+            memberIdBtn.innerText = "member id : " + member.memberid;
             memberLink.href = member.profileUrl || "#";
             memberLink.style.display = "inline-block"; // আইডি থাকলে বাটন দেখাবে
         } else {
