@@ -36,6 +36,7 @@ const foundationMembers = [
         image: "omor.webp",
         desc: "ফাউন্ডেশনের উদ্যোগ গ্রহণ ও বিভিন্ন বিষয়ে আলোচনা ও পরামর্শ করা",
         memberid: "member id: RJF-2026-1390",
+        memberlink: "Https://rupshajonokollanfoundation.vercel.app/verify/RJF-2026-1390",
         facebook: "https://www.facebook.com/fa.ruqe.75",
         whatsapp: "https://wa.me/"
     },
