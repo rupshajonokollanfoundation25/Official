@@ -291,3 +291,57 @@ window.addEventListener('scroll', () => {
   }
 });
 
+
+
+
+
+
+
+
+// ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম
+const firebaseConfig = {
+    apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
+    authDomain: "rating-revieww.firebaseapp.com",
+    databaseURL: "https://rating-revieww-default-rtdb.firebaseio.com",
+    projectId: "rating-revieww",
+    storageBucket: "rating-revieww.firebasestorage.app",
+    messagingSenderId: "936802340652",
+    appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
+
+function initOnlineTracker() {
+    const onlineRef = db.ref('online_users');
+    const userRef = onlineRef.push(); 
+
+    // ইউজার ট্যাব বন্ধ করলে ডাটা ডিলিট হবে
+    userRef.onDisconnect().remove();
+    userRef.set({ 
+        status: "online", 
+        timestamp: firebase.database.ServerValue.TIMESTAMP 
+    });
+
+    // রিয়েল-টাইম আপডেট শোনা
+    onlineRef.on('value', (snapshot) => {
+        const count = snapshot.numChildren();
+        const display = document.getElementById('user-count');
+        
+        // সংখ্যা পরিবর্তনের সময় হালকা এনিমেশন
+        if(display.innerText !== count.toString()) {
+            display.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                display.innerText = count || 1;
+                display.style.transform = "scale(1)";
+            }, 150);
+        }
+    });
+}
+
+// ট্র্যাকার শুরু করুন
+initOnlineTracker();
+
