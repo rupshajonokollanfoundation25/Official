@@ -127,192 +127,7 @@
 
 
 
-    <!-- ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম -->
-<!-- ================= লাইভ কাউন্টার উইজেট শুরু ================= -->
-
-<!-- সিএসএস (স্টাইল) অংশ -->
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Poppins:wght@400;600&display=swap');
-
-    /* উইজেটটিকে একদম মাঝখানে রাখার জন্য কন্টেইনার */
-    .live-counter-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: 20px 0;
-        font-family: 'Hind Siliguri', 'Poppins', sans-serif;
-        background: transparent; 
-    }
-
-    /* স্মার্ট উইজেট ডিজাইন */
-    .live-widget {
-        background: rgba(30, 41, 59, 0.9);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 12px 25px;
-        border-radius: 50px;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        transition: all 0.3s ease;
-        cursor: default;
-    }
-
-    .live-widget:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.2);
-        border-color: rgba(16, 185, 129, 0.4);
-    }
-
-    /* নিয়ন পালস ইফেক্ট */
-    .live-indicator {
-        position: relative;
-        width: 12px;
-        height: 12px;
-    }
-
-    .pulse {
-        display: block;
-        width: 12px;
-        height: 12px;
-        background-color: #10b981;
-        border-radius: 50%;
-        box-shadow: 0 0 10px #10b981;
-        animation: pulse-glow 1.5s infinite;
-    }
-
-    @keyframes pulse-glow {
-        0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-        70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
-        100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-
-    .live-text {
-        color: #cbd5e1;
-        font-size: 16px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin: 0;
-    }
-
-    .live-text i {
-        color: #38bdf8;
-    }
-
-    /* সংখ্যা দেখানোর বক্স */
-    .live-count-box {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-        padding: 2px 15px;
-        border-radius: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        min-width: 25px;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-        display: inline-block;
-    }
-
-    /* সংখ্যা পরিবর্তনের স্মুথ অ্যানিমেশন */
-    .pop-anim {
-        animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes pop {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.3); }
-        100% { transform: scale(1); }
-    }
-</style>
-
-<!-- এইচটিএমএল (HTML) অংশ -->
-<div class="live-counter-wrapper">
-    <div class="live-widget">
-        <div class="live-indicator">
-            <span class="pulse"></span>
-        </div>
-        <div class="live-text">
-            <!-- ফন্ট অসাম আইকনের জন্য। যদি আইকন না দেখায়, তবে আপনার ওয়েবসাইটের <head> এ ফন্ট অসামের লিংক বসাতে হবে -->
-            <i class="fas fa-eye"></i> এখন দেখছে
-        </div>
-        <div class="live-count-box">
-            <span id="active-users">0</span>
-          জন
-        </div>
-      
-    </div>
-</div>
-
-<!-- জাভাস্ক্রিপ্ট (JavaScript) অংশ -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<script>
-    // আপনার Firebase কনফিগারেশন
-    const firebaseConfig = {
-        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
-        authDomain: "rating-revieww.firebaseapp.com",
-        databaseURL: "https://rating-revieww-default-rtdb.firebaseio.com",
-        projectId: "rating-revieww",
-        storageBucket: "rating-revieww.firebasestorage.app",
-        messagingSenderId: "936802340652",
-        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
-    };
-
-    // ফায়ারবেস ইনিশিয়ালাইজ করা
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database();
-
-    function startSmartTracker() {
-        const onlineUsersRef = db.ref('live_website_visitors');
-        const counterDisplay = document.getElementById('active-users');
-        const countBox = document.querySelector('.live-count-box');
-        
-        if(!counterDisplay || !countBox) return;
-
-        let currentCount = 0;
-
-        // কানেকশন চেক করা
-        db.ref('.info/connected').on('value', (snap) => {
-            if (snap.val() === true) {
-                const myConnectionRef = onlineUsersRef.push();
-                myConnectionRef.onDisconnect().remove();
-                
-                myConnectionRef.set({
-                    device: navigator.platform,
-                    joinedAt: firebase.database.ServerValue.TIMESTAMP
-                });
-            }
-        });
-
-        // রিয়েল-টাইমে মোট ইউজারের সংখ্যা গোনা
-        onlineUsersRef.on('value', (snapshot) => {
-            const newCount = snapshot.numChildren() || 0;
-
-            if (newCount !== currentCount) {
-                counterDisplay.innerText = newCount;
-                
-                // অ্যানিমেশন রিস্টার্ট করা
-                countBox.classList.remove('pop-anim');
-                void countBox.offsetWidth; 
-                countBox.classList.add('pop-anim');
-                
-                currentCount = newCount;
-            }
-        });
-    }
-
-    // স্ক্রিপ্ট রান করানো
-    document.addEventListener('DOMContentLoaded', startSmartTracker);
-</script>
-
-<!-- ================= লাইভ কাউন্টার উইজেট শেষ ================= -->
-
+   
 
 
 
@@ -490,7 +305,8 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-
+ <a href='https://free-hit-counters.net/'>https://free-hit-counters.net/</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=a68e86b3ceda36ac864e320720d55e78e8e1d330'></script>
+<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1554657/t/10"></script>
     
 
 
@@ -713,16 +529,6 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById("mySidebar");
-        const overlay = document.getElementById("overlay");
-        
-        // টগল ক্লাস যুক্ত করা হচ্ছে
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-    }
-</script>
 
     
     
