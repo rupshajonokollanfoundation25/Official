@@ -301,7 +301,7 @@ window.addEventListener('scroll', () => {
 // ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম
 
 
-// আপনার Firebase কনফিগারেশন
+// ===== Smart Live Counter JS =====
 const firebaseConfig = {
     apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
     authDomain: "rating-revieww.firebaseapp.com",
@@ -312,51 +312,45 @@ const firebaseConfig = {
     appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
 };
 
-// Initialize Firebase
+// Initialize Firebase (আগে থেকে ইনিশিয়ালাইজ করা না থাকলে)
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.database();
 
-function initOnlineTracker() {
-    const onlineRef = db.ref('online_users');
-    const display = document.getElementById('user-count');
+function startSmartTracker() {
+    const onlineUsersRef = db.ref('live_website_visitors');
+    const counterDisplay = document.getElementById('active-users');
+    const countBox = document.querySelector('.live-count-box');
+    
+    // যদি HTML এ উইজেটটি না থাকে, তাহলে কোড এরর এড়াতে রিটার্ন করবে
+    if (!counterDisplay || !countBox) return;
+
     let currentCount = 0;
 
-    // স্মার্ট কানেকশন ট্র্যাকিং (.info/connected)
-    db.ref('.info/connected').on('value', (snapshot) => {
-        if (snapshot.val() === true) {
-            // ইউজারের জন্য ইউনিক আইডি তৈরি
-            const userRef = onlineRef.push(); 
-
-            // ট্যাব বা ব্রাউজার বন্ধ করলে ডাটা অটো রিমুভ হবে
-            userRef.onDisconnect().remove();
-            
-            // অনলাইন স্ট্যাটাস সেট
-            userRef.set({ 
-                status: "online", 
-                timestamp: firebase.database.ServerValue.TIMESTAMP 
+    db.ref('.info/connected').on('value', (snap) => {
+        if (snap.val() === true) {
+            const myConnectionRef = onlineUsersRef.push();
+            myConnectionRef.onDisconnect().remove();
+            myConnectionRef.set({
+                device: navigator.platform,
+                joinedAt: firebase.database.ServerValue.TIMESTAMP
             });
         }
     });
 
-    // রিয়েল-টাইমে ডাটাবেজ থেকে মোট সংখ্যা গোনা
-    onlineRef.on('value', (snapshot) => {
-        const count = snapshot.numChildren() || 0;
-        
-        // শুধু সংখ্যা পরিবর্তন হলেই এনিমেশন হবে
-        if (display && count !== currentCount) {
-            display.style.transform = "scale(1.2)";
-            
-            setTimeout(() => {
-                display.innerText = count;
-                display.style.transform = "scale(1)";
-            }, 150);
-            
-            currentCount = count;
+    onlineUsersRef.on('value', (snapshot) => {
+        const newCount = snapshot.numChildren() || 0;
+
+        if (newCount !== currentCount) {
+            counterDisplay.innerText = newCount;
+            countBox.classList.remove('pop-anim');
+            void countBox.offsetWidth; // Trigger reflow for animation
+            countBox.classList.add('pop-anim');
+            currentCount = newCount;
         }
     });
 }
 
-// পেজ লোড হওয়া মাত্রই ট্র্যাকার চালু হবে
-document.addEventListener('DOMContentLoaded', initOnlineTracker);
+// ওয়েবপেজ লোড হওয়ার পর ট্র্যাকার চালু হবে
+document.addEventListener('DOMContentLoaded', startSmartTracker);
