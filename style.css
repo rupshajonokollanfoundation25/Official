@@ -1003,59 +1003,86 @@ body.dark-mode .main-footer {
 
 /* ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম*/
 
-
-
-/* পুরো কাউন্টার বক্সের স্মার্ট ডিজাইন */
-.live-counter-box {
-    background: #ffffff; /* ব্যাকগ্রাউন্ড কালার */
-    border: 1px solid #e0e0e0;
-    border-radius: 12px; /* চারকোনা গোল করার জন্য */
-    padding: 15px 25px;
-    max-width: 250px; /* বক্সের সাইজ */
-    margin: 20px auto; /* মাঝখানে রাখার জন্য */
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* হালকা ছায়া বা শ্যাডো */
-    font-family: 'Arial', sans-serif;
+/* কাউন্টার বক্সের মডার্ন ডিজাইন */
+.smart-counter-box {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 15px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     transition: transform 0.3s ease;
+    margin: 20px;
 }
 
-/* মাউস নিলে হালকা ওপরে উঠবে */
-.live-counter-box:hover {
+.smart-counter-box:hover {
     transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* টাইটেল বা লেখার ডিজাইন */
-.live-counter-box h4 {
-    margin-bottom: 10px;
-    font-size: 16px;
-    color: #333;
+/* লাইভ স্ট্যাটাস (Pulse Dot + Text) */
+.status-indicator {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    background: #e8f8f5;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.status-text {
+    color: #1abc9c;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* জ্বলজ্বলে সবুজ ডট */
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #1abc9c;
+    border-radius: 50%;
+    position: relative;
+}
+
+.pulse-dot::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #1abc9c;
+    border-radius: 50%;
+    animation: pulse-animation 1.5s infinite;
+}
+
+@keyframes pulse-animation {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+/* সংখ্যার ডিজাইন */
+.counter-content {
+    display: flex;
+    align-items: baseline;
     gap: 8px;
 }
 
-/* লাইভ ট্রাফিকের জন্য একটি ব্লিংকিং বা জ্বলজ্বলে লাল ডট (Dot) */
-.live-counter-box .dot {
-    width: 8px;
-    height: 8px;
-    background-color: #2ecc71; /* সবুজ রঙ (লাইভ বোঝাতে) */
-    border-radius: 50%;
-    display: inline-block;
-    animation: blink 1.5s infinite;
+#live-count {
+    color: #2c3e50;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
 }
 
-/* ডট জ্বলজ্বল করার অ্যানিমেশন */
-@keyframes blink {
-    0% { opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { opacity: 0.3; }
-}
-
-/* থার্ড পার্টি সাইটের কুৎসিত আন্ডারলাইন বা লিঙ্ক টেক্সট লুকিয়ে ফেলার জন্য */
-.live-counter-box a {
-    text-decoration: none !important;
-    color: #555 !important;
-    font-weight: bold;
-    font-size: 18px; /* ভেতরের সংখ্যার সাইজ */
+.counter-label {
+    color: #7f8c8d;
+    font-size: 14px;
+    font-weight: 500;
 }
