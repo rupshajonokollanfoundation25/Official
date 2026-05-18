@@ -299,6 +299,9 @@ window.addEventListener('scroll', () => {
 
 
 // ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম
+
+
+// আপনার Firebase কনফিগারেশন
 const firebaseConfig = {
     apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
     authDomain: "rating-revieww.firebaseapp.com",
@@ -317,31 +320,43 @@ const db = firebase.database();
 
 function initOnlineTracker() {
     const onlineRef = db.ref('online_users');
-    const userRef = onlineRef.push(); 
+    const display = document.getElementById('user-count');
+    let currentCount = 0;
 
-    // ইউজার ট্যাব বন্ধ করলে ডাটা ডিলিট হবে
-    userRef.onDisconnect().remove();
-    userRef.set({ 
-        status: "online", 
-        timestamp: firebase.database.ServerValue.TIMESTAMP 
+    // স্মার্ট কানেকশন ট্র্যাকিং (.info/connected)
+    db.ref('.info/connected').on('value', (snapshot) => {
+        if (snapshot.val() === true) {
+            // ইউজারের জন্য ইউনিক আইডি তৈরি
+            const userRef = onlineRef.push(); 
+
+            // ট্যাব বা ব্রাউজার বন্ধ করলে ডাটা অটো রিমুভ হবে
+            userRef.onDisconnect().remove();
+            
+            // অনলাইন স্ট্যাটাস সেট
+            userRef.set({ 
+                status: "online", 
+                timestamp: firebase.database.ServerValue.TIMESTAMP 
+            });
+        }
     });
 
-    // রিয়েল-টাইম আপডেট শোনা
+    // রিয়েল-টাইমে ডাটাবেজ থেকে মোট সংখ্যা গোনা
     onlineRef.on('value', (snapshot) => {
-        const count = snapshot.numChildren();
-        const display = document.getElementById('user-count');
+        const count = snapshot.numChildren() || 0;
         
-        // সংখ্যা পরিবর্তনের সময় হালকা এনিমেশন
-        if(display.innerText !== count.toString()) {
+        // শুধু সংখ্যা পরিবর্তন হলেই এনিমেশন হবে
+        if (display && count !== currentCount) {
             display.style.transform = "scale(1.2)";
+            
             setTimeout(() => {
-                display.innerText = count || 1;
+                display.innerText = count;
                 display.style.transform = "scale(1)";
             }, 150);
+            
+            currentCount = count;
         }
     });
 }
 
-// ট্র্যাকার শুরু করুন
-initOnlineTracker();
-
+// পেজ লোড হওয়া মাত্রই ট্র্যাকার চালু হবে
+document.addEventListener('DOMContentLoaded', initOnlineTracker);
