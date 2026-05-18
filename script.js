@@ -300,57 +300,49 @@ window.addEventListener('scroll', () => {
 
 // ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম
 
+// Firebase SDK ইমপোর্ট করা হচ্ছে
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getDatabase, ref, onValue, onDisconnect, set, push } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
 
-// ===== Smart Live Counter JS =====
+// তোর দেওয়া Firebase Configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
-    authDomain: "rating-revieww.firebaseapp.com",
-    databaseURL: "https://rating-revieww-default-rtdb.firebaseio.com",
-    projectId: "rating-revieww",
-    storageBucket: "rating-revieww.firebasestorage.app",
-    messagingSenderId: "936802340652",
-    appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
+  apiKey: "AIzaSyDFmc_fjGRw_0bqj2ZLjUom-6VQvZtAwSQ",
+  authDomain: "muslim-pro-eb32d.firebaseapp.com",
+  databaseURL: "https://muslim-pro-eb32d-default-rtdb.firebaseio.com",
+  projectId: "muslim-pro-eb32d",
+  storageBucket: "muslim-pro-eb32d.firebasestorage.app",
+  messagingSenderId: "701400663540",
+  appId: "1:701400663540:web:ce595923530df62bde65a1",
+  measurementId: "G-RFXK2XH0GQ"
 };
 
-// Initialize Firebase (আগে থেকে ইনিশিয়ালাইজ করা না থাকলে)
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
+// ফায়ারবেস ইনিশিয়ালাইজ করা
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-function startSmartTracker() {
-    const onlineUsersRef = db.ref('live_website_visitors');
-    const counterDisplay = document.getElementById('active-users');
-    const countBox = document.querySelector('.live-count-box');
+// ডাটাবেস রেফারেন্স সেটআপ
+const connectionsRef = ref(db, 'active_visitors');
+const connectedRef = ref(db, '.info/connected');
+
+// যখন কোনো ভিজিটর ওয়েবসাইটের সাথে কানেক্ট হবে
+onValue(connectedRef, (snap) => {
+    if (snap.val() === true) {
+        // ভিজিটরের জন্য একটি নতুন চাইল্ড তৈরি করা
+        const con = push(connectionsRef);
+        
+        // ভিজিটর বের হয়ে গেলে বা কানেকশন লস্ট হলে ডাটা রিমুভ হয়ে যাবে
+        onDisconnect(con).remove();
+        
+        // ভিজিটরকে ডাটাবেসে 'true' হিসেবে সেট করা
+        set(con, true);
+    }
+});
+
+// মোট ভিজিটরের সংখ্যা গণনা করে HTML এ দেখানো
+onValue(connectionsRef, (snap) => {
+    // ডাটাবেসে থাকা মোট কানেকশন (ভিজিটর) সংখ্যা গোনা হচ্ছে
+    const activeCount = snap.numChildren();
     
-    // যদি HTML এ উইজেটটি না থাকে, তাহলে কোড এরর এড়াতে রিটার্ন করবে
-    if (!counterDisplay || !countBox) return;
-
-    let currentCount = 0;
-
-    db.ref('.info/connected').on('value', (snap) => {
-        if (snap.val() === true) {
-            const myConnectionRef = onlineUsersRef.push();
-            myConnectionRef.onDisconnect().remove();
-            myConnectionRef.set({
-                device: navigator.platform,
-                joinedAt: firebase.database.ServerValue.TIMESTAMP
-            });
-        }
-    });
-
-    onlineUsersRef.on('value', (snapshot) => {
-        const newCount = snapshot.numChildren() || 0;
-
-        if (newCount !== currentCount) {
-            counterDisplay.innerText = newCount;
-            countBox.classList.remove('pop-anim');
-            void countBox.offsetWidth; // Trigger reflow for animation
-            countBox.classList.add('pop-anim');
-            currentCount = newCount;
-        }
-    });
-}
-
-// ওয়েবপেজ লোড হওয়ার পর ট্র্যাকার চালু হবে
-document.addEventListener('DOMContentLoaded', startSmartTracker);
+    // HTML ফাইলে সংখ্যা আপডেট করে দেওয়া হচ্ছে
+    document.getElementById('live-count').innerText = activeCount;
+});
