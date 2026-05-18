@@ -371,7 +371,47 @@
     <h2 class="header-title">মতামত ও রিভিউ</h2>
     <p class="header-subtitle">আপনার মূল্যবান মতামত আমাদের সেবার মান উন্নত করতে সাহায্য করে</p>
     
-    
+
+
+
+
+<!-- এই লিঙ্কটি আপনার ওয়েবসাইটের <head> ... </head> ট্যাগের ভেতরে রাখবেন -->
+<link rel="stylesheet" href="style.css">
+<!-- ফন্ট অসাম আইকনের জন্য (যদি আপনার সাইটে আগে থেকে না থাকে) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+<!-- ================= লাইভ কাউন্টার উইজেট শুরু ================= -->
+<!-- এই অংশটি আপনার ওয়েবসাইটের <body> এর ভেতরে যেখানে কাউন্টার দেখাতে চান সেখানে বসাবেন -->
+<div class="live-counter-wrapper">
+    <div class="live-widget">
+        <div class="live-indicator">
+            <span class="pulse"></span>
+        </div>
+        <div class="live-text">
+            <!-- ফন্ট অসাম আইকনের জন্য। যদি আইকন না দেখায়, তবে আপনার ওয়েবসাইটের <head> এ ফন্ট অসামের লিংক বসাতে হবে -->
+            <i class="fas fa-eye"></i> লাইভ ভিউয়ার্স:
+        </div>
+        <div class="live-count-box">
+            <span id="active-users">0</span>
+        </div>
+    </div>
+</div>
+<!-- ================= লাইভ কাউন্টার উইজেট শেষ ================= -->
+
+
+<!-- এই স্ক্রিপ্টগুলো আপনার ওয়েবসাইটের </body> ট্যাগ শেষ হওয়ার ঠিক আগে রাখবেন -->
+<!-- ফায়ারবেস স্ক্রিপ্ট আগে থাকতে হবে -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<!-- সবার শেষে আপনার কাস্টম JS ফাইল লিঙ্ক করবেন -->
+<script src="script.js"></script>
+
+
+
+  
+
+  
     
        <!-- Average Rating Summary Section -->
     <div id="averageRatingSection" class="hidden">
