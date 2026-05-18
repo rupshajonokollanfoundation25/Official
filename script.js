@@ -177,9 +177,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Premium Dynamic Tab Title ইউজার ট্যাপ ম্যাসেজ
+(() => {
+    try {
+        // আপনার সাইটের অরিজিনাল টাইটেলটি সেভ করে রাখা হচ্ছে
+        const originalTitle = document.title;
+        
+        // ইউজার অন্য ট্যাবে গেলে যে প্রিমিয়াম মেসেজটি দেখাবে
+        const awayMessage = "🙂 ফিরে আসুন আমাদের এখানে | রূপসা জনকল্যাণ ফাউন্ডেশন"; 
+
+        // মডার্ন Page Visibility API ব্যবহার
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+                // ইউজার সাইট ছেড়ে অন্য ট্যাবে গেলে
+                document.title = awayMessage;
+            } else {
+                // ইউজার সাইটে ফিরে এলে সাথে সাথে অরিজিনাল টাইটেল
+                document.title = originalTitle;
+            }
+        });
+    } catch (error) {
+        // কোনো কারণে সমস্যা হলে সাইটের অন্য কোড যেন ব্রেক না করে
+        console.warn("Tab title feature skipped.");
+    }
+})();
 
 
 
+
+
+
+
+
+
+//মেম্বার বাটন
 const premiumBtn = document.querySelector('.premium-btn');
 
 if (premiumBtn) {
@@ -197,7 +228,7 @@ if (premiumBtn) {
 
 
 
-
+//সাবস্ক্রাইব বাটন
 const btn = document.querySelector('.smart-sub-btn');
 
 btn.addEventListener('mouseenter', () => {
