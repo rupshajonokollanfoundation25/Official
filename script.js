@@ -209,6 +209,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Premium Smart Copy Attribution কপি সিকিওরিটি
+(() => {
+    'use strict'; // কোডকে আরও ফাস্ট এবং সিকিউর রাখার জন্য ওয়ান-টাইম স্ট্রিক্ট মোড
+    try {
+        document.addEventListener('copy', (e) => {
+            // ওল্ড এবং মডার্ন সব ব্রাউজার সাপোর্টের জন্য সিকিউর ক্লিপবোর্ড চেক
+            const clipboard = e.clipboardData || window.clipboardData;
+            if (!clipboard) return;
+
+            const selection = window.getSelection();
+            if (!selection) return;
+
+            const selectedText = selection.toString();
+            
+            // .trim() ব্যবহারের ফলে কেউ শুধু ফাঁকা স্পেস কপি করলে কোডটি ফালতু ট্রিগার হবে en
+            if (selectedText.trim().length > 30) {
+                
+                // 🚀 স্মার্ট ট্রিক: লিংক শেয়ারিংয়ের ট্র্যাকিং আইডি (?fbclid= বা #আলাদা_ট্যাগ) 
+                // স্বয়ংক্রিয়ভাবে রিমুভ করে একদম ফ্রেশ এবং ক্লিন মেইন ইউআরএল (URL) তৈরি করবে।
+                const cleanUrl = window.location.origin + window.location.pathname;
+                
+                // 💎 প্রিমিয়াম ও অত্যন্ত প্রফেশনাল ক্রেডিট ফরম্যাট
+                const attribution = `\n\n----------------------------------------\n© রূপসা জনকল্যাণ ফাউন্ডেশন | সর্বস্বত্ব সংরক্ষিত\nউৎস: ${cleanUrl}\n----------------------------------------`;
+                
+                // ক্লিপবোর্ডে ডেটা পুশ এবং ডিফল্ট কপি সিস্টেম বাইপাস
+                clipboard.setData('text/plain', selectedText + attribution);
+                e.preventDefault(); 
+            }
+        });
+    } catch (failSafe) {
+        // কোনো ব্যাকগ্রাউন্ড ইরর হলেও মূল ওয়েবসাইটের অন্য কোনো ফাংশন বা লজিক ব্রেক করবে না
+        console.warn("Secure Copy System: Protected.");
+    }
+})();
+
+
+
+
+
+
+
+
 
 //মেম্বার বাটন
 const premiumBtn = document.querySelector('.premium-btn');
