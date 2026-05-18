@@ -1002,6 +1002,9 @@ body.dark-mode .main-footer {
 
 
 /* ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম*/
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap');
 
 .counter-container {
@@ -1039,6 +1042,8 @@ body.dark-mode .main-footer {
     padding: 2px 10px;
     border-radius: 8px;
     margin: 0 5px;
+    display: inline-block;
+    transition: transform 0.15s ease;
 }
 
 /* পলিং এনিমেশন */
@@ -1056,4 +1061,3 @@ body.dark-mode .main-footer {
     70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
 }
-
