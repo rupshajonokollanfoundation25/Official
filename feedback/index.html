@@ -336,6 +336,49 @@
 .smart-sub-btn:hover::after {
   width: 80%;
 }
+
+/* 🟢 New: Live View Counter Styling (Glassmorphism & Premium) */
+.live-counter-badge {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 10px 22px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #0f172a;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.live-counter-badge:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    animation: pulse-red 1.5s infinite;
+}
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+@media (max-width: 600px) {
+    .live-counter-badge { left: 20px; bottom: 20px; font-size: 14px; padding: 8px 18px; }
+}
     </style>
 </head>
 <body>
@@ -458,6 +501,12 @@
 </div>
 
 <button id="scrollTopBtn" onclick="scrollToTop()" title="Go to top"><i class="fas fa-chevron-up"></i></button>
+
+<!-- 🟢 New: Live Counter Floating Badge -->
+<div id="liveCounterBadge" class="live-counter-badge hidden">
+    <div class="live-dot"></div>
+    <span id="liveCountText">1 জন লাইভ আছেন</span>
+</div>
 
 <script>
     // --- Firebase Configurations ---
@@ -899,13 +948,6 @@
     };
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-
-
-
-
-
-
-
   const btn = document.querySelector('.smart-sub-btn');
 
 btn.addEventListener('mouseenter', () => {
@@ -925,6 +967,49 @@ window.addEventListener('scroll', () => {
     btn.style.opacity = '1';
   }
 });
+
+
+    // 🟢 New: Live Active Users Counter Logic (Firestore Base)
+    const myLiveSessionId = 'live_' + Math.random().toString(36).substr(2, 9) + Date.now();
+    const liveVisitorsRef = db.collection('live_visitors').doc(myLiveSessionId);
+    
+    // Add current user to live count database
+    liveVisitorsRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(e => console.log(e));
+
+    // Keep session alive while they are on the page (update every 1 minute)
+    setInterval(() => {
+        liveVisitorsRef.set({ timestamp: firebase.firestore.FieldValue.serverTimestamp() }).catch(e => console.log(e));
+    }, 60000);
+
+    // Remove user from live count when they close/leave the page
+    window.addEventListener('beforeunload', () => {
+        liveVisitorsRef.delete();
+    });
+
+    // Real-time listener for all active users
+    db.collection('live_visitors').onSnapshot(snapshot => {
+        const activeCount = snapshot.docs.length;
+        const liveBadge = document.getElementById('liveCounterBadge');
+        const liveText = document.getElementById('liveCountText');
+        
+        if(liveBadge) {
+            liveBadge.classList.remove('hidden');
+            liveText.innerText = activeCount + ' জন লাইভ আছেন';
+        }
+        
+        // Smart Cleanup: Delete stale sessions (older than 2 minutes) left by crashed browsers
+        const nowTime = Date.now();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if(data.timestamp) {
+                const docTime = data.timestamp.toDate().getTime();
+                if(nowTime - docTime > 120000) { 
+                     db.collection('live_visitors').doc(doc.id).delete();
+                }
+            }
+        });
+    });
+
 </script>
 
 </body>
