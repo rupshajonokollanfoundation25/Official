@@ -120,6 +120,23 @@
 
 
 
+    <!-- ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="counter-container">
+    <div class="online-status-btn">
+        <div class="pulse-icon"></div>
+        <i class="fas fa-users"></i>
+        <span>এখন আমাদের ওয়েবসাইটে <strong id="user-count">0</strong> জন রয়েছে</span>
+    </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+
+
 
 
     
@@ -300,213 +317,6 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;900&display=swap');
-
-    .visitor-card-premium {
-        background: rgba(0, 230, 118, 0.3);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 25px;
-        padding: 10px;
-        text-align: center;
-        max-width: 400px;
-        margin: 40px auto;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        color: #00e676;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .stat-label {
-        font-size: 14px;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #00e676;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    /* কাউন্টার বক্সের ডিজাইন */
-    .counter-wrapper {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin: 6px 0;
-        flex-wrap: wrap;
-    }
-
-    .digit-box {
-        background: linear-gradient(145deg, black, black);
-        border: 1px solid rgba(0, 230, 118, 0.3);
-        border-radius: 10px;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        font-weight: 900;
-        color: #00e676;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        overflow: hidden; /* স্লাইডিং ইফেক্টের জন্য জরুরি */
-        position: relative;
-    }
-
-    /* স্লাইডিং অ্যানিমেশন */
-    .digit-anim {
-        display: inline-block;
-        animation: slideUpDigit 4s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    @keyframes slideUpDigit {
-        0% { transform: translateY(100%); opacity: 0; }
-        100% { transform: translateY(0); opacity: 1; }
-    }
-
-    .country-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-        margin-top: 10px;
-        max-height: 100px;
-        overflow-y: auto;
-        padding: 10px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .country-chip {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 6px 15px;
-        border-radius: 50px;
-        font-size: 11px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: 0.3s;
-        color: #eee;
-    }
-
-    .country-chip:hover {
-        background: rgba(0, 230, 118, 0.2);
-        border-color: #00e676;
-    }
-</style>
-
-<div class="visitor-card-premium">
-    <strong>আমাদের ওয়েবসাইটে ভিজিটর</strong>
-    <div id="counter-display" class="counter-wrapper">
-        <div class="digit-box">0</div>
-    </div>
-
-    <div class="country-container" id="display-countries">
-        <span style="opacity: 0.5; font-size: 12px;">এনালাইজিং ডাটা...</span>
-    </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-<script>
-    const newProjectConfig = {
-        apiKey: "AIzaSyDC0H-DW3avFnMRmipaI3qSyYLnb2B3CEU",
-        authDomain: "rating-revieww.firebaseapp.com",
-        databaseURL: "https://rating-revieww-default-rtdb.firebaseio.com",
-        projectId: "rating-revieww",
-        storageBucket: "rating-revieww.firebasestorage.app",
-        messagingSenderId: "936802340652",
-        appId: "1:936802340652:web:9283ff8a9ffcbee6686689"
-    };
-
-    var analyticsApp;
-    try {
-        analyticsApp = firebase.initializeApp(newProjectConfig, "analyticsApp");
-    } catch (e) {
-        analyticsApp = firebase.app("analyticsApp");
-    }
-    const analyticsDb = analyticsApp.database();
-
-    let lastCount = -1;
-
-    // সংখ্যাকে আলাদা আলাদা বক্সে দেখানোর এবং এনিমেট করার ফাংশন
-    function updateCounter(number) {
-        if (number === lastCount) return;
-        
-        const display = document.getElementById('counter-display');
-        const digits = number.toString().split('');
-        const prevDigits = lastCount.toString().split('');
-        
-        display.innerHTML = '';
-        
-        digits.forEach((digit, i) => {
-            const box = document.createElement('div');
-            box.className = 'digit-box';
-            
-            const span = document.createElement('span');
-            span.innerText = digit;
-            
-            // যদি নতুন ভিজিটর হয় বা প্রথমবার লোড হয়, তবে অ্যানিমেশন ক্লাস যোগ হবে
-            if (lastCount === -1 || digit !== prevDigits[i]) {
-                span.className = 'digit-anim';
-            }
-            
-            box.appendChild(span);
-            display.appendChild(box);
-        });
-        
-        lastCount = number;
-    }
-
-    async function runAnalytics() {
-        const statsRef = analyticsDb.ref('web_stats');
-        
-        if (!sessionStorage.getItem('rjf_viewed')) {
-            statsRef.child('total_views').transaction(n => (n || 0) + 1);
-            sessionStorage.setItem('rjf_viewed', 'true');
-        }
-
-        try {
-            const res = await fetch('https://ipapi.co/json/');
-            const geo = await res.json();
-            const country = geo.country_name || "Unknown";
-            statsRef.child('locations/' + country.replace(/\./g, '_')).transaction(n => (n || 0) + 1);
-        } catch(e) { console.log("Location fetch failed."); }
-
-        statsRef.on('value', (snap) => {
-            const data = snap.val();
-            if(data) {
-                const total = data.total_views || 0;
-                
-                // প্রথম লোডের সময় ১ থেকে শুরু হয়ে বর্তমান সংখ্যা পর্যন্ত একটা ইফেক্ট দেওয়ার জন্য
-                if(lastCount === -1) {
-                    let start = 0;
-                    let step = Math.ceil(total / 20); // দ্রুত কাউন্ট হওয়ার জন্য
-                    let timer = setInterval(() => {
-                        start += step;
-                        if(start >= total) {
-                            clearInterval(timer);
-                            updateCounter(total);
-                        } else {
-                            updateCounter(start);
-                        }
-                    }, 50);
-                } else {
-                    updateCounter(total);
-                }
-
-                let html = "";
-                for(let loc in data.locations) {
-                    html += `<div class="country-chip">🌍 ${loc}: ${data.locations[loc]}</div>`;
-                }
-                document.getElementById('display-countries').innerHTML = html;
-            }
-        });
-    }
-
-    runAnalytics();
-</script>
 
 
     
