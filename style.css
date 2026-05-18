@@ -1005,3 +1005,57 @@ body.dark-mode .main-footer {
 
 
 
+/* পুরো কাউন্টার বক্সের স্মার্ট ডিজাইন */
+.live-counter-box {
+    background: #ffffff; /* ব্যাকগ্রাউন্ড কালার */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px; /* চারকোনা গোল করার জন্য */
+    padding: 15px 25px;
+    max-width: 250px; /* বক্সের সাইজ */
+    margin: 20px auto; /* মাঝখানে রাখার জন্য */
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* হালকা ছায়া বা শ্যাডো */
+    font-family: 'Arial', sans-serif;
+    transition: transform 0.3s ease;
+}
+
+/* মাউস নিলে হালকা ওপরে উঠবে */
+.live-counter-box:hover {
+    transform: translateY(-5px);
+}
+
+/* টাইটেল বা লেখার ডিজাইন */
+.live-counter-box h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* লাইভ ট্রাফিকের জন্য একটি ব্লিংকিং বা জ্বলজ্বলে লাল ডট (Dot) */
+.live-counter-box .dot {
+    width: 8px;
+    height: 8px;
+    background-color: #2ecc71; /* সবুজ রঙ (লাইভ বোঝাতে) */
+    border-radius: 50%;
+    display: inline-block;
+    animation: blink 1.5s infinite;
+}
+
+/* ডট জ্বলজ্বল করার অ্যানিমেশন */
+@keyframes blink {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* থার্ড পার্টি সাইটের কুৎসিত আন্ডারলাইন বা লিঙ্ক টেক্সট লুকিয়ে ফেলার জন্য */
+.live-counter-box a {
+    text-decoration: none !important;
+    color: #555 !important;
+    font-weight: bold;
+    font-size: 18px; /* ভেতরের সংখ্যার সাইজ */
+}
