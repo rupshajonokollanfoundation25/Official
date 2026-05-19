@@ -13,10 +13,9 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/png" href="favicon.png">
-
 
   <meta property="og:type" content="website">
     <meta property="og:url" content="https://rupshajonokollanfoundation.vercel.app/from">
@@ -29,18 +28,19 @@
     <meta name="twitter:description" content="অসহায় ও দরিদ্র মানুষের পাশে দাঁড়িয়ে একটি সুন্দর ও মানবিক সমাজ গড়ে তোলাই আমাদের লক্ষ্য।">
     <meta name="twitter:image" content="meta-banner.png">
 
-  
   <style>
-    * { font-family: 'Hind Siliguri', sans-serif; }
+    * { font-family: 'Hind Siliguri', sans-serif; scroll-behavior: smooth; }
     .form-input:focus { box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
     .gradient-bg { background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%); }
-    .card-shadow { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    .card-shadow { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
     .input-label { position: relative; }
-    .input-label::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #10b981; transition: width 0.3s ease; }
-    .input-label:focus-within::after { width: 100%; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
-    .section-card { animation-delay: calc(var(--delay) * 0.1s); }
+    
+    /* Animations */
+    @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    .slide-in-right { animation: slideInRight 0.4s ease-out forwards; }
+    .slide-in-left { animation: slideInLeft 0.4s ease-out forwards; }
+    
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 4px; }
@@ -48,87 +48,41 @@
 
     /* --- Side Navigation Menu Styles --- */
     .menu-toggle-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-      background: #10b981;
-      color: white;
-      border: none;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; top: 20px; left: 20px; z-index: 1001;
+      background: #10b981; color: white; border: none; width: 50px; height: 50px;
+      border-radius: 50%; font-size: 24px; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center;
       transition: all 0.3s ease;
     }
-    .menu-toggle-btn:hover {
-      transform: scale(1.1);
-      background: #059669;
-    }
+    .menu-toggle-btn:hover { transform: scale(1.1); background: #059669; }
     .menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1002;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s ease-in-out;
-      backdrop-filter: blur(4px);
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 1002;
+      opacity: 0; visibility: hidden; transition: all 0.3s ease-in-out; backdrop-filter: blur(4px);
     }
-    .menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
+    .menu-overlay.active { opacity: 1; visibility: visible; }
     .side-menu {
-      position: fixed;
-      top: 0;
-      left: -320px;
-      width: 300px;
-      height: 100vh;
+      position: fixed; top: 0; left: -320px; width: 300px; height: 100vh;
       background: linear-gradient(180deg, #064e3b 0%, #065f46 100%);
-      color: white;
-      z-index: 1003;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 5px 0 25px rgba(0,0,0,0.5);
-      overflow-y: auto;
+      color: white; z-index: 1003; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 5px 0 25px rgba(0,0,0,0.5); overflow-y: auto;
     }
-    .side-menu.active {
-      left: 0;
-    }
+    .side-menu.active { left: 0; }
     .side-menu a {
-      display: flex;
-      align-items: center;
-      padding: 16px 28px;
-      color: #e2e8f0;
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: 500;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      transition: all 0.3s ease;
+      display: flex; align-items: center; padding: 16px 28px; color: #e2e8f0;
+      text-decoration: none; font-size: 1.1rem; font-weight: 500;
+      border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease;
     }
-    .side-menu a i {
-      width: 35px;
-      font-size: 1.2rem;
-      color: #34d399;
-      transition: all 0.3s ease;
-    }
-    .side-menu a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      padding-left: 35px;
-    }
-    .side-menu a:hover i {
-      color: white;
-      transform: scale(1.1);
-    }
+    .side-menu a i { width: 35px; font-size: 1.2rem; color: #34d399; transition: all 0.3s ease; }
+    .side-menu a:hover { background: rgba(255, 255, 255, 0.1); color: white; padding-left: 35px; }
+    .side-menu a:hover i { color: white; transform: scale(1.1); }
+
+    /* Stepper Styles */
+    .step-item.active .step-circle { background: #10b981; border-color: #10b981; color: white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2); }
+    .step-item.completed .step-circle { background: #059669; border-color: #059669; color: white; }
+    .step-line { transition: all 0.4s ease; }
   </style>
  </head>
- <body class="h-full bg-slate-100 overflow-auto">
+ <body class="h-full bg-slate-50 overflow-auto">
 
   <button class="menu-toggle-btn" onclick="toggleSideMenu()">
     <i class="fas fa-bars"></i>
@@ -153,151 +107,283 @@
         <p>RJ Foundation</p>
       </div>
   </nav>
+
   <div id="app-container" class="min-h-full w-full">
-   <header class="gradient-bg text-white py-8 px-4">
-    <div class="max-w-4xl mx-auto text-center">
+   <header class="gradient-bg text-white py-8 px-4 relative overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-10 w-32 h-32 bg-white rounded-full blur-2xl"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10">
      <div class="flex justify-center mb-4">
-      <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
-       <svg class="w-16 h-16 text-emerald-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-       </svg>
+      <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl transform hover:scale-105 transition-transform duration-300">
+       <svg class="w-14 h-14 text-emerald-600" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" /></svg>
       </div>
      </div>
      
-     <h1 id="org-name" class="text-3xl md:text-4xl font-bold mb-2">রূপসা জনকল্যাণ ফাউন্ডেশন সদস্য নির্বাচনী ফরম</h1>
-     <p class="text-emerald-100 text-lg">সেবা হোক প্রত্যয়,জনকল্যাণ হোক জয়</p>
-     <div class="mt-4 inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full"><span class="w-2 h-2 bg-emerald-300 rounded-full animate-pulse"></span> <span id="form-title" class="text-sm">live selection</span>
+     <h1 id="org-name" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight">রূপসা জনকল্যাণ ফাউন্ডেশন</h1>
+     <h2 class="text-xl md:text-2xl font-semibold mb-2 text-emerald-50">সদস্য নির্বাচনী ফরম</h2>
+     <p class="text-emerald-100 text-md md:text-lg italic font-light">"সেবা হোক প্রত্যয়, জনকল্যাণ হোক জয়"</p>
+     <div class="mt-4 inline-flex items-center gap-2 bg-white/20 px-5 py-2 rounded-full shadow-inner border border-white/10">
+         <span class="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span> 
+         <span id="form-title" class="text-sm font-medium tracking-wider uppercase">Live Selection</span>
      </div>
     </div>
    </header>
 
-   <main class="max-w-4xl mx-auto px-4 py-8 -mt-4">
-    <div class="flex justify-center mb-6 gap-2">
-        <button id="form-view-btn" onclick="showFormView()" class="px-6 py-2 rounded-full font-medium transition-all bg-emerald-600 text-white"> 📝 member selection from</button> 
+   <main class="max-w-4xl mx-auto px-4 py-8 -mt-6 relative z-20">
+    <div class="flex justify-center mb-8 gap-2">
+        <button id="form-view-btn" onclick="showFormView()" class="px-8 py-2.5 rounded-full font-semibold transition-all bg-emerald-600 text-white shadow-lg hover:bg-emerald-700 hover:shadow-xl border-2 border-white"> 📝 আবেদন ফরম</button> 
     </div>
 
-    <div id="form-view">
-     <form id="member-form" class="space-y-6">
+    <div id="form-view" class="bg-white rounded-3xl card-shadow p-6 md:p-10">
+     
+     <!-- Smart Stepper UI -->
+     <div class="mb-10" id="stepper-container">
+        <!-- Desktop Stepper -->
+        <div class="hidden md:flex justify-between items-center w-full relative">
+            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full -z-10"></div>
+            <div id="progress-line" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-emerald-500 rounded-full step-line -z-10" style="width: 0%;"></div>
+            
+            <!-- Step Items (Generated dynamically or static. Kept static for precise control) -->
+            <div class="step-item active flex flex-col items-center gap-2 w-16" data-step="0">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">১</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">ব্যক্তিগত</span>
+            </div>
+            <div class="step-item flex flex-col items-center gap-2 w-16" data-step="1">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">২</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">যোগাযোগ</span>
+            </div>
+            <div class="step-item flex flex-col items-center gap-2 w-16" data-step="2">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">৩</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">ঠিকানা</span>
+            </div>
+            <div class="step-item flex flex-col items-center gap-2 w-16" data-step="3">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">৪</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">শিক্ষা</span>
+            </div>
+            <div class="step-item flex flex-col items-center gap-2 w-16" data-step="4">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">৫</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">সদস্যপদ</span>
+            </div>
+            <div class="step-item flex flex-col items-center gap-2 w-16" data-step="5">
+                <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">৬</div>
+                <span class="text-xs font-semibold text-center text-gray-500 step-text">নিশ্চিতকরণ</span>
+            </div>
+        </div>
+
+        <!-- Mobile Progress Bar -->
+        <div class="md:hidden">
+            <div class="flex justify-between items-end mb-2">
+                <div>
+                    <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Step <span id="mob-step-num">1</span> of 6</p>
+                    <h3 id="mob-step-title" class="text-base font-bold text-emerald-700">ব্যক্তিগত তথ্য</h3>
+                </div>
+                <span id="mob-step-percent" class="text-sm font-bold text-emerald-600">16%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+                <div id="mob-progress-bar" class="bg-emerald-500 h-2 rounded-full transition-all duration-500 ease-out" style="width: 16.66%"></div>
+            </div>
+        </div>
+     </div>
+
+     <form id="member-form" class="space-y-2 relative overflow-hidden min-h-[400px]">
        <input type="hidden" name="member_id" id="member_id_input">
        
-      <div class="bg-white rounded-2xl card-shadow p-6 animate-fade-in section-card" style="--delay: 1">
-       <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-        <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
-         <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+      <!-- Step 1: Personal Info -->
+      <div class="section-card w-full" data-title="ব্যক্তিগত তথ্য">
+       <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-emerald-50">
+        <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center shadow-sm">
+         <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
         </div>
-        <h2 class="text-xl font-bold text-slate-800">ব্যক্তিগত তথ্য</h2>
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">ব্যক্তিগত তথ্য</h2>
+            <p class="text-sm text-slate-500 font-medium">আপনার সঠিক তথ্য প্রদান করুন</p>
+        </div>
        </div>
-       <div class="grid md:grid-cols-2 gap-5">
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পুরো নাম <span class="text-red-500">*</span></label> <input type="text" name="full_name" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="আপনার পুরো নাম"></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পিতার নাম <span class="text-red-500">*</span></label> <input type="text" name="father_name" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="পিতার নাম"></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">মাতার নাম <span class="text-red-500">*</span></label> <input type="text" name="mother_name" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="মাতার নাম"></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">জন্ম তারিখ <span class="text-red-500">*</span></label> <input type="date" name="date_of_birth" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all"></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">লিঙ্গ <span class="text-red-500">*</span></label> <select name="gender" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-white"> <option value="">নির্বাচন করুন</option> <option value="পুরুষ">পুরুষ</option> <option value="মহিলা">মহিলা</option> <option value="অন্যান্য">অন্যান্য</option> </select></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">রক্তের গ্রুপ</label> <select name="blood_group" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-white"> <option value="">নির্বাচন করুন</option> <option value="A+">A+</option> <option value="A-">A-</option> <option value="B+">B+</option> <option value="B-">B-</option> <option value="AB+">AB+</option> <option value="AB-">AB-</option> <option value="O+">O+</option> <option value="O-">O-</option> </select></div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পুরো নাম <span class="text-red-500">*</span></label> <input type="text" name="full_name" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="আপনার পুরো নাম"></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পিতার নাম <span class="text-red-500">*</span></label> <input type="text" name="father_name" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="পিতার নাম"></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">মাতার নাম <span class="text-red-500">*</span></label> <input type="text" name="mother_name" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="মাতার নাম"></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">জন্ম তারিখ <span class="text-red-500">*</span></label> <input type="date" name="date_of_birth" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white text-slate-700"></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">লিঙ্গ <span class="text-red-500">*</span></label> <select name="gender" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white text-slate-700"> <option value="">নির্বাচন করুন</option> <option value="পুরুষ">পুরুষ</option> <option value="মহিলা">মহিলা</option> <option value="অন্যান্য">অন্যান্য</option> </select></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">রক্তের গ্রুপ</label> <select name="blood_group" class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white text-slate-700"> <option value="">নির্বাচন করুন</option> <option value="A+">A+</option> <option value="A-">A-</option> <option value="B+">B+</option> <option value="B-">B-</option> <option value="AB+">AB+</option> <option value="AB-">AB-</option> <option value="O+">O+</option> <option value="O-">O-</option> </select></div>
        </div>
       </div>
 
-      <div class="bg-white rounded-2xl card-shadow p-6 animate-fade-in section-card" style="--delay: 2">
-       <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-         <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
+      <!-- Step 2: Contact Info -->
+      <div class="section-card w-full hidden" data-title="পরিচয় ও যোগাযোগ">
+       <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-blue-50">
+        <div class="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center shadow-sm">
+         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" /></svg>
         </div>
-        <h2 class="text-xl font-bold text-slate-800">পরিচয় ও যোগাযোগ</h2>
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">পরিচয় ও যোগাযোগ</h2>
+            <p class="text-sm text-slate-500 font-medium">যোগাযোগের জন্য সঠিক মাধ্যম দিন</p>
+        </div>
        </div>
-       <div class="grid md:grid-cols-2 gap-5">
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">জাতীয় পরিচয়পত্র নম্বর</label> <input type="text" name="nid_number" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="NID নম্বর"></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">জন্ম নিবন্ধন নম্বর</label> <input type="text" name="birth_certificate_number" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="জন্ম নিবন্ধন নম্বর"></div>       
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">মোবাইল নম্বর <span class="text-red-500">*</span></label> <input type="tel" name="mobile_number" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="01XXXXXXXXX"></div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">মোবাইল নম্বর <span class="text-red-500">*</span></label> <input type="tel" name="mobile_number" required 
+       pattern="01[3-9]\d{8}" 
+       maxlength="11"
+       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+       class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" 
+       placeholder="01XXXXXXXXX">
+</div>
         <div class="input-label md:col-span-2">
           <label class="block text-sm font-semibold text-slate-700 mb-2">ইমেইল <span class="text-red-500">*</span></label> 
-          <input type="email" name="email" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="example@email.com">
+          <input type="email" name="email" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="example@email.com">
         </div>
        </div>
       </div>
 
-      <div class="bg-white rounded-2xl card-shadow p-6 animate-fade-in section-card" style="--delay: 3">
-       <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-        <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
-         <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+      <!-- Step 3: Address -->
+      <div class="section-card w-full hidden" data-title="ঠিকানা">
+       <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-purple-50">
+        <div class="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center shadow-sm">
+         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
         </div>
-        <h2 class="text-xl font-bold text-slate-800">ঠিকানা</h2>
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">ঠিকানা</h2>
+            <p class="text-sm text-slate-500 font-medium">আপনার বর্তমান ও স্থায়ী ঠিকানা</p>
+        </div>
        </div>
-       <div class="space-y-5">
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">বর্তমান ঠিকানা <span class="text-red-500">*</span></label> <textarea name="present_address" required rows="2" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all resize-none" placeholder="গ্রাম/মহল্লা, ডাকঘর, উপজেলা, জেলা"></textarea></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">স্থায়ী ঠিকানা <span class="text-red-500">*</span></label> <textarea name="permanent_address" required rows="2" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all resize-none" placeholder="গ্রাম/মহল্লা, ডাকঘর, উপজেলা, জেলা"></textarea></div>
+       <div class="space-y-6">
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">বর্তমান ঠিকানা <span class="text-red-500">*</span></label> <textarea name="present_address" required rows="2" class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all resize-none bg-slate-50 focus:bg-white" placeholder="গ্রাম/মহল্লা, ডাকঘর, উপজেলা, জেলা"></textarea></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">স্থায়ী ঠিকানা <span class="text-red-500">*</span></label> <textarea name="permanent_address" required rows="2" class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all resize-none bg-slate-50 focus:bg-white" placeholder="গ্রাম/মহল্লা, ডাকঘর, উপজেলা, জেলা"></textarea></div>
        </div>
       </div>
 
-      <div class="bg-white rounded-2xl card-shadow p-6 animate-fade-in section-card" style="--delay: 4">
-       <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
-         <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+      <!-- Step 4: Education & Occ -->
+      <div class="section-card w-full hidden" data-title="শিক্ষা ও পেশা">
+       <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-amber-50">
+        <div class="w-12 h-12 bg-amber-100 rounded-2xl flex items-center justify-center shadow-sm">
+         <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
         </div>
-        <h2 class="text-xl font-bold text-slate-800">শিক্ষা ও পেশা</h2>
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">শিক্ষা ও পেশা</h2>
+            <p class="text-sm text-slate-500 font-medium">শিক্ষাগত যোগ্যতা ও বর্তমান পেশা</p>
+        </div>
        </div>
-       <div class="grid md:grid-cols-2 gap-5">
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">শিক্ষাগত যোগ্যতা <span class="text-red-500">*</span></label> <select name="education" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-white"> <option value="">নির্বাচন করুন</option> <option value="প্রাথমিক">প্রাথমিক</option> <option value="মাধ্যমিক (SSC)">মাধ্যমিক (SSC)</option> <option value="উচ্চ মাধ্যমিক (HSC)">উচ্চ মাধ্যমিক (HSC)</option> <option value="স্নাতক">স্নাতক</option> <option value="স্নাতকোত্তর">স্নাতকোত্তর</option> <option value="পিএইচডি">পিএইচডি</option> <option value="অন্যান্য">অন্যান্য</option> </select></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পেশা <span class="text-red-500">*</span></label> <input type="text" name="occupation" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="আপনার পেশা"></div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">শিক্ষাগত যোগ্যতা <span class="text-red-500">*</span></label> <select name="education" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white text-slate-700"> <option value="">নির্বাচন করুন</option> <option value="প্রাথমিক">প্রাথমিক</option> <option value="মাধ্যমিক (SSC)">মাধ্যমিক (SSC)</option> <option value="উচ্চ মাধ্যমিক (HSC)">উচ্চ মাধ্যমিক (HSC)</option> <option value="স্নাতক">স্নাতক</option> <option value="স্নাতকোত্তর">স্নাতকোত্তর</option> <option value="পিএইচডি">পিএইচডি</option> <option value="অন্যান্য">অন্যান্য</option> </select></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">পেশা <span class="text-red-500">*</span></label> <input type="text" name="occupation" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="আপনার পেশা"></div>
        </div>
       </div>
 
-      <div class="bg-white rounded-2xl card-shadow p-6 animate-fade-in section-card" style="--delay: 5">
-       <div class="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-        <div class="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center">
-         <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+      <!-- Step 5: Membership -->
+      <div class="section-card w-full hidden" data-title="সদস্যপদ তথ্য">
+       <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-rose-50">
+        <div class="w-12 h-12 bg-rose-100 rounded-2xl flex items-center justify-center shadow-sm">
+         <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
         </div>
-        <h2 class="text-xl font-bold text-slate-800">সদস্যপদ তথ্য</h2>
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800">সদস্যপদ তথ্য</h2>
+            <p class="text-sm text-slate-500 font-medium">ফাউন্ডেশনের সাথে যুক্ত হওয়ার ধরন</p>
+        </div>
        </div>
-       <div class="grid md:grid-cols-2 gap-5">
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">সদস্যপদের ধরন <span class="text-red-500">*</span></label> <select name="membership_type" required class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-white"> <option value="">নির্বাচন করুন</option> <option value="সাধারণ সদস্য">সাধারণ সদস্য</option> <option value="আজীবন সদস্য">আজীবন সদস্য</option> <option value="সম্মানিত সদস্য">সম্মানিত সদস্য</option> <option value="স্বেচ্ছাসেবক">স্বেচ্ছাসেবক</option> </select></div>
-        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">রেফারেন্স (যদি থাকে)</label> <input type="text" name="reference_name" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="রেফারেন্সের নাম"></div>
-        <div class="input-label md:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-2">রেফারেন্সের মোবাইল</label> <input type="tel" name="reference_mobile" class="form-input w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all" placeholder="রেফারেন্সের মোবাইল নম্বর"></div>
+       <div class="grid md:grid-cols-2 gap-6">
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">সদস্যপদের ধরন <span class="text-red-500">*</span></label> <select name="membership_type" required class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white text-slate-700"> <option value="">নির্বাচন করুন</option> <option value="সাধারণ সদস্য">সাধারণ সদস্য</option> <option value="আজীবন সদস্য">আজীবন সদস্য</option> <option value="সম্মানিত সদস্য">সম্মানিত সদস্য</option> <option value="স্বেচ্ছাসেবক">স্বেচ্ছাসেবক</option> </select></div>
+        <div class="input-label"><label class="block text-sm font-semibold text-slate-700 mb-2">রেফারেন্স (যদি থাকে)</label> <input type="text" name="reference_name" class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="রেফারেন্সের নাম"></div>
+        <div class="input-label md:col-span-2"><label class="block text-sm font-semibold text-slate-700 mb-2">রেফারেন্সের মোবাইল</label> <input type="tel" name="reference_mobile" class="form-input w-full px-4 py-3.5 border-2 border-slate-200 rounded-xl focus:border-emerald-500 focus:outline-none transition-all bg-slate-50 focus:bg-white" placeholder="রেফারেন্সের মোবাইল নম্বর"></div>
        </div>
       </div>
 
-      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl p-6 border-2 border-emerald-200 animate-fade-in section-card" style="--delay: 6"><label class="flex items-start gap-3 cursor-pointer"> <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 border-2 border-slate-300 rounded focus:ring-emerald-500"> <span class="text-slate-700">আমি ঘোষণা করছি যে, উপরে প্রদত্ত সকল তথ্য সত্য ও সঠিক। আমি রুপসা জনকল্যাণ ফাউন্ডেশনের নিয়মাবলী মেনে চলতে সম্মত আছি। <span class="text-red-500">*</span></span> </label></div>
+      <!-- Step 6: Declaration -->
+      <div class="section-card w-full hidden" data-title="ঘোষণা ও নিশ্চিতকরণ">
+        <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-emerald-50">
+            <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center shadow-sm">
+             <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">নিশ্চিতকরণ</h2>
+                <p class="text-sm text-slate-500 font-medium">আবেদন জমা দেওয়ার পূর্বে শর্তাবলী নিশ্চিত করুন</p>
+            </div>
+        </div>
+        <div class="bg-gradient-to-br from-emerald-50 to-teal-50/30 rounded-2xl p-6 border border-emerald-100 shadow-sm mt-4">
+            
+            
+            
+<!-- Ultra-Premium Live Review Dashboard -->
+<div id="form-summary-preview" class="hidden bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 md:p-6 mb-6 shadow-sm transition-all duration-500">
+    <!-- জাভাস্ক্রিপ্ট দিয়ে এখানে ড্যাশবোর্ড জেনারেট হবে -->
+</div>
 
-      <div class="flex justify-center pt-4"><button id="submit-btn" type="submit" class="group relative px-12 py-4 bg-emerald-600 text-white font-bold text-lg rounded-2xl hover:bg-emerald-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"> <span id="submit-text">আবেদন জমা দিন</span> <span id="submit-loading" class="hidden">
-         <svg class="animate-spin h-5 w-5 inline mr-2" viewbox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg> জমা হচ্ছে... </span>
-        <div class="absolute inset-0 rounded-2xl bg-white opacity-0 group-hover:opacity-10 transition-opacity"></div></button>
+            
+            
+            <label class="flex items-start gap-4 cursor-pointer group"> 
+                <div class="relative flex items-center justify-center mt-1">    
+                    
+                    <input type="checkbox" required class="peer appearance-none w-6 h-6 border-2 border-emerald-300 rounded-md checked:bg-emerald-600 checked:border-emerald-600 transition-all cursor-pointer">
+                    <svg class="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <span class="text-slate-700 font-medium leading-relaxed group-hover:text-slate-900 transition-colors">আমি ঘোষণা করছি যে, উপরে প্রদত্ত সকল তথ্য সত্য ও সঠিক। আমি রুপসা জনকল্যাণ ফাউন্ডেশনের নিয়মাবলী মেনে চলতে সম্মত আছি। <span class="text-red-500 font-bold">*</span></span> 
+            </label>
+        </div>
+      </div>
+
+      <!-- Navigation & Submit Buttons -->
+      <div class="flex flex-col md:flex-row justify-between items-center mt-10 pt-6 border-t border-slate-100 gap-4" id="form-navigation">
+        <button type="button" id="prev-btn" onclick="prevStep()" class="hidden px-8 py-3.5 bg-white text-slate-600 border-2 border-slate-200 font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 hover:text-slate-800 transition-all w-full md:w-auto shadow-sm flex items-center justify-center gap-2">
+            <i class="fas fa-arrow-left"></i> আগের ধাপ
+        </button>
+        
+        <button type="button" id="next-btn" onclick="nextStep()" class="px-8 py-3.5 bg-emerald-600 text-white font-bold rounded-xl hover:bg-emerald-700 transition-all w-full md:w-auto ml-auto shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+            পরের ধাপ <i class="fas fa-arrow-right"></i>
+        </button>
+        
+        <div id="submit-wrapper" class="hidden w-full md:w-auto ml-auto">
+           <button id="submit-btn" type="submit" class="w-full group relative px-10 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-lg rounded-xl hover:from-emerald-700 hover:to-teal-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-emerald-500/30 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"> 
+            <i class="fas fa-paper-plane" id="submit-icon"></i>
+            <span id="submit-text">আবেদন জমা দিন</span> 
+            <span id="submit-loading" class="hidden flex items-center">
+             <svg class="animate-spin h-5 w-5 mr-2 text-white" viewbox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle> <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" /></svg> জমা হচ্ছে... 
+            </span>
+           </button>
+        </div>
       </div>
      </form>
     </div>
 
     <div id="list-view" class="hidden">
-     <div class="bg-white rounded-2xl card-shadow overflow-hidden">
-      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-4">
-       <h2 class="text-xl font-bold text-white">আবেদনকারীদের তালিকা</h2>
+     <div class="bg-white rounded-3xl card-shadow overflow-hidden">
+      <div class="bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-5">
+       <h2 class="text-xl font-bold text-white flex items-center gap-2"><i class="fas fa-list"></i> আবেদনকারীদের তালিকা</h2>
       </div>
       <div id="members-list" class="divide-y divide-slate-100"></div>
-      <div id="empty-state" class="p-12 text-center">
-       <div class="w-20 h-20 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
-        <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+      <div id="empty-state" class="p-16 text-center">
+       <div class="w-24 h-24 mx-auto bg-slate-50 rounded-full flex items-center justify-center mb-4 border-2 border-slate-100">
+        <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
        </div>
+       <p class="text-slate-500 font-medium">এখনও কোনো আবেদন জমা পড়েনি</p>
       </div>
      </div>
     </div>
 
-    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
-     <div class="bg-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg><span id="toast-message">আবেদন সফলভাবে জমা হয়েছে!</span>
+    <!-- Smart Toast Notification -->
+    <div id="toast" class="fixed top-10 left-1/2 transform -translate-x-1/2 -translate-y-20 opacity-0 transition-all duration-500 z-[9999] pointer-events-none">
+     <div class="bg-emerald-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-medium text-sm md:text-base border border-emerald-400">
+      <div class="bg-white/20 rounded-full p-1"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg></div>
+      <span id="toast-message">আবেদন সফলভাবে জমা হয়েছে!</span>
      </div>
     </div>
    </main>
 
-   <footer class="bg-slate-800 text-slate-300 py-6 px-4 mt-8">
+   <footer class="bg-slate-900 text-slate-400 py-8 px-4 mt-12 border-t-4 border-emerald-600">
     <div class="max-w-4xl mx-auto text-center">
-     <p class="text-sm">©2026 All rights reserved with RJfoundetion </p>
-     <p class="text-xs mt-2 text-slate-400">মানবতার সেবায়,জনকল্যাণের প্রত্যয়</p>
+     <p class="text-sm font-medium">©2026 All rights reserved with RJ Foundation</p>
+     <p class="text-xs mt-2 text-emerald-500/70 tracking-widest uppercase">মানবতার সেবায়, জনকল্যাণের প্রত্যয়</p>
     </div>
    </footer>
   </div>
 
   <script>
-    // Menu Toggle Function Added
+    // Menu Toggle Function
     function toggleSideMenu() {
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
-        
         sideMenu.classList.toggle('active');
         overlay.classList.toggle('active');
     }
@@ -305,16 +391,30 @@
     function showFormView() {
       document.getElementById('form-view').classList.remove('hidden');
       document.getElementById('list-view').classList.add('hidden');
-      document.getElementById('form-view-btn').className = 'px-6 py-2 rounded-full font-medium transition-all bg-emerald-600 text-white';
     }
 
     function showToast(message, isError = false) {
       const toast = document.getElementById('toast');
       const toastMsg = document.getElementById('toast-message');
+      const toastDiv = toast.querySelector('div');
+      
       toastMsg.textContent = message;
-      toast.querySelector('div').className = `${isError ? 'bg-red-600' : 'bg-emerald-600'} text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3`;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      setTimeout(() => toast.classList.add('translate-y-20', 'opacity-0'), 5000);
+      
+      if(isError){
+        toastDiv.className = 'bg-rose-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-medium text-sm md:text-base border border-rose-400';
+        toastDiv.querySelector('svg').outerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" /></svg>';
+      } else {
+        toastDiv.className = 'bg-emerald-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-medium text-sm md:text-base border border-emerald-400';
+        toastDiv.querySelector('svg').outerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>';
+      }
+
+      toast.classList.remove('-translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      
+      setTimeout(() => {
+          toast.classList.remove('translate-y-0', 'opacity-100');
+          toast.classList.add('-translate-y-20', 'opacity-0');
+      }, 5000);
     }
   </script>
 
@@ -322,7 +422,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-    // Firebase Config
+    // Firebase Config (Untouched)
     const firebaseConfig = {
       apiKey: "AIzaSyC-ke7FIUPX5Ksow8vJQ4axmGAIdiKd49Q",
       authDomain: "member-selection.firebaseapp.com",
@@ -333,50 +433,37 @@
       measurementId: "G-JVMKJZLCC5"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // EmailJS Initialize
     emailjs.init("YVhcRNK-0_TgFrZCd");
 
-    // Form Submission
     const memberForm = document.getElementById('member-form');
     
     memberForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       const emailInput = this.email.value.trim().toLowerCase();
-      const nid = this.nid_number.value.trim();
-      const birthCert = this.birth_certificate_number.value.trim();
-
-      if (!nid && !birthCert) {
-        showToast('NID অথবা জন্ম নিবন্ধন নম্বর প্রদান করুন', true);
-        return;
-      }
-
       const submitBtn = document.getElementById('submit-btn');
       const submitText = document.getElementById('submit-text');
       const submitLoading = document.getElementById('submit-loading');
+      const submitIcon = document.getElementById('submit-icon');
 
       submitBtn.disabled = true;
       submitText.classList.add('hidden');
+      submitIcon.classList.add('hidden');
       submitLoading.classList.remove('hidden');
 
       try {
-        // ১. ইমেইল ডুপ্লিকেট চেক
         const q = query(collection(db, "members"), where("email", "==", emailInput));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
           showToast('এই ইমেইলটি দিয়ে ইতিমধ্যে আবেদন করা হয়েছে!', true);
-          submitBtn.disabled = false;
-          submitText.classList.remove('hidden');
-          submitLoading.classList.add('hidden');
+          resetSubmitBtn();
           return;
         }
 
-        // ২. মেম্বার আইডি জেনারেশন
         const year = new Date().getFullYear();
         const random = Math.floor(1000 + Math.random() * 9000);
         const generatedID = `RJF-${year}-${random}`;
@@ -385,58 +472,326 @@
         const formData = new FormData(this);
         const dataObject = Object.fromEntries(formData.entries());
 
-        // ৩. ফায়ারবেসে ডাটা সেভ
         await addDoc(collection(db, "members"), {
           ...dataObject,
           submittedAt: new Date()
         });
 
-        // ৪. Formspree এবং EmailJS পাঠানো
         const formspreePromise = fetch('https://formspree.io/f/meepqdyk', {
           method: 'POST',
           body: formData,
           headers: { 'Accept': 'application/json' }
         });
-
         const emailjsPromise = emailjs.sendForm('service_jy11eoh', 'template_98b72mp', this);
 
         await Promise.allSettled([formspreePromise, emailjsPromise]);
         
-        showToast(`অভিনন্দন! আবেদন সফল হয়েছে। আপনার আইডি: ${generatedID}`);
+        showToast(`অভিনন্দন! আবেদন সফল হয়েছে। আইডি: ${generatedID}`);
         this.reset();
+        if(typeof window.resetSteps === 'function') window.resetSteps();
         
       } catch (err) {
         console.error(err);
-        showToast('সমস্যা হয়েছে! আবার চেষ্টা করুন।', true);
+        showToast('সমস্যা হয়েছে! ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।', true);
       } finally {
-        submitBtn.disabled = false;
-        submitText.classList.remove('hidden');
-        submitLoading.classList.add('hidden');
+        resetSubmitBtn();
+      }
+
+      function resetSubmitBtn(){
+          submitBtn.disabled = false;
+          submitText.classList.remove('hidden');
+          submitIcon.classList.remove('hidden');
+          submitLoading.classList.add('hidden');
       }
     });
-
-    document.querySelectorAll('.section-card').forEach(card => card.style.opacity = '1');
   </script>
 
+<!-- Smart Multi-Step Form Logic -->
+<script>
+  let currentStep = 0;
+  const steps = document.querySelectorAll('.section-card');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const submitWrapper = document.getElementById('submit-wrapper');
+  
+  // Stepper Elements
+  const stepItems = document.querySelectorAll('.step-item');
+  const progressLine = document.getElementById('progress-line');
+  const mobStepNum = document.getElementById('mob-step-num');
+  const mobStepTitle = document.getElementById('mob-step-title');
+  const mobStepPercent = document.getElementById('mob-step-percent');
+  const mobProgressBar = document.getElementById('mob-progress-bar');
 
+  function initSteps() {
+      steps.forEach((step, index) => {
+          if (index !== 0) step.classList.add('hidden');
+      });
+      updateStepperUI();
+      updateButtons();
+  }
+
+  function updateStepperUI() {
+      const totalSteps = steps.length;
+      const percentage = ((currentStep + 1) / totalSteps) * 100;
+      const linePercentage = (currentStep / (totalSteps - 1)) * 100;
+
+      // Desktop Stepper update
+      if(progressLine) progressLine.style.width = `${linePercentage}%`;
+      
+      stepItems.forEach((item, index) => {
+          item.classList.remove('active', 'completed');
+          const circle = item.querySelector('.step-circle');
+          const text = item.querySelector('.step-text');
+          
+          if (index < currentStep) {
+              item.classList.add('completed');
+              circle.innerHTML = '<i class="fas fa-check"></i>';
+              text.classList.replace('text-gray-500', 'text-emerald-600');
+              text.classList.add('font-bold');
+          } else if (index === currentStep) {
+              item.classList.add('active');
+              circle.innerHTML = index + 1;
+              text.classList.replace('text-gray-500', 'text-emerald-700');
+              text.classList.add('font-bold');
+          } else {
+              circle.innerHTML = index + 1;
+              text.classList.remove('text-emerald-600', 'text-emerald-700', 'font-bold');
+              text.classList.add('text-gray-500');
+          }
+      });
+
+      // Mobile Stepper update
+      if(mobStepNum) {
+          mobStepNum.innerText = currentStep + 1;
+          mobStepTitle.innerText = steps[currentStep].getAttribute('data-title');
+          mobStepPercent.innerText = Math.round(percentage) + '%';
+          mobProgressBar.style.width = percentage + '%';
+      }
+  }
+
+  function updateButtons() {
+      if (currentStep === 0) {
+          prevBtn.classList.add('hidden');
+      } else {
+          prevBtn.classList.remove('hidden');
+      }
+
+      if (currentStep === steps.length - 1) {
+          nextBtn.classList.add('hidden');
+          submitWrapper.classList.remove('hidden');
+      } else {
+          nextBtn.classList.remove('hidden');
+          submitWrapper.classList.add('hidden');
+      }
+  }
+
+  window.nextStep = function() {
+      // Validate inputs with custom styling for invalid fields
+      const inputs = steps[currentStep].querySelectorAll('input, select, textarea');
+      let isValid = true;
+      let firstInvalidInput = null;
+
+      for (let i = 0; i < inputs.length; i++) {
+          inputs[i].classList.remove('border-red-500', 'bg-red-50');
+          if (!inputs[i].checkValidity()) {
+              isValid = false;
+              inputs[i].classList.add('border-red-500', 'bg-red-50');
+              if(!firstInvalidInput) firstInvalidInput = inputs[i];
+          }
+      }
+
+      if (!isValid) {
+          firstInvalidInput.reportValidity();
+          // Optional: Shake effect on form if invalid
+          steps[currentStep].animate([
+            { transform: 'translateX(-5px)' }, { transform: 'translateX(5px)' },
+            { transform: 'translateX(-5px)' }, { transform: 'translateX(0)' }
+          ], { duration: 300 });
+          return;
+      }
+
+      if (isValid) {
+          steps[currentStep].classList.add('hidden');
+          steps[currentStep].classList.remove('slide-in-right', 'slide-in-left');
+          
+          currentStep++;
+          
+          
+          
+          
+          
+// ১. স্মার্ট জাম্প ফাংশন: যেকোনো ধাপ থেকে সরাসরি নির্দিষ্ট ধাপে যাওয়ার জন্য
+window.jumpToStep = function(stepIndex) {
+    if (typeof steps !== 'undefined' && stepIndex >= 0 && stepIndex < steps.length) {
+        steps[currentStep].classList.add('hidden');
+        steps[currentStep].classList.remove('slide-in-right', 'slide-in-left');
+        
+        // অ্যানিমেশন ডিরেকশন সেট করা
+        const animClass = stepIndex < currentStep ? 'slide-in-left' : 'slide-in-right';
+        currentStep = stepIndex;
+        
+        steps[currentStep].classList.remove('hidden');
+        steps[currentStep].classList.add(animClass);
+        
+        updateStepperUI();
+        updateButtons();
+        
+        // স্ক্রল করে ফর্মের টপে নিয়ে যাওয়া
+        window.scrollTo({ 
+            top: document.getElementById('form-view').offsetTop - 100, 
+            behavior: 'smooth' 
+        });
+    }
+}
+
+// ২. আপনার এক্সিস্টিং window.nextStep ফাংশনের ভেতরে currentStep++; এর ঠিক নিচে এই ব্লকটি বসাবেন
+// (অথবা স্টেপ পরিবর্তনের লজিকের সাথে ইন্টিগ্রেট করে নিন)
+if (currentStep === 5) {
+    const previewDiv = document.getElementById('form-summary-preview');
+    const formData = new FormData(document.getElementById('member-form'));
+    
+    // সেফ ডেটা হ্যান্ডলার (কোনো ফিল্ড ফাকা থাকলে টেক্সট দেখাবে)
+    const val = (name) => formData.get(name) || '<span class="text-slate-400 italic text-xs">প্রদান করা হয়নি</span>';
+
+    previewDiv.innerHTML = `
+        <!-- ড্যাশবোর্ড হেডার -->
+        <div class="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
+            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.7)]"></div>
+            <h3 class="font-bold text-slate-800 text-base md:text-lg tracking-tight">
+                আবেদনের বিবরণী পর্যালোচনা (Review)
+            </h3>
+        </div>
+        
+        <div class="space-y-6">
+            <!-- ক্যাটাগরি ১: ব্যক্তিগত তথ্য -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group">
+                <button type="button" onclick="jumpToStep(0)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
+                    <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
+                </button>
+                <h4 class="text-xs font-bold uppercase text-emerald-600 tracking-wider mb-3 flex items-center gap-1.5">
+                    <i class="fas fa-user-circle"></i> ব্যক্তিগত বিবরণ
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div><span class="text-slate-400 block text-xs">পুরো নাম</span><span class="text-slate-800 font-semibold">${val('full_name')}</span></div>
+                    <div><span class="text-slate-400 block text-xs">পিতার নাম</span><span class="text-slate-700 font-medium">${val('father_name')}</span></div>
+                    <div><span class="text-slate-400 block text-xs">মাতার নাম</span><span class="text-slate-700 font-medium">${val('mother_name')}</span></div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><span class="text-slate-400 block text-xs">জন্ম তারিখ</span><span class="text-slate-700 font-medium text-xs">${val('date_of_birth')}</span></div>
+                        <div><span class="text-slate-400 block text-xs">রক্তের গ্রুপ</span><span class="text-slate-700 font-medium">${val('blood_group')}</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ক্যাটাগরি ২: যোগাযোগ (এখানেই ইমেইল ফিক্স করা হয়েছে) -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group min-w-0">
+                <button type="button" onclick="jumpToStep(1)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
+                    <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
+                </button>
+                <h4 class="text-xs font-bold uppercase text-blue-600 tracking-wider mb-3 flex items-center gap-1.5">
+                    <i class="fas fa-address-book"></i> যোগাযোগ মাধ্যম
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm min-w-0">
+                    <div>
+                        <span class="text-slate-400 block text-xs">মোাবাইল নম্বর</span>
+                        <span class="text-slate-800 font-semibold tracking-wide">${val('mobile_number')}</span>
+                    </div>
+                    <!-- ইমেইল কন্টেইনার: ব্রেক-অল এবং ইনলাইন ব্লক দিয়ে সুরক্ষিত করা -->
+                    <div class="min-w-0 flex flex-col">
+                        <span class="text-slate-400 block text-xs">ইমেইল ঠিকানা</span>
+                        <span class="text-slate-800 font-semibold break-all whitespace-pre-wrap select-all leading-tight">${val('email')}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ক্যাটাগরি ৩: ঠিকানা, শিক্ষা ও সদস্যপদ -->
+            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm text-sm space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-slate-50 pb-3">
+                    <div class="relative">
+                        <span class="text-slate-400 block text-xs">শিক্ষাগত যোগ্যতা</span>
+                        <span class="text-slate-700 font-semibold">${val('education')}</span>
+                        <button type="button" onclick="jumpToStep(3)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-xs">বর্তমান পেশা</span>
+                        <span class="text-slate-700 font-semibold">${val('occupation')}</span>
+                    </div>
+                    <div class="relative">
+                        <span class="text-slate-400 block text-xs">সদস্যপদের ধরন</span>
+                        <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md inline-block text-xs mt-0.5 border border-emerald-100">${val('membership_type')}</span>
+                        <button type="button" onclick="jumpToStep(4)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
+                    <button type="button" onclick="jumpToStep(2)" class="absolute -top-1 right-0 text-xs text-emerald-600 hover:underline font-medium">ঠিকানা সম্পাদনা</button>
+                    <div>
+                        <span class="text-slate-400 block text-xs">বর্তমান ঠিকানা</span>
+                        <p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('present_address')}</p>
+                    </div>
+                    <div>
+                        <span class="text-slate-400 block text-xs">স্থায়ী ঠিকানা</span>
+                        <p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('permanent_address')}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    previewDiv.classList.remove('hidden');
+}
+
+          
+          
+          
+          steps[currentStep].classList.remove('hidden');
+          steps[currentStep].classList.add('slide-in-right');
+          
+          updateStepperUI();
+          updateButtons();
+          window.scrollTo({ top: document.getElementById('form-view').offsetTop - 100, behavior: 'smooth' });
+      }
+  }
+
+  window.prevStep = function() {
+      if (currentStep > 0) {
+          steps[currentStep].classList.add('hidden');
+          steps[currentStep].classList.remove('slide-in-right', 'slide-in-left');
+          
+          currentStep--;
+          
+          steps[currentStep].classList.remove('hidden');
+          steps[currentStep].classList.add('slide-in-left');
+          
+          updateStepperUI();
+          updateButtons();
+          window.scrollTo({ top: document.getElementById('form-view').offsetTop - 100, behavior: 'smooth' });
+      }
+  }
+
+  window.resetSteps = function() {
+      currentStep = 0;
+      steps.forEach((step, index) => {
+          step.classList.remove('slide-in-right', 'slide-in-left');
+          if (index !== 0) {
+              step.classList.add('hidden');
+          } else {
+              step.classList.remove('hidden');
+              step.classList.add('slide-in-left');
+          }
+      });
+      updateStepperUI();
+      updateButtons();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.addEventListener('DOMContentLoaded', initSteps);
+</script>
 
 <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-
-// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
 Tawk_API.customStyle = {
-    visibility : {
-        desktop : {
-            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
-        },
-        mobile : {
-            yOffset : 75 // মোবাইলের জন্য পজিশন
-        }
-    }
+    visibility : { desktop : { yOffset : 100 }, mobile : { yOffset : 75 } }
 };
-
-
-
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
@@ -446,55 +801,30 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-<div id="newScrollTop" style="
-    position: fixed;
-    right: 25px;
-    top: 75%;
+
+<!-- Smart Scroll To Top -->
+<div id="newScrollTop" class="group" style="
+    position: fixed; right: 25px; top: 75%;
     transform: translateY(-50%) translateX(100px);
-    background: rgba(0, 121, 107, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    color: white;
-    width: 55px;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px 15px 15px 50px;
-    cursor: pointer;
-    z-index: 10000;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    color: #047857; width: 50px; height: 50px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 50%; cursor: pointer; z-index: 10000;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    visibility: hidden;
+    border: 2px solid #10b981;
+    box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4);
+    opacity: 0; visibility: hidden;
 ">
-    <div style="
-        background: #00796b;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 4px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    ">
-        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
-    </div>
-    <span style="font-size: 8px; font-weight: 900; color: green; letter-spacing: 0.05px;">উপরে যান</span>
+    <i class="fas fa-arrow-up text-xl transform group-hover:-translate-y-1 transition-transform duration-300"></i>
 </div>
 
 <script>
 (function() {
     const btn = document.getElementById('newScrollTop');
-    
-    // স্ক্রল ইভেন্ট লিসেনার
     window.addEventListener('scroll', function() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollPos > 300) {
+        if (scrollPos > 400) {
             btn.style.opacity = "1";
             btn.style.visibility = "visible";
             btn.style.transform = "translateY(-50%) translateX(0)";
@@ -505,22 +835,17 @@ s0.parentNode.insertBefore(s1,s0);
         }
     });
 
-    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
     btn.onmouseover = function() {
-        this.style.background = "rgba(0, 121, 107, 0.15)";
-        this.style.borderColor = "#00796b";
+        this.style.background = "#10b981";
+        this.style.color = "white";
     };
     btn.onmouseout = function() {
-        this.style.background = "rgba(0, 121, 107, 0.2)";
-        this.style.borderColor = "rgba(255, 255, 255, 0.2)";
+        this.style.background = "rgba(255, 255, 255, 0.9)";
+        this.style.color = "#047857";
     };
 
-    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
     btn.onclick = function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 })();
 </script>
