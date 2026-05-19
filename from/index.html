@@ -38,8 +38,11 @@
     /* Animations */
     @keyframes slideInRight { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
     @keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideInTop { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    
     .slide-in-right { animation: slideInRight 0.4s ease-out forwards; }
     .slide-in-left { animation: slideInLeft 0.4s ease-out forwards; }
+    .slide-in-top { animation: slideInTop 0.3s ease-out forwards; }
     
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -147,7 +150,6 @@
             <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full -z-10"></div>
             <div id="progress-line" class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-emerald-500 rounded-full step-line -z-10" style="width: 0%;"></div>
             
-            <!-- Step Items (Generated dynamically or static. Kept static for precise control) -->
             <div class="step-item active flex flex-col items-center gap-2 w-16" data-step="0">
                 <div class="step-circle w-10 h-10 rounded-full flex items-center justify-center font-bold bg-white border-2 border-gray-300 text-gray-500 transition-all duration-300">১</div>
                 <span class="text-xs font-semibold text-center text-gray-500 step-text">ব্যক্তিগত</span>
@@ -189,7 +191,7 @@
         </div>
      </div>
 
-     <form id="member-form" class="space-y-2 relative overflow-hidden min-h-[400px]">
+     <form id="member-form" class="space-y-2 relative overflow-hidden min-h-[400px]" novalidate>
        <input type="hidden" name="member_id" id="member_id_input">
        
       <!-- Step 1: Personal Info -->
@@ -304,18 +306,12 @@
         </div>
         <div class="bg-gradient-to-br from-emerald-50 to-teal-50/30 rounded-2xl p-6 border border-emerald-100 shadow-sm mt-4">
             
-            
-            
-<!-- Ultra-Premium Live Review Dashboard -->
 <div id="form-summary-preview" class="hidden bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 md:p-6 mb-6 shadow-sm transition-all duration-500">
     <!-- জাভাস্ক্রিপ্ট দিয়ে এখানে ড্যাশবোর্ড জেনারেট হবে -->
 </div>
-
-            
             
             <label class="flex items-start gap-4 cursor-pointer group"> 
                 <div class="relative flex items-center justify-center mt-1">    
-                    
                     <input type="checkbox" required class="peer appearance-none w-6 h-6 border-2 border-emerald-300 rounded-md checked:bg-emerald-600 checked:border-emerald-600 transition-all cursor-pointer">
                     <svg class="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
                 </div>
@@ -380,7 +376,6 @@
   </div>
 
   <script>
-    // Menu Toggle Function
     function toggleSideMenu() {
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
@@ -422,7 +417,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
     import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-    // Firebase Config (Untouched)
     const firebaseConfig = {
       apiKey: "AIzaSyC-ke7FIUPX5Ksow8vJQ4axmGAIdiKd49Q",
       authDomain: "member-selection.firebaseapp.com",
@@ -506,7 +500,6 @@
     });
   </script>
 
-<!-- Smart Multi-Step Form Logic -->
 <script>
   let currentStep = 0;
   const steps = document.querySelectorAll('.section-card');
@@ -514,7 +507,6 @@
   const nextBtn = document.getElementById('next-btn');
   const submitWrapper = document.getElementById('submit-wrapper');
   
-  // Stepper Elements
   const stepItems = document.querySelectorAll('.step-item');
   const progressLine = document.getElementById('progress-line');
   const mobStepNum = document.getElementById('mob-step-num');
@@ -535,7 +527,6 @@
       const percentage = ((currentStep + 1) / totalSteps) * 100;
       const linePercentage = (currentStep / (totalSteps - 1)) * 100;
 
-      // Desktop Stepper update
       if(progressLine) progressLine.style.width = `${linePercentage}%`;
       
       stepItems.forEach((item, index) => {
@@ -560,7 +551,6 @@
           }
       });
 
-      // Mobile Stepper update
       if(mobStepNum) {
           mobStepNum.innerText = currentStep + 1;
           mobStepTitle.innerText = steps[currentStep].getAttribute('data-title');
@@ -585,24 +575,49 @@
       }
   }
 
+  // --- স্মার্ট ভ্যালিডেশন লজিক শুরু ---
   window.nextStep = function() {
-      // Validate inputs with custom styling for invalid fields
       const inputs = steps[currentStep].querySelectorAll('input, select, textarea');
       let isValid = true;
       let firstInvalidInput = null;
 
+      // আগের সব এরর মেসেজ মুছে ফেলা
+      steps[currentStep].querySelectorAll('.custom-error-msg').forEach(el => el.remove());
+
       for (let i = 0; i < inputs.length; i++) {
-          inputs[i].classList.remove('border-red-500', 'bg-red-50');
-          if (!inputs[i].checkValidity()) {
+          const input = inputs[i];
+          input.classList.remove('border-red-500', 'bg-red-50');
+          
+          if (!input.checkValidity() || (input.type === 'checkbox' && !input.checked)) {
               isValid = false;
-              inputs[i].classList.add('border-red-500', 'bg-red-50');
-              if(!firstInvalidInput) firstInvalidInput = inputs[i];
+              input.classList.add('border-red-500', 'bg-red-50');
+              
+              // কাস্টম বাংলায় এরর মেসেজ জেনারেট
+              let errorMessage = "এই তথ্যটি প্রদান করা আবশ্যক।";
+              if(input.type === 'email' && input.value !== '') errorMessage = "অনুগ্রহ করে একটি সঠিক ইমেইল ঠিকানা দিন।";
+              if(input.type === 'tel' && input.value !== '') errorMessage = "সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।";
+              if(input.type === 'checkbox') errorMessage = "শর্তাবলীতে সম্মত হতে হবে।";
+
+              // এরর মেসেজ রেন্ডার করা
+              const errorSpan = document.createElement('span');
+              errorSpan.className = 'custom-error-msg text-red-500 text-xs font-bold mt-1 block slide-in-top';
+              errorSpan.innerHTML = `<i class="fas fa-exclamation-circle mr-1"></i> ${errorMessage}`;
+              
+              if(input.type === 'checkbox') {
+                  input.closest('.group').parentElement.appendChild(errorSpan);
+              } else {
+                  input.parentElement.appendChild(errorSpan);
+              }
+
+              if(!firstInvalidInput) firstInvalidInput = input;
           }
       }
 
       if (!isValid) {
-          firstInvalidInput.reportValidity();
-          // Optional: Shake effect on form if invalid
+          // ইউজারের সুবিধার জন্য ফোকাস এবং স্ক্রল
+          firstInvalidInput.focus();
+          firstInvalidInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
           steps[currentStep].animate([
             { transform: 'translateX(-5px)' }, { transform: 'translateX(5px)' },
             { transform: 'translateX(-5px)' }, { transform: 'translateX(0)' }
@@ -616,139 +631,101 @@
           
           currentStep++;
           
-          
-          
-          
-          
-// ১. স্মার্ট জাম্প ফাংশন: যেকোনো ধাপ থেকে সরাসরি নির্দিষ্ট ধাপে যাওয়ার জন্য
-window.jumpToStep = function(stepIndex) {
-    if (typeof steps !== 'undefined' && stepIndex >= 0 && stepIndex < steps.length) {
-        steps[currentStep].classList.add('hidden');
-        steps[currentStep].classList.remove('slide-in-right', 'slide-in-left');
-        
-        // অ্যানিমেশন ডিরেকশন সেট করা
-        const animClass = stepIndex < currentStep ? 'slide-in-left' : 'slide-in-right';
-        currentStep = stepIndex;
-        
-        steps[currentStep].classList.remove('hidden');
-        steps[currentStep].classList.add(animClass);
-        
-        updateStepperUI();
-        updateButtons();
-        
-        // স্ক্রল করে ফর্মের টপে নিয়ে যাওয়া
-        window.scrollTo({ 
-            top: document.getElementById('form-view').offsetTop - 100, 
-            behavior: 'smooth' 
-        });
-    }
-}
+          // এক্সিস্টিং স্মার্ট ড্যাশবোর্ড লজিক
+          if (currentStep === 5) {
+              const previewDiv = document.getElementById('form-summary-preview');
+              const formData = new FormData(document.getElementById('member-form'));
+              
+              const val = (name) => formData.get(name) || '<span class="text-slate-400 italic text-xs">প্রদান করা হয়নি</span>';
 
-// ২. আপনার এক্সিস্টিং window.nextStep ফাংশনের ভেতরে currentStep++; এর ঠিক নিচে এই ব্লকটি বসাবেন
-// (অথবা স্টেপ পরিবর্তনের লজিকের সাথে ইন্টিগ্রেট করে নিন)
-if (currentStep === 5) {
-    const previewDiv = document.getElementById('form-summary-preview');
-    const formData = new FormData(document.getElementById('member-form'));
-    
-    // সেফ ডেটা হ্যান্ডলার (কোনো ফিল্ড ফাকা থাকলে টেক্সট দেখাবে)
-    const val = (name) => formData.get(name) || '<span class="text-slate-400 italic text-xs">প্রদান করা হয়নি</span>';
+              previewDiv.innerHTML = `
+                  <div class="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
+                      <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.7)]"></div>
+                      <h3 class="font-bold text-slate-800 text-base md:text-lg tracking-tight">আবেদনের বিবরণী পর্যালোচনা (Review)</h3>
+                  </div>
+                  
+                  <div class="space-y-6">
+                      <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group">
+                          <button type="button" onclick="jumpToStep(0)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
+                              <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
+                          </button>
+                          <h4 class="text-xs font-bold uppercase text-emerald-600 tracking-wider mb-3 flex items-center gap-1.5">
+                              <i class="fas fa-user-circle"></i> ব্যক্তিগত বিবরণ
+                          </h4>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                              <div><span class="text-slate-400 block text-xs">পুরো নাম</span><span class="text-slate-800 font-semibold">${val('full_name')}</span></div>
+                              <div><span class="text-slate-400 block text-xs">পিতার নাম</span><span class="text-slate-700 font-medium">${val('father_name')}</span></div>
+                              <div><span class="text-slate-400 block text-xs">মাতার নাম</span><span class="text-slate-700 font-medium">${val('mother_name')}</span></div>
+                              <div class="grid grid-cols-2 gap-2">
+                                  <div><span class="text-slate-400 block text-xs">জন্ম তারিখ</span><span class="text-slate-700 font-medium text-xs">${val('date_of_birth')}</span></div>
+                                  <div><span class="text-slate-400 block text-xs">রক্তের গ্রুপ</span><span class="text-slate-700 font-medium">${val('blood_group')}</span></div>
+                              </div>
+                          </div>
+                      </div>
 
-    previewDiv.innerHTML = `
-        <!-- ড্যাশবোর্ড হেডার -->
-        <div class="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
-            <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_8px_rgba(16,185,129,0.7)]"></div>
-            <h3 class="font-bold text-slate-800 text-base md:text-lg tracking-tight">
-                আবেদনের বিবরণী পর্যালোচনা (Review)
-            </h3>
-        </div>
-        
-        <div class="space-y-6">
-            <!-- ক্যাটাগরি ১: ব্যক্তিগত তথ্য -->
-            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group">
-                <button type="button" onclick="jumpToStep(0)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
-                    <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
-                </button>
-                <h4 class="text-xs font-bold uppercase text-emerald-600 tracking-wider mb-3 flex items-center gap-1.5">
-                    <i class="fas fa-user-circle"></i> ব্যক্তিগত বিবরণ
-                </h4>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div><span class="text-slate-400 block text-xs">পুরো নাম</span><span class="text-slate-800 font-semibold">${val('full_name')}</span></div>
-                    <div><span class="text-slate-400 block text-xs">পিতার নাম</span><span class="text-slate-700 font-medium">${val('father_name')}</span></div>
-                    <div><span class="text-slate-400 block text-xs">মাতার নাম</span><span class="text-slate-700 font-medium">${val('mother_name')}</span></div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><span class="text-slate-400 block text-xs">জন্ম তারিখ</span><span class="text-slate-700 font-medium text-xs">${val('date_of_birth')}</span></div>
-                        <div><span class="text-slate-400 block text-xs">রক্তের গ্রুপ</span><span class="text-slate-700 font-medium">${val('blood_group')}</span></div>
-                    </div>
-                </div>
-            </div>
+                      <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group min-w-0">
+                          <button type="button" onclick="jumpToStep(1)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
+                              <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
+                          </button>
+                          <h4 class="text-xs font-bold uppercase text-blue-600 tracking-wider mb-3 flex items-center gap-1.5">
+                              <i class="fas fa-address-book"></i> যোগাযোগ মাধ্যম
+                          </h4>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm min-w-0">
+                              <div><span class="text-slate-400 block text-xs">মোাবাইল নম্বর</span><span class="text-slate-800 font-semibold tracking-wide">${val('mobile_number')}</span></div>
+                              <div class="min-w-0 flex flex-col"><span class="text-slate-400 block text-xs">ইমেইল ঠিকানা</span><span class="text-slate-800 font-semibold break-all whitespace-pre-wrap select-all leading-tight">${val('email')}</span></div>
+                          </div>
+                      </div>
 
-            <!-- ক্যাটাগরি ২: যোগাযোগ (এখানেই ইমেইল ফিক্স করা হয়েছে) -->
-            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm relative group min-w-0">
-                <button type="button" onclick="jumpToStep(1)" class="absolute top-3 right-3 text-xs bg-slate-50 border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 px-3 py-1 rounded-lg font-semibold transition-all flex items-center gap-1">
-                    <i class="fas fa-edit text-[10px]"></i> পরিবর্তন
-                </button>
-                <h4 class="text-xs font-bold uppercase text-blue-600 tracking-wider mb-3 flex items-center gap-1.5">
-                    <i class="fas fa-address-book"></i> যোগাযোগ মাধ্যম
-                </h4>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm min-w-0">
-                    <div>
-                        <span class="text-slate-400 block text-xs">মোাবাইল নম্বর</span>
-                        <span class="text-slate-800 font-semibold tracking-wide">${val('mobile_number')}</span>
-                    </div>
-                    <!-- ইমেইল কন্টেইনার: ব্রেক-অল এবং ইনলাইন ব্লক দিয়ে সুরক্ষিত করা -->
-                    <div class="min-w-0 flex flex-col">
-                        <span class="text-slate-400 block text-xs">ইমেইল ঠিকানা</span>
-                        <span class="text-slate-800 font-semibold break-all whitespace-pre-wrap select-all leading-tight">${val('email')}</span>
-                    </div>
-                </div>
-            </div>
+                      <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm text-sm space-y-4">
+                          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-slate-50 pb-3">
+                              <div class="relative">
+                                  <span class="text-slate-400 block text-xs">শিক্ষাগত যোগ্যতা</span><span class="text-slate-700 font-semibold">${val('education')}</span>
+                                  <button type="button" onclick="jumpToStep(3)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
+                              </div>
+                              <div><span class="text-slate-400 block text-xs">বর্তমান পেশা</span><span class="text-slate-700 font-semibold">${val('occupation')}</span></div>
+                              <div class="relative">
+                                  <span class="text-slate-400 block text-xs">সদস্যপদের ধরন</span><span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md inline-block text-xs mt-0.5 border border-emerald-100">${val('membership_type')}</span>
+                                  <button type="button" onclick="jumpToStep(4)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
+                              </div>
+                          </div>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
+                              <button type="button" onclick="jumpToStep(2)" class="absolute -top-1 right-0 text-xs text-emerald-600 hover:underline font-medium">ঠিকানা সম্পাদনা</button>
+                              <div><span class="text-slate-400 block text-xs">বর্তমান ঠিকানা</span><p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('present_address')}</p></div>
+                              <div><span class="text-slate-400 block text-xs">স্থায়ী ঠিকানা</span><p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('permanent_address')}</p></div>
+                          </div>
+                      </div>
+                  </div>
+              `;
+              previewDiv.classList.remove('hidden');
+          }
 
-            <!-- ক্যাটাগরি ৩: ঠিকানা, শিক্ষা ও সদস্যপদ -->
-            <div class="bg-white border border-slate-100 rounded-xl p-4 shadow-sm text-sm space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-slate-50 pb-3">
-                    <div class="relative">
-                        <span class="text-slate-400 block text-xs">শিক্ষাগত যোগ্যতা</span>
-                        <span class="text-slate-700 font-semibold">${val('education')}</span>
-                        <button type="button" onclick="jumpToStep(3)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
-                    </div>
-                    <div>
-                        <span class="text-slate-400 block text-xs">বর্তমান পেশা</span>
-                        <span class="text-slate-700 font-semibold">${val('occupation')}</span>
-                    </div>
-                    <div class="relative">
-                        <span class="text-slate-400 block text-xs">সদস্যপদের ধরন</span>
-                        <span class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md inline-block text-xs mt-0.5 border border-emerald-100">${val('membership_type')}</span>
-                        <button type="button" onclick="jumpToStep(4)" class="text-[11px] text-emerald-600 hover:underline mt-0.5 block font-medium">সম্পাদনা</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 relative">
-                    <button type="button" onclick="jumpToStep(2)" class="absolute -top-1 right-0 text-xs text-emerald-600 hover:underline font-medium">ঠিকানা সম্পাদনা</button>
-                    <div>
-                        <span class="text-slate-400 block text-xs">বর্তমান ঠিকানা</span>
-                        <p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('present_address')}</p>
-                    </div>
-                    <div>
-                        <span class="text-slate-400 block text-xs">স্থায়ী ঠিকানা</span>
-                        <p class="text-slate-600 text-xs font-medium leading-relaxed mt-1 bg-slate-50 p-2 rounded-lg border border-slate-100">${val('permanent_address')}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    previewDiv.classList.remove('hidden');
-}
-
-          
-          
-          
           steps[currentStep].classList.remove('hidden');
           steps[currentStep].classList.add('slide-in-right');
           
           updateStepperUI();
           updateButtons();
           window.scrollTo({ top: document.getElementById('form-view').offsetTop - 100, behavior: 'smooth' });
+      }
+  }
+
+  window.jumpToStep = function(stepIndex) {
+      if (typeof steps !== 'undefined' && stepIndex >= 0 && stepIndex < steps.length) {
+          steps[currentStep].classList.add('hidden');
+          steps[currentStep].classList.remove('slide-in-right', 'slide-in-left');
+          
+          const animClass = stepIndex < currentStep ? 'slide-in-left' : 'slide-in-right';
+          currentStep = stepIndex;
+          
+          steps[currentStep].classList.remove('hidden');
+          steps[currentStep].classList.add(animClass);
+          
+          updateStepperUI();
+          updateButtons();
+          
+          window.scrollTo({ 
+              top: document.getElementById('form-view').offsetTop - 100, 
+              behavior: 'smooth' 
+          });
       }
   }
 
@@ -784,7 +761,36 @@ if (currentStep === 5) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  document.addEventListener('DOMContentLoaded', initSteps);
+  // রিয়েল-টাইম চেকিং ও ইনিশিয়ালাইজেশন
+  document.addEventListener('DOMContentLoaded', () => {
+      initSteps();
+      
+      // জন্ম তারিখে ভবিষ্যতের কোনো দিন সিলেক্ট করা বন্ধ করা
+      const dobInput = document.querySelector('input[name="date_of_birth"]');
+      if(dobInput) {
+          const today = new Date().toISOString().split('T')[0];
+          dobInput.setAttribute('max', today);
+      }
+
+      // ইউজার টাইপ করার সাথে সাথে এরর মেসেজ হাইড করা (স্মার্ট ফিল)
+      document.querySelectorAll('#member-form input, #member-form select, #member-form textarea').forEach(input => {
+          input.addEventListener('input', function() {
+              if (this.checkValidity()) {
+                  this.classList.remove('border-red-500', 'bg-red-50');
+                  const err = this.parentElement.querySelector('.custom-error-msg');
+                  if(err) err.remove();
+              }
+          });
+          
+          input.addEventListener('change', function() {
+              if (this.checkValidity()) {
+                  this.classList.remove('border-red-500', 'bg-red-50');
+                  const err = this.parentElement.querySelector('.custom-error-msg');
+                  if(err) err.remove();
+              }
+          });
+      });
+  });
 </script>
 
 <script type="text/javascript">
