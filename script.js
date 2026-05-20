@@ -297,75 +297,49 @@ window.addEventListener('scroll', () => {
 
 
 //ইনস্টাল পপ আপ 
-/**
- * Ultimate Smart PWA Installer Script
- */
-
 document.addEventListener("DOMContentLoaded", () => {
   const installBtn = document.getElementById('smartInstallBtn');
   let deferredPrompt;
 
-  // ১. সেফটি চেক: যদি কোনো পেজে এই বাটনটি না থাকে, তবে কোড ক্র্যাশ করবে না
   if (!installBtn) return;
 
-  // ২. অলরেডি ইনস্টলড চেক: অ্যাপটি যদি অলরেডি ইনস্টল করা থাকে এবং অ্যাপ মোডে ওপেন হয়, তবে বাটনটি দেখাবেই না
-  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
-    installBtn.style.display = 'none';
-    return;
-  }
-
-  // ৩. ব্রাউজার রেডি হলে ইনস্টল বাটন স্মুথলি শো করবে
+  // ১. ব্রাউজারের ডিফল্ট প্রম্পট আসার সাথে সাথে সেটাকে আটকে দিয়ে আমাদের বাটন দেখাবো
   window.addEventListener('beforeinstallprompt', (e) => {
-    // ব্রাউজারের নিজস্ব পপআপ আটকান
-    e.preventDefault();
+    // ক্রোম বা অন্য ব্রাউজারের ডিফল্ট পপআপ (যা স্ক্রিনশটে দেখছেন) সেটি জোরপূর্বক আটকানো হলো
+    e.preventDefault(); 
+    
+    // ইভেন্টটি সেভ করে রাখা হলো
     deferredPrompt = e;
     
-    // বাটনটিকে ন্যাভবারে শো করানো
-    installBtn.style.display = 'inline-flex';
-    installBtn.style.opacity = '0';
+    // ব্রাউজারের পপআপ আটকে এখন আমাদের ন্যাভবারের বাটনটি সরাসরি শো করানো হচ্ছে
+    installBtn.style.setProperty('display', 'inline-flex', 'important');
+    installBtn.style.opacity = '1';
     
-    // মডার্ন ফেড-ইন অ্যানিমেশন ইফেক্ট
-    setTimeout(() => {
-      installBtn.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-      installBtn.style.opacity = '1';
-    }, 50);
+    console.log("Browser's default prompt blocked. Custom Nav button is now forced to show.");
   });
 
-  // ৪. বাটনে ক্লিক করলে কাস্টম ইনস্টল প্রম্পট আসবে
+  // ২. ন্যাভবারের বাটনে ক্লিক করলে তখন ব্রাউজারের আসল প্রম্পটটি ওপেন হবে
   installBtn.addEventListener('click', async () => {
     if (!deferredPrompt) return;
     
-    // ব্রাউজারের প্রম্পটটি দেখান
+    // ইউজারের ক্লিকের পর পপআপটি ওপেন হবে
     deferredPrompt.prompt();
     
-    // ইউজারের ডিসিশন ট্র্যাক করা
     const { outcome } = await deferredPrompt.userChoice;
-    console.log(`User choice: ${outcome}`);
+    console.log(`User response: ${outcome}`);
     
-    // প্রম্পট রিসেট এবং বাটন হাইড
+    // কাজ শেষ হলে বাটন হাইড
     deferredPrompt = null;
     installBtn.style.display = 'none';
   });
 
-  // ৫. ইনস্টল সফলভাবে শেষ হলে বাটন চিরতরে হাইড
+  // ৩. অলরেডি ইনস্টল করা থাকলে বাটন লুকিয়ে রাখা
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    installBtn.style.display = 'none';
+  }
+
   window.addEventListener('appinstalled', () => {
-    console.log('PWA App Installed Successfully!');
     installBtn.style.display = 'none';
     deferredPrompt = null;
   });
 });
-
-
-// ৬. সার্ভিস ওয়ার্কার কানেক্ট করা (PWA এর বাটন কাজ করার জন্য এটি বাধ্যতামূলক)
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    // আপনার মূল ডিরেক্টরিতে sw.js ফাইলটি থাকতে হবে
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('Smart Service Worker active with scope: ', registration.scope);
-      })
-      .catch((error) => {
-        console.error('Service Worker registration failed: ', error);
-      });
-  });
-}
