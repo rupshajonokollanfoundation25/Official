@@ -997,8 +997,36 @@ body.dark-mode .main-footer {
 
 
 
+/*ইনস্টাল পপ আপ*/
 
 
+/* Glassmorphism & Minimalist Button Style */
+.glass-install-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(255, 255, 255, 0.1); /* হালকা গ্লাস ইফেক্ট */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  color: inherit; /* ন্যাভবারের কালার অনুযায়ী সেট হবে */
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
 
+/* হোভার ইফেক্ট (স্মার্ট অ্যানিমেশন) */
+.glass-install-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
 
-/* ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম*/
+.glass-install-btn:active {
+  transform: translateY(0);
+}
