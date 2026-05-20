@@ -296,7 +296,50 @@ window.addEventListener('scroll', () => {
 
 
 
+//ইনস্টাল পপ আপ 
 
+document.addEventListener("DOMContentLoaded", () => {
+  let deferredPrompt;
+  const installBtn = document.getElementById('smartInstallBtn');
 
-// ওয়েবসাইটের ভিউ কাউন্ট রিয়েলটাইম
+  // ব্রাউজার যখন ইনস্টল করার জন্য রেডি হবে
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // বাটনটিকে স্মুথলি ভিজিবল করা
+    installBtn.style.display = 'inline-flex';
+    
+    // ন্যাচারাল ট্রানজিশনের জন্য একটু ডিলে দিয়ে অপাসিটি বাড়ানো
+    installBtn.style.opacity = '0';
+    setTimeout(() => {
+      installBtn.style.transition = 'opacity 0.5s ease';
+      installBtn.style.opacity = '1';
+    }, 10);
+  });
+
+  // বাটনে ক্লিক করলে স্মার্ট প্রম্পট পপআপ হবে
+  installBtn.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    if (outcome === 'accepted') {
+      console.log('User accepted the install prompt');
+    } else {
+      console.log('User dismissed the install prompt');
+    }
+    
+    deferredPrompt = null;
+    installBtn.style.display = 'none';
+  });
+
+  // অ্যাপ অলরেডি ইনস্টল হয়ে থাকলে বাটন হাইড হয়ে যাবে
+  window.addEventListener('appinstalled', () => {
+    installBtn.style.display = 'none';
+    deferredPrompt = null;
+  });
+});
+
 
