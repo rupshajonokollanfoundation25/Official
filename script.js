@@ -297,49 +297,75 @@ window.addEventListener('scroll', () => {
 
 
 //ইনস্টাল পপ আপ 
+/**
+ * Ultimate Smart PWA Installer Script
+ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  let deferredPrompt;
   const installBtn = document.getElementById('smartInstallBtn');
+  let deferredPrompt;
 
-  // ব্রাউজার যখন ইনস্টল করার জন্য রেডি হবে
+  // ১. সেফটি চেক: যদি কোনো পেজে এই বাটনটি না থাকে, তবে কোড ক্র্যাশ করবে না
+  if (!installBtn) return;
+
+  // ২. অলরেডি ইনস্টলড চেক: অ্যাপটি যদি অলরেডি ইনস্টল করা থাকে এবং অ্যাপ মোডে ওপেন হয়, তবে বাটনটি দেখাবেই না
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+    installBtn.style.display = 'none';
+    return;
+  }
+
+  // ৩. ব্রাউজার রেডি হলে ইনস্টল বাটন স্মুথলি শো করবে
   window.addEventListener('beforeinstallprompt', (e) => {
+    // ব্রাউজারের নিজস্ব পপআপ আটকান
     e.preventDefault();
     deferredPrompt = e;
     
-    // বাটনটিকে স্মুথলি ভিজিবল করা
+    // বাটনটিকে ন্যাভবারে শো করানো
     installBtn.style.display = 'inline-flex';
-    
-    // ন্যাচারাল ট্রানজিশনের জন্য একটু ডিলে দিয়ে অপাসিটি বাড়ানো
     installBtn.style.opacity = '0';
+    
+    // মডার্ন ফেড-ইন অ্যানিমেশন ইফেক্ট
     setTimeout(() => {
-      installBtn.style.transition = 'opacity 0.5s ease';
+      installBtn.style.transition = 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
       installBtn.style.opacity = '1';
-    }, 10);
+    }, 50);
   });
 
-  // বাটনে ক্লিক করলে স্মার্ট প্রম্পট পপআপ হবে
+  // ৪. বাটনে ক্লিক করলে কাস্টম ইনস্টল প্রম্পট আসবে
   installBtn.addEventListener('click', async () => {
     if (!deferredPrompt) return;
     
+    // ব্রাউজারের প্রম্পটটি দেখান
     deferredPrompt.prompt();
+    
+    // ইউজারের ডিসিশন ট্র্যাক করা
     const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User choice: ${outcome}`);
     
-    if (outcome === 'accepted') {
-      console.log('User accepted the install prompt');
-    } else {
-      console.log('User dismissed the install prompt');
-    }
-    
+    // প্রম্পট রিসেট এবং বাটন হাইড
     deferredPrompt = null;
     installBtn.style.display = 'none';
   });
 
-  // অ্যাপ অলরেডি ইনস্টল হয়ে থাকলে বাটন হাইড হয়ে যাবে
+  // ৫. ইনস্টল সফলভাবে শেষ হলে বাটন চিরতরে হাইড
   window.addEventListener('appinstalled', () => {
+    console.log('PWA App Installed Successfully!');
     installBtn.style.display = 'none';
     deferredPrompt = null;
   });
 });
 
 
+// ৬. সার্ভিস ওয়ার্কার কানেক্ট করা (PWA এর বাটন কাজ করার জন্য এটি বাধ্যতামূলক)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // আপনার মূল ডিরেক্টরিতে sw.js ফাইলটি থাকতে হবে
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('Smart Service Worker active with scope: ', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed: ', error);
+      });
+  });
+}
