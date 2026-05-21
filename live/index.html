@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProMax Admin | Live Broadcast</title>
+    <title>ProMax Admin Panel</title>
     <link rel="stylesheet" href="style.css">
-    <!-- আইকন ও PeerJS -->
+    <!-- আইকন এবং PeerJS ক্লাউড লাইব্রেরি -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 </head>
 <body>
 
-    <!-- গ্লোবাল লোডার (অ্যাকশনের সময় দেখাবে) -->
+    <!-- ব্যাকগ্রাউন্ড গ্লোবাল লোডার ইন্টারফেস -->
     <div id="loader" class="loader-overlay hidden">
         <div class="spinner"></div>
     </div>
 
-    <!-- স্মার্ট টোস্ট নোটিফিকেশন -->
+    <!-- প্রো ম্যাক্স টোস্ট নোটিফিকেশন বক্স -->
     <div id="toast" class="toast">
         <i id="toast-icon" class="fa-solid"></i>
-        <span id="toast-msg">মেসেজ</span>
+        <span id="toast-msg">নোটিফিকেশন মেসেজ</span>
     </div>
 
-    <!-- ================= লগইন সেকশন ================= -->
+    <!-- ================= লগইন ইন্টারফেস ================= -->
     <main id="login-section" class="screen-container active">
         <div class="glass-card login-box">
             <div class="icon-header">
@@ -57,26 +57,30 @@
         </div>
     </main>
 
-    <!-- ================= ড্যাশবোর্ড সেকশন ================= -->
+    <!-- ================= ড্যাশবোর্ড ইন্টারফেস ================= -->
     <main id="dashboard-section" class="screen-container hidden">
         <div class="dashboard-layout">
             
-            <!-- টপ নেভিগেশন -->
+            <!-- টপ নেভিগেশন বার (প্রোফাইল বক্স ফিক্সড) -->
             <nav class="top-nav glass-card">
                 <div class="brand">
                     <i class="fa-solid fa-satellite-dish"></i> ProMax Live
                 </div>
-                <div class="profile-area">
+                
+                <!-- নতুন রি-ডিজাইন করা স্মার্ট প্রোফাইল উইজেট বক্স -->
+                <div class="profile-widget">
+                    <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
                     <div class="profile-info">
-                        <h4 id="user-name">Admin</h4>
+                        <h4 id="user-name">Pro Admin</h4>
                         <span class="badge">Verified <i class="fa-solid fa-circle-check"></i></span>
                     </div>
-                    <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
-                    <button id="btn-logout" class="btn-logout" title="লগআউট"><i class="fa-solid fa-power-off"></i></button>
+                    <button id="btn-logout" class="btn-logout" title="লগআউট">
+                        <i class="fa-solid fa-power-off"></i>
+                    </button>
                 </div>
             </nav>
 
-            <!-- মেইন কন্ট্রোল প্যানেল -->
+            <!-- মেইন ব্রডকাস্ট কন্ট্রোল রুম -->
             <div class="control-panel glass-card">
                 <div class="status-indicator">
                     <div class="pulse-ring"></div>
@@ -102,7 +106,7 @@
         </div>
     </main>
 
-    <!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
+    <!-- ব্যাকএন্ড স্ক্রিপ্ট মডিউল -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
