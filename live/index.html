@@ -3,83 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Admin Panel - Live Stream</title>
+    <title>ProMax Admin | Live Broadcast</title>
     <link rel="stylesheet" href="style.css">
+    <!-- আইকন ও PeerJS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <!-- কাস্টম অ্যালার্ট বক্স (ইরর বা সাকসেস মেসেজ দেখানোর জন্য) -->
-    <div id="toast-box" class="toast hidden">
-        <i id="toast-icon" class="fa-solid"></i>
-        <span id="toast-msg">মেসেজ এখানে দেখাবে</span>
+    <!-- গ্লোবাল লোডার (অ্যাকশনের সময় দেখাবে) -->
+    <div id="loader" class="loader-overlay hidden">
+        <div class="spinner"></div>
     </div>
 
-    <!-- লগইন স্ক্রিন -->
-    <div id="login-section" class="container active">
-        <div class="login-box">
-            <i class="fa-solid fa-user-shield auth-icon"></i>
-            <h2>প্রো অ্যাডমিন প্যানেল</h2>
-            <p>শুধুমাত্র অনুমোদিত অ্যাডমিন</p>
+    <!-- স্মার্ট টোস্ট নোটিফিকেশন -->
+    <div id="toast" class="toast">
+        <i id="toast-icon" class="fa-solid"></i>
+        <span id="toast-msg">মেসেজ</span>
+    </div>
 
-            <div class="input-group">
+    <!-- ================= লগইন সেকশন ================= -->
+    <main id="login-section" class="screen-container active">
+        <div class="glass-card login-box">
+            <div class="icon-header">
+                <i class="fa-solid fa-fingerprint"></i>
+            </div>
+            <h2>অ্যাডমিন অ্যাক্সেস</h2>
+            <p class="subtitle">শুধুমাত্র অনুমোদিত ইমেইল গ্রহণ করা হবে</p>
+
+            <div class="input-wrapper">
                 <i class="fa-solid fa-envelope"></i>
-                <input type="email" id="email-input" placeholder="আপনার ইমেইল দিন">
+                <input type="email" id="email-input" placeholder="অ্যাডমিন ইমেইল দিন">
             </div>
             
-            <div class="input-group">
+            <div class="input-wrapper">
                 <i class="fa-solid fa-lock"></i>
                 <input type="password" id="password-input" placeholder="পাসওয়ার্ড দিন">
             </div>
 
-            <div class="action-links">
+            <div class="forgot-pass">
                 <span id="btn-forgot-password">পাসওয়ার্ড ভুলে গেছেন?</span>
             </div>
 
-            <button id="btn-login-email" class="btn-primary w-100">
+            <button id="btn-login-email" class="btn-primary">
                 <i class="fa-solid fa-right-to-bracket"></i> লগইন করুন
             </button>
 
-            <div class="divider">অথবা</div>
+            <div class="divider"><span>OR</span></div>
 
             <button id="btn-login-google" class="btn-google">
-                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google"> Google দিয়ে লগইন
+                <i class="fa-brands fa-google"></i> Google দিয়ে লগইন
             </button>
         </div>
-    </div>
+    </main>
 
-    <!-- অ্যাডমিন ড্যাশবোর্ড (লগইন করার পর) -->
-    <div id="dashboard-section" class="container hidden">
-        <div class="header">
-            <div class="user-info">
-                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Admin">
-                <div>
-                    <h3 id="user-name">অ্যাডমিন</h3>
-                    <p class="status-badge"><i class="fa-solid fa-check-circle"></i> ভেরিফায়েড অ্যাডমিন</p>
+    <!-- ================= ড্যাশবোর্ড সেকশন ================= -->
+    <main id="dashboard-section" class="screen-container hidden">
+        <div class="dashboard-layout">
+            
+            <!-- টপ নেভিগেশন -->
+            <nav class="top-nav glass-card">
+                <div class="brand">
+                    <i class="fa-solid fa-satellite-dish"></i> ProMax Live
                 </div>
-            </div>
-            <button id="btn-logout" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</button>
-        </div>
+                <div class="profile-area">
+                    <div class="profile-info">
+                        <h4 id="user-name">Admin</h4>
+                        <span class="badge">Verified <i class="fa-solid fa-circle-check"></i></span>
+                    </div>
+                    <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+                    <button id="btn-logout" class="btn-logout" title="লগআউট"><i class="fa-solid fa-power-off"></i></button>
+                </div>
+            </nav>
 
-        <div class="dashboard-content">
-            <div class="control-card">
-                <div class="pulse-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
-                <h2>লাইভ ব্রডকাস্ট কন্ট্রোল</h2>
-                <p>আপনার রিয়েল-টাইম আইডি: <span id="my-id" class="highlight">তৈরি হচ্ছে...</span></p>
+            <!-- মেইন কন্ট্রোল প্যানেল -->
+            <div class="control-panel glass-card">
+                <div class="status-indicator">
+                    <div class="pulse-ring"></div>
+                    <i class="fa-solid fa-tower-broadcast"></i>
+                </div>
+                <h2>ব্রডকাস্ট কন্ট্রোল রুম</h2>
                 
-                <div class="action-buttons">
-                    <button id="btn-start-live" class="btn-primary w-100">
-                        <i class="fa-solid fa-desktop"></i> স্ক্রিন শেয়ার শুরু করুন
+                <div class="id-display">
+                    <span>আপনার রিয়েল-টাইম আইডি:</span>
+                    <strong id="my-id">কানেক্ট হচ্ছে...</strong>
+                </div>
+                
+                <div class="action-area">
+                    <button id="btn-start-live" class="btn-glow">
+                        <i class="fa-solid fa-desktop"></i> লাইভ স্ক্রিন শেয়ার শুরু করুন
                     </button>
-                    <button id="btn-stop-live" class="btn-danger w-100 hidden">
-                        <i class="fa-solid fa-stop-circle"></i> লাইভ বন্ধ করুন
+                    <button id="btn-stop-live" class="btn-danger hidden">
+                        <i class="fa-solid fa-stop"></i> লাইভ বন্ধ করুন
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
 
+        </div>
+    </main>
+
+    <!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
     <script type="module" src="script.js"></script>
 </body>
 </html>
