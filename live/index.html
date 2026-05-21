@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Admin Panel - Live Stream</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- কাস্টম অ্যালার্ট বক্স (ইরর বা সাকসেস মেসেজ দেখানোর জন্য) -->
+    <div id="toast-box" class="toast hidden">
+        <i id="toast-icon" class="fa-solid"></i>
+        <span id="toast-msg">মেসেজ এখানে দেখাবে</span>
+    </div>
+
+    <!-- লগইন স্ক্রিন -->
+    <div id="login-section" class="container active">
+        <div class="login-box">
+            <i class="fa-solid fa-user-shield auth-icon"></i>
+            <h2>প্রো অ্যাডমিন প্যানেল</h2>
+            <p>শুধুমাত্র অনুমোদিত অ্যাডমিন</p>
+
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="email-input" placeholder="আপনার ইমেইল দিন">
+            </div>
+            
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="password-input" placeholder="পাসওয়ার্ড দিন">
+            </div>
+
+            <div class="action-links">
+                <span id="btn-forgot-password">পাসওয়ার্ড ভুলে গেছেন?</span>
+            </div>
+
+            <button id="btn-login-email" class="btn-primary w-100">
+                <i class="fa-solid fa-right-to-bracket"></i> লগইন করুন
+            </button>
+
+            <div class="divider">অথবা</div>
+
+            <button id="btn-login-google" class="btn-google">
+                <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" alt="Google"> Google দিয়ে লগইন
+            </button>
+        </div>
+    </div>
+
+    <!-- অ্যাডমিন ড্যাশবোর্ড (লগইন করার পর) -->
+    <div id="dashboard-section" class="container hidden">
+        <div class="header">
+            <div class="user-info">
+                <img id="user-photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Admin">
+                <div>
+                    <h3 id="user-name">অ্যাডমিন</h3>
+                    <p class="status-badge"><i class="fa-solid fa-check-circle"></i> ভেরিফায়েড অ্যাডমিন</p>
+                </div>
+            </div>
+            <button id="btn-logout" class="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</button>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="control-card">
+                <div class="pulse-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+                <h2>লাইভ ব্রডকাস্ট কন্ট্রোল</h2>
+                <p>আপনার রিয়েল-টাইম আইডি: <span id="my-id" class="highlight">তৈরি হচ্ছে...</span></p>
+                
+                <div class="action-buttons">
+                    <button id="btn-start-live" class="btn-primary w-100">
+                        <i class="fa-solid fa-desktop"></i> স্ক্রিন শেয়ার শুরু করুন
+                    </button>
+                    <button id="btn-stop-live" class="btn-danger w-100 hidden">
+                        <i class="fa-solid fa-stop-circle"></i> লাইভ বন্ধ করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
