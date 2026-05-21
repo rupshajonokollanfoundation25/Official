@@ -1,92 +1,94 @@
-/* আগের CSS-এর নিচে এগুলো যোগ করুন */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-.w-100 { width: 100%; }
-
-.input-group {
-    position: relative;
-    margin-bottom: 15px;
-    margin-top: 20px;
+:root {
+    --bg-main: #090e17;
+    --card-bg: rgba(20, 27, 45, 0.7);
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --danger: #ef4444;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-.input-group i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+/* Utility Classes */
+.hidden { display: none !important; }
+.active { display: flex !important; animation: fadeIn 0.4s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Glassmorphism Card */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.input-group input {
-    width: 100%;
-    padding: 12px 15px 12px 45px;
-    background: #1f2937;
-    border: 1px solid #374151;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    outline: none;
-    transition: 0.3s;
+.screen-container { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+/* ================= Login Box ================= */
+.login-box { width: 100%; max-width: 450px; padding: 40px; text-align: center; }
+.icon-header i { font-size: 3.5rem; color: var(--primary); margin-bottom: 10px; }
+.login-box h2 { font-size: 1.8rem; margin-bottom: 5px; }
+.subtitle { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+
+.input-wrapper { position: relative; margin-bottom: 20px; }
+.input-wrapper i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+.input-wrapper input {
+    width: 100%; padding: 15px 15px 15px 50px; background: rgba(0,0,0,0.2);
+    border: 1px solid var(--border); border-radius: 12px; color: #fff; outline: none; transition: 0.3s;
 }
+.input-wrapper input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
 
-.input-group input:focus { border-color: #3b82f6; }
+.forgot-pass { text-align: right; margin-bottom: 25px; font-size: 0.9rem; }
+.forgot-pass span { color: var(--primary); cursor: pointer; transition: 0.3s; }
+.forgot-pass span:hover { text-decoration: underline; }
 
-.action-links {
-    text-align: right;
-    margin-bottom: 20px;
-}
+/* Buttons */
+button { width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+.btn-google { background: #fff; color: #111; margin-top: 15px; }
+.btn-google:hover { background: #f1f5f9; transform: translateY(-2px); }
 
-#btn-forgot-password {
-    color: #3b82f6;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
+.divider { margin: 25px 0; position: relative; text-align: center; }
+.divider::before { content: ""; position: absolute; left: 0; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.divider::after { content: ""; position: absolute; right: 0; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.divider span { color: var(--text-muted); font-size: 0.9rem; background: var(--bg-main); padding: 0 10px; position: relative; z-index: 1; }
 
-#btn-forgot-password:hover { text-decoration: underline; }
+/* ================= Dashboard ================= */
+.dashboard-layout { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 20px; }
 
-.divider {
-    text-align: center;
-    margin: 20px 0;
-    color: #6b7280;
-    font-size: 0.9rem;
-    position: relative;
-}
-.divider::before, .divider::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    width: 40%;
-    height: 1px;
-    background: #374151;
-}
-.divider::before { left: 0; }
-.divider::after { right: 0; }
+.top-nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; }
+.brand { font-size: 1.5rem; font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+.profile-area { display: flex; align-items: center; gap: 15px; }
+.profile-info { text-align: right; }
+.profile-info h4 { margin-bottom: 2px; }
+.badge { font-size: 0.75rem; background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 3px 8px; border-radius: 20px; }
+#user-photo { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+.btn-logout { width: auto; background: rgba(239, 68, 68, 0.1); color: var(--danger); padding: 12px; border-radius: 50%; }
+.btn-logout:hover { background: var(--danger); color: #fff; }
 
-.btn-google img {
-    width: 20px;
-    margin-right: 10px;
-}
+.control-panel { padding: 50px 30px; text-align: center; margin-top: 20px; }
+.status-indicator { position: relative; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; background: rgba(59, 130, 246, 0.1); border-radius: 50%; font-size: 2rem; color: var(--primary); transition: 0.3s; }
+.id-display { margin: 25px 0; font-size: 1.1rem; }
+#my-id { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 8px; letter-spacing: 1px; color: #4ade80; user-select: all; }
 
-/* কাস্টম টোস্ট নোটিফিকেশন (Error/Success Message) */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: -300px;
-    background: #1f2937;
-    color: #fff;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: right 0.4s ease-in-out;
-    z-index: 1000;
-    border-left: 5px solid #3b82f6;
-}
+.btn-glow { background: var(--primary); color: #fff; box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); width: auto; margin: 0 auto; padding: 15px 40px; }
+.btn-glow:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.8); transform: scale(1.05); }
+.btn-danger { background: var(--danger); color: #fff; width: auto; margin: 0 auto; padding: 15px 40px; }
 
-.toast.show { right: 20px; }
-.toast.error { border-left-color: #ef4444; }
+/* ================= Toast & Loader ================= */
+.toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--border); padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; gap: 12px; transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+.toast.show { bottom: 30px; }
+.toast.success i { color: #4ade80; }
 .toast.error i { color: #ef4444; }
-.toast.success { border-left-color: #22c55e; }
-.toast.success i { color: #22c55e; }
+
+.loader-overlay { position: fixed; inset: 0; background: rgba(9, 14, 23, 0.9); z-index: 9999; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+.spinner { width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
