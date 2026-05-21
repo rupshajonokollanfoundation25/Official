@@ -2,6 +2,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/fireba
 import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 import { getDatabase, ref, set, onDisconnect } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-database.js";
 
+// 🔴 সিকিউরিটি জোন: এখানে আপনার অনুমোদিত ইমেইলগুলোর লিস্ট দিন
+const ALLOWED_EMAILS = [
+    "imranahmedimran8911@gmail.com",
+    "imranmahbub9@gmail.com",
+    "imran.info.me@gmail.com"
+]; 
+
+// আপনার ফায়ারবেস কনফিগারেশন
 const firebaseConfig = {
   apiKey: "AIzaSyDZ-VBMlJsPscpM4RoxZDiPFOHfSzlLRDw",
   authDomain: "imran-bro-ddc88.firebaseapp.com",
@@ -9,156 +17,192 @@ const firebaseConfig = {
   projectId: "imran-bro-ddc88",
   storageBucket: "imran-bro-ddc88.firebasestorage.app",
   messagingSenderId: "1088716769061",
-  appId: "1:1088716769061:web:c90307ec5f21899b27bccc",
-  measurementId: "G-VDXLSDEL2S"
+  appId: "1:1088716769061:web:c90307ec5f21899b27bccc"
 };
 
+// ফায়ারবেস ইনিশিয়ালাইজ
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 const database = getDatabase(app);
+const googleProvider = new GoogleAuthProvider();
 
-// 🔴 শুধুমাত্র এই ইমেইলটি লগইন করতে পারবে! 
-const ALLOWED_ADMIN_EMAIL = "admin@example.com"; // এখানে আপনার আসল ইমেইল দিন
+// ==========================================
+// UI Utilities (লোডার এবং স্মার্ট টোস্ট)
+// ==========================================
+const loader = document.getElementById('loader');
+const showLoader = () => loader.classList.remove('hidden');
+const hideLoader = () => loader.classList.add('hidden');
 
-// UI Elements
-const loginSection = document.getElementById('login-section');
-const dashboardSection = document.getElementById('dashboard-section');
-const emailInput = document.getElementById('email-input');
-const passwordInput = document.getElementById('password-input');
-
-// কাস্টম টোস্ট ফাংশন (Smart Error Handling)
-function showToast(msg, type = "error") {
-    const toast = document.getElementById('toast-box');
-    const icon = document.getElementById('toast-icon');
+function showToast(msg, type = 'error') {
+    const toast = document.getElementById('toast');
     document.getElementById('toast-msg').innerText = msg;
+    const icon = document.getElementById('toast-icon');
     
-    toast.className = "toast show " + type;
-    icon.className = type === "error" ? "fa-solid fa-circle-xmark" : "fa-solid fa-circle-check";
+    toast.className = `toast show ${type}`;
+    icon.className = type === 'success' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
     
-    setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    setTimeout(() => toast.classList.remove('show'), 4000);
 }
 
 // ==========================================
-// লগইন সিস্টেম
+// স্মার্ট Auth Logic (মাল্টি-ইমেইল চেকিং)
 // ==========================================
+const loginSection = document.getElementById('login-section');
+const dashboardSection = document.getElementById('dashboard-section');
 
-// ইমেইল-পাসওয়ার্ড লগইন
-document.getElementById('btn-login-email').addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+// ১. ইমেইল-পাসওয়ার্ড দিয়ে লগইন
+document.getElementById('btn-login-email').addEventListener('click', async () => {
+    const email = document.getElementById('email-input').value.trim();
+    const password = document.getElementById('password-input').value;
 
-    if (!email || !password) return showToast("ইমেইল এবং পাসওয়ার্ড দিন!");
+    if (!email || !password) return showToast('দয়া করে ইমেইল ও পাসওয়ার্ড দিন!');
     
-    // সিকিউরিটি চেক
-    if (email !== ALLOWED_ADMIN_EMAIL) {
-        return showToast("আপনার এই প্যানেলে প্রবেশাধিকার নেই!", "error");
-    }
+    // ইমেইল লিস্টে আছে কিনা চেক করা
+    if (!ALLOWED_EMAILS.includes(email)) return showToast('আপনি অনুমোদিত অ্যাডমিন নন!', 'error');
 
-    signInWithEmailAndPassword(auth, email, password)
-        .catch(error => {
-            if(error.code === 'auth/wrong-password') showToast("ভুল পাসওয়ার্ড!");
-            else if(error.code === 'auth/user-not-found') showToast("এই ইমেইলটি রেজিস্টার্ড নয়!");
-            else showToast(error.message);
-        });
+    showLoader();
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+        hideLoader();
+        if(error.code === 'auth/invalid-credential') showToast('ভুল ইমেইল বা পাসওয়ার্ড!');
+        else showToast(error.message);
+    }
 });
 
-// গুগল লগইন
-document.getElementById('btn-login-google').addEventListener('click', () => {
-    signInWithPopup(auth, provider).then((result) => {
-        // গুগল দিয়ে লগইন করার পরও ইমেইল চেক করবে
-        if (result.user.email !== ALLOWED_ADMIN_EMAIL) {
-            signOut(auth); // ইমেইল না মিললে সাথে সাথে লগআউট
-            showToast("আপনি অনুমোদিত অ্যাডমিন নন!", "error");
+// ২. Google দিয়ে লগইন
+document.getElementById('btn-login-google').addEventListener('click', async () => {
+    showLoader();
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        
+        // গুগল দিয়ে লগইন করলেও ইমেইল লিস্ট চেক করবে
+        if (!ALLOWED_EMAILS.includes(result.user.email)) {
+            await signOut(auth);
+            hideLoader();
+            showToast('অ্যাক্সেস ডিনাইড! শুধুমাত্র অনুমোদিত ইমেইল গ্রহণ করা হয়।', 'error');
         }
-    }).catch(error => showToast(error.message, "error"));
-});
-
-// পাসওয়ার্ড রিসেট (Forgot Password)
-document.getElementById('btn-forgot-password').addEventListener('click', () => {
-    const email = emailInput.value.trim();
-    if (!email) {
-        return showToast("পাসওয়ার্ড রিসেট করতে আগে বক্সে ইমেইল লিখুন!", "error");
+    } catch (error) {
+        hideLoader();
+        showToast('লগইন বাতিল করা হয়েছে!');
     }
-    
-    sendPasswordResetEmail(auth, email)
-        .then(() => showToast("পাসওয়ার্ড রিসেট লিংক ইমেইলে পাঠানো হয়েছে!", "success"))
-        .catch(error => showToast("সমস্যা হয়েছে: " + error.message, "error"));
 });
 
-// লগআউট
-document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
+// ৩. পাসওয়ার্ড রিসেট (Forgot Password)
+document.getElementById('btn-forgot-password').addEventListener('click', async () => {
+    const email = document.getElementById('email-input').value.trim();
+    if (!email) return showToast('আগে বক্সে আপনার ইমেইলটি লিখুন!');
+    
+    showLoader();
+    try {
+        await sendPasswordResetEmail(auth, email);
+        hideLoader();
+        showToast('রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে!', 'success');
+    } catch (error) {
+        hideLoader();
+        showToast('সমস্যা হয়েছে: ' + error.message);
+    }
+});
 
-// ==========================================
-// Auth State Observer
-// ==========================================
+// ৪. লগআউট
+document.getElementById('btn-logout').addEventListener('click', () => {
+    showLoader();
+    signOut(auth);
+});
+
+// ৫. Auth State Observer (ইউজার লগইন থাকলে ড্যাশবোর্ড দেখাবে)
 onAuthStateChanged(auth, (user) => {
-    if (user && user.email === ALLOWED_ADMIN_EMAIL) {
-        // লগইন সফল
-        loginSection.classList.remove('active');
-        dashboardSection.classList.remove('hidden');
-        dashboardSection.classList.add('active');
+    hideLoader();
+    // লগইন সফল এবং ইমেইল লিস্টে থাকলে
+    if (user && ALLOWED_EMAILS.includes(user.email)) {
+        loginSection.classList.replace('active', 'hidden');
+        dashboardSection.classList.replace('hidden', 'active');
         
-        document.getElementById('user-name').innerText = user.displayName || "Admin";
-        if(user.photoURL) document.getElementById('user-photo').src = user.photoURL;
+        document.getElementById('user-name').innerText = user.displayName || "Pro Admin";
+        if (user.photoURL) document.getElementById('user-photo').src = user.photoURL;
         
-        showToast("লগইন সফল হয়েছে!", "success");
-        initPeer();
+        // লগইন হওয়ার পর PeerJS চালু করা
+        initWebRTC(); 
     } else {
-        // লগআউট বা ভুল ইউজার
-        dashboardSection.classList.remove('active');
-        dashboardSection.classList.add('hidden');
-        loginSection.classList.add('active');
-        emailInput.value = "";
-        passwordInput.value = "";
+        // লগআউট থাকলে বা অন্য কেউ হলে
+        dashboardSection.classList.replace('active', 'hidden');
+        loginSection.classList.replace('hidden', 'active');
+        document.getElementById('email-input').value = '';
+        document.getElementById('password-input').value = '';
         stopLiveStream();
     }
 });
 
 // ==========================================
-// PeerJS এবং লাইভ ব্রডকাস্ট লজিক (আগের মতোই)
+// WebRTC (PeerJS) & Firebase Live Auto Sync
 // ==========================================
-let peer, currentPeerId, localStream;
+let peer, myPeerId, currentStream;
 
-function initPeer() {
-    if(peer) return;
+function initWebRTC() {
+    if (peer) return; // একবার চালু হলে আবার করবে না
     peer = new Peer();
+    
+    // কানেকশন ওপেন হলে আইডি সেট করা
     peer.on('open', (id) => {
-        currentPeerId = id;
+        myPeerId = id;
         document.getElementById('my-id').innerText = id;
     });
+
+    // কেউ কানেক্ট হতে চাইলে
     peer.on('call', (call) => {
-        if(localStream) call.answer(localStream);
-        else call.answer();
+        if (currentStream) call.answer(currentStream); // লাইভ থাকলে স্ক্রিন দিয়ে দিবে
+        else call.answer(); // না থাকলে শুধু কানেকশন রিসিভ করবে
     });
 }
 
 const btnStartLive = document.getElementById('btn-start-live');
 const btnStopLive = document.getElementById('btn-stop-live');
+const statusIndicator = document.querySelector('.status-indicator');
 
+// লাইভ স্ক্রিন শেয়ার শুরু করা
 btnStartLive.addEventListener('click', async () => {
     try {
-        localStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-        localStream.getVideoTracks()[0].onended = stopLiveStream;
+        // স্ক্রিন ক্যাপচার
+        currentStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        
+        // ব্রাউজার থেকে শেয়ার অফ করলে
+        currentStream.getVideoTracks()[0].onended = stopLiveStream;
 
-        const liveRef = ref(database, 'live/admin_stream');
-        set(liveRef, { active: true, peerId: currentPeerId });
-        onDisconnect(liveRef).remove();
+        // ম্যাজিক: Firebase এ ডাটা পুশ করা (যাতে ইউজাররা অটোমেটিক লাইভ পায়)
+        const dbRef = ref(database, 'liveConfig/adminStream');
+        await set(dbRef, { active: true, peerId: myPeerId, timestamp: Date.now() });
+        
+        // নেট চলে গেলে ডাটা অটো রিমুভ হবে
+        onDisconnect(dbRef).remove(); 
 
+        // UI আপডেট
         btnStartLive.classList.add('hidden');
         btnStopLive.classList.remove('hidden');
-        showToast("লাইভ ব্রডকাস্ট শুরু হয়েছে!", "success");
+        statusIndicator.style.color = '#4ade80'; // গ্রিন কালার
+        statusIndicator.style.boxShadow = '0 0 20px rgba(74, 222, 128, 0.5)';
+        
+        showToast('লাইভ ব্রডকাস্ট শুরু হয়েছে!', 'success');
+
     } catch (err) {
-        showToast("স্ক্রিন শেয়ার বাতিল করা হয়েছে!", "error");
+        showToast('স্ক্রিন শেয়ার বাতিল করা হয়েছে!');
     }
 });
 
-function stopLiveStream() {
-    if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
-        localStream = null;
+// লাইভ বন্ধ করার ফাংশন
+async function stopLiveStream() {
+    if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+        currentStream = null;
     }
-    set(ref(database, 'live/admin_stream'), null);
+    
+    // ফায়ারবেস থেকে লাইভ স্ট্যাটাস মুছে ফেলা
+    await set(ref(database, 'liveConfig/adminStream'), null);
+    
+    // UI আপডেট
     btnStartLive.classList.remove('hidden');
     btnStopLive.classList.add('hidden');
+    statusIndicator.style.color = 'var(--primary)'; // আগের কালার
+    statusIndicator.style.boxShadow = 'none';
 }
+
+btnStopLive.addEventListener('click', stopLiveStream);
