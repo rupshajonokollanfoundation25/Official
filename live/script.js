@@ -150,28 +150,27 @@ const btnStartLive = document.getElementById('btn-start-live');
 const btnStopLive = document.getElementById('btn-stop-live');
 const statusIndicator = document.querySelector('.status-indicator');
 
-// স্ক্রিন শেয়ার শুরু করার ক্র্যাশ-প্রুফ লজিক
+// 🚀 মোবাইল ক্যামেরা দিয়ে লাইভ শুরু করার লজিক (আপনার নির্দেশ অনুযায়ী পরিবর্তিত)
 btnStartLive.addEventListener('click', async () => {
-    // ব্রাউজার সিকিউরিটি এনভায়রনমেন্ট চেক
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-        return showToast('ইনসিকিউর কনটেক্সট! এটি চালু করতে VS Code Live Server বা HTTPS লিঙ্ক ব্যবহার করুন।', 'error');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        return showToast('আপনার ব্রাউজারটি ক্যামেরা সাপোর্ট করছে না! ক্রোম ব্যবহার করুন।', 'error');
     }
 
     let stream = null;
     showLoader();
 
     try {
-        // প্রথম চেষ্টা: অডিও এবং ভিডিও দুটোর রিকোয়েস্ট পাঠানো
-        stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-    } catch (firstErr) {
-        console.warn("Audio mix failed, trying video only...", firstErr);
-        try {
-            // দ্বিতীয় চেষ্টা (ফলব্যাক): অডিও ডিভাইসে ঝামেলা থাকলে কেবল ভিডিও ট্র্যাকিং ওপেন হবে
-            stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        } catch (secondErr) {
-            hideLoader();
-            return showToast('শেয়ারিং উইন্ডো নির্বাচন করা হয়নি বা বাতিল করা হয়েছে।', 'error');
-        }
+        // মোবাইলের ক্যামেরা (সামনের) এবং অডিওর পারমিশন রিকোয়েস্ট
+        stream = await navigator.mediaDevices.getUserMedia({ 
+            video: {
+                facingMode: "user" // সামনের ক্যামেরা
+            }, 
+            audio: true 
+        });
+    } catch (err) {
+        hideLoader();
+        console.error("Camera Access Error: ", err);
+        return showToast('ক্যামেরা বা মাইক্রোফোন পারমিশন (Allow) দেওয়া হয়নি!', 'error');
     }
 
     hideLoader();
@@ -192,14 +191,14 @@ btnStartLive.addEventListener('click', async () => {
             statusIndicator.style.color = '#4ade80';
             statusIndicator.style.boxShadow = '0 0 25px rgba(74, 222, 128, 0.6)';
             
-            showToast('লাইভ ব্রডকাস্ট সফলভাবে চালু হয়েছে!', 'success');
+            showToast('মোবাইল ক্যামেরা দিয়ে লাইভ শুরু হয়েছে!', 'success');
         } catch (dbErr) {
             showToast('ফায়ারবেস ডাটাবেস রাইট এরর: রুলস চেক করুন।');
         }
     }
 });
 
-// লাইভ স্ক্রিন শেয়ার বন্ধ করার মেথড
+// লাইভ ক্যামেরা বন্ধ করার মেথড
 async function stopLiveStream() {
     if (currentStream) {
         currentStream.getTracks().forEach(track => track.stop());
