@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Authentication</title>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-color: #F3F4F6;
+            --card-bg: #FFFFFF;
+            --text-main: #1F2937;
+            --text-muted: #6B7280;
+            --error: #EF4444;
+            --success: #10B981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .logo i {
+            margin-right: 8px;
+        }
+
+        h2 {
+            color: var(--text-main);
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* Forms & Inputs */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            padding-right: 40px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 15px;
+            top: 38px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        button.btn-main {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button.btn-main:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button.btn-main:disabled {
+            background-color: #9CA3AF;
+            cursor: not-allowed;
+        }
+
+        /* Alerts & Messages */
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: left;
+        }
+        .alert.error { background: #FEE2E2; color: var(--error); border: 1px solid #FCA5A5; display: block; }
+        .alert.success { background: #D1FAE5; color: var(--success); border: 1px solid #6EE7B7; display: block; }
+
+        /* Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Sections Visibility */
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <div class="logo"><i class="fa-solid fa-hands-holding-child"></i> Foundation Name</div>
+        
+        <!-- Global Alert Box -->
+        <div id="global-alert" class="alert"></div>
+
+        <!-- 1. Loading State -->
+        <div id="loading-section" class="section active">
+            <div class="loader"></div>
+            <p style="color: #6B7280; margin-top: 15px;">অনুগ্রহ করে অপেক্ষা করুন...</p>
+        </div>
+
+        <!-- 2. Reset Password UI -->
+        <div id="reset-password-section" class="section">
+            <h2>নতুন পাসওয়ার্ড সেট করুন</h2>
+            <p class="subtitle">আপনার অ্যাকাউন্টের জন্য একটি শক্তিশালী পাসওয়ার্ড প্রদান করুন।</p>
+            
+            <div class="input-group">
+                <label>নতুন পাসওয়ার্ড</label>
+                <input type="password" id="new-password" placeholder="কমপক্ষে ৬ ক্যারেক্টার">
+                <i class="fa-regular fa-eye" onclick="togglePassword('new-password', this)"></i>
+            </div>
+            
+            <div class="input-group">
+                <label>কনফার্ম পাসওয়ার্ড</label>
+                <input type="password" id="confirm-password" placeholder="পাসওয়ার্ডটি আবার দিন">
+                <i class="fa-regular fa-eye" onclick="togglePassword('confirm-password', this)"></i>
+            </div>
+
+            <button id="reset-btn" class="btn-main" onclick="handleResetSubmit()">পাসওয়ার্ড পরিবর্তন করুন</button>
+        </div>
+
+        <!-- 3. Success Message UI (For Verification/Action Completed) -->
+        <div id="action-success-section" class="section">
+            <i class="fa-solid fa-circle-check" style="font-size: 50px; color: var(--success); margin-bottom: 15px;"></i>
+            <h2 id="success-title">সফল হয়েছে!</h2>
+            <p class="subtitle" id="success-message">আপনার কাজ সফলভাবে সম্পন্ন হয়েছে।</p>
+            <button class="btn-main" onclick="window.location.href='/login'">লগইন পেজে ফিরে যান</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK (Modular v10) & Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, verifyPasswordResetCode, confirmPasswordReset, applyActionCode, checkActionCode } 
+        from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyD80uA81X3bkwiousPwXpIv6OKkk1k2icA",
+          authDomain: "rjfoundation-25.firebaseapp.com",
+          databaseURL: "https://rjfoundation-25-default-rtdb.firebaseio.com",
+          projectId: "rjfoundation-25",
+          storageBucket: "rjfoundation-25.firebasestorage.app",
+          messagingSenderId: "469641336275",
+          appId: "1:469641336275:web:e79889fb0247f352f04b26",
+          measurementId: "G-Q023Z6H1G1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // URL Parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const mode = urlParams.get('mode');
+        const actionCode = urlParams.get('oobCode');
+
+        // DOM Elements
+        const loadingSection = document.getElementById('loading-section');
+        const resetSection = document.getElementById('reset-password-section');
+        const successSection = document.getElementById('action-success-section');
+        const globalAlert = document.getElementById('global-alert');
+
+        // Initialize Page based on Mode
+        window.onload = () => {
+            if (!mode || !actionCode) {
+                showError("লিংকটি অসম্পূর্ণ বা অবৈধ। দয়া করে সঠিক লিংকে ক্লিক করুন।");
+                loadingSection.classList.remove('active');
+                return;
+            }
+
+            switch (mode) {
+                case 'resetPassword':
+                    verifyCodeForReset();
+                    break;
+                case 'verifyEmail':
+                    handleEmailVerification();
+                    break;
+                case 'recoverEmail':
+                    handleEmailRecovery();
+                    break;
+                default:
+                    showError("এই রিকোয়েস্টটি আমাদের সিস্টেম বুঝতে পারছে না।");
+                    loadingSection.classList.remove('active');
+            }
+        };
+
+        // --- Functions --- //
+
+        async function verifyCodeForReset() {
+            try {
+                await verifyPasswordResetCode(auth, actionCode);
+                switchSection(resetSection); // কোড সঠিক হলে পাসওয়ার্ড বক্স দেখাবে
+            } catch (error) {
+                showError("রিসেট লিংকটির মেয়াদ শেষ বা এটি ইতিমধ্যেই ব্যবহৃত হয়েছে।");
+                loadingSection.classList.remove('active');
+            }
+        }
+
+        window.handleResetSubmit = async () => {
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-password').value;
+            const btn = document.getElementById('reset-btn');
+
+            if (newPass.length < 6) return showError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে!");
+            if (newPass !== confirmPass) return showError("পাসওয়ার্ড দুটি মিলছে না!");
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+            hideAlert();
+
+            try {
+                await confirmPasswordReset(auth, actionCode, newPass);
+                showSuccessState("পাসওয়ার্ড আপডেট হয়েছে", "আপনার পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে। এখন আপনি লগইন করতে পারেন।");
+            } catch (error) {
+                showError(error.message);
+                btn.disabled = false;
+                btn.innerHTML = 'পাসওয়ার্ড পরিবর্তন করুন';
+            }
+        };
+
+        async function handleEmailVerification() {
+            try {
+                await applyActionCode(auth, actionCode);
+                showSuccessState("ইমেল ভেরিফাইড!", "আপনার ইমেলটি সফলভাবে ভেরিফাই করা হয়েছে। আমাদের ফাউন্ডেশনে স্বাগতম!");
+            } catch (error) {
+                showError("ভেরিফিকেশন ব্যর্থ হয়েছে। লিংকটির মেয়াদ শেষ হয়ে থাকতে পারে।");
+                loadingSection.classList.remove('active');
+            }
+        }
+
+        async function handleEmailRecovery() {
+            try {
+                const info = await checkActionCode(auth, actionCode);
+                await applyActionCode(auth, actionCode);
+                showSuccessState("ইমেল রিকভারি সফল!", `আপনার অ্যাকাউন্টটি পুনরায় ${info.data.email} ইমেলে ফিরিয়ে আনা হয়েছে। নিরাপত্তার স্বার্থে পাসওয়ার্ডটি পরিবর্তন করে নিন।`);
+            } catch (error) {
+                showError("রিকভারি লিংকটি কাজ করছে না।");
+                loadingSection.classList.remove('active');
+            }
+        }
+
+        // --- Utility Functions --- //
+        
+        function switchSection(sectionEl) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            sectionEl.classList.add('active');
+        }
+
+        function showSuccessState(title, message) {
+            document.getElementById('success-title').innerText = title;
+            document.getElementById('success-message').innerText = message;
+            switchSection(successSection);
+            hideAlert();
+        }
+
+        function showError(msg) {
+            globalAlert.innerText = msg;
+            globalAlert.className = "alert error";
+        }
+
+        function hideAlert() {
+            globalAlert.style.display = 'none';
+        }
+
+        // Toggle Password Visibility (Eye Icon)
+        window.togglePassword = (inputId, iconEl) => {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconEl.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                iconEl.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        };
+    </script>
+</body>
+</html>
