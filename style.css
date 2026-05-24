@@ -1038,141 +1038,212 @@ body.dark-mode .main-footer {
 
 
 
-/* প্রো ম্যাক্স কার্ড স্টাইল */
-.smart-gift-card {
-    max-width: 480px;
-    margin: 30px auto;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+:root {
+    --primary-color: #0076ff;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --text-main: #1d1d1f;
+    --text-sub: #86868b;
+    --radius: 24px;
+    --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* মেইন কার্ড কন্টেইনার */
+.pro-max-card {
+    max-width: 550px;
+    margin: 40px auto;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
     overflow: hidden;
-    font-family: sans-serif;
-    transition: all 0.4s ease;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: var(--transition);
 }
 
-.smart-gift-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+.pro-max-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18);
 }
 
-.img-container {
+/* স্লাইডার থিয়েটার */
+.slider-container {
     position: relative;
-    height: 320px;
-    cursor: pointer;
+    width: 100%;
+    height: 360px;
     overflow: hidden;
 }
 
-.img-container img {
+.slider-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: var(--transition);
+}
+
+.slide-item {
+    min-width: 100%;
+    height: 100%;
+    cursor: zoom-in;
+    position: relative;
+}
+
+.slide-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
 }
 
-.img-container:hover img {
-    transform: scale(1.05);
+.slide-item:hover img {
+    transform: scale(1.06);
 }
 
-.click-to-zoom {
+/* স্লাইডার বাটন সমূহ */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    color: #000;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.slider-container:hover .nav-btn {
+    opacity: 1;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.btn-prev { left: 15px; }
+.btn-next { right: 15px; }
+
+/* স্লাইডার ডটস ইন্ডিকেটর */
+.slider-dots {
     position: absolute;
     bottom: 15px;
-    right: 15px;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
 }
 
-.card-body {
-    padding: 25px;
+.dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.dot.active {
+    background: #fff;
+    width: 24px;
+    border-radius: 10px;
+}
+
+/* কন্টেন্ট এরিয়া */
+.card-details {
+    padding: 30px;
+}
+
+.badge-premium {
+    display: inline-block;
+    background: linear-gradient(135deg, #0076ff, #00d2ff);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 15px;
 }
 
 .card-title {
-    font-size: 22px;
-    color: #1a1a1a;
-    margin: 0 0 10px;
-    font-weight: bold;
+    color: var(--text-main);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
 }
 
-.card-desc {
+.card-text {
+    color: var(--text-sub);
     font-size: 15px;
-    color: #4a4a4a;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    line-height: 1.6;
+    margin-bottom: 25px;
 }
 
-.smart-btn-group {
-    display: flex;
-    gap: 15px;
-}
-
-.smart-btn {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-share {
-    background: #000;
-    color: #fff;
-}
-
-.btn-share:hover {
-    background: #333;
-    transform: scale(1.02);
-}
-
-/* ফুলস্ক্রিন লাইটবক্স স্টাইল */
-.smart-lightbox {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.smart-lightbox.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.smart-lightbox img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transform: scale(0.8);
-    transition: transform 0.3s ease;
-}
-
-.smart-lightbox.active img {
-    transform: scale(1);
-}
-
-.close-lightbox {
-    position: absolute;
-    top: 20px;
-    right: 30px;
+/* প্রো ম্যাক্স স্মার্ট বাটন */
+.btn-share-promax {
+    width: 100%;
+    background: linear-gradient(135deg, #1d1d1f, #434344);
     color: white;
-    font-size: 40px;
+    border: none;
+    padding: 14px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: var(--transition);
 }
 
+.btn-share-promax:hover {
+    background: linear-gradient(135deg, #0076ff, #00c6ff);
+    box-shadow: 0 12px 25px rgba(0, 118, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+/* প্রো টোস্ট নোটিফিকেশন সিস্টেম */
+.promax-toast {
+    position: fixed;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 10000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+.promax-toast.show { bottom: 30px; }
+
+/* লাইটবক্স গ্যালারি */
+.lightbox-promax {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 99999; opacity: 0; visibility: hidden;
+    transition: var(--transition);
+}
+.lightbox-promax.active { opacity: 1; visibility: visible; }
+.lightbox-promax img { max-width: 90%; max-height: 85%; border-radius: 12px; transform: scale(0.9); transition: var(--transition); }
+.lightbox-promax.active img { transform: scale(1); }
+.close-btn { position: absolute; top: 20px; right: 30px; color: #fff; font-size: 35px; cursor: pointer; }
