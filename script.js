@@ -343,3 +343,172 @@ document.addEventListener("DOMContentLoaded", () => {
     deferredPrompt = null;
   });
 });
+
+
+
+
+
+
+
+
+
+class ProMaxShowcase {
+    constructor(config) {
+        this.container = document.getElementById(config.targetId);
+        if (!this.container) return;
+        
+        this.images = config.images || [];
+        this.title = config.title;
+        this.description = config.description;
+        this.autoplaySpeed = config.autoplaySpeed || 3500;
+        this.currentIndex = 0;
+        this.sliderInterval = null;
+
+        this.init();
+    }
+
+    init() {
+        this.render();
+        this.startAutoplay();
+        this.setupEventListeners();
+    }
+
+    render() {
+        // ইমেজ স্লাইড এবং ডটস জেনারেট করা
+        const slidesHTML = this.images.map(img => `<div class="slide-item"><img src="${img}" alt="Showcase"></div>`).join('');
+        const dotsHTML = this.images.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
+
+        this.container.innerHTML = `
+            <div class="pro-max-card">
+                <div class="slider-container" id="sliderTheater">
+                    <button class="nav-btn btn-prev" id="prevBtn">❮</button>
+                    <div class="slider-wrapper" id="sliderWrapper">${slidesHTML}</div>
+                    <button class="nav-btn btn-next" id="nextBtn">❯</button>
+                    <div class="slider-dots">${dotsHTML}</div>
+                </div>
+                <div class="card-details">
+                    <span class="badge-premium">✨ স্পেশাল গিফট ফাউন্ডেশন</span>
+                    <h2 class="card-title">${this.title}</h2>
+                    <p class="card-text">${this.description}</p>
+                    <button class="btn-share-promax" id="shareProMax">
+                        <span>📤</span> স্মার্ট শেয়ার করুন 
+                    </button>
+                </div>
+            </div>
+
+            <!-- লাইটবক্স এলিমেন্ট -->
+            <div class="lightbox-promax" id="lightboxPro">
+                <span class="close-btn" id="closeLightbox">&times;</span>
+                <img id="lightboxImg" src="" alt="Fullscreen">
+            </div>
+
+            <!-- টোস্ট নোটিফিকেশন -->
+            <div class="promax-toast" id="promaxToast">🔗 লিংক কপি হয়েছে! বন্ধুদের পাঠান।</div>
+        `;
+    }
+
+    // স্লাইড আপডেট করার কোর মেকানিজম
+    updateSlider() {
+        const wrapper = this.container.querySelector('#sliderWrapper');
+        const dots = this.container.querySelectorAll('.dot');
+        
+        wrapper.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+        
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentIndex);
+        });
+    }
+
+    next() {
+        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        this.updateSlider();
+    }
+
+    prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+        this.updateSlider();
+    }
+
+    startAutoplay() {
+        this.sliderInterval = setInterval(() => this.next(), this.autoplaySpeed);
+    }
+
+    stopAutoplay() {
+        clearInterval(this.sliderInterval);
+    }
+
+    // সমস্ত ইন্টারেকশন এবং ইভেন্ট হ্যান্ডলার
+    setupEventListeners() {
+        const theater = this.container.querySelector('#sliderTheater');
+        const nextBtn = this.container.querySelector('#nextBtn');
+        const prevBtn = this.container.querySelector('#prevBtn');
+        const shareBtn = this.container.querySelector('#shareProMax');
+        const lightbox = this.container.querySelector('#lightboxPro');
+        const lightboxImg = this.container.querySelector('#lightboxImg');
+        const slides = this.container.querySelectorAll('.slide-item');
+
+        // হোভার করলে অটো-প্লে পজ হবে
+        theater.addEventListener('mouseenter', () => this.stopAutoplay());
+        theater.addEventListener('mouseleave', () => this.startAutoplay());
+
+        // বাটন নেভিগেশন
+        nextBtn.addEventListener('click', () => this.next());
+        prevBtn.addEventListener('click', () => this.prev());
+
+        // ডটস ক্লিক নেভিগেশন
+        this.container.querySelectorAll('.dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                this.currentIndex = parseInt(e.target.dataset.index);
+                this.updateSlider();
+            });
+        });
+
+        // লাইটবক্স ওপেন (ক্লিক করা ইমেজ অনুযায়ী)
+        slides.forEach((slide, index) => {
+            slide.addEventListener('click', () => {
+                lightboxImg.src = this.images[this.currentIndex];
+                lightbox.classList.add('active');
+            });
+        });
+
+        // লাইটবক্স ক্লোজ
+        this.container.querySelector('#closeLightbox').addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+
+        // প্রো ম্যাক্স স্মার্ট শেয়ার সিস্টেম
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: this.title,
+                        text: this.description.replace(/<[^>]*>/g, ''), // HTML ট্যাগ রিমুভ করার জন্য
+                        url: window.location.href
+                    });
+                } catch (err) { console.log('Share canceled'); }
+            } else {
+                // ব্রাউজার শেয়ার সাপোর্ট না করলে লিংক কপি হবে ও টোস্ট দেখাবে
+                navigator.clipboard.writeText(window.location.href);
+                const toast = this.container.querySelector('#promaxToast');
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 3000);
+            }
+        });
+    }
+}
+
+// =======================================================
+// ফাংশন কল এবং কনফিগারেশন (আপনার ছবি ও তথ্য এখানে দিন)
+// =======================================================
+new ProMaxShowcase({
+    targetId: 'samad-foundation-gallery',
+    title: 'আব্দুস সামাদ শপিং কমপ্লেক্স থেকে জার্সি উপহার',
+    description: 'আমাদের ফাউন্ডেশনের সদস্যদের জন্য চমৎকার কিছু প্রিমিয়াম কোয়ালিটির জার্সি উপহার দেওয়ার জন্য <strong>"আব্দুস সামাদ শপিং কমপ্লেক্স"</strong>-এর প্রতি আমরা বিশেষভাবে কৃতজ্ঞ। এই উপহার আমাদের টিমকে আরও বেশি অনুপ্রাণিত করবে।',
+    autoplaySpeed: 3000, // ৩ সেকেন্ড পর পর ছবি পরিবর্তন হবে
+    images: [
+        'jarsi1.webp', // ছবির লিংক ১
+        'jarsi2.webp', // ছবির লিংক ২
+        'jarsi3.webp'  // ছবির লিংক ৩
+    ]
+});
+
