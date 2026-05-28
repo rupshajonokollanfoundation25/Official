@@ -352,163 +352,135 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-class ProMaxShowcase {
-    constructor(config) {
-        this.container = document.getElementById(config.targetId);
-        if (!this.container) return;
-        
-        this.images = config.images || [];
-        this.title = config.title;
-        this.description = config.description;
-        this.autoplaySpeed = config.autoplaySpeed || 3500;
-        this.currentIndex = 0;
-        this.sliderInterval = null;
+/* ==========================================================================
+   ULTRA PREMIUM SNOWFALL EFFECT - SMART PHYSICS ENGINE
+   ========================================================================== */
+(function() {
+    const canvas = document.getElementById('premium-snow-canvas');
+    if (!canvas) return; // যদি ক্যানভাস না পায় তবে কোড রান করবে না
 
-        this.init();
-    }
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
-    init() {
-        this.render();
-        this.startAutoplay();
-        this.setupEventListeners();
-    }
+    let particles = [];
+    // রেস্পনসিভ কাউন্ট: মোবাইলে ৫০টি এবং ডেক্সটপে ১৫০টি কণা থাকবে (স্মার্ট পারফরম্যান্স)
+    const maxParticles = width < 768 ? 50 : 150; 
 
-    render() {
-        // ইমেজ স্লাইড এবং ডটস জেনারেট করা
-        const slidesHTML = this.images.map(img => `<div class="slide-item"><img src="${img}" alt="Showcase"></div>`).join('');
-        const dotsHTML = this.images.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`).join('');
+    // মাউস ট্র্যাকিং
+    const mouse = { x: null, y: null, radius: 140 };
 
-        this.container.innerHTML = `
-            <div class="pro-max-card">
-                <div class="slider-container" id="sliderTheater">
-                    <button class="nav-btn btn-prev" id="prevBtn">❮</button>
-                    <div class="slider-wrapper" id="sliderWrapper">${slidesHTML}</div>
-                    <button class="nav-btn btn-next" id="nextBtn">❯</button>
-                    <div class="slider-dots">${dotsHTML}</div>
-                </div>
-                <div class="card-details">
-                    <span class="badge-premium">✨ স্পেশাল গিফট ফাউন্ডেশন</span>
-                    <h2 class="card-title">${this.title}</h2>
-                    <p class="card-text">${this.description}</p>
-                    <button class="btn-share-promax" id="shareProMax">
-                        <span>📤</span> স্মার্ট শেয়ার করুন 
-                    </button>
-                </div>
-            </div>
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
 
-            <!-- লাইটবক্স এলিমেন্ট -->
-            <div class="lightbox-promax" id="lightboxPro">
-                <span class="close-btn" id="closeLightbox">&times;</span>
-                <img id="lightboxImg" src="" alt="Fullscreen">
-            </div>
+    window.addEventListener('mouseout', () => {
+        mouse.x = null;
+        mouse.y = null;
+    });
 
-            <!-- টোস্ট নোটিফিকেশন -->
-            <div class="promax-toast" id="promaxToast">🔗 লিংক কপি হয়েছে! বন্ধুদের পাঠান।</div>
-        `;
-    }
+    window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    });
 
-    // স্লাইড আপডেট করার কোর মেকানিজম
-    updateSlider() {
-        const wrapper = this.container.querySelector('#sliderWrapper');
-        const dots = this.container.querySelectorAll('.dot');
-        
-        wrapper.style.transform = `translateX(-${this.currentIndex * 100}%)`;
-        
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentIndex);
-        });
-    }
+    // তুষারকণার ইন্টেলিজেন্ট ক্লাস
+    class UltraSnowParticle {
+        constructor() {
+            this.reset(true);
+        }
 
-    next() {
-        this.currentIndex = (this.currentIndex + 1) % this.images.length;
-        this.updateSlider();
-    }
-
-    prev() {
-        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-        this.updateSlider();
-    }
-
-    startAutoplay() {
-        this.sliderInterval = setInterval(() => this.next(), this.autoplaySpeed);
-    }
-
-    stopAutoplay() {
-        clearInterval(this.sliderInterval);
-    }
-
-    // সমস্ত ইন্টারেকশন এবং ইভেন্ট হ্যান্ডলার
-    setupEventListeners() {
-        const theater = this.container.querySelector('#sliderTheater');
-        const nextBtn = this.container.querySelector('#nextBtn');
-        const prevBtn = this.container.querySelector('#prevBtn');
-        const shareBtn = this.container.querySelector('#shareProMax');
-        const lightbox = this.container.querySelector('#lightboxPro');
-        const lightboxImg = this.container.querySelector('#lightboxImg');
-        const slides = this.container.querySelectorAll('.slide-item');
-
-        // হোভার করলে অটো-প্লে পজ হবে
-        theater.addEventListener('mouseenter', () => this.stopAutoplay());
-        theater.addEventListener('mouseleave', () => this.startAutoplay());
-
-        // বাটন নেভিগেশন
-        nextBtn.addEventListener('click', () => this.next());
-        prevBtn.addEventListener('click', () => this.prev());
-
-        // ডটস ক্লিক নেভিগেশন
-        this.container.querySelectorAll('.dot').forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                this.currentIndex = parseInt(e.target.dataset.index);
-                this.updateSlider();
-            });
-        });
-
-        // লাইটবক্স ওপেন (ক্লিক করা ইমেজ অনুযায়ী)
-        slides.forEach((slide, index) => {
-            slide.addEventListener('click', () => {
-                lightboxImg.src = this.images[this.currentIndex];
-                lightbox.classList.add('active');
-            });
-        });
-
-        // লাইটবক্স ক্লোজ
-        this.container.querySelector('#closeLightbox').addEventListener('click', () => {
-            lightbox.classList.remove('active');
-        });
-
-        // প্রো ম্যাক্স স্মার্ট শেয়ার সিস্টেম
-        shareBtn.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: this.title,
-                        text: this.description.replace(/<[^>]*>/g, ''), // HTML ট্যাগ রিমুভ করার জন্য
-                        url: window.location.href
-                    });
-                } catch (err) { console.log('Share canceled'); }
-            } else {
-                // ব্রাউজার শেয়ার সাপোর্ট না করলে লিংক কপি হবে ও টোস্ট দেখাবে
-                navigator.clipboard.writeText(window.location.href);
-                const toast = this.container.querySelector('#promaxToast');
-                toast.classList.add('show');
-                setTimeout(() => toast.classList.remove('show'), 3000);
+        reset(isInitial = false) {
+            this.x = Math.random() * width;
+            this.y = isInitial ? Math.random() * height : -20;
+            
+            // ৩টি আলাদা লেয়ার (প্যারালাক্স 3D ইফেক্ট)
+            this.layer = Math.floor(Math.random() * 3); 
+            
+            if (this.layer === 0) { // ব্যাকগ্রাউন্ড লেয়ার (খুব ছোট, ধীরগতির)
+                this.radius = Math.random() * 1 + 0.5;
+                this.speedY = Math.random() * 0.3 + 0.2;
+                this.opacity = Math.random() * 0.3 + 0.2;
+                this.windReaction = 0.3;
+            } else if (this.layer === 1) { // মিডগ্রাউন্ড লেয়ার (মাঝারি সাইজ)
+                this.radius = Math.random() * 1.5 + 1;
+                this.speedY = Math.random() * 0.7 + 0.5;
+                this.opacity = Math.random() * 0.6 + 0.4;
+                this.windReaction = 0.7;
+            } else { // ফোরগ্রাউন্ড লেয়ার (বড়, সিনেমাটিক গ্লো এবং দ্রুত পতন)
+                this.radius = Math.random() * 2 + 2;
+                this.speedY = Math.random() * 1.5 + 1.2;
+                this.opacity = Math.random() * 0.4 + 0.5;
+                this.windReaction = 1.2; // বাতাসের ধাক্কায় বেশি প্রতিক্রিয়া দেখাবে
             }
-        });
+
+            this.spinSpeed = Math.random() * 0.02;
+            this.spinAngle = Math.random() * Math.PI * 2;
+        }
+
+        update() {
+            this.spinAngle += this.spinSpeed;
+            this.y += this.speedY;
+            this.x += Math.sin(this.spinAngle) * 0.4; // হালকা আঁকাবাঁকা হয়ে নিচে পড়া
+
+            // আল্ট্রা-স্মার্ট মাউস ইন্টারঅ্যাকশন (বাতাসের ধাক্কায় দূরে সরে যাওয়া)
+            if (mouse.x !== null && mouse.y !== null) {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius) {
+                    const force = (mouse.radius - distance) / mouse.radius;
+                    const push = force * 6 * this.windReaction; 
+                    
+                    this.x += (dx / distance) * push;
+                    this.y += (dy / distance) * push;
+                }
+            }
+
+            // স্ক্রিনের বাইরে চলে গেলে আবার ওপর থেকে শুরু করা
+            if (this.y > height + 10 || this.x < -10 || this.x > width + 10) {
+                this.reset(false);
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            
+            // শুধু সামনের বড় কণাগুলোতে প্রিমিয়াম সফট গ্লো দেওয়া হয়েছে (পারফরম্যান্স বুস্ট করার জন্য)
+            if (this.layer === 2) {
+                ctx.shadowBlur = this.radius * 2;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+            } else {
+                ctx.shadowBlur = 0;
+            }
+            
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.fill();
+        }
     }
-}
 
-// =======================================================
-// ফাংশন কল এবং কনফিগারেশন (আপনার ছবি ও তথ্য এখানে দিন)
-// =======================================================
-new ProMaxShowcase({
-    targetId: 'samad-foundation-gallery',
-    title: 'আব্দুস সামাদ শপিং কমপ্লেক্স থেকে জার্সি উপহার',
-    description: 'আমাদের ফাউন্ডেশনের সদস্যদের জন্য চমৎকার কিছু প্রিমিয়াম কোয়ালিটির জার্সি উপহার দেওয়ার জন্য <strong>"আব্দুস সামাদ শপিং কমপ্লেক্স"</strong>-এর প্রতি আমরা বিশেষভাবে কৃতজ্ঞ। এই উপহার আমাদের টিমকে আরও বেশি অনুপ্রাণিত করবে।',
-    autoplaySpeed: 3000, // ৩ সেকেন্ড পর পর ছবি পরিবর্তন হবে
-    images: [
-        'jarsi1.webp', // ছবির লিংক ১
-        'jarsi2.webp', // ছবির লিংক ২
-        'jarsi3.webp'  // ছবির লিংক ৩
-    ]
-});
+    // ইনিশিয়ালাইজেশন
+    function init() {
+        particles = [];
+        for (let i = 0; i < maxParticles; i++) {
+            particles.push(new UltraSnowParticle());
+        }
+    }
 
+    // রেন্ডারিং লুপ
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+})();
