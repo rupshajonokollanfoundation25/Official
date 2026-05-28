@@ -1039,24 +1039,15 @@ body.dark-mode .main-footer {
 
 
 /* ==========================================================================
-   ULTRA PREMIUM SNOWFALL EFFECT - BACKGROUND CONFIGURATION
+   ULTRA PREMIUM SNOWFALL EFFECT - BULLETPROOF CONFIGURATION
    ========================================================================== */
 #premium-snow-canvas {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none; /* এর ফলে ক্যানভাসের পেছনের সব বাটন ও লিংকে নরমালি ক্লিক করা যাবে */
-    z-index: 99999;       /* এটি আপনার ওয়েবসাইটের সব এলিমেন্টের ওপরে থাকবে */
-    mix-blend-mode: screen; /* ডার্ক বা লাইট যেকোনো ব্যাকগ্রাউন্ডের সাথে তুষারকে নিখুঁতভাবে মেলাবে */
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none; 
+    z-index: 999999 !important; /* !important দেওয়া হলো যাতে কেউ একে ঢেকে দিতে না পারে */
+    background: transparent;
 }
-
-
-
-
-
-
-
-
-
