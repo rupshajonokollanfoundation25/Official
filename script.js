@@ -353,21 +353,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ==========================================================================
-   ULTRA PREMIUM SNOWFALL EFFECT - SMART PHYSICS ENGINE
+   ULTRA PREMIUM SNOWFALL EFFECT - SMART PHYSICS ENGINE (BULLETPROOF)
    ========================================================================== */
-(function() {
+document.addEventListener("DOMContentLoaded", function() {
     const canvas = document.getElementById('premium-snow-canvas');
-    if (!canvas) return; // যদি ক্যানভাস না পায় তবে কোড রান করবে না
+    
+    // ক্যানভাস না পেলে কনসোলে এরর দেখাবে যাতে আপনি বুঝতে পারেন
+    if (!canvas) {
+        console.error("স্নো-ফল ক্যানভাস (premium-snow-canvas) HTML ফাইলে পাওয়া যায়নি! দয়া করে HTML চেক করুন।");
+        return; 
+    }
 
     const ctx = canvas.getContext('2d');
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
     let particles = [];
-    // রেস্পনসিভ কাউন্ট: মোবাইলে ৫০টি এবং ডেক্সটপে ১৫০টি কণা থাকবে (স্মার্ট পারফরম্যান্স)
     const maxParticles = width < 768 ? 50 : 150; 
-
-    // মাউস ট্র্যাকিং
     const mouse = { x: null, y: null, radius: 140 };
 
     window.addEventListener('mousemove', (e) => {
@@ -385,7 +387,6 @@ document.addEventListener("DOMContentLoaded", () => {
         height = canvas.height = window.innerHeight;
     });
 
-    // তুষারকণার ইন্টেলিজেন্ট ক্লাস
     class UltraSnowParticle {
         constructor() {
             this.reset(true);
@@ -394,25 +395,23 @@ document.addEventListener("DOMContentLoaded", () => {
         reset(isInitial = false) {
             this.x = Math.random() * width;
             this.y = isInitial ? Math.random() * height : -20;
-            
-            // ৩টি আলাদা লেয়ার (প্যারালাক্স 3D ইফেক্ট)
             this.layer = Math.floor(Math.random() * 3); 
             
-            if (this.layer === 0) { // ব্যাকগ্রাউন্ড লেয়ার (খুব ছোট, ধীরগতির)
+            if (this.layer === 0) {
                 this.radius = Math.random() * 1 + 0.5;
                 this.speedY = Math.random() * 0.3 + 0.2;
                 this.opacity = Math.random() * 0.3 + 0.2;
                 this.windReaction = 0.3;
-            } else if (this.layer === 1) { // মিডগ্রাউন্ড লেয়ার (মাঝারি সাইজ)
+            } else if (this.layer === 1) {
                 this.radius = Math.random() * 1.5 + 1;
                 this.speedY = Math.random() * 0.7 + 0.5;
                 this.opacity = Math.random() * 0.6 + 0.4;
                 this.windReaction = 0.7;
-            } else { // ফোরগ্রাউন্ড লেয়ার (বড়, সিনেমাটিক গ্লো এবং দ্রুত পতন)
+            } else {
                 this.radius = Math.random() * 2 + 2;
                 this.speedY = Math.random() * 1.5 + 1.2;
                 this.opacity = Math.random() * 0.4 + 0.5;
-                this.windReaction = 1.2; // বাতাসের ধাক্কায় বেশি প্রতিক্রিয়া দেখাবে
+                this.windReaction = 1.2;
             }
 
             this.spinSpeed = Math.random() * 0.02;
@@ -422,9 +421,8 @@ document.addEventListener("DOMContentLoaded", () => {
         update() {
             this.spinAngle += this.spinSpeed;
             this.y += this.speedY;
-            this.x += Math.sin(this.spinAngle) * 0.4; // হালকা আঁকাবাঁকা হয়ে নিচে পড়া
+            this.x += Math.sin(this.spinAngle) * 0.4; 
 
-            // আল্ট্রা-স্মার্ট মাউস ইন্টারঅ্যাকশন (বাতাসের ধাক্কায় দূরে সরে যাওয়া)
             if (mouse.x !== null && mouse.y !== null) {
                 const dx = this.x - mouse.x;
                 const dy = this.y - mouse.y;
@@ -433,13 +431,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (distance < mouse.radius) {
                     const force = (mouse.radius - distance) / mouse.radius;
                     const push = force * 6 * this.windReaction; 
-                    
                     this.x += (dx / distance) * push;
                     this.y += (dy / distance) * push;
                 }
             }
 
-            // স্ক্রিনের বাইরে চলে গেলে আবার ওপর থেকে শুরু করা
             if (this.y > height + 10 || this.x < -10 || this.x > width + 10) {
                 this.reset(false);
             }
@@ -449,20 +445,20 @@ document.addEventListener("DOMContentLoaded", () => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             
-            // শুধু সামনের বড় কণাগুলোতে প্রিমিয়াম সফট গ্লো দেওয়া হয়েছে (পারফরম্যান্স বুস্ট করার জন্য)
             if (this.layer === 2) {
                 ctx.shadowBlur = this.radius * 2;
-                ctx.shadowColor = 'rgba(255, 255, 255, 0.5)';
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
             } else {
                 ctx.shadowBlur = 0;
             }
             
+            // ওয়েবসাইটের ব্যাকগ্রাউন্ড সাদা হলে কণার রঙ হালকা নীল/ধূসর করে দেখতে পারেন 
+            // বর্তমানে এটি প্রিমিয়াম সাদা রঙেই আছে 
             ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
             ctx.fill();
         }
     }
 
-    // ইনিশিয়ালাইজেশন
     function init() {
         particles = [];
         for (let i = 0; i < maxParticles; i++) {
@@ -470,10 +466,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // রেন্ডারিং লুপ
     function animate() {
         ctx.clearRect(0, 0, width, height);
-        
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
@@ -483,4 +477,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     init();
     animate();
-})();
+});
