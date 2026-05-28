@@ -557,44 +557,134 @@ s0.parentNode.insertBefore(s1,s0);
 
 
 
+<div class="aurora-light aurora-1"></div>
+<div class="aurora-light aurora-2"></div>
+<div id="premium-custom-cursor"></div>
+<div class="snow-accumulation"></div>
+
+<canvas id="ultimate-snow-canvas"></canvas>
+
 <style>
-    #promax-snow-canvas {
+    /* ডিফল্ট কার্সার লুকিয়ে ফেলা হচ্ছে কাস্টম কার্সারের জন্য */
+    body {
+        cursor: none !important; 
+    }
+
+    /* ❄️ Canvas Setup */
+    #ultimate-snow-canvas {
         position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        pointer-events: none !important; /* নিচের কোনো বাটনে ক্লিক করতে সমস্যা হবে না */
-        z-index: 2147483647 !important;  /* ওয়েবসাইটের সবকিছুর ওপরে থাকবে (Max Z-index) */
+        top: 0 !important; left: 0 !important;
+        width: 100vw !important; height: 100vh !important;
+        pointer-events: none !important;
+        z-index: 2147483645 !important;
         background: transparent !important;
+    }
+
+    /* 🌌 Northern Lights (Aurora) Effect */
+    .aurora-light {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 2147483640 !important; /* ওয়েবসাইটের ওপরে হালকা গ্লো দেবে */
+        mix-blend-mode: screen;
+        animation: aurora-move 15s infinite alternate ease-in-out;
+    }
+    .aurora-1 {
+        width: 60vw; height: 60vh;
+        top: -10%; left: -10%;
+        background: radial-gradient(circle, rgba(138,43,226,0.6) 0%, rgba(0,0,0,0) 70%); /* বেগুনি আভা */
+    }
+    .aurora-2 {
+        width: 70vw; height: 70vh;
+        bottom: -20%; right: -10%;
+        background: radial-gradient(circle, rgba(0,212,255,0.5) 0%, rgba(0,0,0,0) 70%); /* আইস-ব্লু আভা */
+        animation-duration: 20s;
+        animation-delay: 2s;
+    }
+    @keyframes aurora-move {
+        0% { transform: scale(1) translate(0, 0); }
+        50% { transform: scale(1.2) translate(50px, 20px); }
+        100% { transform: scale(0.9) translate(-30px, -40px); }
+    }
+
+    /* 🖱️ Custom Ice-Glow Cursor */
+    #premium-custom-cursor {
+        position: fixed;
+        top: 0; left: 0;
+        width: 20px; height: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 2px solid rgba(180, 225, 255, 0.9);
+        box-shadow: 0 0 15px 5px rgba(180, 225, 255, 0.6);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 2147483647 !important;
+        transform: translate(-50%, -50%);
+        transition: width 0.2s, height 0.2s, background 0.2s; /* ক্লিকে স্মুথনেস */
+    }
+
+    /* 🧊 Frosted Glass Utility Class (আপনার মেনু বা কার্ডে ব্যবহার করার জন্য) */
+    .glass-effect {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+    }
+
+    /* 🌨️ Snow Accumulation (স্ক্রিনের নিচে জমে থাকা তুষার) */
+    .snow-accumulation {
+        position: fixed;
+        bottom: 0; left: 0;
+        width: 100vw; height: 30px;
+        background: linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 100%);
+        filter: blur(4px);
+        pointer-events: none;
+        z-index: 2147483646 !important;
     }
 </style>
 
-<canvas id="promax-snow-canvas"></canvas>
-
 <script>
 (function() {
-    const canvas = document.getElementById('promax-snow-canvas');
+    const canvas = document.getElementById('ultimate-snow-canvas');
     const ctx = canvas.getContext('2d');
     
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    // কণার সংখ্যা: পাতলা ও প্রিমিয়াম লুকের জন্য পারফেক্ট ব্যালেন্স
-    const maxParticles = width < 768 ? 40 : 100; 
+    const maxParticles = width < 768 ? 50 : 120; 
     let particles = [];
 
-    // মাউস ইন্টারঅ্যাকশন
-    const mouse = { x: null, y: null, radius: 150 };
+    // Cursor Follower Physics (LERP for Apple-like smoothness)
+    const cursorDOM = document.getElementById('premium-custom-cursor');
+    let mouseX = width / 2; let mouseY = height / 2;
+    let cursorX = width / 2; let cursorY = height / 2;
 
     window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
-    window.addEventListener('mouseout', () => {
-        mouse.x = null;
-        mouse.y = null;
+    // ক্লিক করার সময় কার্সার ছোট হয়ে একটা দারুণ ফিল দেবে
+    window.addEventListener('mousedown', () => {
+        cursorDOM.style.transform = 'translate(-50%, -50%) scale(0.7)';
+        cursorDOM.style.background = 'rgba(255, 255, 255, 1)';
+    });
+    window.addEventListener('mouseup', () => {
+        cursorDOM.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorDOM.style.background = 'rgba(255, 255, 255, 0.8)';
+    });
+
+    // Scroll Parallax Physics
+    let scrollVelocity = 0;
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+        let currentScroll = window.scrollY;
+        scrollVelocity = (currentScroll - lastScrollY) * 0.8; // স্ক্রল স্পিড ক্যালকুলেশন
+        lastScrollY = currentScroll;
     });
 
     window.addEventListener('resize', () => {
@@ -602,7 +692,9 @@ s0.parentNode.insertBefore(s1,s0);
         height = canvas.height = window.innerHeight;
     });
 
-    class ProMaxSnow {
+    let windTime = 0;
+
+    class UltimateSnow {
         constructor() {
             this.reset(true);
         }
@@ -610,54 +702,61 @@ s0.parentNode.insertBefore(s1,s0);
         reset(isInitial = false) {
             this.x = Math.random() * width;
             this.y = isInitial ? Math.random() * height : -20;
-            
-            // সাইজ: একদম পাতলা ও রিয়ালিস্টিক (0.5px থেকে 2px)
-            this.radius = Math.random() * 1.5 + 0.5;
-            this.speedY = Math.random() * 1 + 0.5; // পড়ার গতি
-            this.speedX = Math.random() * 0.5 - 0.25; // বাতাসের দোলা
-            
-            // অন্যরকম রঙ: সাধারণ সাদার বদলে হালকা ক্রিস্টাল/আইস ব্লু টিন্ট
-            this.opacity = Math.random() * 0.6 + 0.3;
-            this.isGlowing = Math.random() > 0.6; // কিছু কণা গ্লো করবে
+            this.baseRadius = Math.random() * 2.5 + 1;
+            this.radius = this.baseRadius;
+            this.speedY = (Math.random() * 1.5 + 0.5) * (this.baseRadius * 0.4); 
+            this.speedX = Math.random() * 1 - 0.5;
+            this.wobble = Math.random() * Math.PI * 2;
+            this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+            this.baseOpacity = Math.random() * 0.6 + 0.4;
+            this.opacity = this.baseOpacity;
         }
 
         update() {
+            this.wobble += this.wobbleSpeed;
+            const globalWind = Math.sin(windTime) * 0.5;
+            
+            // 🚀 Scroll Parallax Effect (স্ক্রল করলে তুষার ছিটকে যাবে)
+            this.y -= scrollVelocity * (this.baseRadius * 0.2); 
+            
             this.y += this.speedY;
-            this.x += this.speedX + Math.sin(this.y / 50) * 0.3; // রিয়ালিস্টিক জিগজ্যাগ
+            this.x += this.speedX + Math.cos(this.wobble) * 0.5 + globalWind;
 
-            // প্রো-ম্যাক্স মাউস ফিজিক্স (মাউস থেকে দূরে সরে যাওয়া)
-            if (mouse.x !== null && mouse.y !== null) {
-                const dx = this.x - mouse.x;
-                const dy = this.y - mouse.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+            // 🖱️ Mouse Repulsion (স্মুথ ইন্টারেকশন)
+            const dx = this.x - cursorX;
+            const dy = this.y - cursorY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < mouse.radius) {
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    this.x += (dx / distance) * force * 3;
-                    this.y += (dy / distance) * force * 3;
-                }
+            if (distance < 160) {
+                const force = (160 - distance) / 160;
+                this.x += (dx / distance) * force * 5;
+                this.y += (dy / distance) * force * 5;
+                this.opacity = Math.min(1, this.baseOpacity + force);
+            } else {
+                this.opacity = this.baseOpacity;
             }
 
-            // স্ক্রিনের বাইরে গেলে রিসেট
-            if (this.y > height + 10 || this.x < -10 || this.x > width + 10) {
+            // নিচে গেলে মিলিয়ে যাওয়া
+            const distanceFromBottom = height - this.y;
+            if (distanceFromBottom < 100) {
+                this.opacity = this.baseOpacity * (distanceFromBottom / 100);
+            }
+
+            // রিসেট
+            if (this.y > height || this.x < -50 || this.x > width + 50 || this.y < -100) {
                 this.reset(false);
             }
         }
 
         draw() {
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+            gradient.addColorStop(0.4, `rgba(180, 225, 255, ${this.opacity * 0.8})`);
+            gradient.addColorStop(1, `rgba(180, 225, 255, 0)`);
+
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            
-            if (this.isGlowing) {
-                // প্রিমিয়াম ক্রিস্টাল গ্লো (সাদার সাথে হালকা নীলের আভা)
-                ctx.shadowBlur = this.radius * 3;
-                ctx.shadowColor = 'rgba(173, 216, 230, 0.9)'; 
-            } else {
-                ctx.shadowBlur = 0;
-            }
-            
-            // কণার নিজস্ব রঙ: একদম খাঁটি সাদার বদলে একটা প্রিমিয়াম আইস-সিলভার কালার
-            ctx.fillStyle = `rgba(235, 245, 255, ${this.opacity})`;
+            ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
             ctx.fill();
         }
     }
@@ -665,12 +764,23 @@ s0.parentNode.insertBefore(s1,s0);
     function init() {
         particles = [];
         for (let i = 0; i < maxParticles; i++) {
-            particles.push(new ProMaxSnow());
+            particles.push(new UltimateSnow());
         }
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
+        windTime += 0.005; 
+        
+        // স্ক্রল ফিজিক্স স্মুথ করা (Friction)
+        scrollVelocity *= 0.92; 
+
+        // Smooth Custom Cursor (Linear Interpolation)
+        cursorX += (mouseX - cursorX) * 0.2;
+        cursorY += (mouseY - cursorY) * 0.2;
+        cursorDOM.style.left = `${cursorX}px`;
+        cursorDOM.style.top = `${cursorY}px`;
+
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
@@ -682,7 +792,6 @@ s0.parentNode.insertBefore(s1,s0);
     animate();
 })();
 </script>
-
     
     
     
