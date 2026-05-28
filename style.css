@@ -1038,6 +1038,28 @@ body.dark-mode .main-footer {
 
 
 
+/* ==========================================================================
+   ULTRA PREMIUM SNOWFALL EFFECT - BACKGROUND CONFIGURATION
+   ========================================================================== */
+#premium-snow-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* এর ফলে ক্যানভাসের পেছনের সব বাটন ও লিংকে নরমালি ক্লিক করা যাবে */
+    z-index: 99999;       /* এটি আপনার ওয়েবসাইটের সব এলিমেন্টের ওপরে থাকবে */
+    mix-blend-mode: screen; /* ডার্ক বা লাইট যেকোনো ব্যাকগ্রাউন্ডের সাথে তুষারকে নিখুঁতভাবে মেলাবে */
+}
+
+
+
+
+
+
+
+
+
 :root {
     --primary-color: #0076ff;
     --card-bg: rgba(255, 255, 255, 0.85);
