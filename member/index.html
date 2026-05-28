@@ -314,34 +314,34 @@
 
 
 <style>
-    #promax-snow-canvas {
+    #ultra-promax-snow {
         position: fixed !important;
         top: 0 !important;
         left: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        pointer-events: none !important; /* নিচের কোনো বাটনে ক্লিক করতে সমস্যা হবে না */
-        z-index: 2147483647 !important;  /* ওয়েবসাইটের সবকিছুর ওপরে থাকবে (Max Z-index) */
+        pointer-events: none !important; /* ক্লিকে কোনো সমস্যা করবে না */
+        z-index: 2147483647 !important;  /* ওয়েবসাইটের সবকিছুর ওপরে থাকবে */
         background: transparent !important;
     }
 </style>
 
-<canvas id="promax-snow-canvas"></canvas>
+<canvas id="ultra-promax-snow"></canvas>
 
 <script>
 (function() {
-    const canvas = document.getElementById('promax-snow-canvas');
+    const canvas = document.getElementById('ultra-promax-snow');
     const ctx = canvas.getContext('2d');
     
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
 
-    // কণার সংখ্যা: পাতলা ও প্রিমিয়াম লুকের জন্য পারফেক্ট ব্যালেন্স
-    const maxParticles = width < 768 ? 40 : 100; 
+    // পারফরম্যান্স ও প্রিমিয়াম লুকের জন্য স্মার্ট পার্টিকেল কাউন্ট
+    const maxParticles = width < 768 ? 40 : 80; 
     let particles = [];
 
-    // মাউস ইন্টারঅ্যাকশন
-    const mouse = { x: null, y: null, radius: 150 };
+    // মাউস ফিজিক্স
+    const mouse = { x: -1000, y: -1000, radius: 180 };
 
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
@@ -349,8 +349,8 @@
     });
 
     window.addEventListener('mouseout', () => {
-        mouse.x = null;
-        mouse.y = null;
+        mouse.x = -1000;
+        mouse.y = -1000;
     });
 
     window.addEventListener('resize', () => {
@@ -358,7 +358,10 @@
         height = canvas.height = window.innerHeight;
     });
 
-    class ProMaxSnow {
+    // গ্লোবাল উইন্ড ফিজিক্স (প্রাকৃতিক বাতাস)
+    let windTime = 0;
+
+    class UltraPremiumSnow {
         constructor() {
             this.reset(true);
         }
@@ -367,53 +370,72 @@
             this.x = Math.random() * width;
             this.y = isInitial ? Math.random() * height : -20;
             
-            // সাইজ: একদম পাতলা ও রিয়ালিস্টিক (0.5px থেকে 2px)
-            this.radius = Math.random() * 1.5 + 0.5;
-            this.speedY = Math.random() * 1 + 0.5; // পড়ার গতি
-            this.speedX = Math.random() * 0.5 - 0.25; // বাতাসের দোলা
+            // সাইজ: 3D লুকের জন্য একটু ভেরিয়েশন (1px থেকে 3.5px)
+            this.baseRadius = Math.random() * 2.5 + 1;
+            this.radius = this.baseRadius;
             
-            // অন্যরকম রঙ: সাধারণ সাদার বদলে হালকা ক্রিস্টাল/আইস ব্লু টিন্ট
-            this.opacity = Math.random() * 0.6 + 0.3;
-            this.isGlowing = Math.random() > 0.6; // কিছু কণা গ্লো করবে
+            // স্পিড এবং ফিজিক্স
+            this.speedY = (Math.random() * 1.5 + 0.5) * (this.baseRadius * 0.4); 
+            this.speedX = Math.random() * 1 - 0.5;
+            this.wobble = Math.random() * Math.PI * 2;
+            this.wobbleSpeed = Math.random() * 0.02 + 0.01;
+            
+            // আল্ট্রা-প্রিমিয়াম গ্লো এর জন্য অপাসিটি
+            this.baseOpacity = Math.random() * 0.5 + 0.4;
+            this.opacity = this.baseOpacity;
         }
 
         update() {
+            // প্রাকৃতিক দুলুনি (Wobble) এবং গ্লোবাল বাতাস
+            this.wobble += this.wobbleSpeed;
+            const globalWind = Math.sin(windTime) * 0.5;
+            
             this.y += this.speedY;
-            this.x += this.speedX + Math.sin(this.y / 50) * 0.3; // রিয়ালিস্টিক জিগজ্যাগ
+            this.x += this.speedX + Math.cos(this.wobble) * 0.5 + globalWind;
 
-            // প্রো-ম্যাক্স মাউস ফিজিক্স (মাউস থেকে দূরে সরে যাওয়া)
-            if (mouse.x !== null && mouse.y !== null) {
-                const dx = this.x - mouse.x;
-                const dy = this.y - mouse.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
+            // স্মুথ মাউস রিপালশন (Fluid Dynamics)
+            const dx = this.x - mouse.x;
+            const dy = this.y - mouse.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
 
-                if (distance < mouse.radius) {
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    this.x += (dx / distance) * force * 3;
-                    this.y += (dy / distance) * force * 3;
-                }
+            if (distance < mouse.radius) {
+                const force = (mouse.radius - distance) / mouse.radius;
+                // মাউসের ধাক্কায় স্মুথলি দূরে সরা
+                this.x += (dx / distance) * force * 4;
+                this.y += (dy / distance) * force * 4;
+                
+                // মাউসের কাছাকাছি এলে কণাগুলো একটু বেশি গ্লো করবে
+                this.opacity = Math.min(1, this.baseOpacity + force);
+            } else {
+                this.opacity = this.baseOpacity;
+            }
+
+            // নিচে যাওয়ার সময় ধীরে ধীরে ফেড-আউট হওয়া
+            const distanceFromBottom = height - this.y;
+            if (distanceFromBottom < 100) {
+                this.opacity = this.baseOpacity * (distanceFromBottom / 100);
             }
 
             // স্ক্রিনের বাইরে গেলে রিসেট
-            if (this.y > height + 10 || this.x < -10 || this.x > width + 10) {
+            if (this.y > height || this.x < -50 || this.x > width + 50) {
                 this.reset(false);
             }
         }
 
         draw() {
+            // 3D Radial Gradient (আল্ট্রা প্রিমিয়াম আইস-ব্লু লুক)
+            const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 2);
+            
+            // মাঝখানে খাঁটি সাদা গ্লো
+            gradient.addColorStop(0, `rgba(255, 255, 255, ${this.opacity})`);
+            // চারপাশে প্রিমিয়াম আইস-ব্লু বা ক্রিস্টাল আভা
+            gradient.addColorStop(0.4, `rgba(180, 225, 255, ${this.opacity * 0.8})`);
+            // শেষে স্বচ্ছ হয়ে যাওয়া
+            gradient.addColorStop(1, `rgba(180, 225, 255, 0)`);
+
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            
-            if (this.isGlowing) {
-                // প্রিমিয়াম ক্রিস্টাল গ্লো (সাদার সাথে হালকা নীলের আভা)
-                ctx.shadowBlur = this.radius * 3;
-                ctx.shadowColor = 'rgba(173, 216, 230, 0.9)'; 
-            } else {
-                ctx.shadowBlur = 0;
-            }
-            
-            // কণার নিজস্ব রঙ: একদম খাঁটি সাদার বদলে একটা প্রিমিয়াম আইস-সিলভার কালার
-            ctx.fillStyle = `rgba(235, 245, 255, ${this.opacity})`;
+            ctx.arc(this.x, this.y, this.radius * 2, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
             ctx.fill();
         }
     }
@@ -421,12 +443,14 @@
     function init() {
         particles = [];
         for (let i = 0; i < maxParticles; i++) {
-            particles.push(new ProMaxSnow());
+            particles.push(new UltraPremiumSnow());
         }
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
+        windTime += 0.005; // বাতাসের গতি পরিবর্তন
+        
         for (let i = 0; i < particles.length; i++) {
             particles[i].update();
             particles[i].draw();
@@ -438,7 +462,6 @@
     animate();
 })();
 </script>
-
     
     <script src="script.js"></script>
 </body>
