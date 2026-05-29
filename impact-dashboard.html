@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইমপ্যাক্ট ড্যাশবোর্ড | রূপসা জনকল্যাণ ফাউন্ডেশন</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #007b6f;
+            --secondary: #00bfa5;
+            --danger: #ff4444;
+            --warning: #ffb300;
+            --success: #4caf50;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ============ নেভিগেশন ============ */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 123, 111, 0.3);
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .navbar-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navbar-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* ============ মূল কন্টেইনার ============ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* ============ হেডার সেকশন ============ */
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-section h1 {
+            font-size: 36px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-section p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* ============ ড্যাশবোর্ড গ্রিড ============ */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        /* ============ কার্ড স্টাইল ============ */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 123, 111, 0.2);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--secondary);
+            margin: 15px 0;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: #999;
+        }
+
+        /* ============ স্ট্যাটিস্টিক্স সেকশন ============ */
+        .stats-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .stats-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        /* ============ প্রগতি বার ============ */
+        .progress-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .progress-item {
+            margin-bottom: 25px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 15px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* ============ সাফল্যের গল্প ============ */
+        .stories-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .story-card {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 5px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .story-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 191, 165, 0.15);
+        }
+
+        .story-name {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .story-text {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* ============ ভলান্টিয়ার সেকশন ============ */
+        .volunteer-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .volunteer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .volunteer-card {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f7f6 0%, #e0f2f1 100%);
+            border-radius: 12px;
+            border: 2px solid var(--secondary);
+        }
+
+        .volunteer-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ============ ক্যাম্পেইন ট্র্যাকিং ============ */
+        .campaign-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .campaign-item {
+            background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .campaign-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .campaign-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 12px;
+        }
+
+        /* ============ ডোনার লিডারবোর্ড ============ */
+        .leaderboard-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .leaderboard-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .leaderboard-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: 700;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffed4e); color: #333; }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #e8e8e8); color: #333; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #e8a76a); color: white; }
+
+        /* ============ ট্রান্সপারেন্সি সেকশন ============ */
+        .transparency-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .fund-chart {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .fund-item {
+            background: linear-gradient(135deg, var(--light) 0%, #e8e8e8 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border-top: 4px solid var(--secondary);
+        }
+
+        .fund-percentage {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .fund-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* ============ ইমপ্যাক্ট ক্যালকুলেটর ============ */
+        .calculator-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .calculator-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .calculator-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .calc-input {
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 150px;
+        }
+
+        .calc-input::placeholder {
+            color: #999;
+        }
+
+        .calc-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calc-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .calculator-result {
+            font-size: 28px;
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============ বার্জ/রিওয়ার্ড সেকশন ============ */
+        .badges-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-item {
+            text-align: center;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            border: 2px dashed var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .badge-item:hover {
+            transform: scale(1.1);
+            background: #f0f7f6;
+            border-color: var(--primary);
+        }
+
+        .badge-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .badge-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 12px;
+        }
+
+        /* ============ ফুটার ============ */
+        .footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+
+        /* ============ বাটন স্টাইল ============ */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 123, 111, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #00bfa5, #00e5cc);
+        }
+
+        /* ============ রেসপন্সিভ ডিজাইন ============ */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 28px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .navbar-container {
+                flex-direction: column;
+            }
+
+            .leaderboard-table {
+                font-size: 12px;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px;
+            }
+
+            .calculator-section {
+                padding: 20px;
+            }
+
+            .calculator-input {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .calc-input {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+
+        /* ============ অ্যানিমেশন ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .counter {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- নেভিগেশন বার -->
+    <div class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <img src="rupsha_jonokollan_foundation.webp" alt="RJF">
+                <span>রূপসা জনকল্যাণ</span>
+            </div>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> হোম</a>
+                <a href="donate/" class="nav-btn"><i class="fas fa-heart"></i> দান করুন</a>
+                <a href="member/" class="nav-btn"><i class="fas fa-users"></i> সদস্য</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- মূল কন্টেইনার -->
+    <div class="container">
+        <!-- হেডার সেকশন -->
+        <div class="header-section animate-in">
+            <h1>🎯 আমাদের প্রভাব ড্যাশবোর্ড</h1>
+            <p>আমরা কীভাবে সমাজে পরিবর্তন আনছি তা দেখুন</p>
+        </div>
+
+        <!-- প্রধান স্ট্যাটিস্টিকস কার্ড -->
+        <div class="dashboard-grid">
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                <div class="card-title">মোট দান</div>
+                <div class="card-value counter" data-target="54750000">0</div>
+                <div class="card-subtitle">টাকা সংগ্রহীত</div>
+            </div>
+
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+                <div class="card-title">সাহায্যপ্রাপ্ত মানুষ</div>
+                <div class="card-value counter" data-target="8500">0</div>
+                <div class="card-subtitle">সবার জীবন পরিবর্তিত</div>
+            </div>
+
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="card-title">শিক্ষার্থী</div>
+                <div class="card-value counter" data-target="3200">0</div>
+                <div class="card-subtitle">বৃত্তি পেয়েছে</div>
+            </div>
+
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-users-cog"></i></div>
+                <div class="card-title">সক্রিয় সদস্য</div>
+                <div class="card-value counter" data-target="450">0</div>
+                <div class="card-subtitle">স্বেচ্ছাসেবক</div>
+            </div>
+
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-project-diagram"></i></div>
+                <div class="card-title">সম্পন্ন প্রকল্প</div>
+                <div class="card-value counter" data-target="125">0</div>
+                <div class="card-subtitle">সফল ক্যাম্পেইন</div>
+            </div>
+
+            <div class="card animate-in">
+                <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="card-title">প্রতিষ্ঠার বছর</div>
+                <div class="card-value">২০২২</div>
+                <div class="card-subtitle">ক্রমাগত সেবা প্রদান</div>
+            </div>
+        </div>
+
+        <!-- বিস্তারিত স্ট্যাটিস্টিকস -->
+        <div class="stats-container animate-in">
+            <div class="stats-title">এই মাসের অর্জন</div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="monthDonation">0</div>
+                    <div class="stat-label">টাকা দান হয়েছে</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="monthHelped">0</div>
+                    <div class="stat-label">মানুষকে সাহায্য করা হয়েছে</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="monthVolunteer">0</div>
+                    <div class="stat-label">স্বেচ্ছাসেবক অবদান</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="monthEvent">0</div>
+                    <div class="stat-label">অনুষ্ঠান আয়োজন</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ক্যাম্পেইন ট্র্যাকিং -->
+        <div class="campaign-section animate-in">
+            <h2 class="stats-title">চলমান ক্যাম্পেইন</h2>
+            
+            <div class="campaign-item">
+                <div class="campaign-name">🎒 শিক্ষা কর্মসূচি</div>
+                <div class="campaign-meta">
+                    <span>লক্ষ্য: ৫০০০ শিক্ষার্থী</span>
+                    <span id="eduProgress">৩২৫০ যোগদানকারী</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 65%;"></div>
+                </div>
+            </div>
+
+            <div class="campaign-item">
+                <div class="campaign-name">🏥 স্বাস্থ্য ক্যাম্প</div>
+                <div class="campaign-meta">
+                    <span>লক্ষ্য: ১০০০ মানুষ</span>
+                    <span id="healthProgress">৭৫০ পরীক্ষিত</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+
+            <div class="campaign-item">
+                <div class="campaign-name">🍛 খাদ্য ত্রাণ</div>
+                <div class="campaign-meta">
+                    <span>লক্ষ্য: ২০০০ পরিবার</span>
+                    <span id="foodProgress">১৮০০ সাহায্য পেয়েছে</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 90%;"></div>
+                </div>
+            </div>
+
+            <div class="campaign-item">
+                <div class="campaign-name">🏠 আবাসন প্রকল্প</div>
+                <div class="campaign-meta">
+                    <span>লক্ষ্য: ৩০০ ঘর</span>
+                    <span id="houseProgress">২১০ নির্মিত</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ইমপ্যাক্ট ক্যালকুলেটর -->
+        <div class="calculator-section animate-in">
+            <div class="calculator-title">আপনার দান কতটা প্রভাব ফেলবে?</div>
+            <p style="margin-bottom: 20px; font-size: 16px;">টাকা প্রবেশ করুন এবং দেখুন আপনি কত মানুষকে সাহায্য করতে পারবেন</p>
+            <div class="calculator-input">
+                <input type="number" id="donationAmount" class="calc-input" placeholder="দান এর পরিমাণ (টাকা)">
+                <button class="calc-btn" onclick="calculateImpact()">💡 হিসাব করুন</button>
+            </div>
+            <div class="calculator-result" id="impactResult">
+                আপনার প্রভাব এখানে দেখা যাবে
+            </div>
+        </div>
+
+        <!-- সাফল্যের গল্প -->
+        <div class="stories-container animate-in">
+            <h2 class="stats-title">সাফল্যের গল্প 📖</h2>
+            <div class="story-grid">
+                <div class="story-card">
+                    <div class="story-name">🌟 রহিম আহমেদ</div>
+                    <div class="story-text">
+                        "আপনাদের সাহায্যে আমি আমার সন্তানকে স্কুলে পাঠাতে পারছি। তার স্বপ্ন এখন বাস্তব হওয়ার পথে।"
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-name">💪 ফাতিমা বেগম</div>
+                    <div class="story-text">
+                        "আপনাদের স্বাস্থ্য ক্যাম্পের কারণে আমার পরিবার সুস্থ থাকছে। ধন্যবাদ জীবন বাঁচানোর জন্য।"
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-name">🏠 করিম মিয়া</div>
+                    <div class="story-text">
+                        "এত বছর ভাড়ায় থাকলাম। আপনাদের প্রকল্পের মাধ্যমে আজ আমার নিজের ঘর আছে।"
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-name">📚 সুমাইয়া খান</div>
+                    <div class="story-text">
+                        "আমি একজন প্রকৌশলী হতে পারব এই আশা ছিল কিন্তু টাকার অভাব ছিল। আপনারা আমার স্বপ্ন পূরণ করেছেন।"
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-name">🎓 জাকিয়া আখতার</div>
+                    <div class="story-text">
+                        "বৃত্তির মাধ্যমে আমি পড়াশোনা চালিয়ে যেতে পারছি। আমার পরিবারের প্রথম মেয়ে হিসেবে এটা গর্বের বিষয়।"
+                    </div>
+                </div>
+
+                <div class="story-card">
+                    <div class="story-name">👨‍💼 নাসিম সাহেব</div>
+                    <div class="story-text">
+                        "আপনাদের ব্যবসায়িক প্রশিক্ষণ নিয়ে আমি একটি ছোট ব্যবসা শুরু করেছি। এখন আত্মনির্ভরশীল।"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ট্রান্সপারেন্সি রিপোর্ট -->
+        <div class="transparency-section animate-in">
+            <h2 class="stats-title">আমাদের অর্থ কোথায় খরচ হয় 💰</h2>
+            <div class="fund-chart">
+                <div class="fund-item">
+                    <div class="fund-percentage">45%</div>
+                    <div class="fund-label">শিক্ষা</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-percentage">25%</div>
+                    <div class="fund-label">স্বাস্থ্য</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-percentage">15%</div>
+                    <div class="fund-label">আবাসন</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-percentage">10%</div>
+                    <div class="fund-label">দুর্যোগ ত্রাণ</div>
+                </div>
+                <div class="fund-item">
+                    <div class="fund-percentage">5%</div>
+                    <div class="fund-label">প্রশাসন</div>
+                </div>
+            </div>
+            <div style="margin-top: 25px; text-align: center;">
+                <button class="btn" onclick="downloadTransparencyReport()">
+                    <i class="fas fa-download"></i> বিস্তারিত রিপোর্ট ডাউনলোড করুন
+                </button>
+            </div>
+        </div>
+
+        <!-- ডোনার লিডারবোর্ড -->
+        <div class="leaderboard-section animate-in">
+            <h2 class="stats-title">শীর্ষ দাতা (এই মাস) 🏆</h2>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>নাম</th>
+                        <th>অবদান</th>
+                        <th>ধাতু</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="rank-badge rank-1">🥇</span></td>
+                        <td>মোহাম্মদ করিম সাহেব</td>
+                        <td>৫,০০,০০০ টাকা</td>
+                        <td><span class="rank-badge rank-1">সোনা</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-2">🥈</span></td>
+                        <td>আয়েশা খাতুন</td>
+                        <td>৩,৫০,০০০ টাকা</td>
+                        <td><span class="rank-badge rank-2">রূপা</span></td>
+                    </tr>
+                    <tr>
+                        <td><span class="rank-badge rank-3">🥉</span></td>
+                        <td>ফারহান ইউসুফ</td>
+                        <td>২,৭৫,০০০ টাকা</td>
+                        <td><span class="rank-badge rank-3">ব্রোঞ্জ</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>নাজমা বেগম</td>
+                        <td>২,২০,০০০ টাকা</td>
+                        <td>মিত্র</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>আব্দুল মালেক</td>
+                        <td>১,৮৫,০০০ টাকা</td>
+                        <td>মিত্র</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- স্বেচ্ছাসেবক কৃতিত্ব -->
+        <div class="badges-section animate-in">
+            <h2 class="stats-title">স্বেচ্ছাসেবক ব্যাজ 🏅</h2>
+            <div class="badges-grid">
+                <div class="badge-item">
+                    <div class="badge-icon">🌟</div>
+                    <div class="badge-name">নতুন তারকা</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">১০ ঘণ্টা সেবা</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">⭐</div>
+                    <div class="badge-name">উজ্জ্বল তারকা</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">৫০ ঘণ্টা সেবা</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">✨</div>
+                    <div class="badge-name">মহা তারকা</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">১০০ ঘণ্টা সেবা</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">🔥</div>
+                    <div class="badge-name">অগ্নি সেবক</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">২৫০ ঘণ্টা সেবা</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">👑</div>
+                    <div class="badge-name">সেবা রাজা</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">৫০০ ঘণ্টা সেবা</div>
+                </div>
+                <div class="badge-item">
+                    <div class="badge-icon">💎</div>
+                    <div class="badge-name">মূল্যবান মুক্তা</div>
+                    <div style="font-size: 11px; color: #999; margin-top: 5px;">১০০০ ঘণ্টা সেবা</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ভলান্টিয়ার সেকশন -->
+        <div class="volunteer-section animate-in">
+            <h2 class="stats-title">স্বেচ্ছাসেবক হয়ে উঠুন ♥️</h2>
+            <div class="volunteer-grid">
+                <div class="volunteer-card">
+                    <div class="volunteer-icon">👨‍💼</div>
+                    <div class="card-title">পেশাদার সহায়তা</div>
+                    <p>আপনার দক্ষতা শেয়ার করুন এবং সমাজে ফিরিয়ে দিন</p>
+                </div>
+                <div class="volunteer-card">
+                    <div class="volunteer-icon">🎓</div>
+                    <div class="card-title">শিক্ষা সহায়তা</div>
+                    <p>শিক্ষার্থীদের টিউটর বা মেন্টর হন</p>
+                </div>
+                <div class="volunteer-card">
+                    <div class="volunteer-icon">🤝</div>
+                    <div class="card-title">সম্প্রদায় সেবা</div>
+                    <p>স্থানীয় সমাজের উন্নয়নে অবদান রাখুন</p>
+                </div>
+                <div class="volunteer-card">
+                    <div class="volunteer-icon">💪</div>
+                    <div class="card-title">ফিজিক্যাল সেবা</div>
+                    <p>ক্যাম্প, নির্মাণ এবং অনুষ্ঠানে অংশগ্রহণ করুন</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="/from/" class="btn btn-secondary">
+                    <i class="fas fa-user-plus"></i> এখনই যোগদান করুন
+                </a>
+            </div>
+        </div>
+
+        <!-- CTA বটন -->
+        <div style="text-align: center; margin: 50px 0; padding: 30px; background: linear-gradient(135deg, #f0f7f6 0%, #e0f2f1 100%); border-radius: 15px;">
+            <h2 style="color: var(--primary); margin-bottom: 20px;">আপনার প্রভাব শুরু করুন আজই</h2>
+            <p style="color: #666; margin-bottom: 25px; font-size: 16px;">আমাদের সাথে যোগ দিন এবং হাজার হাজার জীবনে পরিবর্তন আনুন</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a href="/donate/" class="btn"><i class="fas fa-heart"></i> এখনই দান করুন</a>
+                <a href="/from/" class="btn btn-secondary"><i class="fas fa-user-plus"></i> সদস্য হন</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ফুটার -->
+    <div class="footer">
+        <div class="footer-content">
+            <h3>রূপসা জনকল্যাণ ফাউন্ডেশন</h3>
+            <p>"সেবা হোক প্রত্যয়, জনকল্যাণ হোক জয়"</p>
+            <div class="social-links">
+                <a href="https://www.facebook.com/rupshajonokollanfoundation" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://youtube.com/channel/UCempOBWhLCDczEKN2j859Iw" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="mailto:info.rjfoundation25@gmail.com">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <p>&copy; ২০২৬ রূপসা জনকল্যাণ ফাউন্ডেশন। সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </div>
+
+    <script>
+        // ======================== কাউন্টার অ্যানিমেশন ========================
+        function animateCounters() {
+            const counters = document.querySelectorAll('.counter');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000; // ২ সেকেন্ড
+                const increment = target / (duration / 16);
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current).toLocaleString('bn-BD');
+                }, 16);
+            });
+        }
+
+        // ======================== ইমপ্যাক্ট ক্যালকুলেটর ========================
+        function calculateImpact() {
+            const amount = parseInt(document.getElementById('donationAmount').value);
+            const resultDiv = document.getElementById('impactResult');
+
+            if (!amount || amount < 1) {
+                resultDiv.innerHTML = '❌ দয়া করে সঠিক পরিমাণ লিখুন';
+                return;
+            }
+
+            // বিভিন্ন প্রভাব হিসাব
+            const meals = Math.floor(amount / 50); // ৫০ টাকায় এক খাবার
+            const books = Math.floor(amount / 150); // ১৫০ টাকায় একটি বই
+            const students = Math.floor(amount / 500); // ৫০০ টাকায় একজন শিক্ষার্থীকে সাহায্য
+            const vaccines = Math.floor(amount / 200); // ২০০ টাকায় একটি ভ্যাকসিন
+
+            resultDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 20px; margin-bottom: 15px;">আপনার ৳${amount.toLocaleString('bn-BD')} টাকা দিয়ে আপনি...</div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px;">
+                        <div>🍛 ${meals} জনকে খাবার দিতে পারবেন</div>
+                        <div>📚 ${books} টি বই কিনতে পারবেন</div>
+                        <div>🎓 ${students} জন শিক্ষার্থীকে সাহায্য করতে পারবেন</div>
+                        <div>💉 ${vaccines} টি ভ্যাকসিন দিতে পারবেন</div>
+                    </div>
+                    <div style="margin-top: 20px; font-weight: 800; font-size: 18px;">
+                        আপনি ${meals + books + students + vaccines} টি জীবনে ইতিবাচক প্রভাব ফেলতে পারবেন! ✨
+                    </div>
+                </div>
+            `;
+        }
+
+        // ======================== ডাউনলোড রিপোর্ট ========================
+        function downloadTransparencyReport() {
+            alert('বিস্তারিত রিপোর্ট শীঘ্রই পাওয়া যাবে। আমাদের সাথে থাকুন!');
+            // এখানে আপনি পিডিএফ জেনারেট করার কোড যোগ করতে পারেন
+        }
+
+        // ======================== মাসিক ডেটা আপডেট ========================
+        function updateMonthlyStats() {
+            document.getElementById('monthDonation').textContent = 
+                Math.floor(Math.random() * 3000000 + 1000000).toLocaleString('bn-BD');
+            document.getElementById('monthHelped').textContent = 
+                Math.floor(Math.random() * 500 + 100);
+            document.getElementById('monthVolunteer').textContent = 
+                Math.floor(Math.random() * 200 + 50);
+            document.getElementById('monthEvent').textContent = 
+                Math.floor(Math.random() * 15 + 3);
+        }
+
+        // ======================== ডার্ক মোড ========================
+        function toggleDarkMode() {
+            document.body.style.backgroundColor = 
+                document.body.style.backgroundColor === 'rgb(245, 245, 245)' 
+                    ? '#1a1a1a' 
+                    : '#f5f5f5';
+        }
+
+        // ======================== পেজ লোডিং ========================
+        window.addEventListener('load', () => {
+            animateCounters();
+            updateMonthlyStats();
+            
+            // স্ক্রল অ্যানিমেশন
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            });
+
+            document.querySelectorAll('.card, .container > div').forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+        // ======================== সার্চ ফাংশনালিটি ========================
+        function searchStories(keyword) {
+            const stories = document.querySelectorAll('.story-card');
+            stories.forEach(story => {
+                if (story.textContent.toLowerCase().includes(keyword.toLowerCase())) {
+                    story.style.display = 'block';
+                } else {
+                    story.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
