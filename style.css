@@ -940,7 +940,7 @@ body.dark-mode .main-footer {
 
         .smart-sub-btn:hover {
             transform: translateY(-3px) scale(1.03);
-            background: var(--white);
+            background: white;
             color: var(--primary-dark);
             box-shadow: 0 15px 40px rgba(0, 191, 165, 0.5);
         }
