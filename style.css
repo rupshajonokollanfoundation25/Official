@@ -906,7 +906,7 @@ body.dark-mode .main-footer {
 /* Premium Sticky Navbar */
         .ultra-nav {
             position: fixed;
-            top: 20px;
+            top: 5px;
             left: 0;
             width: 100%;
             display: flex;
