@@ -925,7 +925,7 @@ body.dark-mode .main-footer {
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(0, 191, 165, 0.4);
             border-radius: 100px;
-            color: var(--white);
+            color: white;
             font-size: 16px;
             font-weight: 600;
             text-decoration: none;
