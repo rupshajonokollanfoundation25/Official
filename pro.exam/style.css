@@ -338,7 +338,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--primary); box-sh
 
         .smart-sub-btn:hover {
             transform: translateY(-3px) scale(1.03);
-            background: white;
+            background: var(--white);
             color: var(--primary-dark);
             box-shadow: 0 15px 40px rgba(0, 191, 165, 0.5);
         }
