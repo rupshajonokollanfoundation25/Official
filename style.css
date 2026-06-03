@@ -1003,5 +1003,219 @@ body.dark-mode .main-footer {
 
 
 
+/* নামাজের সময়সূচী কন্টেইনার */
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
+    .smart-prayer-card {
+        background: #fbfbfc; /* হালকা ধবধবে সাদা */
+        border-radius: 12px;
+        padding: 18px;
+        margin: 15px auto;
+        max-width: 420px; /* কমপ্যাক্ট সাইজ */
+        color: #1f2937; /* কালো টেক্সট */
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        font-family: 'Poppins', sans-serif, Arial;
+        border: 1px solid #e5e7eb;
+    }
 
+    .prayer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #e5e7eb;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+    }
+
+    .header-main h3 {
+        color: #111827;
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* স্মার্ট টুলস (সার্চ + বেল) */
+    .smart-tools {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: #f3f4f6;
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        padding: 2px 8px;
+        font-size: 12px;
+    }
+
+    .search-box i { color: #6b7280; font-size: 11px; }
+    .search-box input {
+        border: none;
+        background: transparent;
+        outline: none;
+        width: 65px;
+        padding: 2px 5px;
+        color: #374151;
+        font-weight: 600;
+        font-family: inherit;
+    }
+    .search-box button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: #059669;
+    }
+
+    .bell-icon {
+        color: #9ca3af;
+        cursor: pointer;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+    .bell-icon.active {
+        color: #059669;
+        animation: ring 1s ease;
+    }
+
+    .header-time { text-align: right; }
+    
+    .live-clock {
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.2;
+    }
+
+    .prayer-header p {
+        margin: 2px 0 0 0;
+        font-size: 10px;
+        color: #6b7280;
+    }
+
+    /* প্রোগ্রেস ও অ্যালার্ট */
+    .prayer-progress-container {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .progress-details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    #progress-status { color: #374151; font-weight: 600; }
+    
+    #time-remaining {
+        color: #059669;
+        font-weight: 700;
+        background: #ecfdf5;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .progress-bar-track {
+        background: #e5e7eb;
+        height: 5px;
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 6px;
+    }
+
+    .progress-bar-fill {
+        background: linear-gradient(90deg, #10b981, #059669);
+        height: 100%;
+        width: 0%;
+        transition: width 1s linear, background 0.3s;
+    }
+    
+    /* ওয়ার্নিং মোড প্রোগ্রেস বার */
+    .progress-bar-fill.warning { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+    .extra-info {
+        font-size: 10px;
+        text-align: center;
+        min-height: 15px;
+    }
+
+    #ramadan-info { color: #6b7280; font-weight: 600; }
+    
+    #forbidden-alert {
+        color: #dc2626; /* লাল ওয়ার্নিং */
+        font-weight: 700;
+        animation: pulseRed 1.5s infinite;
+    }
+
+    /* গ্রিড লেআউট */
+    .smart-prayer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .s-prayer-box {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s ease;
+    }
+
+    .box-left { display: flex; align-items: center; gap: 6px; }
+
+    .s-prayer-box i {
+        font-size: 14px;
+        color: #6b7280;
+        width: 16px;
+        text-align: center;
+    }
+
+    .p-name { font-size: 12px; color: #4b5563; font-weight: 600; }
+    .p-time { font-size: 13px; font-weight: 700; color: #111827; }
+
+    /* অ্যাক্টিভ ওয়াক্ত হাইলাইট (স্মার্ট লুক) */
+    .s-prayer-box.active-prayer {
+        background: #ecfdf5;
+        border-color: #34d399;
+        box-shadow: 0 0 0 1px #34d399;
+    }
+
+    .s-prayer-box.active-prayer i { color: #059669; }
+    .s-prayer-box.active-prayer .p-name { color: #065f46; }
+    .s-prayer-box.active-prayer .p-time { color: #059669; }
+
+    /* স্কেলিটন লোডিং অ্যানিমেশন */
+    .skeleton-text {
+        position: relative;
+        overflow: hidden;
+        color: transparent !important;
+        background: #e5e7eb;
+        border-radius: 4px;
+    }
+    .skeleton-text::after {
+        content: "";
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        transform: translateX(-100%);
+        background-image: linear-gradient(90deg, rgba(255,255,255,0) 0, rgba(255,255,255,0.5) 20%, rgba(255,255,255,0) 60%);
+        animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer { 100% { transform: translateX(100%); } }
+    @keyframes pulseRed { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+    @keyframes ring { 0% { transform: rotate(0); } 15% { transform: rotate(15deg); } 30% { transform: rotate(-15deg); } 45% { transform: rotate(10deg); } 60% { transform: rotate(-10deg); } 75% { transform: rotate(5deg); } 100% { transform: rotate(0); } }
