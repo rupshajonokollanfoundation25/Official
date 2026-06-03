@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গ্যালারি - RJ Foundation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    
+    <style>
+        :root {
+            --primary: #00796b;
+            --primary-dark: #004d40;
+            --accent: #00bfa5;
+            --bg-color: #f4f7f6;
+            --text-dark: #333;
+            --white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --gradient-coming: linear-gradient(135deg, #004d40 0%, #00796b 50%, #00bfa5 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Premium Sticky Navbar */
+        .ultra-nav {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .smart-sub-btn {
+            pointer-events: auto;
+            position: relative;
+            padding: 12px 28px;
+            background: rgba(0, 77, 64, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 191, 165, 0.4);
+            border-radius: 100px;
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0, 77, 64, 0.3);
+        }
+
+        .smart-sub-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            background: var(--white);
+            color: var(--primary-dark);
+            box-shadow: 0 15px 40px rgba(0, 191, 165, 0.5);
+        }
+
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shineLoop 4s infinite linear;
+        }
+
+        @keyframes shineLoop {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* Header Section */
+        .gallery-header {
+            text-align: center;
+            padding: 140px 20px 80px;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            color: var(--white);
+            clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+            position: relative;
+        }
+
+        .gallery-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .gallery-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        /* Dynamic Video Section */
+        .video-container-main {
+            max-width: 900px;
+            margin: -60px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 24px;
+            background: #000;
+            box-shadow: 0 20px 45px rgba(0, 77, 64, 0.25);
+            border: 4px solid var(--white);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+
+        .video-caption {
+            text-align: center;
+            margin-top: 18px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Filter Design */
+        .filter-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+
+        .year-filter-section {
+            text-align: center;
+        }
+
+        .year-filter-label {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .year-filter, .gallery-filter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            background: var(--white);
+            border: 2px solid transparent;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
+        }
+
+        /* Masonry Grid with Smooth Transitions */
+        .gallery-grid {
+            columns: 3 300px;
+            column-gap: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item, .coming-soon-box {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Smooth Hide State */
+        .gallery-item.hide, .coming-soon-box.hide {
+            opacity: 0;
+            transform: scale(0.8);
+            position: absolute;
+            visibility: hidden;
+            pointer-events: none;
+            margin: 0;
+            height: 0;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Hover Overlay */
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 77, 64, 0.88);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-item:hover img { transform: scale(1.06); }
+
+        .gallery-overlay h4 { 
+            font-size: 20px; font-weight: 700;
+            transform: translateY(15px); transition: var(--transition);
+        }
+        
+        .gallery-overlay p { 
+            font-size: 14px; opacity: 0.85; margin-top: 8px;
+            transform: translateY(15px); transition: var(--transition); transition-delay: 0.05s;
+        }
+        
+        .gallery-overlay i { 
+            font-size: 26px; margin-bottom: 12px; color: var(--accent);
+            transform: scale(0); transition: var(--transition);
+        }
+
+        .gallery-item:hover .gallery-overlay h4,
+        .gallery-item:hover .gallery-overlay p { transform: translateY(0); }
+        .gallery-item:hover .gallery-overlay i { transform: scale(1); }
+
+        /* Dynamic Code-driven Coming Soon Box */
+        .coming-soon-box {
+            background: var(--gradient-coming);
+            background-size: 200% 200%;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            color: white;
+            text-align: center;
+            animation: gradientMove 6s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .coming-soon-icon-wrap {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        /* Advanced CSS Pulsing Radar Effect instead of raw emojis */
+        .coming-soon-icon-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            animation: radarPulse 2s infinite ease-out;
+        }
+
+        @keyframes radarPulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            100% { transform: scale(1.6); opacity: 0; }
+        }
+
+        .coming-soon-icon-wrap i {
+            font-size: 32px;
+            color: var(--white);
+            z-index: 2;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(10deg); }
+        }
+
+        .coming-soon-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .coming-soon-subtext {
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .coming-soon-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 121, 107, 0.35);
+        }
+
+        /* Premium Lightbox with Blur */
+        #lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 10, 8, 0.93);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; visibility: hidden;
+            transition: var(--transition);
+        }
+
+        #lightbox.active { opacity: 1; visibility: visible; }
+        
+        #lightbox img {
+            max-width: 90%; max-height: 82vh;
+            border-radius: 12px; transform: scale(0.9);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+            transition: var(--transition);
+        }
+        
+        #lightbox.active img { transform: scale(1); }
+
+        .lightbox-close {
+            position: absolute; top: 25px; right: 30px;
+            color: var(--white); font-size: 36px; cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lightbox-close:hover { color: var(--accent); transform: rotate(90deg); }
+
+        /* Modern Scroll to Top */
+        #newScrollTop {
+            position: fixed; right: 25px; bottom: 30px;
+            background: var(--white); color: var(--primary);
+            width: 50px; height: 50px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 50%; cursor: pointer; z-index: 9999;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            opacity: 0; visibility: hidden;
+            transform: translateY(15px); transition: var(--transition);
+        }
+
+        #newScrollTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        #newScrollTop:hover { background: var(--primary); color: var(--white); transform: translateY(-3px); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 768px) {
+            .gallery-grid { columns: 2; }
+            .gallery-header h1 { font-size: 32px; }
+            .gallery-header { padding-top: 110px; }
+            .video-container-main { margin-top: -40px; }
+            .filter-btn { padding: 8px 20px; font-size: 14px; }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid { columns: 1; }
+            .coming-soon-box { height: 240px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="ultra-nav">
+    <a href="/subscribe/" class="smart-sub-btn">
+      <i class="fa-regular fa-bell"></i>
+      <span class="btn-content">সাবস্ক্রাইব করুন</span>
+      <div class="shimmer"></div>
+    </a>
+</nav>
+
+    <header class="gallery-header">
+        <h1>আমাদের ফটো গ্যালারি</h1>
+        <p>মানবিক ও খেলাধুলার কিছু স্মরণীয় মুহূর্ত</p>
+    </header>
+
+    <div class="video-container-main">
+        <div class="video-wrapper">
+            <iframe 
+    src="https://www.youtube.com/embed/egD2biAoCNE?autoplay=1&mute=1" 
+    title="রূপসা জনকল্যাণ ফাউন্ডেশন ইফতার মাহফিল"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen
+    loading="lazy">
+</iframe>
+
+        </div>
+        <p class="video-caption">রূপসা জনকল্যাণ ফাউন্ডেশন এর পক্ষ থেকে ইফতার মাহফিল</p>
+    </div>
+
+    <div class="container">
+        <div class="filter-wrapper">
+            <!-- Year Filter -->
+            <div class="year-filter-section">
+                <label class="year-filter-label">বছর নির্বাচন করুন</label>
+                <div class="year-filter">
+                    <button class="filter-btn active" data-year="all">All years activities</button>
+                    <button class="filter-btn" data-year="2025">2025</button>
+                    <button class="filter-btn" data-year="2026">2026</button>
+
+                    <!--------
+                    <button class="filter-btn" data-year="2027">2027</button>
+                    <button class="filter-btn" data-year="2028">2028</button>
+                    <button class="filter-btn" data-year="2029">2029</button>
+                    <button class="filter-btn" data-year="2030">2030</button>
+                    <button class="filter-btn" data-year="2031">2031</button>
+                    <button class="filter-btn" data-year="2032">2032</button>
+                    <button class="filter-btn" data-year="2033">2033</button>
+                    <button class="filter-btn" data-year="2034">2034</button>
+                    <button class="filter-btn" data-year="2035">2035</button>
+                    <button class="filter-btn" data-year="2036">2026</button>
+                    <button class="filter-btn" data-year="2037">2037</button>
+                    <button class="filter-btn" data-year="2038">2038</button>
+                    <button class="filter-btn" data-year="2039">2039</button>
+                    <button class="filter-btn" data-year="2040">2040</button>
+                  --->
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">সকল কিছু</button>
+                <button class="filter-btn" data-filter="food">খাদ্য</button>
+                <button class="filter-btn" data-filter="health">স্বাস্থ্য সেবা</button>
+                <button class="filter-btn" data-filter="sports">খেলাধুলা</button>
+            </div>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+            
+            <!-- 2025 Photos -->
+            <div class="gallery-item health year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/FbSy0KDW/IMG-20260320-163051.jpg" alt="অসুস্থ পশু পাখিকে সাহায্য" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>পশু-পাখিকে সাহায্য</h4>
+                    <p>রূপসা এলাকা, মার্চ ২০২৫</p>
+                </div>
+            </div>
+
+            <div class="gallery-item food year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/q3sgc4T0/IMG-20260320-234348.jpg" alt="ইফতার" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>ইফতার মাহফিলের আয়োজন</h4>
+                    <p>রূপসা ২০ মার্চ ২০২৫</p>
+                </div>
+            </div>
+
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/QFdhY0Vs/1774703908564.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/SDcMby8T/FB-IMG-1759581201690.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/W42sj7DB/1774703841097.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/VYcdptkL/1774703848097.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/sJs56m5B/1774703854674.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/wtGWjCc/1774703867007.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/spw2RcFB/1774703869998.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/v4Bvs70v/1774703873979.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/fYr6Y7NR/1774703878305.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/cSTZ0Sp1/1774703885580.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item sports year-2025" onclick="openLightbox(this)">
+                <img src="https://i.ibb.co.com/cRqMDK9/1774703894934.jpg" alt="খেলা" loading="lazy">
+                <div class="gallery-overlay">
+                    <i class="fas fa-search-plus"></i>
+                    <h4>খেলাধুলা</h4>
+                    <p>রূপসা এলাকা, ২০২৫</p>
+                </div>
+            </div>
+
+            <!-- Dynamic 2026-2040 Coming Soon Boxes (No Raw Emojis) -->
+            <div class="coming-soon-box year-2026">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০২৬ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+
+            <!--------
+            <div class="coming-soon-box year-2027">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০২৭ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+
+            
+            <div class="coming-soon-box year-2028">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০২৮ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+
+            <div class="coming-soon-box year-2029">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০২৯ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+
+            <div class="coming-soon-box year-2030">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩০ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2031">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩১ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2032">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩২ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2033">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৩ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2034">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৪ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2035">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৫ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2036">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৬ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2037">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৭ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2038">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৮ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2039">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৩৯ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+            
+            <div class="coming-soon-box year-2040">
+                <div class="coming-soon-icon-wrap"><i class="fa-solid fa-images"></i></div>
+                <div class="coming-soon-text">coming soon</div>
+                <div class="coming-soon-subtext">২০৪০ এর ফটো শীঘ্রই যুক্ত করা হবে</div>
+            </div>
+>
+        </div>
+    </div>
+
+    <!-- Lightbox Markup -->
+    <div id="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="forceClose()">&times;</span>
+        <img id="lightbox-img" src="" alt="Gallery Preview">
+    </div>
+
+    <!-- Scroll Top Markup -->
+    <div id="newScrollTop">
+        <i class="fas fa-arrow-up" style="font-size: 18px;"></i>
+    </div>
+
+    <script>
+        // --- 1. Pro Max Gallery Filtering ---
+        const yearFilterBtns = document.querySelectorAll('[data-year]');
+        const categoryFilterBtns = document.querySelectorAll('[data-filter]');
+        const galleryItems = document.querySelectorAll('.gallery-item, .coming-soon-box');
+        let currentYear = 'all';
+        let currentCategory = 'all';
+
+        yearFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                yearFilterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentYear = btn.getAttribute('data-year');
+                filterGallery();
+            });
+        });
+
+        categoryFilterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryFilterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.getAttribute('data-filter');
+                filterGallery();
+            });
+        });
+
+        function filterGallery() {
+            galleryItems.forEach(item => {
+                let matchesYear = (currentYear === 'all') || item.classList.contains(`year-${currentYear}`);
+                let matchesCategory = (currentCategory === 'all') || (item.classList.contains('gallery-item') && item.classList.contains(currentCategory));
+
+                // Instantly hide coming-soon boxes if a specific category like 'food' or 'sports' is clicked
+                if (item.classList.contains('coming-soon-box') && currentCategory !== 'all') {
+                    matchesCategory = false;
+                }
+
+                if (matchesYear && matchesCategory) {
+                    item.classList.remove('hide');
+                } else {
+                    item.classList.add('hide');
+                }
+            });
+        }
+
+        // --- 2. Smart Lightbox System (With ESC Key Close) ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(element) {
+            lightboxImg.src = element.querySelector('img').src;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox(e) {
+            if (e.target !== lightboxImg) {
+                forceClose();
+            }
+        }
+
+        function forceClose() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox via Keyboard ESC Key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                forceClose();
+            }
+        });
+
+        // --- 3. UI Interaction and Scroll Handlers ---
+        const scrollBtn = document.getElementById('newScrollTop');
+        const subBtn = document.querySelector('.smart-sub-btn');
+        
+        window.addEventListener('scroll', () => {
+            // Scroll to Top visibility
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('show');
+            } else {
+                scrollBtn.classList.remove('show');
+            }
+
+            // Intelligent Navbar Reaction
+            if (window.scrollY > 100) {
+                subBtn.style.transform = 'scale(0.92)';
+                subBtn.style.opacity = '0.85';
+            } else {
+                subBtn.style.transform = 'scale(1)';
+                subBtn.style.opacity = '1';
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
