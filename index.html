@@ -165,6 +165,293 @@
 
 
 
+<div class="smart-prayer-container">
+    <div class="prayer-header">
+        <h3><i class="fas fa-mosque"></i> নামাজের সময়সূচী (সিরাজগঞ্জ)</h3>
+        <p id="smart-prayer-date">লোড হচ্ছে...</p>
+        <div class="live-clock" id="live-clock">00:00:00</div>
+    </div>
+    
+    <div class="smart-prayer-grid" id="smart-prayer-grid">
+        <div class="s-prayer-box" id="box-Fajr">
+            <i class="fas fa-cloud-moon"></i>
+            <div class="p-name">ফজর</div>
+            <div class="p-time" id="s-fajr">--:--</div>
+        </div>
+        <div class="s-prayer-box" id="box-Sunrise">
+            <i class="fas fa-sun"></i>
+            <div class="p-name">সূর্যোদয়</div>
+            <div class="p-time" id="s-sunrise">--:--</div>
+        </div>
+        <div class="s-prayer-box" id="box-Dhuhr">
+            <i class="fas fa-sun" style="color: #ffd700;"></i>
+            <div class="p-name">যোহর</div>
+            <div class="p-time" id="s-dhuhr">--:--</div>
+        </div>
+        <div class="s-prayer-box" id="box-Asr">
+            <i class="fas fa-cloud-sun"></i>
+            <div class="p-name">আসর</div>
+            <div class="p-time" id="s-asr">--:--</div>
+        </div>
+        <div class="s-prayer-box" id="box-Maghrib">
+            <i class="fas fa-moon" style="color: #ff9800;"></i>
+            <div class="p-name">মাগরিব</div>
+            <div class="p-time" id="s-maghrib">--:--</div>
+        </div>
+        <div class="s-prayer-box" id="box-Isha">
+            <i class="fas fa-star-and-crescent"></i>
+            <div class="p-name">এশা</div>
+            <div class="p-time" id="s-isha">--:--</div>
+        </div>
+    </div>
+    
+    <div class="next-prayer-alert" id="next-prayer-alert">পরবর্তী ওয়াক্ত হিসাব করা হচ্ছে...</div>
+</div>
+
+<style>
+    /* Premium Glassmorphism Styling */
+    .smart-prayer-container {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        border-radius: 20px;
+        padding: 25px;
+        margin: 25px auto;
+        max-width: 600px;
+        color: white;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .smart-prayer-container::before {
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+        pointer-events: none;
+    }
+
+    .prayer-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .prayer-header h3 {
+        color: #00ffaa;
+        margin: 0 0 5px 0;
+        font-size: 22px;
+    }
+
+    .prayer-header p {
+        margin: 0;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .live-clock {
+        font-family: 'Poppins', sans-serif;
+        font-size: 32px;
+        font-weight: bold;
+        color: #ffffff;
+        text-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+        margin-top: 10px;
+        letter-spacing: 2px;
+    }
+
+    .smart-prayer-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .s-prayer-box {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 15px 10px;
+        text-align: center;
+        transition: all 0.4s ease;
+    }
+
+    .s-prayer-box:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .s-prayer-box i {
+        font-size: 24px;
+        color: #00ffaa;
+        margin-bottom: 8px;
+    }
+
+    .p-name {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 5px;
+    }
+
+    .p-time {
+        font-size: 16px;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Active/Next Prayer Highlight */
+    .s-prayer-box.active-prayer {
+        background: rgba(0, 255, 170, 0.2);
+        border-color: #00ffaa;
+        box-shadow: 0 0 20px rgba(0, 255, 170, 0.3);
+        animation: pulseBorder 2s infinite;
+    }
+
+    .s-prayer-box.active-prayer i {
+        color: #ffffff;
+        text-shadow: 0 0 10px #00ffaa;
+    }
+
+    .s-prayer-box.active-prayer .p-time {
+        color: #00ffaa;
+    }
+
+    .next-prayer-alert {
+        text-align: center;
+        margin-top: 20px;
+        background: rgba(0, 255, 170, 0.15);
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #00ffaa;
+        border: 1px dashed #00ffaa;
+    }
+
+    @keyframes pulseBorder {
+        0% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(0, 255, 170, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 255, 170, 0); }
+    }
+    
+    @media (max-width: 400px) {
+        .smart-prayer-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+</style>
+
+<script>
+    let prayerTimesData = {};
+
+    async function fetchSmartPrayerTimes() {
+        const lat = 24.4577; // সিরাজগঞ্জ Latitude
+        const lon = 89.7086; // সিরাজগঞ্জ Longitude
+        const method = 1; 
+
+        try {
+            const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=${method}&school=1`);
+            const data = await response.json();
+            prayerTimesData = data.data.timings;
+            const dateInfo = data.data.date;
+
+            // সময় বসানো
+            document.getElementById('s-fajr').innerText = formatTo12Hour(prayerTimesData.Fajr);
+            document.getElementById('s-sunrise').innerText = formatTo12Hour(prayerTimesData.Sunrise);
+            document.getElementById('s-dhuhr').innerText = formatTo12Hour(prayerTimesData.Dhuhr);
+            document.getElementById('s-asr').innerText = formatTo12Hour(prayerTimesData.Asr);
+            document.getElementById('s-maghrib').innerText = formatTo12Hour(prayerTimesData.Maghrib);
+            document.getElementById('s-isha').innerText = formatTo12Hour(prayerTimesData.Isha);
+
+            // তারিখ বসানো
+            document.getElementById('smart-prayer-date').innerText = `${dateInfo.readable} | ${dateInfo.hijri.day} ${dateInfo.hijri.month.en}`;
+
+            updateLiveClockAndNextPrayer();
+        } catch (error) {
+            console.error("Prayer times fetch failed:", error);
+            document.getElementById('smart-prayer-date').innerText = "ইন্টারনেট সংযোগ চেক করুন";
+        }
+    }
+
+    function formatTo12Hour(time) {
+        let [hours, minutes] = time.split(':');
+        hours = parseInt(hours);
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        return `${hours}:${minutes} ${ampm}`;
+    }
+
+    function timeToMinutes(timeStr) {
+        if (!timeStr) return 0;
+        let [h, m] = timeStr.split(':');
+        return parseInt(h) * 60 + parseInt(m);
+    }
+
+    function updateLiveClockAndNextPrayer() {
+        const now = new Date();
+        
+        // ঘড়ি আপডেট
+        let h = now.getHours();
+        let m = String(now.getMinutes()).padStart(2, '0');
+        let s = String(now.getSeconds()).padStart(2, '0');
+        let ampm = h >= 12 ? 'PM' : 'AM';
+        let displayH = String(h % 12 || 12).padStart(2, '0');
+        document.getElementById('live-clock').innerText = `${displayH}:${m}:${s} ${ampm}`;
+
+        // পরবর্তী ওয়াক্ত বের করা
+        if (Object.keys(prayerTimesData).length === 0) return;
+
+        const currentMinutes = h * 60 + now.getMinutes();
+        const schedule = [
+            { id: 'Fajr', name: 'ফজর', time: timeToMinutes(prayerTimesData.Fajr) },
+            { id: 'Sunrise', name: 'সূর্যোদয়', time: timeToMinutes(prayerTimesData.Sunrise) },
+            { id: 'Dhuhr', name: 'যোহর', time: timeToMinutes(prayerTimesData.Dhuhr) },
+            { id: 'Asr', name: 'আসর', time: timeToMinutes(prayerTimesData.Asr) },
+            { id: 'Maghrib', name: 'মাগরিব', time: timeToMinutes(prayerTimesData.Maghrib) },
+            { id: 'Isha', name: 'এশা', time: timeToMinutes(prayerTimesData.Isha) }
+        ];
+
+        let nextPrayer = schedule[0]; // ডিফল্টভাবে আগামীকালের ফজর
+        let found = false;
+
+        for (let i = 0; i < schedule.length; i++) {
+            if (schedule[i].time > currentMinutes) {
+                nextPrayer = schedule[i];
+                found = true;
+                break;
+            }
+        }
+
+        // সব বক্স থেকে একটিভ ক্লাস রিমুভ করা
+        document.querySelectorAll('.s-prayer-box').forEach(box => {
+            box.classList.remove('active-prayer');
+        });
+
+        // পরবর্তী ওয়াক্ত হাইলাইট করা
+        const activeBox = document.getElementById(`box-${nextPrayer.id}`);
+        if (activeBox) {
+            activeBox.classList.add('active-prayer');
+        }
+
+        // অ্যালার্ট টেক্সট আপডেট
+        let alertText = found ? 
+            `<i class="fas fa-bell"></i> পরবর্তী ওয়াক্ত: <strong>${nextPrayer.name}</strong> (${formatTo12Hour(prayerTimesData[nextPrayer.id])})` : 
+            `<i class="fas fa-bell"></i> পরবর্তী ওয়াক্ত: <strong>আগামীকালের ফজর</strong> (${formatTo12Hour(prayerTimesData.Fajr)})`;
+            
+        document.getElementById('next-prayer-alert').innerHTML = alertText;
+    }
+
+    // স্ক্রিপ্ট শুরু
+    fetchSmartPrayerTimes();
+    setInterval(updateLiveClockAndNextPrayer, 1000); // প্রতি সেকেন্ডে ঘড়ি ও ওয়াক্ত আপডেট হবে
+</script>
+
+
+    
+
+    
+
 
 
 
