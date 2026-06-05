@@ -417,6 +417,112 @@
             .gallery-grid { columns: 1; }
             .coming-soon-box { height: 240px; }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        /* --- Ultimate Elite Media Switcher CSS --- */
+        .elite-toggle-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 100px;
+            padding: 5px;
+            display: flex;
+            width: fit-content;
+            margin: 0 auto 45px;
+            box-shadow: 0 15px 35px rgba(0, 77, 64, 0.05), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+            z-index: 99;
+        }
+
+        .elite-slider {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: calc(100% - 10px);
+            background: var(--gradient-coming);
+            background-size: 200% 200%;
+            border-radius: 100px;
+            transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
+            z-index: 1;
+        }
+
+        .elite-btn {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: inherit;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.4s ease, transform 0.2s ease;
+        }
+
+        .elite-btn i {
+            font-size: 18px;
+            transition: transform 0.4s ease;
+        }
+
+        .elite-btn:active {
+            transform: scale(0.96);
+        }
+
+        .elite-btn.active {
+            color: var(--white);
+        }
+
+        .elite-btn.active i {
+            transform: rotate(-8deg) scale(1.1);
+        }
+
+        /* Dynamic Count Badge Style */
+        .elite-badge {
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--text-dark);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+        }
+
+        .elite-btn.active .elite-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--white);
+        }
+
+        /* Ultra Smooth Content Reveal */
+        .elite-reveal {
+            animation: eliteRevealAnim 0.65s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes eliteRevealAnim {
+            0% { opacity: 0; transform: translateY(25px) scale(0.98); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .media-section-hide {
+            display: none !important;
+        }
+
+        
     </style>
 </head>
 <body>
@@ -433,6 +539,31 @@
         <h1>আমাদের ফটো গ্যালারি</h1>
         <p>মানবিক ও খেলাধুলার কিছু স্মরণীয় মুহূর্ত</p>
     </header>
+
+
+
+
+
+
+
+        <div class="elite-toggle-container">
+            <div class="elite-slider"></div>
+            <button class="elite-btn active" data-target="photos">
+                <i class="fa-regular fa-images"></i>
+                <span>গ্যালারি</span>
+                <span class="elite-badge" id="live-photo-count">0</span>
+            </button>
+            <button class="elite-btn" data-target="videos">
+                <i class="fa-solid fa-circle-play"></i>
+                <span>ভিডিও</span>
+                <span class="elite-badge" id="live-video-count">0</span>
+            </button>
+        </div>
+
+
+
+
+    
 
  
     <div class="container">
@@ -1301,6 +1432,93 @@
         scrollBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+
+
+
+
+
+
+
+
+
+
+
+                // --- 4. Elite Smart Media Switcher & Live Counter Logic ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const eliteContainer = document.querySelector('.elite-toggle-container');
+            const eliteButtons = document.querySelectorAll('.elite-btn');
+            const eliteSlider = document.querySelector('.elite-slider');
+            const videos = document.querySelectorAll('.video-container-main');
+            const photosGrid = document.getElementById('galleryGrid');
+            const photosFilters = document.querySelector('.filter-wrapper');
+
+            // Setup Live Auto-Counters
+            const totalPhotos = document.querySelectorAll('.gallery-item').length;
+            const totalVideos = videos.length;
+            document.getElementById('live-photo-count').innerText = totalPhotos;
+            document.getElementById('live-video-count').innerText = totalVideos;
+
+            // Initially Hide Videos & Add Setup Classes
+            videos.forEach(v => v.classList.add('media-section-hide'));
+            photosGrid.classList.add('elite-reveal');
+            photosFilters.classList.add('elite-reveal');
+
+            // Dynamic Elastic Slider Positioning Function
+            function updateSliderPosition(activeBtn) {
+                eliteSlider.style.width = `${activeBtn.offsetWidth}px`;
+                eliteSlider.style.left = `${activeBtn.offsetLeft}px`;
+            }
+
+            // Initialize slider width/position on load
+            updateSliderPosition(eliteButtons[0]);
+
+            eliteButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    eliteButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    updateSliderPosition(this);
+
+                    const target = this.getAttribute('data-target');
+
+                    if (target === 'photos') {
+                        // Show Photos Section smoothly
+                        videos.forEach(v => {
+                            v.classList.add('media-section-hide');
+                            v.classList.remove('elite-reveal');
+                        });
+                        photosGrid.classList.remove('media-section-hide');
+                        photosFilters.classList.remove('media-section-hide');
+                        
+                        // Retrigger hardware accelerated animations
+                        void photosGrid.offsetWidth;
+                        photosGrid.classList.add('elite-reveal');
+                        void photosFilters.offsetWidth;
+                        photosFilters.classList.add('elite-reveal');
+                    } else {
+                        // Show Videos Section smoothly
+                        photosGrid.classList.add('media-section-hide');
+                        photosFilters.classList.add('media-section-hide');
+                        photosGrid.classList.remove('elite-reveal');
+                        photosFilters.classList.remove('elite-reveal');
+
+                        videos.forEach(v => {
+                            v.classList.remove('media-section-hide');
+                            void v.offsetWidth;
+                            v.classList.add('elite-reveal');
+                        });
+                    }
+                });
+            });
+
+            // Handle window resize gracefully to maintain pixel-perfect slider position
+            window.addEventListener('resize', () => {
+                const activeBtn = document.querySelector('.elite-btn.active');
+                if (activeBtn) updateSliderPosition(activeBtn);
+            });
+        });
+
+        
     </script>
 </body>
 </html>
