@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - RJ Foundation</title>
+    <!-- Font Awesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-
-
-
-
-
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
     
     <style>
@@ -23,6 +19,8 @@
             --bg-gradient-2: #b2dfdb;
             --text-main: #2d3748;
             --text-muted: #4a5568;
+            --neon-glow: #00f2fe;
+            --neon-purple: #4facfe;
         }
 
         /* Smooth scrolling */
@@ -31,18 +29,18 @@
         }
 
         body {
-            font-family: 'Hind Siliguri', 'Arial', sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
             background-attachment: fixed;
             color: var(--text-main);
             margin: 0;
             padding: 20px;
-            line-height: 1.7;
+            line-height: 1.8;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* প্রিমিয়াম গ্লাসমরফিজমের জন্য ব্যাকগ্রাউন্ড অ্যানিমেশন */
+        /* Premium Floating Background Blobs */
         body::before, body::after {
             content: '';
             position: fixed;
@@ -51,6 +49,7 @@
             filter: blur(90px);
             opacity: 0.6;
             animation: float 12s infinite alternate ease-in-out;
+            will-change: transform;
         }
         body::before {
             width: 400px; height: 400px;
@@ -69,128 +68,206 @@
             100% { transform: translateY(40px) scale(1.1); }
         }
 
-        /* মডার্ন অডিও কন্টেইনার */
+        /* Modern Top Floating Navigation */
+        .ultra-nav {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .smart-sub-btn {
+            pointer-events: auto;
+            position: relative;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 100px;
+            color: #004d40;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .smart-sub-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            background: #fff;
+            color: #00796b;
+            box-shadow: 0 15px 40px rgba(0, 121, 107, 0.2);
+        }
+
+        /* Shimmer Effect */
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            animation: shineLoop 4s infinite linear;
+        }
+
+        @keyframes shineLoop {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .smart-sub-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        .smart-sub-btn:hover::after {
+            width: 80%;
+        }
+
+        /* Modern Audio Container */
         .audio-container {
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
-            padding: 20px 25px;
+            border-radius: 24px;
+            padding: 22px 28px;
             max-width: 450px;
-            margin: 20px auto 30px auto;
+            margin: 90px auto 30px auto; /* adjusted top margin for floating nav */
             text-align: center;
             color: var(--secondary-color);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255,255,255,0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(255,255,255,0.3);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .audio-container:hover {
-            transform: translateY(-5px) scale(1.02);
+            transform: translateY(-4px) scale(1.01);
         }
         .audio-container p {
-            margin: 0 0 12px 0;
-            font-weight: 600;
-            font-size: 17px;
+            margin: 0 0 14px 0;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
         }
         audio {
             width: 100%;
-            border-radius: 10px;
+            border-radius: 12px;
             outline: none;
-            /* আপনার আগের ডার্ক মোড ইনভার্ট ফিল্টারটি চাইলে নিচে ব্যবহার করতে পারেন, তবে গ্লাস থিমে এটি ছাড়াই বেশি ভালো লাগে */
-            /* filter: invert(100%); */
         }
 
-        /* প্রো-ম্যাক্স গ্লাসমরফিজম কন্টেইনার */
+        /* Pro-Max Glassmorphism Container */
         .privacy-container {
             max-width: 850px;
-            margin: 0 auto 40px auto;
-            background: rgba(255, 255, 255, 0.7);
+            margin: 0 auto 50px auto;
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             padding: 50px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08), inset 0 0 0 1px rgba(255,255,255,0.5);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.4);
         }
 
-        /* স্মার্ট ব্যাক বাটন */
+        /* Smart Back Button */
         .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             text-decoration: none;
             color: var(--primary-color);
-            font-weight: 600;
-            padding: 10px 20px;
+            font-weight: 700;
+            padding: 10px 22px;
             background: rgba(255, 255, 255, 0.6);
-            border-radius: 12px;
+            border-radius: 14px;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            font-size: 15px;
         }
         .back-btn:hover {
             background: var(--primary-color);
             color: #fff;
             transform: translateX(-5px);
-            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 121, 107, 0.25);
         }
 
-        /* হেডার ডিজাইন */
+        /* Header Design */
         .header {
             text-align: center;
-            border-bottom: 2px solid rgba(0, 121, 107, 0.1);
-            padding-bottom: 25px;
-            margin-bottom: 40px;
+            border-bottom: 2px solid rgba(0, 121, 107, 0.08);
+            padding-bottom: 30px;
+            margin-bottom: 45px;
         }
         .header h1 {
+            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, var(--secondary-color), var(--primary-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
-            font-size: 38px;
-            font-weight: 700;
+            font-size: 40px;
+            font-weight: 800;
             letter-spacing: -0.5px;
         }
         .header p {
             color: var(--text-muted);
-            font-size: 16px;
-            margin-top: 10px;
-            font-weight: 500;
+            font-size: 15px;
+            margin-top: 12px;
+            font-weight: 600;
         }
 
-        /* সেকশন কার্ড ডিজাইন */
+        /* Section Card Design */
         .section {
             margin-bottom: 35px;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.45);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 35px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
             transition: all 0.3s ease;
         }
         .section:hover {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.75);
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.04);
         }
 
         .section h2 {
+            font-family: 'Poppins', sans-serif;
             font-size: 22px;
             color: var(--secondary-color);
             display: flex;
             align-items: center;
             gap: 15px;
             margin-top: 0;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             font-weight: 700;
+            letter-spacing: -0.3px;
         }
         .section h2 i {
             color: var(--primary-color);
-            background: rgba(0, 121, 107, 0.12);
+            background: rgba(0, 121, 107, 0.1);
             padding: 12px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
         .section p {
@@ -198,22 +275,20 @@
             color: var(--text-main);
             margin: 0;
             font-size: 16px;
-            line-height: 1.8;
         }
 
-        /* কাস্টম লিস্ট আইটেম */
+        /* Premium Bullet List */
         .section ul {
-            margin-top: 15px;
-            margin-left: 10px;
+            margin-top: 18px;
+            margin-left: 5px;
             color: var(--text-main);
             list-style-type: none;
             padding-left: 0;
         }
         .section ul li {
             position: relative;
-            padding-left: 30px;
-            margin-bottom: 12px;
-            line-height: 1.7;
+            padding-left: 32px;
+            margin-bottom: 14px;
             font-size: 16px;
         }
         .section ul li::before {
@@ -224,353 +299,232 @@
             left: 0;
             top: 2px;
             color: var(--primary-color);
-            font-size: 16px;
+            font-size: 17px;
         }
 
-        /* হাইলাইট কার্ড */
+        /* Highlight Card */
         .highlight-card {
-            background: linear-gradient(135deg, rgba(0, 121, 107, 0.15), rgba(0, 77, 64, 0.05));
-            padding: 20px 25px;
-            border-radius: 15px;
-            margin: 20px 0 0 0;
+            background: linear-gradient(135deg, rgba(0, 121, 107, 0.12), rgba(0, 77, 64, 0.04));
+            padding: 22px 26px;
+            border-radius: 16px;
+            margin: 22px 0 0 0;
             border-left: 5px solid var(--primary-color);
             color: var(--secondary-color);
             font-weight: 600;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            font-size: 15.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
         }
 
-        /* ফুটার নোট */
+        /* Footer Note */
         .footer-note {
             text-align: center;
             margin-top: 50px;
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-muted);
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* রেস্পন্সিভ ডিজাইন */
+        /* Responsive Breakpoints */
         @media (max-width: 768px) {
-            .privacy-container { padding: 30px 20px; border-radius: 25px; }
-            .header h1 { font-size: 28px; }
-            .section { padding: 20px; }
+            .privacy-container { padding: 35px 20px; border-radius: 24px; }
+            .header h1 { font-size: 30px; }
+            .section { padding: 25px; }
             .section h2 { font-size: 20px; }
         }
 
-
-
-
-
-
-
-
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
-
-:root {
-  --neon-glow: #00f2fe;
-  --neon-purple: #4facfe;
-}
-
-/* নেভিগেশন কন্টেইনার - যা বাটনকে মাঝখানে রাখবে */
-.ultra-nav {
-  position: fixed;
-  top: 20px; /* উপর থেকে একটু নিচে ফ্লোটিং স্টাইল */
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  pointer-events: none; /* যাতে পেজের অন্য কিছুতে ক্লিক করতে বাধা না দেয় */
-}
-
-/* স্মার্ট সাবস্ক্রাইব বাটন */
-.smart-sub-btn {
-  pointer-events: auto; /* বাটন ক্লিকযোগ্য করার জন্য */
-  position: relative;
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 100px;
-  color: black;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 1px;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* বাটন হোভার করলে যা হবে */
-.smart-sub-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: #fff;
-  color: #000;
-  box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
-  border-color: transparent;
-}
-
-/* শিমার (Shimmer) ইফেক্ট - যা বাটনের ওপর দিয়ে লাইট পাস করবে */
-.shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  transition: all 0.2s;
-  animation: shineLoop 4s infinite linear;
-}
-
-@keyframes shineLoop {
-  0% { left: -100%; }
-  20% { left: 100%; }
-  100% { left: 100%; }
-}
-
-/* নিয়ন বর্ডার এনিমেশন (নিচে একটি সরু রেখা যা গ্লো করবে) */
-.smart-sub-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--neon-glow), var(--neon-purple));
-  transition: all 0.4s ease;
-  transform: translateX(-50%);
-}
-
-.smart-sub-btn:hover::after {
-  width: 80%;
-}
+        /* Float Scroll Top Button Layout */
+        #newScrollTop {
+            position: fixed;
+            right: 25px;
+            top: 75%;
+            transform: translateY(-50%) translateX(100px);
+            background: rgba(0, 121, 107, 0.15);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            color: white;
+            width: 55px;
+            height: 65px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px 15px 15px 50px;
+            cursor: pointer;
+            z-index: 10000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+        }
     </style>
 </head>
 <body>
 
+<!-- Floating Header Bar -->
 <nav class="ultra-nav">
-  <div class="nav-center">
     <a href="/subscribe/" class="smart-sub-btn">
-      <span class="btn-content">সাবস্ক্রাইব করুন</span>
-      <div class="shimmer"></div>
+        <span class="btn-content">Subscribe Now</span>
+        <div class="shimmer"></div>
     </a>
-  </div>
 </nav>
     
-
-
-
-
-
-
-    
+<!-- Premium Audio Container -->
 <div class="audio-container">
-    <p>আমাদের ফাউন্ডেশনের গোপনীয়তা ও নীতিমালা শুনুন</p>
+    <p>Listen to our Foundation's Privacy & Terms Policy</p>
     <audio controls>
         <source src="privacy.mp3" type="audio/mpeg">
-        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
+        Your browser does not support the audio element.
     </audio>
 </div>
 
+<!-- Main Privacy Content Container -->
 <div class="privacy-container">
-    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> ফিরে যান</a>
+    <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Go Back</a>
     
     <div class="header">
-        <h1>গোপনীয়তা ও ব্যবহারের নীতিমালা</h1>
-        <p>সর্বশেষ আপডেট: ২৮ মার্চ, ২০২৬</p>
+        <h1>Privacy & Terms of Use Policy</h1>
+        <p>Last Updated: March 28, 2026</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-info-circle"></i> তথ্য সংগ্রহ</h2>
-        <p>রুপসা জনকল্যাণ ফাউন্ডেশন-এর ওয়েবসাইটে আমরা আপনার নাম, ইমেইল এবং ছবি (যদি থাকে) সংগ্রহ করি। মূলত ফায়ারবেস অথেন্টিকেশন এবং রিভিউ সেকশন ব্যবহারের জন্য এই তথ্যগুলো প্রয়োজন হয়।</p>
+        <h2><i class="fas fa-info-circle"></i> Information Collection</h2>
+        <p>At Rupsa Jonokolyan Foundation (RJ Foundation), we collect your name, email, and profile picture (if provided) on our website. This data is primarily required for Firebase Authentication and the smooth operation of the website's review section.</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-user-shield"></i> তথ্যের ব্যবহার</h2>
-        <p>সংগৃহীত তথ্যগুলো শুধুমাত্র আপনার প্রোফাইল ভেরিফিকেশন এবং ওয়েবসাইটে আপনার রিভিউ প্রদর্শন করার জন্য ব্যবহৃত হয়। আমরা আপনার ব্যক্তিগত তথ্য কোনো তৃতীয় পক্ষের কাছে বিক্রি বা শেয়ার করি পণ্ডিত না।</p>
+        <h2><i class="fas fa-user-shield"></i> Use of Information</h2>
+        <p>The collected information is used strictly for verifying your profile and securely displaying your reviews on our website. We absolutely do not sell, rent, or share your personal data with any third-party organizations.</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-database"></i> ডাটা নিরাপত্তা</h2>
-        <p>আপনার তথ্যগুলো গুগল ফায়ারবেস (Firebase Cloud) ডাটাবেসে অত্যন্ত নিরাপদে সংরক্ষিত থাকে। এটি আধুনিক এনক্রিপশন প্রোটোকল অনুসরণ করে যাতে অননুমোদিত কেউ আপনার তথ্য অ্যাক্সেস করতে না পারে।</p>
+        <h2><i class="fas fa-database"></i> Data Security</h2>
+        <p>Your details are safely stored within the Google Firebase Cloud database. It incorporates modern cryptographic encryption protocols to ensure that unauthorized individuals cannot access your private data.</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-hand-holding-heart"></i> ডোনেশন নীতিমালা</h2>
-        <p>ফাউন্ডেশনে প্রদত্ত যে কোনো অনুদান সমাজের কল্যাণে ব্যয় করা হয়। অনুদান প্রদানের সময় ট্রানজেকশন আইডি এবং মোবাইল নম্বর সতর্কতার সাথে প্রদান করুন। অনুদান সফল হওয়ার পর একটি কনফার্মেশন মেসেজ বা ইমেইল প্রদান করা হতে পারে।</p>
+        <h2><i class="fas fa-hand-holding-heart"></i> Donation Policy</h2>
+        <p>Any contribution made to our foundation is spent entirely on social welfare activities. Please ensure you double-check and accurately input your Transaction ID and mobile number when donating. A confirmation text message or email may be triggered upon successful transactions.</p>
         <div class="highlight-card">
-            যে কোনো ভুল ট্রানজেকশন বা রিফান্ড সংক্রান্ত সমস্যার জন্য অনুদান প্রদানের ২৪ ঘণ্টার মধ্যে আমাদের সাথে যোগাযোগ করতে হবে।
+            For any accidental transactions or refund requests, please contact us strictly within 24 hours of your donation payment.
         </div>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-comments"></i> মন্তব্য ও রিভিউ নীতিমালা</h2>
-        <p>আমাদের রিভিউ সেকশনে আপনার মতামত প্রকাশের অধিকার রয়েছে, তবে নিম্নোক্ত বিষয়গুলো নিষিদ্ধ:</p>
+        <h2><i class="fas fa-comments"></i> Comment & Review Policy</h2>
+        <p>You reserve the right to state your thoughts in our review section; however, the following actions remain strictly forbidden:</p>
         <ul>
-            <li>অশ্লীল বা কুরুচিপূর্ণ ভাষা ব্যবহার।</li>
-            <li>রাজনৈতিক বা ধর্মীয় বিদ্বেষমূলক মন্তব্য।</li>
-            <li>অন্য কোনো ব্যক্তি বা প্রতিষ্ঠানকে মানহানিকর আক্রমণ।</li>
+            <li>Using obscene, offensive, or derogatory language.</li>
+            <li>Posting political or religious hate-filled remarks.</li>
+            <li>Defamatory or malicious attacks targeting any individual or organization.</li>
         </ul>
-        <p>ফাউন্ডেশন কর্তৃপক্ষ কোনো কারণ দর্শানো ছাড়াই এই নীতিমালা বহির্ভূত রিভিউ মুছে ফেলার অধিকার সংরক্ষণ করে।</p>
+        <p>The foundation management retains full authority to eliminate any review breaching these policies without issuing any prior explanation.</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-cookie-bite"></i> কুকিজ ও এক্সটার্নাল লিংক</h2>
-        <p>ইউজার এক্সপেরিয়েন্স উন্নত করার জন্য এবং আপনার লগইন সেশন মনে রাখার জন্য আমাদের সাইট সাময়িকভাবে কিছু কুকিজ ব্যবহার করতে পারে। এছাড়া আমাদের সাইটে ফেসবুক গ্রুপ বা ইউটিউবের লিংক থাকতে পারে, যেখানে প্রবেশের পর তাদের নিজস্ব নীতিমালা কার্যকর হবে।</p>
+        <h2><i class="fas fa-cookie-bite"></i> Cookies & External Links</h2>
+        <p>To deliver an optimized user experience and persist your active login session, our site may utilize temporary browser cookies. Furthermore, our web application might house hyperlinks redirection towards our Facebook Group or YouTube channel—upon interacting with them, their respective platform guidelines will apply.</p>
     </div>
 
     <div class="section">
-        <h2><i class="fas fa-user-check"></i> আপনার অধিকার ও যোগাযোগ</h2>
-        <p>আপনি চাইলে যেকোনো সময় আপনার রিভিউ ডিলিট করার অনুরোধ করতে পারেন। এছাড়া আপনার তথ্য সংক্রান্ত যেকোনো জিজ্ঞাসায় আমাদের ফাউন্ডেশনের সাথে সরাসরি যোগাযোগ করতে পারেন।</p>
+        <h2><i class="fas fa-user-check"></i> Your Rights & Contact</h2>
+        <p>You can request the permanent removal of your posted reviews at any given point. Additionally, for any questions concerning your data management, please get in touch with our foundation headquarters directly.</p>
        
-       <p style="font-weight: bold; margin-top: 10px;">ফোন (what's app):+8801957329211</p>
-       <p style="font-weight: bold; margin-top: 10px;">ইমেইল: info.rjfoundation25@gmail.com</p>
+       <p style="font-weight: bold; margin-top: 15px;"><i class="fab fa-whatsapp" style="color: #25D366; margin-right: 8px;"></i>Phone (WhatsApp): +8801957329211</p>
+       <p style="font-weight: bold; margin-top: 10px;"><i class="fas fa-envelope" style="color: var(--primary-color); margin-right: 8px;"></i>Email: info.rjfoundation25@gmail.com</p>
     </div>
 
+    <!-- Footer Copyright -->
     <div class="footer-note">
-        <hr style="border: 0; border-top: 1px solid rgba(0, 121, 107, 0.2); margin-bottom: 20px;">
-        <p>© ২০২৬ রুপসা জনকল্যাণ ফাউন্ডেশন। সকল স্বত্ব সংরক্ষিত।</p>
+        <hr style="border: 0; border-top: 1px solid rgba(0, 121, 107, 0.15); margin-bottom: 25px;">
+        <p>© 2026 Rupsa Jonokolyan Foundation. All Rights Reserved.</p>
     </div>
 </div>
 
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+<!-- Floating Back To Top Button UI -->
+<div id="newScrollTop">
+    <div style="background: #00796b; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+        <i class="fas fa-chevron-up" style="font-size: 16px;"></i>
+    </div>
+    <span style="font-size: 9px; font-weight: 800; color: #004d40; letter-spacing: 0.3px; text-transform: uppercase;">Top</span>
+</div>
 
-// শুধুমাত্র চ্যাট আইকনটি উপরে তোলার জন্য নিচের অংশটুকু
+<!-- Standardized Single Script Block -->
+<script type="text/javascript">
+// Tawk.to Live Chat Configuration
+var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 Tawk_API.customStyle = {
     visibility : {
-        desktop : {
-            yOffset : 100 // নিচ থেকে কতটুকু উপরে উঠবে (পিক্সেল)
-        },
-        mobile : {
-            yOffset : 75 // মোবাইলের জন্য পজিশন
-        }
+        desktop : { yOffset : 100 },
+        mobile : { yOffset : 75 }
     }
 };
 
 (function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/69dbb84d50bab81c348e073d/1jm14fs2g';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
 })();
-</script>
-<div id="newScrollTop" style="
-    position: fixed;
-    right: 25px;
-    top: 75%;
-    transform: translateY(-50%) translateX(100px);
-    background: rgba(0, 121, 107, 0.2);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    color: white;
-    width: 55px;
-    height: 60px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px 15px 15px 50px;
-    cursor: pointer;
-    z-index: 10000;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-    opacity: 0;
-    visibility: hidden;
-">
-    <div style="
-        background: #00796b;
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 4px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    ">
-        <i class="fas fa-chevron-up" style="font-size: 18px;"></i>
-    </div>
-    <span style="font-size: 8px; font-weight: 900; color: #004d40; letter-spacing: 0.05px;">উপরে যান</span>
-</div>
 
-<script>
-(function() {
-    const btn = document.getElementById('newScrollTop');
+// Scroll Dynamic Logic Configuration
+document.addEventListener('DOMContentLoaded', function() {
+    const scrollTopBtn = document.getElementById('newScrollTop');
+    const subBtn = document.querySelector('.smart-sub-btn');
     
-    // স্ক্রল ইভেন্ট লিসেনার
+    // Window Scroll Event Handler
     window.addEventListener('scroll', function() {
         let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
         
+        // Scroll To Top Button visibility
         if (scrollPos > 300) {
-            btn.style.opacity = "1";
-            btn.style.visibility = "visible";
-            btn.style.transform = "translateY(-50%) translateX(0)";
+            scrollTopBtn.style.opacity = "1";
+            scrollTopBtn.style.visibility = "visible";
+            scrollTopBtn.style.transform = "translateY(-50%) translateX(0)";
         } else {
-            btn.style.opacity = "0";
-            btn.style.visibility = "hidden";
-            btn.style.transform = "translateY(-50%) translateX(100px)";
+            scrollTopBtn.style.opacity = "0";
+            scrollTopBtn.style.visibility = "hidden";
+            scrollTopBtn.style.transform = "translateY(-50%) translateX(100px)";
+        }
+
+        // Floating Subscribe Button adjustments on scroll
+        if (subBtn) {
+            if (scrollPos > 100) {
+                subBtn.style.transform = 'scale(0.92)';
+                subBtn.style.opacity = '0.85';
+            } else {
+                subBtn.style.transform = 'scale(1)';
+                subBtn.style.opacity = '1';
+            }
         }
     });
 
-    // হোভার ইফেক্টস (মাউস নিলে কালার চেঞ্জ হবে)
-    btn.onmouseover = function() {
+    // Scroll Top Button Hovers
+    scrollTopBtn.onmouseover = function() {
         this.style.background = "rgba(0, 121, 107, 0.3)";
         this.style.borderColor = "rgba(0, 121, 107, 0.5)";
     };
-    btn.onmouseout = function() {
-        this.style.background = "rgba(0, 121, 107, 0.2)";
+    scrollTopBtn.onmouseout = function() {
+        this.style.background = "rgba(0, 121, 107, 0.15)";
         this.style.borderColor = "rgba(255, 255, 255, 0.3)";
     };
 
-    // ক্লিক করলে স্মুথলি উপরে যাওয়ার ফাংশন
-    btn.onclick = function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+    // Smooth Scroll Execution
+    scrollTopBtn.onclick = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-})();
 
-
-
-
-
-
-
-
-const btn = document.querySelector('.smart-sub-btn');
-
-btn.addEventListener('mouseenter', () => {
-  // হ্যাপটিক ভাইব্রেশন সিমুলেশন (ঐচ্ছিক)
-  if (window.navigator.vibrate) {
-    window.navigator.vibrate(10);
-  }
+    // Haptic Feedback Fallback Simulation
+    if (subBtn) {
+        subBtn.addEventListener('mouseenter', () => {
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        });
+    }
 });
-
-// স্ক্রল করলে বাটনটি হালকা ছোট হবে যাতে বিরক্তিকর না লাগে
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 100) {
-    btn.style.transform = 'scale(0.9)';
-    btn.style.opacity = '0.8';
-  } else {
-    btn.style.transform = 'scale(1)';
-    btn.style.opacity = '1';
-  }
-});
-    
 </script>
 
 </body>
