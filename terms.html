@@ -1,110 +1,283 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Font Awesome CDN (যদি আপনার প্রজেক্টে না থাকে তবে এটি ব্যবহার করুন) -->
+    <title>Membership Terms & Conditions - RJ Foundation</title>
+    <!-- Font Awesome 6 Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-
-
-
-
-
-
+    <!-- Premium Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="favicon.png">
     
     <style>
-        /* CSS ভেরিয়েবল সেটআপ */
+        /* CSS Advanced Variable Setup */
         :root {
             --primary-color: #00796b;
-            --primary-light: #e0f2f1;
+            --primary-light: rgba(0, 121, 107, 0.08);
             --primary-hover: #004d40;
-            --text-dark: #2c3e50;
-            --text-muted: #546e7a;
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --border-color: rgba(0, 121, 107, 0.15);
-            --shadow-default: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 15px 35px rgba(0, 121, 107, 0.12);
+            --bg-gradient-1: #e0f2f1;
+            --bg-gradient-2: #b2dfdb;
+            --text-dark: #1a202c;
+            --text-muted: #4a5568;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --border-color: rgba(255, 255, 255, 0.6);
+            --shadow-default: 0 20px 40px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 25px 45px rgba(0, 121, 107, 0.1);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --neon-glow: #00f2fe;
+            --neon-purple: #4facfe;
         }
 
-        /* কন্টেইনার এবং টাইটেল ডিজাইন */
+        /* Smooth Scrolling Architecture */
+        html { 
+            scroll-behavior: smooth; 
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Premium Floating Background Blobs */
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(90px);
+            opacity: 0.6;
+            animation: float 12s infinite alternate ease-in-out;
+            will-change: transform;
+        }
+        body::before {
+            width: 400px; height: 400px;
+            background: #80cbc4;
+            top: -100px; left: -100px;
+        }
+        body::after {
+            width: 350px; height: 350px;
+            background: #4db6ac;
+            bottom: -50px; right: -50px;
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(40px) scale(1.1); }
+        }
+
+        /* Modern Top Floating Navigation */
+        .ultra-nav {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .smart-sub-btn {
+            pointer-events: auto;
+            position: relative;
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 100px;
+            color: #004d40;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .smart-sub-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            background: #fff;
+            color: #00796b;
+            box-shadow: 0 15px 40px rgba(0, 121, 107, 0.2);
+        }
+
+        /* Shimmer Dynamic Reflection Effect */
+        .shimmer {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            animation: shineLoop 4s infinite linear;
+        }
+
+        @keyframes shineLoop {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .smart-sub-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transition: all 0.4s ease;
+            transform: translateX(-50%);
+        }
+
+        .smart-sub-btn:hover::after {
+            width: 80%;
+        }
+
+        /* Premium Audio Layout Container */
+        .audio-container {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 22px 28px;
+            max-width: 420px;
+            margin: 90px auto 10px auto;
+            text-align: center;
+            color: var(--secondary-color);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03), inset 0 0 0 1px rgba(255,255,255,0.3);
+            transition: var(--transition);
+        }
+        
+        .audio-container:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+        
+        .audio-container p {
+            margin: 0 0 14px 0;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-hover);
+            letter-spacing: -0.3px;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 5px;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        /* Layout Container Structure */
         .rjf-container {
-            max-width: 900px;
-            margin: 60px auto;
+            max-width: 950px;
+            margin: 40px auto 60px auto;
             padding: 0 20px;
-            font-family: 'Kalpurush', 'Hind Siliguri', sans-serif;
         }
 
         .rjf-title {
+            font-family: 'Poppins', sans-serif;
             text-align: center;
             color: var(--primary-color);
-            font-size: 28px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 700;
+            font-size: 36px;
+            margin-bottom: 45px;
+            letter-spacing: -0.5px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-hover), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .rjf-title i {
-            margin-right: 10px;
+            margin-right: 12px;
+            background: rgba(0, 121, 107, 0.1);
+            padding: 12px;
+            border-radius: 18px;
+            -webkit-text-fill-color: var(--primary-color);
         }
 
-        /* মূল কার্ড ডিজাইন */
+        /* Pro-Max Glassmorphic Grid Card Container */
         .rjf-terms-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 40px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 32px;
+            padding: 45px;
             border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-default);
+            box-shadow: var(--shadow-default), inset 0 0 0 1px rgba(255,255,255,0.4);
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
         }
 
-        /* প্রতিটি শর্তের আইটেম ডিজাইন */
+        /* Core Terms Grid Item Cards */
         .rjf-term-item {
             display: flex;
             align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: var(--primary-light);
-            border-radius: 12px;
-            border-left: 4px solid var(--primary-color);
+            gap: 18px;
+            padding: 26px;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-left: 5px solid var(--primary-color);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
-            z-index: 1;
         }
 
-        /* হোভার ইফেক্ট */
+        /* Advanced Hover Interactions */
         .rjf-term-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.01);
             box-shadow: var(--shadow-hover);
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             border-left-color: var(--primary-hover);
+            border-color: rgba(255, 255, 255, 0.9);
         }
 
-        /* আইকন এবং টেক্সট ডিজাইন */
+        /* Icon Framework Styles */
         .rjf-term-icon {
             font-size: 24px;
             color: var(--primary-color);
-            margin-top: 2px;
+            background: rgba(0, 121, 107, 0.08);
+            padding: 14px;
+            border-radius: 14px;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
         }
 
         .rjf-term-item:hover .rjf-term-icon {
-            transform: scale(1.1);
-            color: var(--primary-hover);
+            transform: scale(1.1) rotate(5deg);
+            color: white;
+            background: var(--primary-color);
         }
 
+        /* Typography Text Architectures */
         .rjf-term-text h4 {
-            margin: 0 0 8px 0;
+            font-family: 'Poppins', sans-serif;
+            margin: 0 0 10px 0;
             color: var(--text-dark);
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
         }
 
         .rjf-term-text p {
@@ -112,234 +285,141 @@
             color: var(--text-muted);
             font-size: 15px;
             text-align: justify;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 500;
         }
 
-        /* রেসপন্সিভ ডিজাইন */
+        /* Scalable Responsive Layout Breakpoints */
         @media (max-width: 768px) {
             .rjf-terms-card {
                 padding: 25px;
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             .rjf-title {
-                font-size: 24px;
+                font-size: 28px;
+            }
+            .rjf-term-item {
+                padding: 20px;
             }
         }
-
-
-
-
-
-
-
-        .audio-container {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 15px;
-    padding: 20px;
-    max-width: 400px;
-    text-align: center;
-    color: green;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-}
-
-audio {
-    width: 100%;
-    margin-top: 10px;
-    filter: invert(100%); /* ডার্ক মোডের সাথে মানিয়ে নেওয়ার জন্য */
-}
-
-
-
-
-
-
-
-
-
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
-
-:root {
-  --neon-glow: #00f2fe;
-  --neon-purple: #4facfe;
-}
-
-/* নেভিগেশন কন্টেইনার - যা বাটনকে মাঝখানে রাখবে */
-.ultra-nav {
-  position: fixed;
-  top: 20px; /* উপর থেকে একটু নিচে ফ্লোটিং স্টাইল */
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  pointer-events: none; /* যাতে পেজের অন্য কিছুতে ক্লিক করতে বাধা না দেয় */
-}
-
-/* স্মার্ট সাবস্ক্রাইব বাটন */
-.smart-sub-btn {
-  pointer-events: auto; /* বাটন ক্লিকযোগ্য করার জন্য */
-  position: relative;
-  padding: 8px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 100px;
-  color: black;
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  letter-spacing: 1px;
-  overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* বাটন হোভার করলে যা হবে */
-.smart-sub-btn:hover {
-  transform: translateY(-5px) scale(1.05);
-  background: #fff;
-  color: #000;
-  box-shadow: 0 15px 40px rgba(79, 172, 254, 0.4);
-  border-color: transparent;
-}
-
-/* শিমার (Shimmer) ইফেক্ট - যা বাটনের ওপর দিয়ে লাইট পাস করবে */
-.shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.4),
-    transparent
-  );
-  transition: all 0.2s;
-  animation: shineLoop 4s infinite linear;
-}
-
-@keyframes shineLoop {
-  0% { left: -100%; }
-  20% { left: 100%; }
-  100% { left: 100%; }
-}
-
-/* নিয়ন বর্ডার এনিমেশন (নিচে একটি সরু রেখা যা গ্লো করবে) */
-.smart-sub-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--neon-glow), var(--neon-purple));
-  transition: all 0.4s ease;
-  transform: translateX(-50%);
-}
-
-.smart-sub-btn:hover::after {
-  width: 80%;
-}
-
     </style>
 </head>
 <body>
+
+<!-- Floating Header Bar Elements -->
 <nav class="ultra-nav">
-  <div class="nav-center">
-    <a href="/subscribe/" class="smart-sub-btn">
-      <span class="btn-content">সাবস্ক্রাইব করুন</span>
-      <div class="shimmer"></div>
-    </a>
-  </div>
+    <div class="nav-center">
+        <a href="/subscribe/" class="smart-sub-btn">
+            <span class="btn-content">Subscribe Now</span>
+            <div class="shimmer"></div>
+        </a>
+    </div>
 </nav>
 
-
-
-    
-
-
+<!-- Premium Audio Tracking Component -->
 <div class="audio-container">
-    <p>আমাদের সদস্যপদ সম্বন্ধে শুনুন </p>
+    <p>Listen to Our Membership Policy Details</p>
     <audio controls>
         <source src="member.mp3" type="audio/mpeg">
-        আপনার ব্রাউজারটি অডিও সাপোর্ট করছে না।
+        Your browser does not support the audio element.
     </audio>
 </div>
 
-
-
-    
-
+<!-- Main Membership Grid Core Framework -->
 <div class="rjf-container">
     <h2 class="rjf-title">
-        <i class="fas fa-file-contract"></i> সদস্যপদ ও শর্তাবলী
+        <i class="fas fa-file-contract"></i> Membership Terms & Conditions
     </h2>
     
     <div class="rjf-terms-card">
         
-        <!-- শর্ত ১ -->
+        <!-- Condition 1 -->
         <div class="rjf-term-item">
             <i class="fas fa-hand-holding-heart rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>স্বেচ্ছাসেবী মানসিকতা</h4>
-                <p>সম্পূর্ণ নিজ ইচ্ছায় এবং নিঃস্বার্থভাবে রুপসা জনকল্যাণ ফাউন্ডেশনের মানবকল্যাণমূলক কাজে নিজেকে নিয়োজিত করার মানসিকতা থাকতে হবে।</p>
+                <h4>Voluntary Mindset</h4>
+                <p>One must possess a dedicated mindset to selflessly and voluntarily engage in the humanitarian and social welfare activities of the Rupsha Jonokollan Foundation.</p>
             </div>
         </div>
 
-        <!-- শর্ত ২ -->
+        <!-- Condition 2 -->
         <div class="rjf-term-item">
             <i class="fas fa-users rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>সহযোগিতামূলক আচরণ</h4>
-                <p>ফাউন্ডেশনের বৃহত্তর স্বার্থে সকল সদস্য, কর্মকর্তা এবং সাধারণ মানুষের সাথে সর্বদা সম্মানজনক ও সহযোগিতামূলক সম্পর্ক বজায় রাখতে হবে।</p>
+                <h4>Collaborative Behavior</h4>
+                <p>Always maintain a highly respectful, professional, and cooperative relationship with all members, executives, and the general public for the greater interest of the foundation.</p>
             </div>
         </div>
 
-        <!-- শর্ত ৩ -->
+        <!-- Condition 3 -->
         <div class="rjf-term-item">
             <i class="fas fa-calendar-check rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>মাসিক অনুদান পরিশোধ</h4>
-                <p>সংগঠনের কার্যক্রম সচল রাখতে প্রতি মাসের ১ থেকে ১৫ তারিখের মধ্যে ফাউন্ডেশন কর্তৃক নির্ধারিত মাসিক অনুদান নিয়মিত পরিশোধ করতে হবে।</p>
+                <h4>Monthly Contribution</h4>
+                <p>To keep organizational operational activities smooth and active, the fixed monthly contribution determined by the foundation must be paid regularly between the 1st and 15th of every month.</p>
             </div>
         </div>
 
-        <!-- শর্ত ৪ (নতুন যুক্ত করা হয়েছে) -->
+        <!-- Condition 4 -->
         <div class="rjf-term-item">
             <i class="fas fa-balance-scale rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>গঠনতন্ত্র ও শৃঙ্খলা</h4>
-                <p>ফাউন্ডেশনের সকল নিয়ম-কানুন, গঠনতন্ত্র এবং কার্যনির্বাহী কমিটির সিদ্ধান্ত বিনম্র শ্রদ্ধার সাথে মেনে চলতে হবে।</p>
+                <h4>Constitution & Discipline</h4>
+                <p>All official rules, organizational regulations, the framework constitution, and executive decisions made by the committee must be strictly and respectfully followed.</p>
             </div>
         </div>
 
-        <!-- শর্ত ৫ (নতুন যুক্ত করা হয়েছে) -->
+        <!-- Condition 5 -->
         <div class="rjf-term-item">
             <i class="fas fa-comments rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>নিয়মিত সভায় উপস্থিতি</h4>
-                <p>ফাউন্ডেশন কর্তৃক আয়োজিত মাসিক বা জরুরি সভাগুলোতে যথাসম্ভব উপস্থিত থাকতে হবে এবং সংগঠনের উন্নয়নে গঠনমূলক মতামত প্রদান করতে হবে।</p>
+                <h4>Regular Meeting Presence</h4>
+                <p>Members should prioritize attending the monthly or emergency sessions organized by the foundation and proactively deliver constructive feedback for continuous development.</p>
             </div>
         </div>
 
-        <!-- শর্ত ৬ (নতুন যুক্ত করা হয়েছে) -->
+        <!-- Condition 6 -->
         <div class="rjf-term-item">
             <i class="fas fa-dove rjf-term-icon"></i>
             <div class="rjf-term-text">
-                <h4>অরাজনৈতিক অবস্থান</h4>
-                <p>এটি একটি সম্পূর্ণ অরাজনৈতিক ও অলাভজনক প্রতিষ্ঠান। সংগঠনের নাম বা পদবি ব্যবহার করে কোনো রাজনৈতিক বা ব্যক্তিগত স্বার্থ হাসিল করা যাবে না।</p>
+                <h4>Non-Political Stance</h4>
+                <p>This is strictly a non-political and non-profit welfare institution. The official title, designation, or name of the organization must never be exploited for political or personal gain.</p>
             </div>
         </div>
 
     </div>
 </div>
+
+<!-- Scripts Layer Engine -->
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    const subBtn = document.querySelector('.smart-sub-btn');
+
+    // Dynamic Scroll Optimization Logic
+    window.addEventListener('scroll', function() {
+        if (subBtn) {
+            let scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollPos > 100) {
+                subBtn.style.transform = 'scale(0.92)';
+                subBtn.style.opacity = '0.85';
+            } else {
+                subBtn.style.transform = 'scale(1)';
+                subBtn.style.opacity = '1';
+            }
+        }
+    });
+
+    // Premium Interactive Event Handling
+    if (subBtn) {
+        subBtn.addEventListener('mouseenter', () => {
+            if (window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(10);
+            }
+        });
+    }
+});
+</script>
 
 </body>
 </html>
