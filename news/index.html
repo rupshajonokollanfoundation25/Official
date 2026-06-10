@@ -408,8 +408,89 @@
         .btn.loading .spinner, .premium-btn.loading .spinner { display: block; }
         .btn.loading .btn-text, .premium-btn.loading .btn-text { display: none; }
 
+        /* =========================================================
+           NEW: SMART MOBILE BOTTOM NAVIGATION STYLES (Pro Max Layout)
+           ========================================================= */
+        #mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(229, 231, 235, 0.7);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+            display: none;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0.65rem 0 calc(0.65rem + env(safe-area-inset-bottom));
+            z-index: 999;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.8rem;
+            font-weight: 600;
+            gap: 5px;
+            flex: 1;
+            position: relative;
+        }
+
+        .nav-item svg {
+            transition: transform 0.3s ease, stroke 0.3s ease;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active svg {
+            transform: translateY(-2px) scale(1.1);
+            stroke: var(--primary);
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 5px;
+            height: 5px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-item.active::after {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
-            .container { grid-template-columns: 1fr; padding-top: 6rem; }
+            .container { 
+                grid-template-columns: 1fr; 
+                padding-top: 5.5rem; 
+                padding-bottom: 7rem; /* Bottom spacing for safe navigation bar */
+            }
+            #mobile-nav { 
+                display: flex !important; 
+            }
+            .mobile-tab-content { 
+                display: none; 
+            }
+            .mobile-tab-content.active { 
+                display: block; 
+            }
+            .navbar .btn-logout {
+                display: none; /* Hide top logout button on mobile to look clean */
+            }
         }
     </style>
 </head>
@@ -447,7 +528,7 @@
         </nav>
 
         <div class="container">
-            <div class="card">
+            <div class="card mobile-tab-content active" id="email-section">
                 <div class="card-header">
                     নতুন ইমেইল তৈরি করুন
                 </div>
@@ -468,7 +549,7 @@
                 </button>
             </div>
 
-            <div>
+            <div class="mobile-tab-content" id="subscriber-section">
                 <div class="stat-box">
                     <div class="stat-item">
                         <h2 id="total-count">0</h2>
@@ -493,6 +574,36 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="mobile-nav">
+            <div class="nav-item active" id="nav-email">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span>ইমেইল লিখুন</span>
+            </div>
+            <div class="nav-item" id="nav-subscribers">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>ইমেইল তালিকা</span>
+            </div>
+            
+            
+            
+            <a href="smart_pro_ rating_reply_rjfoundation.html" class="nav-item" id="nav-subscribers" style="text-decoration: none;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+    <span>ফিডব্যাক রিপ্লাই</span>
+</a>
+
+            
+            
+            <div class="nav-item" id="nav-logout-mob" style="color: #ef4444;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>লগআউট</span>
             </div>
         </div>
     </div>
@@ -680,7 +791,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'সফল!',
-                    text: `সফলভাবে ${selectedEmails.length} জনের কাছে ইমেইল পাঠানো হয়েছে! 🎉`,
+                    text: `স সফলভাবে ${selectedEmails.length} জনের কাছে ইমেইল পাঠানো হয়েছে! 🎉`,
                     confirmButtonColor: '#4f46e5'
                 });
                 
@@ -801,6 +912,43 @@
             }
         });
 
+        // ============================================
+        // NEW: MOBILE BOTTOM NAV NAVIGATION LOGIC
+        // ============================================
+        const navEmail = document.getElementById('nav-email');
+        const navSubscribers = document.getElementById('nav-subscribers');
+        const navLogoutMob = document.getElementById('nav-logout-mob');
+        
+        const emailSection = document.getElementById('email-section');
+        const subscriberSection = document.getElementById('subscriber-section');
+
+        function switchMobileTab(activeNav, showSection, hideSection) {
+            navEmail.classList.remove('active');
+            navSubscribers.classList.remove('active');
+            activeNav.classList.add('active');
+            
+            hideSection.classList.remove('active');
+            showSection.classList.add('active');
+            
+            // Smooth scroll to top when changing tabs
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        if(navEmail && navSubscribers) {
+            navEmail.addEventListener('click', () => {
+                switchMobileTab(navEmail, emailSection, subscriberSection);
+            });
+
+            navSubscribers.addEventListener('click', () => {
+                switchMobileTab(navSubscribers, subscriberSection, emailSection);
+            });
+        }
+
+        if(navLogoutMob) {
+            navLogoutMob.addEventListener('click', () => {
+                logoutBtn.click(); // Uses original logout flow safely
+            });
+        }
     </script>
 </body>
 </html>
