@@ -367,7 +367,7 @@ window.addEventListener('load', function() {
             // Remove from DOM after transition
             setTimeout(() => preloader.remove(), 600);
         }
-    }, 2700); // আপনি চাইলে সময় বাড়াতে বা কমাতে পারেন
+    }, 2500); // আপনি চাইলে সময় বাড়াতে বা কমাতে পারেন
 });
 
 
