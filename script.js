@@ -355,3 +355,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+
+// Hide Preloader after 2.7 seconds without blocking site load
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const preloader = document.getElementById('wc-preloader');
+        if(preloader) {
+            preloader.classList.add('wc-preloader-hidden');
+            // Remove from DOM after transition
+            setTimeout(() => preloader.remove(), 600);
+        }
+    }, 2700); // আপনি চাইলে সময় বাড়াতে বা কমাতে পারেন
+});
+
+
+
