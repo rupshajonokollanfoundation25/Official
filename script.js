@@ -358,17 +358,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// Hide Preloader after 2.7 seconds without blocking site load
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        const preloader = document.getElementById('wc-preloader');
-        if(preloader) {
-            preloader.classList.add('wc-preloader-hidden');
-            // Remove from DOM after transition
-            setTimeout(() => preloader.remove(), 600);
-        }
-    }, 2500); // আপনি চাইলে সময় বাড়াতে বা কমাতে পারেন
-});
+window.onload = function() {
+  const boot = document.getElementById('boot');
+  const ball = document.getElementById('ball');
+  const splash = document.getElementById('splash-screen');
+  const mainSite = document.getElementById('main-website');
 
+  // অ্যানিমেশন ক্লাস যোগ করা
+  boot.classList.add('animate-boot');
+  ball.classList.add('animate-ball');
 
-
+  // ৩ সেকেন্ড (৩০০০ মিলিসেকেন্ড) পর সাইট ওপেন হবে
+  setTimeout(() => {
+    splash.classList.add('fade-out'); // স্প্ল্যাশ স্ক্রিন ফেইড আউট
+    
+    setTimeout(() => {
+      splash.style.display = 'none'; // একদম সরিয়ে দেওয়া
+      mainSite.style.display = 'block'; // মেইন ওয়েবসাইট দেখানো
+    }, 1000);
+  }, 3000); 
+};
