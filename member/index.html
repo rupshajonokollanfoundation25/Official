@@ -29,6 +29,215 @@
 </head>
 <body>
 
+
+
+
+
+<style>
+  /* প্রিমিয়াম ডার্ক মেমরি থিম */
+  #splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: radial-gradient(circle at center, #1f2937 0%, #030712 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: scale(1.1); /* যাওয়ার সময় হালকা জুম-ইন ইফেক্ট */
+    pointer-events: none;
+  }
+
+  .animation-wrapper { 
+    text-align: center; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ব্যাকগ্রাউন্ডের মায়াবী আলো */
+  .memory-glow {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulseGlow 3s infinite ease-in-out;
+  }
+
+  /* ছবি দেখানোর প্রিমিয়াম গ্লাস ফ্রেম */
+  .image-frame {
+    width: 320px;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(251, 191, 36, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  /* স্লাইডারের ট্র্যাক - ৫টি ছবির জন্য ৫০০% প্রস্থ */
+  .slider-track {
+    display: flex;
+    width: 500%; 
+    height: 100%;
+    /* ৫ সেকেন্ডের মধ্যে অ্যানিমেশন শেষ হবে */
+    animation: slideMemories 2.5s ease-in-out forwards; 
+  }
+
+  /* প্রতিটি ছবির স্টাইল */
+  .slider-track img {
+    width: 20%; /* ৫০০% এর ২০% = ১০০% (একটি ফ্রেমের সমান) */
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  /* টেক্সট ডিজাইন */
+  .loading-text { 
+    color: #40f5ff; 
+    margin-top: 5px; 
+    letter-spacing: 3px; 
+    font-family: 'Montserrat', 'Segoe UI', sans-serif; 
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+  }
+
+  /* প্রোগ্রেস বার কন্টেইনার */
+  .progress-container {
+    width: 280px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ca8a04, #facc15);
+    box-shadow: 0 0 12px #facc15;
+    border-radius: 20px;
+    transition: width 0.05s linear;
+  }
+
+  .percentage-text {
+    color: #facc15;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* --- সিনেমাটিক স্লাইড অ্যানিমেশন --- */
+  /* ছবিগুলো ধাপে ধাপে স্লাইড হবে এবং কিছুক্ষণ দাঁড়াবে */
+  @keyframes slideMemories {
+    0%, 15% { transform: translateX(0); }             /* ছবি ১ */
+    20%, 35% { transform: translateX(-20%); }         /* ছবি ২ */
+    40%, 55% { transform: translateX(-40%); }         /* ছবি ৩ */
+    60%, 75% { transform: translateX(-60%); }         /* ছবি ৪ */
+    80%, 100% { transform: translateX(-80%); }        /* ছবি ৫ */
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+   
+
+<div id="splash-screen">
+  <div class="memory-glow"></div>
+  <div class="animation-wrapper">
+    
+    <!-- ছবির ফ্রেম -->
+    <div class="image-frame">
+      <div class="slider-track">
+        <!--  ৫টি ছবির  -->
+        
+        
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/national-anthem-all-team.webp" alt="Memory 1">
+        <img src="https://rupshajf.vercel.app/gallery/win-team.webp" alt="Memory 2">
+        <img src="https://rupshajf.vercel.app/gallery/lost-team.webp" alt="Memory 3">
+        <img src="https://rupshajf.vercel.app/gallery/team-trophy.webp" alt="Memory 4">
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/IMG_20260320_234348.jpg" alt="Memory 5">
+      </div>
+    </div>
+
+    <h2 class="loading-text"> আমাদের কার্যক্রম এক নজরে</h2>
+    
+    <div class="progress-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <span id="percentage" class="percentage-text">0%</span>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const progressBar = document.getElementById('progress-bar');
+    const percentageText = document.getElementById('percentage');
+    const splash = document.getElementById('splash-screen');
+
+    // নির্দিষ্ট ৫ সেকেন্ড (5000 মিলিসেকেন্ড) টার্গেট
+    const totalDuration = 3000; 
+    const updateInterval = 50; // প্রতি ৫০ মিলিসেকেন্ডে আপডেট হবে
+    const step = 100 / (totalDuration / updateInterval); 
+    
+    let progress = 0;
+
+    // ৫ সেকেন্ডে ঠিক ১০০% হওয়ার ক্যালকুলেশন
+    const timer = setInterval(() => {
+      progress += step;
+      
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+        hideSplashScreen();
+      }
+
+      const currentProgress = Math.floor(progress);
+      progressBar.style.width = currentProgress + '%';
+      percentageText.textContent = currentProgress + '%';
+    }, updateInterval);
+
+    // ৫ সেকেন্ড পার হওয়ার পর স্মুথলি হাইড করার ফাংশন
+    function hideSplashScreen() {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 800); // অ্যানিমেশন শেষ হতে ৮০০ms সময় নেবে
+    }
+  })();
+</script>
+
+
+
+
+
+
+
+
 <nav class="ultra-nav">
     <a href="/subscribe/" class="smart-sub-btn">
       <i class="fa-regular fa-bell"></i>
