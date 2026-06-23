@@ -45,344 +45,196 @@
     
 </head>
 <body>
+
+
+
 <style>
-    /* =========================================
-       FIFA Splash Screen CSS (Smart & Stable)
-       ========================================= */
-    #fifa-splash-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-        z-index: 999999;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@400;500&display=swap');
 
-    .splash-hide {
-        opacity: 0 !important;
-        visibility: hidden !important;
-    }
+  /* মূল স্প্ল্যাশ স্ক্রিনের ব্যাকগ্রাউন্ড ও লেআউট */
+  #smart-splash {
+    position: fixed;
+    inset: 0; /* top: 0, left: 0, right: 0, bottom: 0 */
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s;
+  }
 
-    /* Background Elements */
-    .stadium-glow {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(ellipse at top, rgba(0, 242, 254, 0.12) 0%, transparent 65%);
-        pointer-events: none;
-    }
+  /* ফেইড আউট ক্লাস */
+  #smart-splash.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.05); /* হালকা জুম হয়ে ভ্যানিশ হবে */
+  }
 
-    .pitch-line {
-        position: absolute;
-        bottom: 30%; left: 0; width: 100%; height: 2px;
-        background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
-    }
+  .splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
 
-    #splash-canvas {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        pointer-events: none;
-        z-index: 2;
-    }
+  /* ইমোজি কন্টেইনার এবং গ্লো ইফেক্ট */
+  .animation-scene {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 120px;
+    margin-bottom: 10px;
+  }
 
-    /* Main Stage */
-    .stage {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        z-index: 3;
-    }
-    
-    /* Assets */
-    .asset-boot {
-        position: absolute;
-        left: -150px; bottom: 25%;
-        width: 100px; height: 100px;
-        filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.6));
-        z-index: 5;
-        transform-origin: bottom left;
-    }
+  /* ব্যাকগ্রাউন্ডে একটি সুন্দর আলোর আভা */
+  .glow-orb {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: #f59e0b;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.3;
+    animation: pulseGlow 2s infinite alternate;
+  }
 
-    .asset-ball {
-        position: absolute;
-        left: 45%; bottom: 25%;
-        width: 70px; height: 70px;
-        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
-        z-index: 4;
-    }
+  .emoji {
+    font-size: 4.5rem;
+    position: absolute;
+    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+  }
 
-    .goal-alert {
-        position: absolute;
-        font-size: 4.5rem;
-        font-weight: 900;
-        font-style: italic;
-        letter-spacing: 2px;
-        color: #fbbf24;
-        text-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
-        opacity: 0;
-        transform: scale(0.3) rotate(-10deg);
-        z-index: 20;
-        pointer-events: none;
-    }
+  #pro-boot { left: 40px; z-index: 2; }
+  #pro-ball { left: 100px; z-index: 1; }
 
-    /* UI & Loading Bar */
-    .intro-ui {
-        text-align: center;
-        z-index: 10;
-        margin-top: 30px;
-    }
+  /* স্মার্ট অ্যানিমেশন কিফ্রেম */
+  .anim-boot { animation: proKick 1.5s infinite cubic-bezier(0.25, 1, 0.5, 1); }
+  .anim-ball { animation: proShoot 1.5s infinite cubic-bezier(0.25, 1, 0.5, 1); }
 
-    .status-tag {
-        font-size: 13px;
-        letter-spacing: 3px;
-        color: #94a3b8;
-        text-transform: uppercase;
-        font-weight: bold;
-        animation: pulseText 1.5s infinite;
-        transition: color 0.3s ease;
-    }
+  @keyframes proKick {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    15% { transform: translateX(-15px) rotate(-20deg); } /* পা পেছনে নেওয়া */
+    25% { transform: translateX(25px) rotate(30deg); } /* জোরে কিক করা */
+    40% { transform: translateX(0) rotate(0deg); }
+  }
 
-    .loading-bar-container {
-        width: 260px; height: 4px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        margin: 15px auto;
-        overflow: hidden;
-    }
+  @keyframes proShoot {
+    0%, 15% { transform: translateX(0) rotate(0deg) scale(1); opacity: 1; }
+    25% { transform: translateX(10px) scale(0.9); } /* কিকের ইমপ্যাক্ট */
+    50% { transform: translateX(180px) translateY(-20px) rotate(720deg) scale(1.2); opacity: 1; } /* বল উড়ে যাওয়া */
+    60% { transform: translateX(220px) translateY(0) rotate(1080deg) scale(0.8); opacity: 0; } /* ভ্যানিশ হওয়া */
+    100% { opacity: 0; transform: translateX(0); }
+  }
 
-    .loading-bar-fill {
-        width: 0%; height: 100%;
-        background: linear-gradient(90deg, #00f2fe, #4facfe);
-        box-shadow: 0 0 10px #00f2fe;
-        transition: width 0.2s ease-out;
-    }
-    
-    /* Animations */
-    @keyframes pulseText { 
-        0%, 100% { opacity: 0.6; } 
-        50% { opacity: 1; color: #00f2fe; } 
-    }
+  @keyframes pulseGlow {
+    from { transform: scale(1); opacity: 0.2; }
+    to { transform: scale(1.5); opacity: 0.4; }
+  }
 
-    .boot-kick { animation: bootRun 1.4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
-    @keyframes bootRun { 
-        0% { left: -150px; transform: rotate(-25deg); } 
-        35% { left: 41%; transform: rotate(-35deg); } 
-        45% { left: 43.5%; transform: rotate(15deg); } 
-        70% { left: 46%; transform: rotate(5deg) translateY(-10px); opacity: 1; } 
-        100% { left: 55%; transform: rotate(0deg) translateY(50px); opacity: 0; } 
-    }
+  /* প্রিমিয়াম টাইপোগ্রাফি */
+  .title-text {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin: 0;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
 
-    .ball-fly { animation: ballBlast 1.4s cubic-bezier(0.1, 0.8, 0.1, 1) forwards; }
-    @keyframes ballBlast { 
-        0%, 44% { left: 45%; transform: scale(1) rotate(0deg); } 
-        45% { transform: scale(0.85, 1.1) rotate(20deg); } 
-        50% { transform: scale(1.1, 0.9) rotate(60deg); } 
-        100% { left: 115%; bottom: 45%; transform: scale(0.4) rotate(1080deg); filter: blur(2px); } 
-    }
+  .highlight-text {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+  }
 
-    .goal-popup { animation: goalShow 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards; }
-    @keyframes goalShow { 
-        0% { opacity: 0; transform: scale(0.3) rotate(-15deg); } 
-        20% { opacity: 1; transform: scale(1.1) rotate(5deg); } 
-        80% { opacity: 1; transform: scale(1) rotate(0deg); } 
-        100% { opacity: 0; transform: scale(1.3) translateY(-30px); } 
-    }
+  .subtitle-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    color: #94a3b8;
+    letter-spacing: 2px;
+    margin-top: -10px;
+    animation: blinkText 1.5s infinite;
+  }
+
+  @keyframes blinkText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* মডার্ন প্রগ্রেস বার */
+  .progress-container {
+    width: 220px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 10px;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #fbbf24, #f59e0b, #ef4444);
+    border-radius: 20px;
+    transition: width 3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+  }
 </style>
 
-<!-- Splash Screen HTML -->
-<div id="fifa-splash-screen">
-    <div class="stadium-glow"></div>
-    <div class="pitch-line"></div>
-    <canvas id="splash-canvas"></canvas>
+<div id="smart-splash">
+  <div class="splash-content">
     
-    <div class="stage">
-        <!-- Boot Asset -->
-        <svg class="asset-boot" id="splash-boot" viewBox="0 0 100 100">
-            <defs>
-                <linearGradient id="boot-g" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#00f2fe" />
-                    <stop offset="100%" stop-color="#10b981" />
-                </linearGradient>
-            </defs>
-            <path d="M15,65 Q25,40 50,45 Q75,48 90,60 L85,75 Q65,80 40,75 Q20,73 15,65 Z" fill="url(#boot-g)" />
-            <rect x="25" y="76" width="4" height="6" fill="#fbbf24" rx="2" />
-            <rect x="42" y="77" width="4" height="6" fill="#fbbf24" rx="2" />
-            <rect x="65" y="78" width="4" height="6" fill="#fbbf24" rx="2" />
-            <rect x="80" y="74" width="4" height="6" fill="#fbbf24" rx="2" />
-        </svg>
-
-        <!-- Ball Asset -->
-        <svg class="asset-ball" id="splash-ball" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="46" stroke="#ffffff" stroke-width="3" fill="none"/>
-            <polygon points="50,38 38,46 42,60 58,60 62,46" fill="rgba(255,255,255,0.9)"/>
-            <line x1="50" y1="4" x2="50" y2="38" stroke="#fff" stroke-width="2"/>
-            <line x1="6" y1="36" x2="38" y2="46" stroke="#fff" stroke-width="2"/>
-            <line x1="94" y1="36" x2="62" y2="46" stroke="#fff" stroke-width="2"/>
-            <line x1="22" y1="82" x2="42" y2="60" stroke="#fff" stroke-width="2"/>
-            <line x1="78" y1="82" x2="58" y2="60" stroke="#fff" stroke-width="2"/>
-        </svg>
-
-        <div class="goal-alert" id="splash-goal">GOAL!!!</div>
+    <div class="animation-scene">
+      <div class="glow-orb"></div>
+      <div id="pro-boot" class="emoji">🥾</div>
+      <div id="pro-ball" class="emoji">⚽</div>
     </div>
 
-    <div class="intro-ui">
-        <div class="status-tag" id="splash-status">LOADING ARENA...</div>
-        <div class="loading-bar-container">
-            <div class="loading-bar-fill" id="splash-progress"></div>
-        </div>
+    <h2 class="title-text">FIFA <span class="highlight-text">2026</span></h2>
+    <p class="subtitle-text">LOADING EXPERIENCE...</p>
+
+    <div class="progress-container">
+      <div id="pro-progress" class="progress-fill"></div>
     </div>
+
+  </div>
 </div>
 
-<!-- Splash Screen JavaScript -->
 <script>
-    // IIFE ব্লকের মাধ্যমে স্কোপ প্রটেকশন (মেইন সাইটের কোডের সাথে কনফ্লিক্ট করবে না)
-    (() => {
-        document.body.style.overflow = 'hidden'; 
-        
-        const ui = {
-            screen: document.getElementById('fifa-splash-screen'),
-            boot: document.getElementById('splash-boot'),
-            ball: document.getElementById('splash-ball'),
-            goal: document.getElementById('splash-goal'),
-            status: document.getElementById('splash-status'),
-            prog: document.getElementById('splash-progress'),
-            canvas: document.getElementById('splash-canvas')
-        };
-        
-        const ctx = ui.canvas.getContext('2d');
-        let particles = [];
-        let animationFrameId;
-        const totalLoops = 2; // কতবার লাথি মারবে
+  window.addEventListener('load', function() {
+    const splash = document.getElementById('smart-splash');
+    const boot = document.getElementById('pro-boot');
+    const ball = document.getElementById('pro-ball');
+    const progressBar = document.getElementById('pro-progress');
 
-        // ক্যানভাস সাইজ কন্ট্রোল
-        const resizeCanvas = () => { 
-            ui.canvas.width = window.innerWidth; 
-            ui.canvas.height = window.innerHeight; 
-        };
-        resizeCanvas(); 
-        window.addEventListener('resize', resizeCanvas);
+    // ক্লাস এড করে অ্যানিমেশন স্টার্ট করা
+    if(boot) boot.classList.add('anim-boot');
+    if(ball) ball.classList.add('anim-ball');
 
-        // পার্টিকেল সিস্টেম (স্মুথ ফিজিক্স)
-        class Particle {
-            constructor(x, y, color, type) {
-                this.x = x; this.y = y; this.color = color; this.type = type;
-                this.size = type === 'smoke' ? Math.random() * 5 + 3 : Math.random() * 7 + 4;
-                this.vx = type === 'smoke' ? Math.random() * -5 - 2 : (Math.random() - 0.5) * 16;
-                this.vy = type === 'smoke' ? (Math.random() - 0.5) * 3 : (Math.random() - 0.5) * 18 - 5;
-                this.gravity = type === 'confetti' ? 0.25 : 0; 
-                this.opacity = 1; 
-                this.angle = Math.random() * 360; 
-                this.spin = (Math.random() - 0.5) * 12;
-            }
-            update() { 
-                this.x += this.vx; 
-                this.y += this.vy; 
-                this.vy += this.gravity; 
-                this.opacity -= this.type === 'smoke' ? 0.03 : 0.015; 
-                this.angle += this.spin; 
-            }
-            draw() {
-                ctx.save(); 
-                ctx.globalAlpha = Math.max(0, this.opacity); 
-                ctx.translate(this.x, this.y); 
-                ctx.rotate(this.angle * Math.PI / 180); 
-                ctx.fillStyle = this.color;
-                if (this.type === 'smoke') { 
-                    ctx.beginPath(); ctx.arc(0, 0, this.size, 0, Math.PI * 2); ctx.fill(); 
-                } else { 
-                    ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size); 
-                } 
-                ctx.restore();
-            }
-        }
+    // প্রগ্রেস বার শূন্য থেকে ১০০% এ লোড হবে (টাইম ফ্রেম: ২.৮ সেকেন্ড)
+    setTimeout(() => {
+      if(progressBar) progressBar.style.width = '100%';
+    }, 100);
 
-        // রেন্ডার লুপ
-        function renderParticles() {
-            ctx.clearRect(0, 0, ui.canvas.width, ui.canvas.height);
-            particles = particles.filter(p => p.opacity > 0);
-            particles.forEach(p => { p.update(); p.draw(); });
-            animationFrameId = requestAnimationFrame(renderParticles);
-        }
-
-        // ইউটিলিটি: স্লিপ ফাংশন (টাইমিং ঠিক রাখার জন্য)
-        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-        // প্রোগ্রেস বার সিমুলেটর
-        let progressValue = 0;
-        const updateProgress = setInterval(() => {
-            if(progressValue < 90) { 
-                progressValue += Math.random() * 5 + 2; 
-                ui.prog.style.width = Math.min(progressValue, 90) + '%'; 
-            }
-        }, 150);
-
-        // মেইন অ্যানিমেশন লজিক (Smart & Readable)
-        async function runSplashAnimation() {
-            renderParticles(); // পার্টিকেল ইঞ্জিন চালু
-            await sleep(500); // শুরুতে একটু বিরতি
-
-            for (let i = 1; i <= totalLoops; i++) {
-                // কিক শুরু
-                ui.boot.classList.add('boot-kick'); 
-                ui.ball.classList.add('ball-fly');
-                
-                // বল কিক করার মুহূর্ত (৬২০ মি.সে. পর)
-                await sleep(620);
-                const rect = ui.ball.getBoundingClientRect(); 
-                for(let j=0; j<30; j++) particles.push(new Particle(rect.left+35, rect.top+35, 'rgba(0,242,254,0.7)', 'smoke'));
-                ui.status.innerText = "POWER SHOT!";
-
-                // গোল হওয়ার মুহূর্ত
-                await sleep(430);
-                ui.goal.classList.add('goal-popup'); 
-                const colors = ['#00f2fe', '#4facfe', '#fbbf24', '#10b981', '#ffffff'];
-                for(let j=0; j<120; j++) particles.push(new Particle(window.innerWidth*0.85, window.innerHeight*0.45, colors[Math.floor(Math.random()*colors.length)], 'confetti'));
-                ui.status.innerText = "GOAL DETECTED!";
-
-                // রিসেট বা সমাপ্তি
-                await sleep(1350);
-                if (i < totalLoops) {
-                    ui.boot.classList.remove('boot-kick'); 
-                    ui.ball.classList.remove('ball-fly'); 
-                    ui.goal.classList.remove('goal-popup');
-                    ui.status.innerText = "RECHARGING..."; 
-                    await sleep(300);
-                }
-            }
-
-            // অ্যানিমেশন শেষ, মেইন সাইটে প্রবেশ
-            clearInterval(updateProgress);
-            ui.prog.style.width = '100%';
-            ui.status.innerText = "WELCOME TO THE SITE"; 
-            ui.status.style.color = '#00f2fe';
-
-            await sleep(800);
-            ui.screen.classList.add('splash-hide');
-            document.body.style.overflow = 'auto'; // সাইটের স্ক্রল আনলক
-
-            // মেমোরি ক্লিয়ার
-            await sleep(800);
-            ui.screen.style.display = 'none';
-            cancelAnimationFrame(animationFrameId); // ব্যাকগ্রাউন্ড ক্যানভাস বন্ধ করে দেওয়া হলো
-            window.removeEventListener('resize', resizeCanvas);
-        }
-
-        // সাইট লোড হলে চালু হবে
-        window.addEventListener('DOMContentLoaded', runSplashAnimation);
-    })();
+    // ৩ সেকেন্ড পর স্প্ল্যাশ স্ক্রিন ফেইড আউট হওয়া শুরু করবে
+    setTimeout(() => {
+      splash.classList.add('fade-out'); 
+      
+      // ফেইড আউট হওয়ার পর ওয়েবসাইট ক্লিয়ার রাখার জন্য DOM থেকে রিমুভ করে দেওয়া
+      setTimeout(() => {
+        splash.remove(); 
+      }, 800); // ফেইড ট্রানজিশনের সময় (০.৮ সেকেন্ড)
+      
+    }, 3000); 
+  });
 </script>
-
-
 
 
 
