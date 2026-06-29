@@ -93,7 +93,7 @@ const foundationMembers = [
         profileUrl: "/verify/RJF-2026-9689",
         facebook: "https://facebook.com/imran.ahmedddddd",
         whatsapp: "https://wa.me/8801957329211",
-        github: "https://github.com/imran-ahmed-imran"
+        github: "https://github.com/imranahmed-dev-tech"
     },         
     
      {
