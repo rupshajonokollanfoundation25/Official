@@ -87,7 +87,7 @@ const foundationMembers = [
         role: "প্রচার সম্পাদক",
         category: "প্রচার সম্পাদক",
         status: "active",
-        image: "Https://techversesites.netlify.app/gallery/imran4.webp",
+        image: "Https://techversesite.vercel.app/gallery/imran4.webp",
         desc: "ইনি ফাউন্ডেশনের ওয়েবসাইট তৈরি করা সহ ফেসবুকে অ্যানাউন্সমেন্ট এবং ইউটিউবে ভিডিও আপলোড সহ সকল টেকনিক্যাল বিষয়ে এক্সপার্ট এনি ফাউন্ডেশন এর কার্যক্রম বিভিন্ন মানুষের মধ্যে ছড়িয়ে দেন।",
         memberid: " RJF-2026-9689 ",
         profileUrl: "/verify/RJF-2026-9689",
