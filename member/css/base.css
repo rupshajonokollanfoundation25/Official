@@ -1,0 +1,75 @@
+/* =========================================================
+   base.css — ভ্যারিয়েবল, রিসেট ও বেসিক টাইপোগ্রাফি
+   ========================================================= */
+
+:root {
+    --bg-color: #0a0f1e;
+    --bg-color-soft: #0f172a;
+    --surface: #131c31;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-hover: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --primary-accent: #00d2ff;
+    --primary-accent-2: #3a7bd5;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --text-main: #ffffff;
+    --text-sub: #94a3b8;
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    --max-width: 1180px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image:
+        radial-gradient(circle at 15% 10%, rgba(0, 210, 255, 0.08), transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(58, 123, 213, 0.10), transparent 45%);
+    font-family: 'Hind Siliguri', sans-serif;
+    color: var(--text-main);
+    margin: 0;
+    min-height: 100vh;
+    line-height: 1.5;
+}
+
+h1, h2, h3, h4, p {
+    margin: 0;
+}
+
+a {
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+}
+
+::selection {
+    background: var(--primary-accent);
+    color: #04121c;
+}
+
+/* স্ক্রলবার স্টাইল */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-color);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-accent);
+}
