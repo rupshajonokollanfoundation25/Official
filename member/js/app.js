@@ -3,12 +3,15 @@
    (রেন্ডারিং, সার্চ/ফিল্টার, স্ট্যাটস, মোডাল)
    ========================================================= */
 
-const gridContainer   = document.getElementById('member-grid');
+const scrollContent   = document.getElementById('scroll-content');
+const scrollBox       = document.getElementById('scroll-box');
 const modal            = document.getElementById('modal');
 const searchInput      = document.getElementById('searchInput');
 const categoryFilter   = document.getElementById('categoryFilter');
-const emptyState       = document.getElementById('empty-state');
 const resultCount      = document.getElementById('result-count');
+
+// ফ্রেমের ভেতর লুপ (অটো-স্ক্রল) চালু রাখার জন্য ন্যূনতম সদস্য সংখ্যা
+const MIN_MEMBERS_FOR_LOOP = 5;
 
 /* ---------- ১. স্ট্যাটস ড্যাশবোর্ড ---------- */
 function renderStats() {
@@ -71,43 +74,47 @@ function memberCardHTML(member) {
     `;
 }
 
-/* ---------- ৩. গ্রুপভিত্তিক রেন্ডারিং ---------- */
+/* ---------- ৩. ক্রমানুসারে সাজিয়ে ফ্রেমের ভেতর রেন্ডারিং ---------- */
+// pdobi/category অনুযায়ী নির্ধারিত গুরুত্বের ক্রমে সদস্যদের সাজানো হয়
+function sortByCategoryOrder(list) {
+    return [...list].sort((a, b) => {
+        let ia = CATEGORY_ORDER.indexOf(a.category);
+        let ib = CATEGORY_ORDER.indexOf(b.category);
+        if (ia === -1) ia = CATEGORY_ORDER.length;
+        if (ib === -1) ib = CATEGORY_ORDER.length;
+        return ia - ib;
+    });
+}
+
 function renderMembers(dataToRender = foundationMembers) {
     if (dataToRender.length === 0) {
-        gridContainer.innerHTML = '';
-        emptyState.classList.add('show');
+        scrollContent.innerHTML = `
+            <div class="empty-state show">
+                <i class="fa-solid fa-user-slash"></i>
+                <p>কোনো সদস্য পাওয়া যায়নি</p>
+            </div>`;
         resultCount.textContent = '০ জন সদস্য পাওয়া গেছে';
+        window.loopEnabled = false;
+        if (typeof resetScrollPosition === 'function') resetScrollPosition();
         return;
     }
-    emptyState.classList.remove('show');
+
     resultCount.textContent = `${toBengaliNumber(dataToRender.length)} জন সদস্য পাওয়া গেছে`;
 
-    // ক্যাটাগরি অনুযায়ী গ্রুপ তৈরি (নির্ধারিত ক্রম অনুসারে)
-    const grouped = {};
-    dataToRender.forEach(m => {
-        if (!grouped[m.category]) grouped[m.category] = [];
-        grouped[m.category].push(m);
-    });
+    const sortedList = sortByCategoryOrder(dataToRender);
+    const cardsHTML = sortedList.map(memberCardHTML).join('');
 
-    const orderedCategories = CATEGORY_ORDER.filter(cat => grouped[cat]);
-    // যদি নতুন কোনো ক্যাটাগরি লিস্টে না থাকে সেটাও শেষে দেখানো হবে
-    Object.keys(grouped).forEach(cat => {
-        if (!orderedCategories.includes(cat)) orderedCategories.push(cat);
-    });
+    // পর্যাপ্ত সদস্য থাকলে নিরবচ্ছিন্ন লুপের জন্য কনটেন্ট দুইবার বসানো হয়,
+    // কম সদস্য থাকলে (যেমন ফিল্টার করার পর) শুধু একবারই দেখানো হয় এবং অটো-স্ক্রল বন্ধ থাকে
+    if (sortedList.length >= MIN_MEMBERS_FOR_LOOP) {
+        scrollContent.innerHTML = cardsHTML + cardsHTML;
+        window.loopEnabled = true;
+    } else {
+        scrollContent.innerHTML = cardsHTML;
+        window.loopEnabled = false;
+    }
 
-    let html = '';
-    orderedCategories.forEach(cat => {
-        html += `
-            <section class="category-section">
-                <h2 class="category-heading"><span>${cat}</span><em>${toBengaliNumber(grouped[cat].length)} জন</em></h2>
-                <div class="category-grid">
-                    ${grouped[cat].map(memberCardHTML).join('')}
-                </div>
-            </section>
-        `;
-    });
-
-    gridContainer.innerHTML = html;
+    if (typeof resetScrollPosition === 'function') resetScrollPosition();
 }
 
 function toBengaliNumber(num) {
@@ -246,21 +253,7 @@ function initScrollHandlers() {
     });
 }
 
-/* ---------- ৮. স্ক্রল হলে কার্ড অ্যানিমেশনে ফুটে ওঠা ---------- */
-function initRevealOnScroll() {
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in-view');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.category-section').forEach(section => observer.observe(section));
-}
-
-/* ---------- ৯. ইনিশিয়ালাইজেশন ---------- */
+/* ---------- ৮. ইনিশিয়ালাইজেশন ---------- */
 document.addEventListener('DOMContentLoaded', () => {
     renderStats();
     renderMembers();
@@ -269,11 +262,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     searchInput.addEventListener('keyup', filterData);
     categoryFilter.addEventListener('change', filterData);
-
-    // প্রতিবার রেন্ডারের পর নতুন সেকশনগুলোতে রিভিল-অন-স্ক্রল যোগ করা
-    const gridObserverSetup = () => initRevealOnScroll();
-    const gridMutationObserver = new MutationObserver(gridObserverSetup);
-    gridMutationObserver.observe(gridContainer, { childList: true });
-
-    initRevealOnScroll();
 });
