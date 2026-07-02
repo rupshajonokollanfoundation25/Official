@@ -280,62 +280,119 @@
     .category-filter { width: 100%; }
 }
 
-/* ---------- মেম্বার গ্রিড ও ক্যাটাগরি সেকশন ---------- */
-.category-section {
-    margin-bottom: 34px;
-    opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.category-section.in-view {
-    opacity: 1;
-    transform: translateY(0);
+/* ---------- মেম্বার ফ্রেম (ফিক্সড বক্স, অটো + ম্যানুয়াল স্ক্রল) ---------- */
+.scroll-frame-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding: 6px 0 2px;
 }
 
-.category-heading {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-bottom: 10px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--glass-border);
-}
-.category-heading span {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: var(--primary-accent);
+.member-scroll-box {
+    width: min(480px, 100%);
+    height: 560px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
     position: relative;
-    padding-left: 14px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    cursor: grab;
+    touch-action: none; /* যাতে ভার্টিকাল ড্র্যাগ পুরো পেজ স্ক্রল না করে */
+    user-select: none;
 }
-.category-heading span::before {
+.member-scroll-box.dragging {
+    cursor: grabbing;
+}
+
+@media (max-width: 520px) {
+    .member-scroll-box { height: 480px; border-radius: 20px; }
+}
+
+/* উপরে-নিচে হালকা ফেড, যাতে মনে হয় কার্ডগুলো ফ্রেমের ভেতর থেকে ভেসে আসছে/যাচ্ছে */
+.member-scroll-box::before,
+.member-scroll-box::after {
     content: '';
     position: absolute;
-    left: 0; top: 50%;
-    transform: translateY(-50%);
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--primary-accent);
-    box-shadow: 0 0 8px var(--primary-accent);
+    left: 0; width: 100%; height: 60px;
+    z-index: 10; pointer-events: none;
 }
-.category-heading em {
-    font-style: normal;
-    font-size: 0.8rem;
-    color: var(--text-sub);
+.member-scroll-box::before {
+    top: 0; background: linear-gradient(to bottom, var(--bg-color), transparent);
+}
+.member-scroll-box::after {
+    bottom: 0; background: linear-gradient(to top, var(--bg-color), transparent);
 }
 
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+.scroll-wrapper {
+    display: flex;
+    flex-direction: column;
     gap: 16px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    will-change: transform;
 }
+
+.scroll-wrapper:hover .member-card:not(:hover) {
+    opacity: 0.55; filter: blur(0.5px); transform: scale(0.985);
+}
+
+.scroll-controls {
+    position: absolute;
+    right: calc(50% - min(240px, 50%) - 56px);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 15;
+}
+@media (max-width: 620px) {
+    .scroll-controls { right: 6px; }
+}
+
+.scroll-btn {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--primary-accent);
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: var(--transition);
+    display: flex; justify-content: center; align-items: center;
+    font-size: 1.15rem;
+}
+.scroll-btn:hover {
+    background: var(--primary-accent);
+    color: #0f172a;
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+}
+.scroll-btn:active { transform: scale(0.94); }
+
+.frame-hint {
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 0.8rem;
+    margin: 14px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    opacity: 0.85;
+}
+.frame-hint i { color: var(--primary-accent); }
 
 .empty-state {
-    display: none;
     text-align: center;
     padding: 60px 20px;
     color: var(--text-sub);
 }
-.empty-state.show { display: block; }
 .empty-state i { font-size: 2.2rem; margin-bottom: 14px; color: var(--primary-accent); opacity: 0.6; }
 
 /* ---------- স্ক্রল-টু-টপ বাটন ---------- */
