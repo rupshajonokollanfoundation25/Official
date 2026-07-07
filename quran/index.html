@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>কুরআন বাংলা — পড়ুন, শুনুন, খুঁজুন, বুঝুন</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-theme="light">
+
+<header>
+  <button class="menu-btn" id="menuBtn" aria-label="মেনু খুলুন">☰</button>
+  <div class="wordmark"><span class="ar">قرآن</span><span class="bn">কুরআন বাংলা</span></div>
+  <div class="search-wrap">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="searchInput" type="text" placeholder="আয়াত খুঁজুন (বাংলা শব্দ লিখুন)...">
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="themeBtn"><span id="themeLabel">নাইট মোড</span></button>
+  </div>
+</header>
+
+<div class="shell">
+  <div class="scrim" id="scrim" style="display:none;"></div>
+  <aside id="sidebar">
+    <div class="tabs">
+      <button id="tabSurah" class="active">সূরা</button>
+      <button id="tabJuz">পারা</button>
+      <button id="tabBookmarks">সংরক্ষিত</button>
+    </div>
+    <div class="list" id="listContainer"><div class="loader"><div class="spinner"></div><span>লোড হচ্ছে...</span></div></div>
+  </aside>
+
+  <main>
+    <div class="toolbar" id="readerToolbar" style="display:none;">
+      <button class="icon-btn" id="decFont">অ−</button>
+      <button class="icon-btn" id="incFont">অ+</button>
+    </div>
+    <div id="mainContent">
+      <div class="empty-hero">
+        <span class="ar">القرآن الكريم</span>
+        <h2>শুরু করতে বাম পাশ থেকে একটি সূরা বা পারা নির্বাচন করুন</h2>
+        <p>আরবি টেক্সট, বাংলা অনুবাদ এবং সুন্দর তিলাওয়াত একসাথে উপভোগ করুন, অথবা উপরের বক্সে যেকোনো শব্দ লিখে পুরো কুরআনে খুঁজুন।</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="search-panel" id="searchPanel" style="display:none;">
+  <div class="search-box">
+    <div class="search-box-head">
+      <h3 id="searchTitle">অনুসন্ধান ফলাফল</h3>
+      <button id="closeSearch">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<div class="player-bar" id="playerBar">
+  <div class="player-info">
+    <div class="pi-ref" id="playerRef">—</div>
+    <div class="pi-title" id="playerTitle">কিছু চলছে না</div>
+  </div>
+  <div class="player-controls">
+    <button id="prevBtn" title="আগের আয়াত" aria-label="আগের আয়াত">⏮</button>
+    <button id="playPauseBtn" class="big" title="চালু/বিরতি" aria-label="চালু বা বিরতি করুন">▶</button>
+    <button id="nextBtn" title="পরের আয়াত" aria-label="পরের আয়াত">⏭</button>
+  </div>
+  <button class="player-close" id="playerClose" title="প্লেয়ার বন্ধ করুন" aria-label="প্লেয়ার বন্ধ করুন">✕</button>
+  <div class="player-progress">
+    <span id="curTime">০:০০</span>
+    <input type="range" id="seekBar" min="0" max="100" value="0">
+    <span id="durTime">০:০০</span>
+  </div>
+  <div class="player-extra">
+    <label><span class="lbl-full">তিলাওয়াতকারী:</span>
+      <select id="reciterSelect"></select>
+    </label>
+    <label><input type="checkbox" id="autoplayChk" checked><span class="lbl-full">পরবর্তী আয়াত চালু</span></label>
+  </div>
+</div>
+
+<audio id="audioEl" preload="none"></audio>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/player.js"></script>
+<script src="js/reader.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
