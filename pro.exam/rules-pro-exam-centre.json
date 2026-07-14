@@ -1,0 +1,44 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "settings": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider === 'password'"
+    },
+
+    "user_history": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || auth.token.firebase.sign_in_provider === 'password')",
+        ".write": "auth != null && auth.uid === $uid",
+        "$entryId": {
+          ".validate": "newData.hasChildren(['name','date','class','subject','score','total','correct','wrong'])"
+        }
+      }
+    },
+
+    "leaderboard": {
+      ".read": "auth != null",
+      "$uid": {
+        ".write": "auth != null && (auth.uid === $uid || auth.token.firebase.sign_in_provider === 'password')",
+        ".validate": "newData.hasChildren(['name','totalScore','exams'])"
+      }
+    },
+
+    "bookmarks": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+
+    "guest_usage": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.firebase.sign_in_provider === 'anonymous' && newData.child('count').val() <= 2 && (!data.exists() || newData.child('count').val() >= data.child('count').val())",
+        ".validate": "newData.hasChildren(['count'])"
+      }
+    }
+  }
+}
