@@ -11,9 +11,9 @@
 // ============================================================
 
 function studentGoogleLogin() {
-    auth.signInWithPopup(googleProvider).then(result => {
-        const credential = firebase.auth.GoogleAuthProvider.credentialFromResult(result);
-        return authQuestions.signInWithCredential(credential); // একই Google টোকেন দিয়ে ২য় প্রজেক্টেও লগইন
+    auth.signInWithPopup(googleProvider).then(() => {
+        // cross-project credential reuse কাজ করে না (audience mismatch), তাই ২য় প্রজেক্টে আলাদাভাবে সাইন-ইন করানো হচ্ছে
+        return authQuestions.signInWithPopup(googleProvider);
     }).catch((error) => {
         showToast('গুগল লগইন ব্যর্থ: ' + error.message, 'error');
     });
