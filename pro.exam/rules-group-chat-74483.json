@@ -1,0 +1,28 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "qbank": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider === 'password'",
+      "$class": {
+        "$subject": {
+          "$qid": {
+            ".validate": "newData.hasChildren(['text','options','correct'])"
+          }
+        }
+      }
+    },
+
+    "subjectsIndex": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider === 'password'"
+    },
+
+    "questions": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider === 'password'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider === 'password'"
+    }
+  }
+}
