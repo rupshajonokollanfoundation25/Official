@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="bn" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Exam Portal | Premium Advanced Platform</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+</head>
+<body>
+
+
+    
+
+<style>
+  /* প্রিমিয়াম ডার্ক মেমরি থিম */
+  #splash-screen {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100vh;
+    background: radial-gradient(circle at center, #1f2937 0%, #030712 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s ease;
+  }
+
+  .fade-out {
+    opacity: 0;
+    transform: scale(1.1); /* যাওয়ার সময় হালকা জুম-ইন ইফেক্ট */
+    pointer-events: none;
+  }
+
+  .animation-wrapper { 
+    text-align: center; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ব্যাকগ্রাউন্ডের মায়াবী আলো */
+  .memory-glow {
+    position: absolute;
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 60%);
+    border-radius: 50%;
+    z-index: -1;
+    animation: pulseGlow 3s infinite ease-in-out;
+  }
+
+  /* ছবি দেখানোর প্রিমিয়াম গ্লাস ফ্রেম */
+  .image-frame {
+    width: 320px;
+    height: 220px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 15px rgba(251, 191, 36, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+  }
+
+  /* স্লাইডারের ট্র্যাক - ৫টি ছবির জন্য ৫০০% প্রস্থ */
+  .slider-track {
+    display: flex;
+    width: 500%; 
+    height: 100%;
+    /* ৫ সেকেন্ডের মধ্যে অ্যানিমেশন শেষ হবে */
+    animation: slideMemories 2.5s ease-in-out forwards; 
+  }
+
+  /* প্রতিটি ছবির স্টাইল */
+  .slider-track img {
+    width: 20%; /* ৫০০% এর ২০% = ১০০% (একটি ফ্রেমের সমান) */
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  /* টেক্সট ডিজাইন */
+  .loading-text { 
+    color: #40f5ff; 
+    margin-top: 5px; 
+    letter-spacing: 3px; 
+    font-family: 'Montserrat', 'Segoe UI', sans-serif; 
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+  }
+
+  /* প্রোগ্রেস বার কন্টেইনার */
+  .progress-container {
+    width: 280px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin: 20px auto 0 auto;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ca8a04, #facc15);
+    box-shadow: 0 0 12px #facc15;
+    border-radius: 20px;
+    transition: width 0.05s linear;
+  }
+
+  .percentage-text {
+    color: #facc15;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+
+  /* --- সিনেমাটিক স্লাইড অ্যানিমেশন --- */
+  /* ছবিগুলো ধাপে ধাপে স্লাইড হবে এবং কিছুক্ষণ দাঁড়াবে */
+  @keyframes slideMemories {
+    0%, 15% { transform: translateX(0); }             /* ছবি ১ */
+    20%, 35% { transform: translateX(-20%); }         /* ছবি ২ */
+    40%, 55% { transform: translateX(-40%); }         /* ছবি ৩ */
+    60%, 75% { transform: translateX(-60%); }         /* ছবি ৪ */
+    80%, 100% { transform: translateX(-80%); }        /* ছবি ৫ */
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+   
+
+<div id="splash-screen">
+  <div class="memory-glow"></div>
+  <div class="animation-wrapper">
+    
+    <!-- ছবির ফ্রেম -->
+    <div class="image-frame">
+      <div class="slider-track">
+        <!--  ৫টি ছবির  -->
+        
+        
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/national-anthem-all-team.webp" alt="Memory 1">
+        <img src="https://rupshajf.vercel.app/gallery/win-team.webp" alt="Memory 2">
+        <img src="https://rupshajf.vercel.app/gallery/lost-team.webp" alt="Memory 3">
+        <img src="https://rupshajf.vercel.app/gallery/team-trophy.webp" alt="Memory 4">
+        
+        
+        <img src="https://rupshajf.vercel.app/gallery/IMG_20260320_234348.jpg" alt="Memory 5">
+      </div>
+    </div>
+
+    <h2 class="loading-text"> আমাদের কার্যক্রম এক নজরে</h2>
+    
+    <div class="progress-container">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <span id="percentage" class="percentage-text">0%</span>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const progressBar = document.getElementById('progress-bar');
+    const percentageText = document.getElementById('percentage');
+    const splash = document.getElementById('splash-screen');
+
+    // নির্দিষ্ট ৫ সেকেন্ড (5000 মিলিসেকেন্ড) টার্গেট
+    const totalDuration = 3000; 
+    const updateInterval = 50; // প্রতি ৫০ মিলিসেকেন্ডে আপডেট হবে
+    const step = 100 / (totalDuration / updateInterval); 
+    
+    let progress = 0;
+
+    // ৫ সেকেন্ডে ঠিক ১০০% হওয়ার ক্যালকুলেশন
+    const timer = setInterval(() => {
+      progress += step;
+      
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(timer);
+        hideSplashScreen();
+      }
+
+      const currentProgress = Math.floor(progress);
+      progressBar.style.width = currentProgress + '%';
+      percentageText.textContent = currentProgress + '%';
+    }, updateInterval);
+
+    // ৫ সেকেন্ড পার হওয়ার পর স্মুথলি হাইড করার ফাংশন
+    function hideSplashScreen() {
+      splash.classList.add('fade-out');
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 800); // অ্যানিমেশন শেষ হতে ৮০০ms সময় নেবে
+    }
+  })();
+</script>
+
+
+
+    
+
+
+
+<div id="pro-notice-overlay" class="pro-overlay">
+    <div class="pro-popup-box">
+        <button class="pro-close-btn">&times;</button>
+        
+        <div class="pro-video-container">
+            <video autoplay muted loop playsinline class="notice-video">
+                <source src="https://youtu.be/jIihWH1A_Xk?si=L6yGmKteTZfUkdRd" type="video/mp4">
+            </video>
+            <div class="countdown-overlay"><span id="countdown-number">20</span>s</div>
+        </div>
+        
+        <h3 class="pro-title">জরুরি ঘোষণা!</h3>
+        <p class="pro-text">আমাদের প্রো এক্সাম প্ল্যাটফর্মটা প্রথমে একবার লোডিং নিতে কিছুটা সময় নিতে পারে। তাই ধৈর্য ধারণ করে 30 সেকেন্ড অপেক্ষা করুন সব ঠিক হয়ে যাবে।প্রো এক্সাম প্ল্যাটফর্ম এর সাথে থাকার জন্য আপনাকে অসংখ্য ধন্যবাদ,</p>
+        
+        <div class="pro-progress-container">
+            <div class="pro-progress-bar"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    
+<div id="pro-notice-overlay" class="pro-overlay">
+    <div class="pro-popup-box">
+        <button class="pro-close-btn" aria-label="Close Notice">&times;</button>
+        
+        <div class="pro-icon">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        
+        <h3 class="pro-title">গুরুত্বপূর্ণ আপডেট!</h3>
+        <p class="pro-text"></p>
+        
+        <div class="pro-progress-container">
+            <div class="pro-progress-bar"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+    <header>
+        
+        <div class="logo"><i class="fas fa-graduation-cap"></i> ProExam LMS</div>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button class="btn btn-outline btn-icon" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-moon" id="themeIcon"></i></button>
+            <button class="btn btn-outline hidden" id="leaderboardBtn" onclick="openLeaderboard()"><i class="fas fa-trophy text-warning"></i> লিডারবোর্ড</button>
+            <button class="btn btn-outline hidden" id="profileBtn" onclick="toggleProfileSidebar()"><i class="fas fa-user-circle"></i> প্রোফাইল</button>
+            <button class="btn btn-outline" id="adminLoginBtn" onclick="showLoginModal()"><i class="fas fa-user-shield"></i> Admin</button>
+            <button class="btn btn-danger hidden" id="adminLogoutBtn" onclick="confirmLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            <button class="btn btn-primary" onclick="resetToHome()"><i class="fas fa-home"></i> Home</button>
+        </div>
+    </header>
+
+
+<nav class="ultra-nav">
+    <a href="/subscribe/" class="smart-sub-btn">
+      <i class="fa-regular fa-bell"></i>
+      <span class="btn-content">সাবস্ক্রাইব করুন</span>
+      <div class="shimmer"></div>
+    </a>
+</nav>
+
+
+    
+
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleProfileSidebar()"></div>
+    <div id="profileSidebar" class="profile-sidebar">
+        <button class="btn-icon" onclick="toggleProfileSidebar()" style="position: absolute; top: 20px; right: 20px; background: rgba(239,68,68,0.1); color: var(--danger); border: none;"><i class="fas fa-times"></i></button>
+        <div class="profile-header">
+            <img id="profPic" src="https://via.placeholder.com/90" alt="Profile">
+            <h3 id="profName">Student Name</h3>
+            <p id="profEmail">student@email.com</p>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab-btn active" id="tabHist" onclick="switchProfTab('hist')"><i class="fas fa-history"></i> হিস্টরি</div>
+            <div class="tab-btn" id="tabAnal" onclick="switchProfTab('anal')"><i class="fas fa-chart-pie"></i> প্রগ্রেস</div>
+            <div class="tab-btn" id="tabBook" onclick="switchProfTab('book')"><i class="fas fa-bookmark"></i> বুকমার্কস</div>
+        </div>
+
+        <div id="historyList" style="flex: 1;">
+            <p class="text-center text-muted" style="margin-top: 20px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
+        </div>
+
+        <div id="analContent" class="hidden" style="flex: 1;"></div>
+        <div id="bookContent" class="hidden" style="flex: 1;"></div>
+    </div>
+
+    <div class="container fade-in" id="mainContainer">
+        
+        <div id="adminPanel" class="hidden">
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <h2><i class="fas fa-chart-line text-primary"></i> অ্যাডমিন ড্যাশবোর্ড</h2>
+                <div style="display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <label style="margin:0; display:flex; align-items:center; gap:8px; cursor:pointer;">
+                        <input type="checkbox" id="negMarkToggle" style="width:18px; height:18px;" onchange="saveAdminSettings()"> 
+                        <span style="font-weight:bold; color:var(--danger)">নেগেটিভ মার্কিং (০.২৫)</span>
+                    </label>
+                    <span class="badge" style="background: var(--success); color: white; padding: 5px 12px; border-radius: 20px; font-size:12px;">Secure</span>
+                </div>
+            </div>
+
+            <div class="card" style="border: 1px dashed var(--warning); background: rgba(245, 158, 11, 0.05);">
+                <h3 style="margin-bottom: 10px; color: var(--warning);"><i class="fas fa-tools"></i> এককালীন অপটিমাইজেশন মাইগ্রেশন</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
+                    পুরনো প্রশ্ন ও রেজাল্ট ডাটাকে নতুন, কম-ডাটা-খরচের স্ট্রাকচারে (qbank + subjectsIndex + leaderboard) কপি করতে এটি
+                    <b>মাত্র একবার</b> চাপুন। ইতিমধ্যে যারা প্রশ্ন যোগ করেছেন বা যাদের এক্সাম হিস্ট্রি আছে, তাদের ডাটা এই বাটনে
+                    স্বয়ংক্রিয়ভাবে নতুন স্ট্রাকচারে চলে যাবে। বারবার চাপলেও সমস্যা নেই, কিন্তু এটি একবার সফল হলে আর প্রয়োজন নেই।
+                </p>
+                <button class="btn btn-outline" style="width:100%; border-color:var(--warning); color:var(--warning);" onclick="runOneTimeOptimizationMigration()">
+                    <i class="fas fa-database"></i> মাইগ্রেশন চালান
+                </button>
+            </div>
+            
+            <div class="admin-grid">
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-plus-circle"></i> ম্যানুয়ালি প্রশ্ন যোগ</h3>
+                    <form id="addQuestionForm">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <select id="qClass" required style="flex:1; min-width: 100px;"><option value="SSC">SSC</option><option value="HSC">HSC</option></select>
+                            <input type="text" id="qSubject" placeholder="বিষয় (উদা: Physics)" required style="flex:2; min-width: 150px;">
+                        </div>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <textarea id="qText" rows="3" placeholder="প্রশ্ন লিখুন..." required></textarea>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 15px;">
+                            <input type="text" id="optA" placeholder="Option A" required>
+                            <input type="text" id="optB" placeholder="Option B" required>
+                            <input type="text" id="optC" placeholder="Option C" required>
+                            <input type="text" id="optD" placeholder="Option D" required>
+                        </div>
+                        <select id="qCorrect" required style="margin-bottom: 15px;">
+                            <option value="" disabled selected>সঠিক উত্তর নির্বাচন করুন</option>
+                            <option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option>
+                        </select>
+                        
+                        <div class="form-group">
+                            <textarea id="qExplanation" rows="2" placeholder="প্রশ্নের বিস্তারিত ব্যাখ্যা (ঐচ্ছিক)"></textarea>
+                        </div>
+
+                        <button type="submit" id="saveBtn" class="btn btn-primary" style="width: 100%;"><i class="fas fa-save"></i> সেভ করুন</button>
+                    </form>
+
+                    <hr style="border:1px dashed var(--border); margin: 25px 0;">
+                    <h3 style="margin-bottom: 15px;"><i class="fas fa-file-import"></i> JSON বাল্ক ইমপোর্ট</h3>
+                    <textarea id="bulkJsonInput" rows="4" placeholder='[{"class":"SSC","subject":"Bangla","text":"Q1?","options":{"A":"1","B":"2","C":"3","D":"4"},"correct":"A", "explanation":"কারণ..."}]' style="font-family: monospace; font-size: 13px; margin-bottom:10px;"></textarea>
+                    <button class="btn btn-outline" onclick="processBulkImport()" style="width: 100%;"><i class="fas fa-upload"></i> একসাথে আপলোড করুন</button>
+                </div>
+
+                <div class="card" style="display: flex; flex-direction: column;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; flex-wrap:wrap; gap:10px;">
+                        <h3><i class="fas fa-database"></i> প্রশ্ন ব্যাংক (<span id="totalQCount">0</span>)</h3>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline" onclick="exportQuestionsCSV()" style="padding: 8px 12px; font-size:13px;"><i class="fas fa-file-csv"></i> প্রশ্ন Export</button>
+                            <button class="btn btn-outline" onclick="exportResultsCSV()" style="padding: 8px 12px; font-size:13px;"><i class="fas fa-file-csv"></i> রেজাল্ট Export</button>
+                        </div>
+                    </div>
+
+                    <div id="adminQuestionList" style="flex: 1; overflow-y: auto; max-height: 650px; padding-right: 10px;">
+                        <p class="text-center text-muted" style="margin-top: 50px;"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="studentSetupView">
+            <div class="card text-center fade-in" id="step1Info" style="max-width: 500px; margin: 50px auto;">
+                <div style="width: 90px; height: 90px; background: rgba(234, 67, 53, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; color: #ea4335; box-shadow: var(--shadow-soft);">
+                    <i class="fab fa-google"></i>
+                </div>
+                <h2 style="margin-bottom: 10px; font-size: 28px;">প্রো এক্সাম পোর্টালে স্বাগতম</h2>
+                <p style="color: var(--text-muted); margin-bottom: 30px;"> "নিরাপদ লগইনের জন্য দয়া করে আপনার গুগল অ্যাকাউন্টটি ব্যবহার করুন।" (প্রো এক্সামটি রূপসা জনকল্যাণ ফাউন্ডেশন কর্তৃক পরিচালিত হচ্ছে)</p>
+            
+                <button class="btn btn-primary" onclick="studentGoogleLogin()" style="width: 100%; padding: 16px; font-size: 18px; background: #ea4335; border-color: #ea4335; box-shadow: 0 4px 15px rgba(234, 67, 53, 0.3);">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </div>
+
+            <div class="card hidden fade-in" id="step2Settings" style="max-width: 650px; margin: 30px auto;">
+                <h2 style="border-bottom: 2px solid var(--border); padding-bottom: 15px; margin-bottom: 25px;"><i class="fas fa-sliders-h"></i> পরীক্ষার কনফিগারেশন</h2>
+                
+                <label>১. আপনার ক্লাস নির্বাচন করুন:</label>
+                <div style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
+                    <button class="btn btn-outline" id="btnSSC" onclick="selectClass('SSC')" style="flex: 1; min-width: 120px; padding: 15px; font-size:18px;">SSC</button>
+                    <button class="btn btn-outline" id="btnHSC" onclick="selectClass('HSC')" style="flex: 1; min-width: 120px; padding: 15px; font-size:18px;">HSC</button>
+                </div>
+
+                <div id="subjectWrapper" class="hidden" style="margin-bottom: 30px;">
+                    <label>২. বিষয় নির্বাচন করুন:</label>
+                    <div id="subjectGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;"></div>
+                </div>
+
+                <div id="configWrapper" class="hidden">
+                    <label>৩. সেটআপ সম্পূর্ণ করুন:</label>
+                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 150px;"><input type="number" id="userQCount" placeholder="প্রশ্নের সংখ্যা (উদা: 10)" min="1"></div>
+                        <div style="flex: 1; min-width: 150px;"><input type="number" id="userTimeLimit" placeholder="সময় - মিনিট (উদা: 5)" min="1"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="startExamValidation()" style="width: 100%; padding: 18px; margin-top: 30px; font-size: 20px;"><i class="fas fa-play-circle"></i> পরীক্ষা শুরু করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="examFocusUI" class="hidden fade-in">
+            <div class="card" style="max-width: 850px; margin: 20px auto; position: relative; overflow: hidden;">
+                <div style="position: absolute; top:0; left:0; width:100%; height:6px; background: linear-gradient(90deg, var(--primary), #ec4899);"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h3 id="examSubjectTitle" style="color: var(--primary); margin-bottom: 5px; font-size:22px;">Subject</h3>
+                        <div style="display:flex; align-items:center; gap:15px;">
+                            <p id="qCounterText" style="color: var(--text-muted); font-size: 15px; font-weight: 600;">Question 1 / 10</p>
+                            <button id="bookmarkCurrentBtn" class="bookmark-btn" onclick="toggleBookmark()"><i class="far fa-bookmark"></i> বুকমার্ক</button>
+                        </div>
+                    </div>
+                    <div class="timer-badge" id="timerBadgeUI">
+                        <i class="fas fa-stopwatch"></i> <span id="timerDisplay">00:00</span>
+                    </div>
+                </div>
+                
+                <div class="progress-container"><div class="progress-bar" id="examProgress"></div></div>
+
+                <div style="min-height: 300px; padding: 10px 0;">
+                    <h2 class="question-text" id="liveQText">প্রশ্ন লোড হচ্ছে...</h2>
+                    <div id="optionsRenderArea"></div>
+                </div>
+
+                <div class="exam-nav-buttons" style="display: flex; justify-content: space-between; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 25px; gap: 10px;">
+                    <button class="btn btn-outline" id="prevBtn" onclick="navigateQuestion(-1)" style="padding: 12px 25px;"><i class="fas fa-arrow-left"></i> পূর্ববর্তী</button>
+                    <button class="btn btn-primary" id="nextBtn" onclick="navigateQuestion(1)" style="padding: 12px 30px;">পরবর্তী <i class="fas fa-arrow-right"></i></button>
+                    <button class="btn btn-success hidden" id="submitBtn" onclick="submitExamFinal()" style="background: var(--success); color: white; padding: 12px 30px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);"><i class="fas fa-flag-checkered"></i> সাবমিট করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultUI" class="hidden fade-in">
+            <div class="card" style="max-width: 900px; margin: 0 auto; text-align:center; padding: 50px 30px; background: linear-gradient(135deg, var(--primary), #4338ca); color: white; position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -50px; right: -50px; opacity: 0.1; font-size: 250px;"><i class="fas fa-trophy"></i></div>
+                <h1 style="margin-bottom: 10px; font-size: 32px;">ফলাফল কার্ড</h1>
+                <p id="emailStatusText" style="opacity: 0.9; margin-bottom: 30px;"><i class="fas fa-spinner fa-spin"></i> ইমেইলে রিপোর্ট তৈরি হচ্ছে...</p>
+                
+                <div style="width: 180px; height: 180px; border: 10px solid rgba(255,255,255,0.2); border-radius: 50%; display: flex; flex-direction:column; align-items: center; justify-content: center; margin: 0 auto 30px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);">
+                    <span id="scoreDisplay" style="font-size: 55px; font-weight: 800; line-height: 1;">0</span>
+                    <span style="font-size: 16px; opacity:0.8;">প্রাপ্ত নম্বর</span>
+                </div>
+                <h2 id="percentDisplay" style="font-size: 28px;">0% Accuracy</h2>
+            </div>
+
+            <div class="result-grid-mobile" style="max-width: 900px; margin: -30px auto 30px; position: relative; z-index: 10; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; padding: 0 20px;">
+                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-check-circle text-success" style="font-size:28px; color:var(--success);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">সঠিক</p><h3 id="resCorrect" style="font-size:24px;">0</h3></div>
+                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-times-circle text-danger" style="font-size:28px; color:var(--danger);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">ভুল</p><h3 id="resWrong" style="font-size:24px;">0</h3></div>
+                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-minus-circle text-warning" style="font-size:28px; color:var(--warning);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">নেগেটিভ</p><h3 id="resNegative" style="font-size:24px;">0.00</h3></div>
+                <div class="card" style="text-align:center; padding:20px; margin:0;"><i class="fas fa-layer-group text-primary" style="font-size:28px; color:var(--primary);"></i><p style="margin:10px 0 5px; color:var(--text-muted)">মোট প্রশ্ন</p><h3 id="resTotal" style="font-size:24px;">0</h3></div>
+            </div>
+
+            <div style="max-width: 900px; margin: 0 auto; display: flex; gap: 15px; flex-wrap: wrap; padding: 0 20px;">
+                <button class="btn btn-outline" onclick="toggleReviewMode()" style="flex:1; min-width: 200px; padding:15px; font-size:16px;"><i class="fas fa-eye"></i> উত্তরপত্র দেখুন</button>
+                <button class="btn btn-primary" onclick="resetToHome()" style="flex:1; min-width: 200px; padding:15px; font-size:16px;"><i class="fas fa-redo"></i> নতুন পরীক্ষা</button>
+            </div>
+
+            <div id="reviewSection" class="hidden fade-in" style="max-width: 900px; margin: 30px auto 0;">
+                <h3 style="margin-bottom: 20px; text-align:center; border-bottom:1px solid var(--border); padding-bottom:10px;">বিস্তারিত সমাধান</h3>
+                <div id="reviewContentArea"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <div id="adminLoginModal" style="position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); display: none; place-items: center; z-index: 1000;">
+        <div class="card" style="width: 90%; max-width: 400px; padding: 40px; text-align: center; animation: slideUp 0.3s ease;">
+            <div style="width:60px; height:60px; background:var(--primary-light); color:var(--primary); font-size:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px;"><i class="fas fa-lock"></i></div>
+            <h2 style="margin-bottom: 10px;">Admin Access</h2>
+            <p class="text-muted" style="margin-bottom: 30px; font-size: 14px;">Authorized personnel only</p>
+            
+            <div class="form-group"><input type="email" id="adminEmail" placeholder="Admin Email" required></div>
+            <div class="form-group" style="margin-bottom: 30px;"><input type="password" id="adminPass" placeholder="Password" required></div>
+            
+            <button class="btn btn-primary" onclick="processAdminLogin()" style="width: 100%; margin-bottom: 15px; padding:15px;">লগইন করুন</button>
+            <button class="btn btn-outline" onclick="closeLoginModal()" style="width: 100%; padding:15px; border:none;">ক্যানসেল</button>
+        </div>
+    </div>
+
+    <div id="leaderboardModal" class="leaderboard-modal">
+        <div class="leaderboard-content">
+            <button class="btn-icon" onclick="closeLeaderboard()" style="position: absolute; top: 15px; right: 15px; background: rgba(239,68,68,0.1); color: var(--danger); border: none;"><i class="fas fa-times"></i></button>
+            <h2 style="text-align:center; margin-bottom: 20px; color:var(--primary);"><i class="fas fa-crown text-warning"></i> টপ স্টুডেন্টস লিডারবোর্ড</h2>
+            <div id="leaderboardList" style="min-height: 200px;">
+                <p class="text-center"><i class="fas fa-spinner fa-spin"></i> লোড হচ্ছে...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== মডুলার JavaScript ফাইলসমূহ ===================== -->
+    <!-- লোড অর্ডার গুরুত্বপূর্ণ: firebase-config ও state সবার আগে লোড হতে হবে -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/ui-utils.js"></script>
+    <script src="js/theme.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile-history.js"></script>
+    <script src="js/admin-panel.js"></script>
+    <script src="js/leaderboard.js"></script>
+    <script src="js/student-setup.js"></script>
+    <script src="js/bookmarks.js"></script>
+    <script src="js/exam-engine.js"></script>
+    <script src="js/results.js"></script>
+    <script src="js/notice-popup.js"></script>
+    <script src="js/scroll-handlers.js"></script>
+</body>
+</html>
