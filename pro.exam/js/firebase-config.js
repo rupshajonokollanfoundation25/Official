@@ -34,4 +34,5 @@ const questionApp = firebase.initializeApp(firebaseConfigQuestions, "QuestionApp
 const db = firebase.database(); 
 const auth = firebase.auth(); 
 const dbQuestions = questionApp.database(); 
+const authQuestions = questionApp.auth(); // নতুন — dbQuestions (২য় প্রজেক্ট) এর জন্য আলাদা Auth session, এটা ছাড়া ঐ DB তে auth সবসময় null থাকতো
 const googleProvider = new firebase.auth.GoogleAuthProvider();
