@@ -67,6 +67,13 @@ function submitExamFinal() {
                 exams: prevExams + 1
             };
         }).catch(err => console.error("Leaderboard Update Error:", err));
+
+        // --- গেস্ট ইউজার হলে তার ফ্রি পরীক্ষার কাউন্ট বাড়ানো হচ্ছে (সর্বোচ্চ ২টি) ---
+        if (auth.currentUser && auth.currentUser.isAnonymous) {
+            db.ref('guest_usage/' + userUid).transaction(current => ({
+                count: (current && current.count ? current.count : 0) + 1
+            })).catch(err => console.error("Guest Usage Update Error:", err));
+        }
     }
 
     switchView('resultUI');
