@@ -47,7 +47,7 @@ async function selectClass(cls) {
     }
 }
 
-function startExamValidation() {
+async function startExamValidation() {
     if(!studentData.subject) return showToast('বিষয় নির্বাচন করুন', 'error');
     studentData.qCount = parseInt(document.getElementById('userQCount').value);
     studentData.timeMin = parseInt(document.getElementById('userTimeLimit').value);
@@ -60,6 +60,18 @@ function startExamValidation() {
     if (lastExam && (now - lastExam < 180000)) { 
         const rem = Math.ceil((180000 - (now - lastExam)) / 1000);
         return showToast(`অপেক্ষা করুন! আবার পরীক্ষা দিতে পারবেন ${rem} সেকেন্ড পর।`, 'error');
+    }
+
+    // --- গেস্ট ইউজারের জন্য ২টি ফ্রি পরীক্ষার সীমা যাচাই ---
+    if (auth.currentUser && auth.currentUser.isAnonymous) {
+        const snap = await db.ref('guest_usage/' + auth.currentUser.uid).once('value');
+        const used = snap.exists() ? (snap.val().count || 0) : 0;
+        if (used >= 2) {
+            showToast('আপনার ২টি ফ্রি গেস্ট পরীক্ষা শেষ হয়ে গেছে! চালিয়ে যেতে Google দিয়ে সাইন-ইন করুন।', 'error');
+            await auth.signOut();
+            await authQuestions.signOut();
+            return;
+        }
     }
 
     initializeExam();
